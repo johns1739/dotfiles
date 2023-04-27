@@ -1,0 +1,16 @@
+[user]
+	name = Juan Banda Jr
+	email = juan@carerev.com
+[alias]
+	p = push
+	st = status -sb
+	ll = log --oneline
+	last = log -1 HEAD --stat
+	cm = commit -m
+	rv = remote -v
+	d = diff
+	dv = difftool -t vimdiff -y
+	gl = config --global -l
+	se = !git rev-list --all | xargs git grep -F
+[init]
+	defaultBranch = main
