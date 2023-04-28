@@ -9,8 +9,16 @@ return require('packer').startup(function(use)
     use 'airblade/vim-gitgutter'
     use 'tpope/vim-fugitive'
     use 'mbbill/undotree'
-    use { "folke/which-key.nvim", disable = true }
-    use { "kylechui/nvim-surround", tag = "*" }
+    use 'nvim-tree/nvim-tree'
+    use { "folke/which-key.nvim", disable = true } -- bug: somehow hides gd
+    use { 
+        "kylechui/nvim-surround", 
+        tag = "*", 
+        config = function() 
+            require("nvim-surround").setup({
+            })
+        end
+    }
 
     use { "catppuccin/nvim",
         disable = true,
@@ -33,7 +41,7 @@ return require('packer').startup(function(use)
         branch = 'v2.x',
         requires = {
             -- LSP Support
-            { 'neovim/nvim-lspconfig' }, -- Required
+            {'neovim/nvim-lspconfig' }, -- Required
             {
                 -- Optional
                 'williamboman/mason.nvim',

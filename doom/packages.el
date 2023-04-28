@@ -53,4 +53,3 @@
 ;;(package! flycheck :disable t)
 (package! rspec-mode :disable t)
 (package! git-link :recipe (:host github :repo "sshaw/git-link"))
-(package! evil-lion)

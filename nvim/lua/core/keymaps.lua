@@ -9,5 +9,5 @@ vim.keymap.set('n', '<leader>bd', '<cmd>b#<CR><cmd>bd#<CR>', { desc = 'delete bu
 vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, { desc = 'format buffer' })
 vim.keymap.set('n', '<leader>j', '<cmd>lprev<CR>zz')
 vim.keymap.set('n', '<leader>k', '<cmd>lnext<CR>zz')
-vim.keymap.set({'i', 'c'}, '<C-a>', '<Home>', { desc = 'Beginning of line' })
-vim.keymap.set({'i', 'c'}, '<C-e>', '<End>', { desc = 'End of line' })
+vim.keymap.set({ 'i', 'c' }, '<C-a>', '<Home>', { desc = 'Beginning of line' })
+vim.keymap.set({ 'i', 'c' }, '<C-e>', '<End>', { desc = 'End of line' })
