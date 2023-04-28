@@ -4,8 +4,7 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
-    -- Packer can manage itself
-    use 'wbthomason/packer.nvim'
+    use 'wbthomason/packer.nvim' -- Packer can manage itself
     use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use 'airblade/vim-gitgutter'
     use 'tpope/vim-fugitive'

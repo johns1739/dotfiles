@@ -1,10 +1,9 @@
 vim.g.mapleader = ' '
 
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Page down' })
-vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz')                  -- prev compilation error
-vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz')                  -- next compilation error
+vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz', { desc = 'Prev compilation error' })
+vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz', { desc = 'Next compilation error' })
 vim.keymap.set('n', '<C-u>', '<C-u>zz', { desc = 'Page up' })
-vim.keymap.set('n', '<C-w>d', '<C-w>q', { desc = 'Close window' })
 vim.keymap.set('n', '<leader>`', '<cmd>:b#<CR>', { desc = 'Switch to alt buffer' })
 vim.keymap.set('n', '<leader>bd', '<cmd>b#<CR><cmd>bd#<CR>', { desc = 'delete buffer' })
 vim.keymap.set('n', '<leader>cf', vim.lsp.buf.format, { desc = 'format buffer' })
