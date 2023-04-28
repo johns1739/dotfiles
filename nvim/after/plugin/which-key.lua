@@ -1,2 +1,0 @@
--- Commented out because it de-registers binding gd (definition)
--- require('which-key').setup{ }
