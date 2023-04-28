@@ -6,9 +6,12 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     -- Packer can manage itself
     use 'wbthomason/packer.nvim'
-
+    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
     use 'airblade/vim-gitgutter'
     use 'tpope/vim-fugitive'
+    use 'mbbill/undotree'
+    use { "folke/which-key.nvim", disable = true }
+    use { "kylechui/nvim-surround", tag = "*" }
 
     use { "catppuccin/nvim",
         disable = true,
@@ -18,26 +21,12 @@ return require('packer').startup(function(use)
         end
     }
 
-    use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.x',
-        requires = { { 'nvim-lua/plenary.nvim' } }
-    }
-
     use({
         'rose-pine/neovim',
         as = 'rose-pine',
         config = function()
             vim.cmd('colorscheme rose-pine')
         end
-    })
-
-    use('nvim-treesitter/nvim-treesitter', { run = ':TSUpdate' })
-
-    use('mbbill/undotree')
-
-    use({
-        "kylechui/nvim-surround",
-        tag = "*", -- Use for stability; omit to use `main` branch for the latest features
     })
 
     use {
@@ -63,6 +52,11 @@ return require('packer').startup(function(use)
     }
 
     use {
+        'nvim-telescope/telescope.nvim', tag = '0.1.x',
+        requires = { { 'nvim-lua/plenary.nvim' } }
+    }
+
+    use {
         "nvim-telescope/telescope-file-browser.nvim",
         requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
         config = function()
@@ -72,12 +66,10 @@ return require('packer').startup(function(use)
 
     use {
         "nvim-telescope/telescope-project.nvim",
-        disable = true,
         requires = { "nvim-telescope/telescope.nvim" },
         config = function()
             require 'telescope'.load_extension('project')
         end
     }
 
-    use "folke/which-key.nvim"
 end)
