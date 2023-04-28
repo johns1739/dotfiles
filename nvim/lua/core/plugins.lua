@@ -9,7 +9,7 @@ return require('packer').startup(function(use)
     use 'airblade/vim-gitgutter'
     use 'tpope/vim-fugitive'
     use 'mbbill/undotree'
-    use 'nvim-tree/nvim-tree'
+    use 'nvim-tree/nvim-tree.lua'
     use { "folke/which-key.nvim", disable = true } -- bug: somehow hides gd
     use { 
         "kylechui/nvim-surround", 
