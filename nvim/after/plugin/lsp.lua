@@ -6,5 +6,5 @@ end)
 
 -- (Optional) Configure lua language server for neovim
 require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
-vim.diagnostic.disable() -- TODO: Toggle
+-- vim.diagnostic.disable() -- TODO: Toggle
 lsp.setup()
