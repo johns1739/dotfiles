@@ -67,7 +67,8 @@ return require('packer').startup(function(use)
             require('gitsigns').setup {
                 on_attach = function(bufnr)
                     local gs = package.loaded.gitsigns
-                    vim.keymap.set('n', '<leader>gB', function() gs.blame_line { full = true } end)
+                    vim.keymap.set('n', '<leader>gB', function() gs.blame_line { full = true } end,
+                        { desc = 'Git blame' })
                 end
             }
         end,
