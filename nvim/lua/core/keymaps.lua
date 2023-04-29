@@ -1,5 +1,3 @@
-vim.g.mapleader = ' '
-
 vim.keymap.set('n', '<C-d>', '<C-d>zz', { desc = 'Page down' })
 vim.keymap.set('n', '<C-j>', '<cmd>cprev<CR>zz', { desc = 'Prev compilation error' })
 vim.keymap.set('n', '<C-k>', '<cmd>cnext<CR>zz', { desc = 'Next compilation error' })

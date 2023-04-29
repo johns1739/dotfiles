@@ -11,7 +11,13 @@ return require('packer').startup(function(use)
         run = ':TSUpdate',
         config = function()
             require 'nvim-treesitter.configs'.setup {
-                ensure_installed = { "javascript", "elixir", "ruby", "c", "lua", "vim", "vimdoc", "query" },
+                ensure_installed = {
+                    "c",
+                    "lua",
+                    "vim",
+                    "vimdoc",
+                    "query",
+                },
                 sync_install = false,
                 auto_install = true,
                 highlight = {
@@ -51,7 +57,7 @@ return require('packer').startup(function(use)
                     dotfiles = true,
                 },
             })
-            vim.keymap.set('n', '<leader>op', '<cmd>NvimTreeFindFile<CR>', { desc = 'Open File Explorer' })
+            vim.keymap.set('n', '<leader>op', '<cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle File Explorer' })
         end
     }
 
@@ -107,9 +113,9 @@ return require('packer').startup(function(use)
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
 
             -- Autocompletion
-            { 'hrsh7th/nvim-cmp' }, -- Required
+            { 'hrsh7th/nvim-cmp' },     -- Required
             { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-            { 'L3MON4D3/LuaSnip' }, -- Required
+            { 'L3MON4D3/LuaSnip' },     -- Required
         },
         config = function()
             local lsp = require('lsp-zero').preset({})
