@@ -65,6 +65,10 @@ return require('packer').startup(function(use)
         'lewis6991/gitsigns.nvim',
         config = function()
             require('gitsigns').setup {
+                current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+                current_line_blame_opts = {
+                    delay = 2000,
+                },
                 on_attach = function(bufnr)
                     local gs = package.loaded.gitsigns
                     vim.keymap.set('n', '<leader>gB', function() gs.blame_line { full = true } end,
