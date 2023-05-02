@@ -8,6 +8,8 @@ vim.opt.hlsearch = false
 vim.opt.ignorecase = true
 vim.opt.incsearch = true
 vim.opt.isfname:append("@-@")
+vim.opt.iskeyword:append("-")
+vim.opt.iskeyword:append("_")
 vim.opt.nu = true
 vim.opt.relativenumber = true
 vim.opt.shiftwidth = 4
@@ -22,4 +24,3 @@ vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
 vim.opt.undofile = true
 vim.opt.updatetime = 50
 vim.opt.wrap = false
-vim.opt.iskeyword:append("-")
