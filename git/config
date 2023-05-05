@@ -12,6 +12,8 @@
 	dv = difftool -t vimdiff -y
 	gl = config --global -l
 	se = !git rev-list --all | xargs git grep -F
+    cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
+
 [init]
 	defaultBranch = main
 [push]
