@@ -134,16 +134,31 @@ return require('packer').startup(function(use)
     }
 
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.x',
+        'nvim-telescope/telescope.nvim',
+        branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim' } },
         config = function()
+            require('telescope').setup({
+                defaults = {
+                    vimgrep_arguments = {
+                        "rg",
+                        "--color=never",
+                        "--no-heading",
+                        "--with-filename",
+                        "--line-number",
+                        "--column",
+                        "--smart-case",
+                    }
+                }
+            })
+
             local builtin = require('telescope.builtin')
             vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = 'Find files in git' })
             vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Find files' })
             vim.keymap.set('n', '<leader>bb', builtin.buffers, { desc = 'Find buffers' })
             vim.keymap.set('n', '<leader>ss',
                 function()
-                    builtin.live_grep({ additional_args = { '-j1' } })
+                    builtin.live_grep()
                 end, { desc = 'Live search' })
             vim.keymap.set('n', '<leader>ff', '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>',
                 { desc = 'Directory listing' })
