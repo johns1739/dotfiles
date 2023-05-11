@@ -21,3 +21,9 @@ log/
 iterm2/
 nvim/plugin
 tmux/plugins/
+htop/
+
+.solargraph.yml
+
+# Elixir
+deps/

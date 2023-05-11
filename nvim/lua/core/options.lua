@@ -4,7 +4,7 @@ vim.opt.clipboard:append("unnamedplus")
 vim.opt.colorcolumn = "80"
 vim.opt.cursorline = true
 vim.opt.expandtab = true
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 vim.opt.ignorecase = true
 vim.opt.incsearch = true
 vim.opt.isfname:append("@-@")

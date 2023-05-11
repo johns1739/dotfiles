@@ -71,8 +71,9 @@ return require('packer').startup(function(use)
                 },
                 on_attach = function(bufnr)
                     local gs = package.loaded.gitsigns
-                    vim.keymap.set('n', '<leader>gB', function() gs.blame_line { full = true } end,
-                        { desc = 'Git blame' })
+                    vim.keymap.set('n', '<leader>gb', function() gs.blame_line { full = true } end,
+                        { desc = 'Git blame line' })
+                    vim.keymap.set('n', '<leader>gB', '<cmd>G blame<CR>', { desc = 'Git blame buffer' })
                 end
             }
         end,
@@ -129,7 +130,7 @@ return require('packer').startup(function(use)
             end)
             require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
             lsp.setup()
-            vim.diagnostic.disable() -- TODO: Toggle
+            -- vim.diagnostic.disable() -- TODO: Toggle
         end
     }
 
@@ -140,6 +141,7 @@ return require('packer').startup(function(use)
         config = function()
             require('telescope').setup({
                 defaults = {
+                    layout_strategy = "vertical",
                     vimgrep_arguments = {
                         "rg",
                         "--color=never",
@@ -148,18 +150,18 @@ return require('packer').startup(function(use)
                         "--line-number",
                         "--column",
                         "--smart-case",
+                        -- "--hidden"
                     }
-                }
+                },
             })
 
             local builtin = require('telescope.builtin')
             vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = 'Find files in git' })
             vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Find files' })
             vim.keymap.set('n', '<leader>bb', builtin.buffers, { desc = 'Find buffers' })
-            vim.keymap.set('n', '<leader>ss',
-                function()
-                    builtin.live_grep()
-                end, { desc = 'Live search' })
+            vim.keymap.set('n', '<leader>ss', builtin.live_grep, { desc = 'Live search' })
+            vim.keymap.set('n', '<leader>sS', builtin.grep_string, { desc = 'Grep string search' })
+            vim.keymap.set({ 'n', 'v' }, '<leader>sS', builtin.grep_string, { desc = 'Grep string search' })
             vim.keymap.set('n', '<leader>ff', '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>',
                 { desc = 'Directory listing' })
             vim.keymap.set('n', '<leader>pp', '<cmd>Telescope project<CR>', { desc = 'Projects' })
