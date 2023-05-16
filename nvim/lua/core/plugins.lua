@@ -69,7 +69,7 @@ return require('packer').startup(function(use)
                 current_line_blame_opts = {
                     delay = 2000,
                 },
-                on_attach = function(bufnr)
+                on_attach = function(_)
                     local gs = package.loaded.gitsigns
                     vim.keymap.set('n', '<leader>gb', function() gs.blame_line { full = true } end,
                         { desc = 'Git blame line' })

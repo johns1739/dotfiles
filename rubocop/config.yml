@@ -1,0 +1,25 @@
+Style/FrozenStringLiteralComment:
+  Enabled: No
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+Layout/MultilineOperationIndentation:
+  EnforcedStyle: aligned
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+
+Layout/LineLength:
+  Max: 90
+
+Metrics/MethodLength:
+  Max: 25
+
+Metrics/ClassLength:
+  Max: 150
+
+Metrics/AbcSize:
+  Enabled: No
+
+    

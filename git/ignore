@@ -24,6 +24,7 @@ tmux/plugins/
 htop/
 
 .solargraph.yml
+.rubocop.yml
 
 # Elixir
 deps/
