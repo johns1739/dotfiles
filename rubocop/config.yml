@@ -1,6 +1,9 @@
 Style/FrozenStringLiteralComment:
   Enabled: No
 
+Style/Documentation:
+  Enabled: No
+
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
