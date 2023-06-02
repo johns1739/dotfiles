@@ -160,11 +160,16 @@ return require('packer').startup(function(use)
         config = function()
             vim.o.timeout = true
             vim.o.timeoutlen = 500
-            require("which-key").setup {
-                -- your configuration comes here
-                -- or leave it empty to use the default settings
-                -- refer to the configuration section below
-            }
+            local wk = require("which-key")
+            wk.register(
+                {
+                    f = { name = 'Find' },
+                    d = { name = 'Delete' },
+                    t = { name = 'Toggle' },
+                    g = { name = 'Git' },
+                },
+                { prefix = '<leader>' }
+            )
         end
     }
 end)
