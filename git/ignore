@@ -21,6 +21,7 @@ log/
 iterm2/
 nvim/plugin
 tmux/plugins/
+.luarc.json
 htop/
 
 .solargraph.yml

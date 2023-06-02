@@ -28,19 +28,9 @@ return require('packer').startup(function(use)
         end
     }
 
-    use {
-        'tpope/vim-fugitive',
-        config = function()
-            vim.keymap.set('n', '<leader>gg', vim.cmd.Git, { desc = 'Git status' })
-        end
-    }
+    use { 'tpope/vim-fugitive' }
 
-    use {
-        'mbbill/undotree',
-        config = function()
-            vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
-        end
-    }
+    use { 'mbbill/undotree' }
 
     use {
         'nvim-tree/nvim-tree.lua',
@@ -57,7 +47,6 @@ return require('packer').startup(function(use)
                     dotfiles = true,
                 },
             })
-            vim.keymap.set('n', '<leader>op', '<cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle File Explorer' })
         end
     }
 
@@ -69,12 +58,6 @@ return require('packer').startup(function(use)
                 current_line_blame_opts = {
                     delay = 2000,
                 },
-                on_attach = function(_)
-                    local gs = package.loaded.gitsigns
-                    vim.keymap.set('n', '<leader>gb', function() gs.blame_line { full = true } end,
-                        { desc = 'Git blame line' })
-                    vim.keymap.set('n', '<leader>gB', '<cmd>G blame<CR>', { desc = 'Git blame buffer' })
-                end
             }
         end,
     }
@@ -125,12 +108,11 @@ return require('packer').startup(function(use)
         },
         config = function()
             local lsp = require('lsp-zero').preset({})
-            lsp.on_attach(function(client, bufnr)
+            lsp.on_attach(function(_, bufnr)
                 lsp.default_keymaps({ buffer = bufnr })
             end)
             require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
             lsp.setup()
-            -- vim.diagnostic.disable() -- TODO: Toggle
         end
     }
 
@@ -154,17 +136,6 @@ return require('packer').startup(function(use)
                     }
                 },
             })
-
-            local builtin = require('telescope.builtin')
-            vim.keymap.set('n', '<C-p>', builtin.git_files, { desc = 'Find files in git' })
-            vim.keymap.set('n', '<leader><leader>', builtin.find_files, { desc = 'Find files' })
-            vim.keymap.set('n', '<leader>bb', builtin.buffers, { desc = 'Find buffers' })
-            vim.keymap.set('n', '<leader>ss', builtin.live_grep, { desc = 'Live search' })
-            vim.keymap.set('n', '<leader>sS', builtin.grep_string, { desc = 'Grep string search' })
-            vim.keymap.set({ 'n', 'v' }, '<leader>sS', builtin.grep_string, { desc = 'Grep string search' })
-            vim.keymap.set('n', '<leader>ff', '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>',
-                { desc = 'Directory listing' })
-            vim.keymap.set('n', '<leader>pp', '<cmd>Telescope project<CR>', { desc = 'Projects' })
         end
     }
 
@@ -181,6 +152,19 @@ return require('packer').startup(function(use)
         requires = { "nvim-telescope/telescope.nvim" },
         config = function()
             require 'telescope'.load_extension('project')
+        end
+    }
+
+    use {
+        "folke/which-key.nvim",
+        config = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 500
+            require("which-key").setup {
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            }
         end
     }
 end)

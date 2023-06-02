@@ -1,7 +1,8 @@
-Style/FrozenStringLiteralComment:
-  Enabled: No
+AllCops:
+  Exclude:
+    - 'test/**/*.rb'
 
-Style/Documentation:
+Style/FrozenStringLiteralComment:
   Enabled: No
 
 Style/StringLiterals:
