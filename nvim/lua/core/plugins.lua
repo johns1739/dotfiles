@@ -5,6 +5,8 @@ vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim' -- Packer can manage itself
+    use 'tpope/vim-fugitive'
+    use 'mbbill/undotree'
 
     use {
         'nvim-treesitter/nvim-treesitter',
@@ -27,10 +29,6 @@ return require('packer').startup(function(use)
             }
         end
     }
-
-    use { 'tpope/vim-fugitive' }
-
-    use { 'mbbill/undotree' }
 
     use {
         'nvim-tree/nvim-tree.lua',
@@ -67,14 +65,6 @@ return require('packer').startup(function(use)
         tag = "*",
         config = function()
             require("nvim-surround").setup({})
-        end
-    }
-
-    use { "catppuccin/nvim",
-        disable = true,
-        as = "catppuccin",
-        config = function()
-            vim.cmd.colorscheme "catppuccin"
         end
     }
 
@@ -167,6 +157,8 @@ return require('packer').startup(function(use)
                     d = { name = 'Delete' },
                     t = { name = 'Toggle' },
                     g = { name = 'Git' },
+                    c = { name = 'Code' },
+                    o = { name = 'Open' },
                 },
                 { prefix = '<leader>' }
             )
