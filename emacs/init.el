@@ -1,8 +1,9 @@
 (setq gc-cons-threshold 100000000)
 (add-hook 'after-init-hook
 	  #'(lambda ()
-                               ;; restore after startup
-                               (setq gc-cons-threshold 800000)))
+          ;; restore after startup
+          (setq gc-cons-threshold 800000)))
+
 (setq read-process-output-max (* 1024 1024)) ;; 1mb
 (setq inhibit-startup-message t)
 
@@ -24,7 +25,6 @@
 (eval-when-compile
   (require 'use-package))
 (setq use-package-always-ensure t)
-
 
 ;;; Useful Defaults
 (setq-default cursor-type 'bar)           ; Line-style cursor similar to other text editors
@@ -72,6 +72,23 @@
   (interactive)
   (load-file (expand-file-name "init.el" user-emacs-directory)))
 
+(use-package general
+  :ensure t
+  :config
+  (general-create-definer my-leader-def
+    :prefix "SPC")
+  (general-create-definer my-local-leader-def
+    :prefix "SPC m")
+  (general-evil-setup t))
+
+(use-package which-key
+  :ensure t
+  :after general
+  :config
+  (which-key-mode)
+  (my-leader-def 'normal
+    "<f12>" 'which-key-show-top-level))
+
 (use-package evil
   :ensure t
   :init
@@ -88,4 +105,12 @@
 
 (use-package projectile
   :config
-  (projectile-mode t))
+  (projectile-mode t)
+  (my-leader-def 'normal
+    "p" '(:keymap projectile-command-map :package projectile)))
+
+(use-package vertico
+  :config
+  (vertico-mode)
+  (setq vertico-count 20)
+  (setq completion-styles '(basic substring partial-completion flex)))
