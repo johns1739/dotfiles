@@ -29,3 +29,8 @@ htop/
 
 # Elixir
 deps/
+
+emacs/elpa/
+emacs/transient/
+emacs/custom.el
+emacs/projectile-bookmarks.eld

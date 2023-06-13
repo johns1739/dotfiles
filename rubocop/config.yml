@@ -2,8 +2,11 @@ AllCops:
   Exclude:
     - 'test/**/*.rb'
 
-Style/FrozenStringLiteralComment:
+Style/Documentation:
   Enabled: No
+
+Style/FrozenStringLiteralComment:
+  Enabled: Yes
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
