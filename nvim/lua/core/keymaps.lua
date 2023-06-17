@@ -19,6 +19,7 @@ vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<CR>', { desc = 'Fin
 vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', { desc = 'Find help tags' })
 vim.keymap.set('n', '<leader>fo', '<cmd>Telescope oldfiles<CR>', { desc = 'Find old files' })
 vim.keymap.set('n', '<leader>fp', '<cmd>Telescope project<CR>', { desc = 'Find project' })
+vim.keymap.set('n', '<leader>pp', '<cmd>Telescope project<CR>', { desc = 'Find project' })
 vim.keymap.set('n', '<leader>fs', '<cmd>Telescope live_grep<CR>', { desc = 'Find with live search' })
 vim.keymap.set('n', '<leader>gB', '<cmd>G blame<CR>', { desc = 'Git blame buffer' })
 vim.keymap.set('n', '<leader>gb', function() package.loaded.gitsigns.blame_line { full = true } end, { desc = 'Git blame line' })
