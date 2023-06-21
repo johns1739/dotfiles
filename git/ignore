@@ -16,6 +16,7 @@ Thumbs.db
 # General
 log/
 *.log
+cache/
 
 # Config stuff to ignore
 iterm2/
