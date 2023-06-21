@@ -153,12 +153,13 @@ return require('packer').startup(function(use)
             local wk = require("which-key")
             wk.register(
                 {
-                    f = { name = 'Find' },
-                    d = { name = 'Delete' },
-                    t = { name = 'Toggle' },
-                    g = { name = 'Git' },
                     c = { name = 'Code' },
+                    d = { name = 'Delete' },
+                    f = { name = 'Find' },
+                    g = { name = 'Git' },
                     o = { name = 'Open' },
+                    p = { name = 'Project' },
+                    t = { name = 'Toggle' },
                 },
                 { prefix = '<leader>' }
             )
