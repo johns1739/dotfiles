@@ -125,6 +125,11 @@ return require('packer').startup(function(use)
                         -- "--hidden"
                     }
                 },
+                extensions = {
+                    project = {
+                        order_by = "recent", -- already the default
+                    }
+                }
             })
         end
     }
@@ -156,7 +161,10 @@ return require('packer').startup(function(use)
                     c = { name = 'Code' },
                     d = { name = 'Delete' },
                     f = { name = 'Find' },
-                    g = { name = 'Git' },
+                    g = {
+                        name = 'Git',
+                        f = 'Find'
+                    },
                     o = { name = 'Open' },
                     p = { name = 'Project' },
                     t = { name = 'Toggle' },
