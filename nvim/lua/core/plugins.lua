@@ -159,7 +159,6 @@ return require('packer').startup(function(use)
             wk.register(
                 {
                     c = { name = 'Code' },
-                    d = { name = 'Delete' },
                     f = { name = 'Find' },
                     g = {
                         name = 'Git',
