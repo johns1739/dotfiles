@@ -6,6 +6,7 @@ vim.opt.cursorline = true
 vim.opt.expandtab = true
 vim.opt.hlsearch = true
 vim.opt.ignorecase = true
+vim.opt.inccommand = 'nosplit'
 vim.opt.incsearch = true
 vim.opt.isfname:append("@-@")
 vim.opt.iskeyword:append("-")
