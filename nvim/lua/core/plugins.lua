@@ -6,6 +6,14 @@ vim.cmd [[packadd packer.nvim]]
 return require('packer').startup(function(use)
     use 'wbthomason/packer.nvim' -- Packer can manage itself
     use 'mbbill/undotree'
+
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'nvim-tree/nvim-web-devicons', opt = true },
+        config = function()
+            require('lualine').setup{}
+        end
+    }
     use 'tpope/vim-fugitive'
 
     use {
