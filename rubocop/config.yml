@@ -1,6 +1,7 @@
 AllCops:
   Exclude:
     - 'test/**/*.rb'
+    - 'spec/**/*.rb'
 
 Style/Documentation:
   Enabled: No

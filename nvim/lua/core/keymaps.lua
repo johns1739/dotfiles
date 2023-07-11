@@ -34,7 +34,6 @@ vim.keymap.set('n', '<leader>gfz', '<cmd>Telescope git_stash<CR>', { desc = 'Fin
 vim.keymap.set('n', '<leader>gg', '<cmd>Git<CR>', { desc = 'Git status' })
 vim.keymap.set('n', '<leader>op', '<cmd>NvimTreeFindFile<CR>', { desc = 'Open file explorer' })
 vim.keymap.set('n', '<leader>ot', '<cmd>belowright split | resize 15 | terminal<CR>', { desc = 'Open terminal' })
-vim.keymap.set('n', '<leader>pp', '<cmd>Telescope project<CR>', { desc = 'Find project' })
 vim.keymap.set('n', '<leader>tD', ":lua =(vim.diagnostic.is_disabled() and (vim.diagnostic.enable() or 'enabled')) or vim.diagnostic.disable() or 'disabled'<CR>", { desc = 'Toggle global diagnostics' })
 vim.keymap.set('n', '<leader>td', ":lua =(vim.diagnostic.is_disabled(0) and (vim.diagnostic.enable(0) or 'enabled')) or vim.diagnostic.disable(0) or 'disabled'<CR>", { desc = 'Toggle buffer diagnostics' })
 vim.keymap.set('n', '<leader>tp', '<cmd>NvimTreeFindFileToggle<CR>', { desc = 'Toggle file explorer' })

@@ -14,10 +14,11 @@ return require('packer').startup(function(use)
             require('lualine').setup {
                 sections = {
                     lualine_c = {
+                        require('auto-session.lib').current_session_name,
                         {
                             'filename',
-                            path = 3
-                        }
+                            path = 1
+                        },
                     }
                 }
 
