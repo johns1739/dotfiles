@@ -11,7 +11,17 @@ return require('packer').startup(function(use)
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true },
         config = function()
-            require('lualine').setup{}
+            require('lualine').setup {
+                sections = {
+                    lualine_c = {
+                        {
+                            'filename',
+                            path = 3
+                        }
+                    }
+                }
+
+            }
         end
     }
     use 'tpope/vim-fugitive'
@@ -163,6 +173,22 @@ return require('packer').startup(function(use)
         requires = { "nvim-telescope/telescope.nvim" },
         config = function()
             require 'telescope'.load_extension('project')
+        end
+    }
+
+    use {
+        'rmagatti/auto-session',
+        requires = { 'nvim-telescope/telescope.nvim' },
+        config = function()
+            require("auto-session").setup {
+                log_level = "error",
+                auto_session_suppress_dirs = { "~/", "~/workspace", "~/Downloads", "/" },
+                session_lens = {
+                    load_on_setup = true,
+                    path_display = { 'shorten' },
+                }
+            }
+            require("telescope").load_extension "session-lens"
         end
     }
 

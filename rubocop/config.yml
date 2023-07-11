@@ -6,7 +6,7 @@ Style/Documentation:
   Enabled: No
 
 Style/FrozenStringLiteralComment:
-  Enabled: Yes
+  Enabled: No
 
 Style/StringLiterals:
   EnforcedStyle: single_quotes
