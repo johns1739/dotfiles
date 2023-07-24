@@ -25,6 +25,7 @@ return require('packer').startup(function(use)
             }
         end
     }
+
     use 'tpope/vim-fugitive'
 
     use {
@@ -65,6 +66,7 @@ return require('packer').startup(function(use)
             vim.opt.termguicolors = true
             require("nvim-tree").setup {
                 reload_on_bufenter = true,
+                sync_root_with_cwd = true,
                 view = {
                     width = 40
                 },
@@ -158,6 +160,7 @@ return require('packer').startup(function(use)
                 extensions = {
                     project = {
                         order_by = "recent", -- already the default
+                        sync_with_nvim_tree = true,
                     }
                 }
             })
