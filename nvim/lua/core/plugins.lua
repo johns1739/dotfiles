@@ -63,15 +63,18 @@ return require('packer').startup(function(use)
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
             vim.opt.termguicolors = true
-            require("nvim-tree").setup({
-                sort_by = "case_sensitive",
+            require("nvim-tree").setup {
+                reload_on_bufenter = true,
+                view = {
+                    width = 40
+                },
                 renderer = {
                     group_empty = true,
                 },
                 filters = {
                     dotfiles = true,
                 },
-            })
+            }
         end
     }
 
@@ -183,6 +186,7 @@ return require('packer').startup(function(use)
         config = function()
             require("auto-session").setup {
                 log_level = "error",
+                auto_save_enabled = true,
                 auto_session_suppress_dirs = { "~/", "~/workspace", "~/Downloads", "/" },
                 session_lens = {
                     load_on_setup = true,

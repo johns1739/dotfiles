@@ -12,6 +12,9 @@ Style/FrozenStringLiteralComment:
 Style/StringLiterals:
   EnforcedStyle: single_quotes
 
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: single_quotes
+
 Layout/MultilineOperationIndentation:
   EnforcedStyle: aligned
 
