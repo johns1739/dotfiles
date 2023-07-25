@@ -24,6 +24,7 @@ vim.keymap.set('n', '<leader>fa', '<cmd>Telescope find_files follow=true no_igno
 vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers only_cwd=true sort_mru=true<cr>', { desc = 'Find (cwd) buffer' })
 vim.keymap.set('n', '<leader>fd', '<cmd>Telescope diagnostics bufnr=0<cr>', { desc = 'Find diagnostics' })
 vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Find file' })
+vim.keymap.set('n', '<leader>fS', '<cmd>Telescope grep_string<cr>', { desc = 'Find grep search' })
 vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', { desc = 'Find help tag' })
 vim.keymap.set('n', '<leader>fm', '<cmd>Telescope marks<cr>', { desc = 'Find mark' })
 vim.keymap.set('n', '<leader>fp', require("auto-session.session-lens").search_session, { desc = 'Find session' })

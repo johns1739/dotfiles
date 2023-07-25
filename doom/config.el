@@ -48,7 +48,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/.config/org/")
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -82,7 +82,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq initial-frame-alist '((top . 1) (left . 1) (width . 220) (height . 120)))
+(setq initial-frame-alist '((top . 1) (left . 1) (width . 100) (height . 100)))
 
 (use-package lsp-mode
   :config
