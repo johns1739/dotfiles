@@ -8,6 +8,13 @@ return require('packer').startup(function(use)
     use 'mbbill/undotree'
 
     use {
+        'numToStr/Comment.nvim',
+        config = function()
+            require('Comment').setup()
+        end
+    }
+
+    use {
         'nvim-lualine/lualine.nvim',
         requires = { 'nvim-tree/nvim-web-devicons', opt = true },
         config = function()
@@ -118,7 +125,7 @@ return require('packer').startup(function(use)
                 -- Optional
                 'williamboman/mason.nvim',
                 run = function()
-                    pcall(vim.cmd, 'MasonUpdate')
+                    pcall(vim.api.nvim_command, 'MasonUpdate')
                 end,
             },
             { 'williamboman/mason-lspconfig.nvim' }, -- Optional
@@ -209,10 +216,12 @@ return require('packer').startup(function(use)
             wk.register(
                 {
                     c = { name = 'Code' },
-                    f = { name = 'Find' },
+                    f = {
+                        name = 'Find',
+                        g = { name = 'Git' },
+                    },
                     g = {
                         name = 'Git',
-                        f = 'Find',
                         y = 'Git link',
                     },
                     o = { name = 'Open' },
