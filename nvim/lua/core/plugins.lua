@@ -68,10 +68,13 @@ return require('packer').startup(function(use)
     use {
         'nvim-tree/nvim-tree.lua',
         config = function()
-            vim.g.loaded_netrw = 1
-            vim.g.loaded_netrwPlugin = 1
+            -- vim.g.loaded_netrw = 1
+            -- vim.g.loaded_netrwPlugin = 1
+
             vim.opt.termguicolors = true
             require("nvim-tree").setup {
+                disable_netrw = false,
+                hijack_netrw = true,
                 reload_on_bufenter = true,
                 sync_root_with_cwd = true,
                 view = {
@@ -150,6 +153,7 @@ return require('packer').startup(function(use)
         branch = '0.1.x',
         requires = { { 'nvim-lua/plenary.nvim' } },
         config = function()
+            local actions = require('telescope.actions')
             require('telescope').setup({
                 defaults = {
                     layout_strategy = "vertical",
@@ -162,6 +166,12 @@ return require('packer').startup(function(use)
                         "--column",
                         "--smart-case",
                         -- "--hidden"
+                    },
+                    mappings = {
+                        i = {
+                            ['<C-j>'] = actions.cycle_history_next,
+                            ['<C-k>'] = actions.cycle_history_prev
+                        }
                     }
                 },
                 extensions = {
