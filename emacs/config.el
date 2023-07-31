@@ -1,10 +1,5 @@
 (package-initialize)
 
-;; TODO: / search cannot paste into it
-;; LSP diagnostics sometimes slow?
-;; TODO: Parens match better highlight
-;; TODO: Live search
-
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("elpa" . "https://elpa.gnu.org/packages/")))
@@ -18,8 +13,12 @@
 (setq use-package-always-ensure t)
 
 (use-package emacs
-  :config
+  :init
+  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-13-*-*-*-p-0-iso10646-1")
+  (add-to-list 'default-frame-alist '(height . 60))
+  (add-to-list 'default-frame-alist '(width . 120))
 
+  :config
   (setq-default
    cursor-type 'bar
    display-line-numbers 'relative
@@ -75,6 +74,7 @@
     "h f" 'describe-function
     "h k" 'describe-key
     "h d" 'apropos-documentation
+    "h m" 'describe-mode
     "h x" 'describe-command))
 
 
@@ -100,34 +100,43 @@
 
 (use-package lsp-mode
   :init
-  ;; (setq lsp-keymap-prefix "M-l")
-  ;; TODO: Bind importang commands
+  (rune/leader-key-def 'normal 'override
+    :keymaps 'lsp-mode-map
+    "l" '(:ignore t :wk "LSP")
+    "l d" 'lsp-find-definition
+    "l r" 'lsp-find-references
+    "l f" 'lsp-format-buffer)
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
-  :commands (lsp lsp-deferred))
+  :commands (lsp lsp-deferred)
+  :config
+  (setq lsp-headerline-breadcrumb-enable nil))
 
 (use-package company
-  ;; TODO: Unset enter for autocomplete
-  :init
-  (global-company-mode))
+  :config
+  (general-define-key
+   :keymaps 'company-active-map
+   "M-/" 'company-complete
+   "<return>" nil)
+
+  (setq company-minimum-prefix-length 1
+        company-idle-delay 0.0)
+
+  (global-company-mode 1))
 
 (use-package flycheck
-  :init
+  :config
+  (rune/leader-key-def 'normal 'override
+    :keymaps 'flycheck-mode-map
+    "x" '(:ignore t :wk "Flycheck")
+    "x t" '(flycheck-mode :wk "Toggle flycheck")
+    "x T" '(global-flycheck-mode :wk "Toggle global flycheck")
+    "x l" '(flycheck-list-errors :wk "List errors"))
   (global-flycheck-mode))
 
 (use-package ruby-mode
   :hook
   (ruby-mode . lsp-deferred))
-  ;; (ruby-mode . display-fill-column-indicator-mode))
-
-;; optionally
-;; (use-package lsp-ui :commands lsp-ui-mode)
-;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
-;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-
-;; optionally if you want to use debugger
-;; (use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
 (use-package projectile
   :config
@@ -142,6 +151,7 @@
     "f d" '(projectile-find-dir :wk "Find project dir")
     "f r" '(projectile-recentf :wk "Find recent file")
     "f s" '(projectile-ripgrep :wk "Word search")
+    "f t" '(projectile-find-test-file :wk "Find test")
     "f p" '(projectile-switch-project :wk "Switch project")
     "f b" '(projectile-switch-to-buffer :wk "Find buffer")
     "f B" '(projectile-ibuffer :wk "Ibuffer")))
@@ -164,7 +174,8 @@
   :config
   (rune/leader-key-def 'normal 'override
     "g" '(:ignore t :wk "Git")
-    "g g" '(magit-status :wk "Git status")))
+    "g g" '(magit-status :wk "Git status")
+    "g b" '(magit-blame :wk "Git blamne")))
 
 (use-package doom-themes
   :config
@@ -173,4 +184,12 @@
   (load-theme 'doom-rouge t))
 
 (use-package doom-modeline
-  :init (doom-modeline-mode 1))
+  :config
+  (setq doom-modeline-icon nil)
+  (setq doom-modeline-minor-modes nil)
+  (setq doom-modeline-indent-info nil)
+  (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-vcs-max-length 20)
+  (setq doom-modeline-display-misc-in-all-mode-lines nil)
+  (setq doom-modeline-env-version nil)
+  (doom-modeline-mode 1))
