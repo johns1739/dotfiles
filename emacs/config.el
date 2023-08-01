@@ -1,5 +1,7 @@
 (package-initialize)
 
+;; TODO Fix github / issues on gui
+
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
         ("elpa" . "https://elpa.gnu.org/packages/")))
@@ -117,7 +119,8 @@
   (general-define-key
    :keymaps 'company-active-map
    "M-/" 'company-complete
-   "<return>" nil)
+   "RET" nil ;; terminal mode
+   "<return>" nil) ;; window mode
 
   (setq company-minimum-prefix-length 1
         company-idle-delay 0.0)
@@ -168,6 +171,8 @@
 (use-package exec-path-from-shell
   :config
   (when (memq window-system '(mac ns x))
+    (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+      (add-to-list 'exec-path-from-shell-variables var))
     (exec-path-from-shell-initialize)))
 
 (use-package magit
@@ -193,3 +198,8 @@
   (setq doom-modeline-display-misc-in-all-mode-lines nil)
   (setq doom-modeline-env-version nil)
   (doom-modeline-mode 1))
+
+(use-package xclip
+  :unless window-system
+  :config
+  (xclip-mode 1))
