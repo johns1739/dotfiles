@@ -1,6 +1,8 @@
 (package-initialize)
 
 ;; TODO Fix github / issues on gui
+;; TODO treemacs https://github.com/Alexander-Miller/treemacs
+;; TODO lsp-treemacs https://github.com/emacs-lsp/lsp-treemacs/tree/master
 
 (setq package-archives
       '(("melpa" . "https://melpa.org/packages/")
@@ -15,21 +17,23 @@
 (setq use-package-always-ensure t)
 
 (use-package emacs
-  :init
+  :hook
+  (before-save . delete-trailing-whitespace)
+  :config
   (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-13-*-*-*-p-0-iso10646-1")
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 120))
 
-  :config
   (setq-default
    cursor-type 'bar
    display-line-numbers 'relative
    frame-title-format '("%b")
    truncate-lines nil
    indent-tabs-mode nil
-   display-fill-column-indicator-column 100)
+   display-fill-column-indicator-column 80)
 
   (setq
+   confirm-kill-emacs 'y-or-n-p
    require-final-newline t
    apropos-do-all t
    create-lockfiles nil
@@ -66,16 +70,20 @@
   (rune/leader-key-def 'normal 'override
     "." '(find-file :wk "Find file")
 
-    "c" '(:ignore t :wk "Config")
-    "c c" '(my/go-to-config-file :wk "Open config")
-    "c r" '(my/reload-configs :wk "Reload config")
-
     "f" '(:ignore t :wk "File")
+
+    "c" '(:ignore t :wk "Code")
+    "c c" '(my/go-to-config-file :wk "Open config")
+    "c C" '(my/reload-configs :wk "Reload config")
+    "c x" '(compile :wk "Compile")
+    "c r" '(recompile :wk "Recompile")
+    "c f" '(lsp-format-buffer :wk "Format code")
+
     "h" '(:ignore t :wk "Help")
     "h v" 'describe-variable
     "h f" 'describe-function
     "h k" 'describe-key
-    "h d" 'apropos-documentation
+    "h a" 'apropos-documentation
     "h m" 'describe-mode
     "h x" 'describe-command))
 
@@ -92,6 +100,10 @@
   (setq evil-want-Y-yank-to-eol t)
   (setq evil-shift-width 2)
   (setq evil-search-module 'evil-search)
+  (setq evil-insert-state-cursor 'bar)
+  (setq evil-normal-state-cursor 'box)
+  (setq evil-motion-state-cursor 'hollow)
+  (setq evil-visual-state-cursor 'hollow)
   :config
   (evil-mode 1))
 
@@ -115,10 +127,10 @@
   (setq lsp-headerline-breadcrumb-enable nil))
 
 (use-package company
-  :config
-  (general-define-key
+  :config (general-define-key
    :keymaps 'company-active-map
-   "M-/" 'company-complete
+   "TAB" 'company-complete-common-or-cycle
+   "C-l" 'company-complete-selection
    "RET" nil ;; terminal mode
    "<return>" nil) ;; window mode
 
@@ -139,17 +151,23 @@
 
 (use-package ruby-mode
   :hook
-  (ruby-mode . lsp-deferred))
+  (ruby-mode . lsp-deferred)
+  (ruby-mode . display-fill-column-indicator-mode))
 
 (use-package projectile
   :config
+  (defun my/copy-relative-file-name ()
+    "Copy file path of current buffer relative to project directory."
+    (interactive)
+    (kill-new
+     (file-relative-name (buffer-file-name) (projectile-project-root))))
   (setq projectile-completion-system 'default)
   (setq projectile-project-search-path '("~/workspace/"))
   (projectile-mode 1)
   (rune/leader-key-def 'normal 'override
     ;; "p" 'projectile-command-map
     "SPC" '(projectile-find-file :wk "Find project file")
-    "f ." '(projectile-find-file-in-directory :wk "Find project cwd file")
+    "f ." '(dired-jump :wk "Dired")
     "f f" '(find-file :wk "Find file")
     "f d" '(projectile-find-dir :wk "Find project dir")
     "f r" '(projectile-recentf :wk "Find recent file")
@@ -157,6 +175,7 @@
     "f t" '(projectile-find-test-file :wk "Find test")
     "f p" '(projectile-switch-project :wk "Switch project")
     "f b" '(projectile-switch-to-buffer :wk "Find buffer")
+    "f y" '(my/copy-relative-file-name :wk "Copy relative filename")
     "f B" '(projectile-ibuffer :wk "Ibuffer")))
 
 (use-package ripgrep)
@@ -168,9 +187,9 @@
   :config
   (setq which-key-idle-delay 1))
 
-(use-package exec-path-from-shell
-  :config
-  (when (memq window-system '(mac ns x))
+(when (memq window-system '(mac ns))
+  (use-package exec-path-from-shell
+    :config
     (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
       (add-to-list 'exec-path-from-shell-variables var))
     (exec-path-from-shell-initialize)))
@@ -180,7 +199,8 @@
   (rune/leader-key-def 'normal 'override
     "g" '(:ignore t :wk "Git")
     "g g" '(magit-status :wk "Git status")
-    "g b" '(magit-blame :wk "Git blamne")))
+    "g B" '(magit-blame-addition :wk "Show blame")
+    "g b" '(magit-blame :wk "Git blame")))
 
 (use-package doom-themes
   :config
@@ -203,3 +223,16 @@
   :unless window-system
   :config
   (xclip-mode 1))
+
+(use-package yaml-mode)
+
+(use-package elixir-mode)
+
+(use-package tree-sitter
+  :hook
+  (tree-sitter-after-on . tree-sitter-hl-mode)
+  :config
+  (global-tree-sitter-mode 1))
+
+(use-package tree-sitter-langs
+  :after tree-sitter)
