@@ -13,25 +13,33 @@
 
 (defconst my/config-directory "~/workspace/myconfigs/emacs")
 
-(defconst my/config-file-name
-  (expand-file-name "config.el" my/config-directory))
-
 (defconst my/init-file-name
   (expand-file-name "init.el" my/config-directory))
 
-(defun my/reload-configs ()
-  "Reload my configurations."
+(defconst my/plugins-file-name
+  (expand-file-name "plugins.el" my/config-directory))
+
+(defconst my/config-file-name
+  (expand-file-name "config.el" my/config-directory))
+
+
+(defun my/reload-init ()
+  "Reload my init & configs."
   (interactive)
   (load-file my/init-file-name))
 
-(defun my/go-to-config-file ()
-  "Go to my config file"
+(defun my/go-to-plugins-file ()
+  "Go to my plugins file."
   (interactive)
-  (find-file my/config-file-name))
+  (find-file my/plugins-file-name))
 
+;; (defun my/go-to-config-file ()
+;;   "Go to my config file."
+;;   (interactive)
+;;   (find-file my/config-file-name))
 
-(load-file my/config-file-name)
+(load-file my/plugins-file-name)
+;; (load-file my/config-file-name)
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (unless (file-exists-p custom-file) (write-region "" nil custom-file))
-

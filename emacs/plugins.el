@@ -1,5 +1,5 @@
-(package-initialize)
-
+;; TODO use-package bind key (evil bind key?) instead of general
+;; TODO use straight package manager https://github.com/radian-software/straight.el#getting-started
 ;; TODO Fix github / issues on gui
 ;; TODO treemacs https://github.com/Alexander-Miller/treemacs
 ;; TODO lsp-treemacs https://github.com/emacs-lsp/lsp-treemacs/tree/master
@@ -14,16 +14,14 @@
 
 (eval-when-compile (require 'use-package))
 
-(setq use-package-always-ensure t)
+(setq
+ use-package-always-ensure t
+ use-package-compute-statistics t)
 
+;; https://jwiegley.github.io/use-package/keywords/
 (use-package emacs
-  :hook
-  (before-save . delete-trailing-whitespace)
-  :config
-  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-13-*-*-*-p-0-iso10646-1")
-  (add-to-list 'default-frame-alist '(height . 60))
-  (add-to-list 'default-frame-alist '(width . 120))
-
+  :demand
+  :init
   (setq-default
    cursor-type 'bar
    display-line-numbers 'relative
@@ -31,7 +29,6 @@
    truncate-lines nil
    indent-tabs-mode nil
    display-fill-column-indicator-column 80)
-
   (setq
    confirm-kill-emacs 'y-or-n-p
    require-final-newline t
@@ -44,7 +41,12 @@
    read-process-output-max (* 1024 1024) ;; 1mb
    ring-bell-function 'ignore
    vc-follow-symlinks t)
-
+  :hook
+  (before-save . delete-trailing-whitespace)
+  :config
+  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-13-*-*-*-p-0-iso10646-1")
+  (add-to-list 'default-frame-alist '(height . 60))
+  (add-to-list 'default-frame-alist '(width . 120))
   (fido-vertical-mode 1)
   (delete-selection-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
@@ -73,8 +75,8 @@
     "f" '(:ignore t :wk "File")
 
     "c" '(:ignore t :wk "Code")
-    "c c" '(my/go-to-config-file :wk "Open config")
-    "c C" '(my/reload-configs :wk "Reload config")
+    "c c" '(my/go-to-plugins-file :wk "Open plugins config")
+    "c C" '(my/reload-init :wk "Reload init")
     "c x" '(compile :wk "Compile")
     "c r" '(recompile :wk "Recompile")
     "c f" '(lsp-format-buffer :wk "Format code")
@@ -89,7 +91,7 @@
 
 
 (use-package evil
-  :demand t
+  :demand
   :init
   ;; https://evil.readthedocs.io/en/latest/settings.html?highlight=evil-want#settings
   (setq evil-want-integration t)
@@ -114,6 +116,7 @@
 
 (use-package lsp-mode
   :init
+  (setq lsp-headerline-breadcrumb-enable nil)
   (rune/leader-key-def 'normal 'override
     :keymaps 'lsp-mode-map
     "l" '(:ignore t :wk "LSP")
@@ -122,31 +125,30 @@
     "l f" 'lsp-format-buffer)
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
-  :commands (lsp lsp-deferred)
-  :config
-  (setq lsp-headerline-breadcrumb-enable nil))
+  :commands (lsp lsp-deferred))
 
 (use-package company
-  :config (general-define-key
+  :init
+  (general-define-key
    :keymaps 'company-active-map
    "TAB" 'company-complete-common-or-cycle
    "C-l" 'company-complete-selection
    "RET" nil ;; terminal mode
    "<return>" nil) ;; window mode
-
   (setq company-minimum-prefix-length 1
         company-idle-delay 0.0)
-
+  :config
   (global-company-mode 1))
 
 (use-package flycheck
-  :config
+  :init
   (rune/leader-key-def 'normal 'override
     :keymaps 'flycheck-mode-map
     "x" '(:ignore t :wk "Flycheck")
     "x t" '(flycheck-mode :wk "Toggle flycheck")
     "x T" '(global-flycheck-mode :wk "Toggle global flycheck")
     "x l" '(flycheck-list-errors :wk "List errors"))
+  :config
   (global-flycheck-mode))
 
 (use-package ruby-mode
@@ -155,15 +157,15 @@
   (ruby-mode . display-fill-column-indicator-mode))
 
 (use-package projectile
-  :config
+  :init
   (defun my/copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
     (interactive)
     (kill-new
      (file-relative-name (buffer-file-name) (projectile-project-root))))
-  (setq projectile-completion-system 'default)
-  (setq projectile-project-search-path '("~/workspace/"))
-  (projectile-mode 1)
+  (setq projectile-completion-system 'default
+        projectile-project-search-path '("~/workspace/")
+        projectile-sort-order 'recently-active)
   (rune/leader-key-def 'normal 'override
     ;; "p" 'projectile-command-map
     "SPC" '(projectile-find-file :wk "Find project file")
@@ -176,40 +178,46 @@
     "f p" '(projectile-switch-project :wk "Switch project")
     "f b" '(projectile-switch-to-buffer :wk "Find buffer")
     "f y" '(my/copy-relative-file-name :wk "Copy relative filename")
-    "f B" '(projectile-ibuffer :wk "Ibuffer")))
+    "f B" '(projectile-ibuffer :wk "Ibuffer"))
+  :config
+  (projectile-mode 1))
 
 (use-package ripgrep)
 
 (use-package which-key
   :init
-  (which-key-mode)
+  (setq which-key-idle-delay 1)
+  (setq which-key-idle-secondary-delay nil)
   :diminish which-key-mode
   :config
-  (setq which-key-idle-delay 1))
+  (which-key-mode))
 
-(when (memq window-system '(mac ns))
-  (use-package exec-path-from-shell
-    :config
-    (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
-      (add-to-list 'exec-path-from-shell-variables var))
-    (exec-path-from-shell-initialize)))
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :config
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
 
 (use-package magit
-  :config
+  :init
   (rune/leader-key-def 'normal 'override
     "g" '(:ignore t :wk "Git")
     "g g" '(magit-status :wk "Git status")
+    "g G" '(magit-file-dispatch :wk "Git dispatch buffer")
     "g B" '(magit-blame-addition :wk "Show blame")
+    "g l" '(magit-log-buffer-file :wk "Git logs")
+    "g d" '(magit-diff-buffer-file :wk "Git diff")
     "g b" '(magit-blame :wk "Git blame")))
 
 (use-package doom-themes
-  :config
+  :init
   (setq doom-themes-enable-bold nil)
-  (setq doom-themes-enable-italic nil)
-  (load-theme 'doom-rouge t))
+  (setq doom-themes-enable-italic nil))
+
 
 (use-package doom-modeline
-  :config
+  :init
   (setq doom-modeline-icon nil)
   (setq doom-modeline-minor-modes nil)
   (setq doom-modeline-indent-info nil)
@@ -217,6 +225,7 @@
   (setq doom-modeline-vcs-max-length 20)
   (setq doom-modeline-display-misc-in-all-mode-lines nil)
   (setq doom-modeline-env-version nil)
+  :config
   (doom-modeline-mode 1))
 
 (use-package xclip
@@ -236,3 +245,13 @@
 
 (use-package tree-sitter-langs
   :after tree-sitter)
+
+(use-package git-link
+  :after magit
+  :init
+  (rune/leader-key-def '(normal visual) 'override
+    "g y" '(git-link :wk "Git link")))
+
+(use-package gruvbox-theme
+  :config
+  (load-theme 'gruvbox-dark-hard t))
