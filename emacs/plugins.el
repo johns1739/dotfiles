@@ -1,23 +1,3 @@
-;; TODO use-package bind key (evil bind key?) instead of general
-;; TODO use straight package manager https://github.com/radian-software/straight.el#getting-started
-;; TODO Fix github / issues on gui
-;; TODO treemacs https://github.com/Alexander-Miller/treemacs
-;; TODO lsp-treemacs https://github.com/emacs-lsp/lsp-treemacs/tree/master
-
-(setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("elpa" . "https://elpa.gnu.org/packages/")))
-
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile (require 'use-package))
-
-(setq
- use-package-always-ensure t
- use-package-compute-statistics t)
-
 ;; https://jwiegley.github.io/use-package/keywords/
 (use-package emacs
   :demand
@@ -59,25 +39,43 @@
   (show-paren-mode 1)
   (tool-bar-mode -1))
 
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :demand
+  :config
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
 (use-package general
+  :demand
   :config
   (general-define-key
    "<escape>" '(keyboard-escape-quit :wk "Quit")
    "M-/" '(hippie-expand :wk "Autocomplete"))
 
-  (general-create-definer rune/leader-key-def
+  (general-create-definer my/leader-key-def
     :keymaps '(normal insert visual emacs)
     :prefix "SPC")
 
-  (rune/leader-key-def 'normal 'override
+  (my/leader-key-def 'normal 'override
     "." '(find-file :wk "Find file")
 
     "f" '(:ignore t :wk "File")
 
+    "e" '(:ignore t :wk "Emacs")
+    "e e" 'eval-last-sexp
+    "e E" 'eval-region
+    "e x" 'eval-expression
+    "e X" 'eval-buffer
+    "e c" 'eval-buffer
+    "e c" '(my/go-to-plugins-file :wk "Config")
+    "e C" '(my/reload-init :wk "Reload config")
+
     "c" '(:ignore t :wk "Code")
-    "c c" '(my/go-to-plugins-file :wk "Open plugins config")
-    "c C" '(my/reload-init :wk "Reload init")
-    "c x" '(compile :wk "Compile")
+    "c g" '(my/go-to-plugins-file :wk "Open plugins config")
+    "c G" '(my/reload-init :wk "Reload init")
+    "c c" '(compile :wk "Compile")
     "c r" '(recompile :wk "Recompile")
     "c f" '(lsp-format-buffer :wk "Format code")
 
@@ -110,6 +108,7 @@
   (evil-mode 1))
 
 (use-package evil-collection
+  :demand
   :after evil
   :config
   (evil-collection-init))
@@ -117,7 +116,7 @@
 (use-package lsp-mode
   :init
   (setq lsp-headerline-breadcrumb-enable nil)
-  (rune/leader-key-def 'normal 'override
+  (my/leader-key-def 'normal 'override
     :keymaps 'lsp-mode-map
     "l" '(:ignore t :wk "LSP")
     "l d" 'lsp-find-definition
@@ -137,17 +136,19 @@
    "<return>" nil) ;; window mode
   (setq company-minimum-prefix-length 1
         company-idle-delay 0.0)
+  :commands company-mode
   :config
   (global-company-mode 1))
 
 (use-package flycheck
   :init
-  (rune/leader-key-def 'normal 'override
+  (my/leader-key-def 'normal 'override
     :keymaps 'flycheck-mode-map
     "x" '(:ignore t :wk "Flycheck")
     "x t" '(flycheck-mode :wk "Toggle flycheck")
     "x T" '(global-flycheck-mode :wk "Toggle global flycheck")
     "x l" '(flycheck-list-errors :wk "List errors"))
+  :commands flycheck-mode
   :config
   (global-flycheck-mode))
 
@@ -155,6 +156,20 @@
   :hook
   (ruby-mode . lsp-deferred)
   (ruby-mode . display-fill-column-indicator-mode))
+
+(use-package yaml-mode)
+
+(use-package elixir-mode
+  :init
+  (setq lsp-elixir-ls-download-url "https://github.com/elixir-lsp/elixir-ls/releases/download/v0.15.1/elixir-ls-v0.15.1.zip")
+  :hook
+  (elixir-mode . lsp-deferred))
+
+(use-package zig-mode
+  :init
+  (setq lsp-zig-zls-executable "/Users/juanbanda/workspace/zls/zig-out/bin/zls")
+  :hook
+  (zig-mode . lsp-deferred))
 
 (use-package projectile
   :init
@@ -166,14 +181,16 @@
   (setq projectile-completion-system 'default
         projectile-project-search-path '("~/workspace/")
         projectile-sort-order 'recently-active)
-  (rune/leader-key-def 'normal 'override
+  (my/leader-key-def 'normal 'override
     ;; "p" 'projectile-command-map
     "SPC" '(projectile-find-file :wk "Find project file")
     "f ." '(dired-jump :wk "Dired")
     "f f" '(find-file :wk "Find file")
     "f d" '(projectile-find-dir :wk "Find project dir")
     "f r" '(projectile-recentf :wk "Find recent file")
-    "f s" '(projectile-ripgrep :wk "Word search")
+    "f i" '(imenu :wk "Imenu")
+    "f s" '(isearch-forward-word :wk "Isearch word")
+    "f g" '(projectile-ripgrep :wk "Word search")
     "f t" '(projectile-find-test-file :wk "Find test")
     "f p" '(projectile-switch-project :wk "Switch project")
     "f b" '(projectile-switch-to-buffer :wk "Find buffer")
@@ -192,16 +209,9 @@
   :config
   (which-key-mode))
 
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
-  :config
-  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
-    (add-to-list 'exec-path-from-shell-variables var))
-  (exec-path-from-shell-initialize))
-
 (use-package magit
   :init
-  (rune/leader-key-def 'normal 'override
+  (my/leader-key-def 'normal 'override
     "g" '(:ignore t :wk "Git")
     "g g" '(magit-status :wk "Git status")
     "g G" '(magit-file-dispatch :wk "Git dispatch buffer")
@@ -211,10 +221,10 @@
     "g b" '(magit-blame :wk "Git blame")))
 
 (use-package doom-themes
+  :disabled
   :init
   (setq doom-themes-enable-bold nil)
   (setq doom-themes-enable-italic nil))
-
 
 (use-package doom-modeline
   :init
@@ -233,9 +243,6 @@
   :config
   (xclip-mode 1))
 
-(use-package yaml-mode)
-
-(use-package elixir-mode)
 
 (use-package tree-sitter
   :hook
@@ -246,10 +253,29 @@
 (use-package tree-sitter-langs
   :after tree-sitter)
 
+;; (use-package treemacs
+;;   :init
+;;   (setq treemacs-no-png-images t)
+;;   (my/leader-key-def 'normal 'override
+;;     "f e" '(treemacs :wk "Treemacs"))
+;;   :config
+;;   (treemacs-follow-mode t)
+;;   (treemacs-filewatch-mode t)
+;;   (treemacs-fringe-indicator-mode 'always))
+
+;; (use-package treemacs-evil
+;;   :after treemacs)
+
+;; (use-package treemacs-projectile
+;;   :after treemacs)
+
+;; (use-package treemacs-magit
+;;   :after (treemacs magit))
+
 (use-package git-link
   :after magit
   :init
-  (rune/leader-key-def '(normal visual) 'override
+  (my/leader-key-def '(normal visual) 'override
     "g y" '(git-link :wk "Git link")))
 
 (use-package gruvbox-theme
