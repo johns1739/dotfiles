@@ -6,10 +6,10 @@
   :init
   (setq-default
    cursor-type 'bar
-   display-line-numbers 'relative
    frame-title-format '("%b")
    truncate-lines nil
    indent-tabs-mode nil
+   display-line-numbers-type 'relative
    display-fill-column-indicator-column 85)
   :custom
    (completion-cycle-threshold 3)
@@ -151,20 +151,25 @@
 (use-package ruby-mode
   :hook
   (ruby-mode . lsp-deferred)
+  ;; (ruby-mode . display-line-numbers-mode)
   (ruby-mode . display-fill-column-indicator-mode))
 
-(use-package yaml-mode)
+(use-package yaml-mode
+  :hook
+  (yaml-mode . display-line-numbers-mode))
 
 (use-package elixir-mode
   :init
   (setq lsp-elixir-ls-download-url "https://github.com/elixir-lsp/elixir-ls/releases/download/v0.15.1/elixir-ls-v0.15.1.zip")
   :hook
+  (elixir-mode . display-line-numbers-mode)
   (elixir-mode . lsp-deferred))
 
 (use-package zig-mode
   :init
   (setq lsp-zig-zls-executable "/Users/juanbanda/workspace/zls/zig-out/bin/zls")
   :hook
+  (zig-mode . display-line-numbers-mode)
   (zig-mode . lsp-deferred))
 
 (use-package project
@@ -319,3 +324,12 @@
    "RET" nil
    "<return>" nil)
   (global-corfu-mode 1))
+
+(use-package vterm
+  :custom
+  (vterm-copy-mode-remove-fake-newlines t)
+  (vterm-max-scrollback 100000)
+  :init
+  (my/leader-key-def 'normal 'override
+    "o t" 'vterm-other-window
+    "o T" 'vterm))
