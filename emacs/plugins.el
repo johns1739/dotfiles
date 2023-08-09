@@ -325,6 +325,11 @@
    "<return>" nil)
   (global-corfu-mode 1))
 
+(use-package corfu-terminal
+  :unless (display-graphic-p)
+  :config
+  (corfu-terminal-mode +1))
+
 (use-package vterm
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
