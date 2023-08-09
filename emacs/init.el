@@ -23,7 +23,6 @@
 (defconst my/config-file-name
   (expand-file-name "config.el" my/config-directory))
 
-
 (defun my/reload-init ()
   "Reload my init & configs."
   (interactive)
