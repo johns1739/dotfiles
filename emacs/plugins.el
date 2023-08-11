@@ -69,7 +69,6 @@
   (("M-/" . dabbrev-expand)
    ("C-M-/" . dabbrev-completion)))
 
-
 (use-package general
   :demand
   :config
@@ -189,7 +188,7 @@
   (zig-mode . lsp-deferred))
 
 (use-package project
-  :what
+  :init
   (defun my/project-copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
     (interactive)
