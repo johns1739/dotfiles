@@ -16,19 +16,19 @@
    display-line-numbers-type 'relative
    display-fill-column-indicator-column 85)
   :custom
-   (completion-cycle-threshold 3)
-   (tab-always-indent 'complete)
-   (confirm-kill-emacs 'y-or-n-p)
-   (require-final-newline t)
-   (apropos-do-all t)
-   (create-lockfiles nil)
-   (global-auto-revert-non-file-buffers t)
-   (inhibit-startup-message t)
-   (initial-scratch-message "")
-   (make-backup-files nil)
-   (read-process-output-max (* 1024 1024))
-   (ring-bell-function 'ignore)
-   (vc-follow-symlinks t)
+  (completion-cycle-threshold 3)
+  (tab-always-indent 'complete)
+  (confirm-kill-emacs 'y-or-n-p)
+  (require-final-newline t)
+  (apropos-do-all t)
+  (create-lockfiles nil)
+  (global-auto-revert-non-file-buffers t)
+  (inhibit-startup-message t)
+  (initial-scratch-message "")
+  (make-backup-files nil)
+  (read-process-output-max (* 1024 1024))
+  (ring-bell-function 'ignore)
+  (vc-follow-symlinks t)
   :hook
   (before-save . delete-trailing-whitespace)
   :config
@@ -66,8 +66,9 @@
 
 (use-package dabbrev
   :bind
-    (("M-/" . dabbrev-expand)
-     ("C-M-/" . dabbrev-completion)))
+  (("M-/" . dabbrev-expand)
+   ("C-M-/" . dabbrev-completion)))
+
 
 (use-package general
   :demand
@@ -90,12 +91,12 @@
     "s j" '(evil-avy-goto-char-2 :wk "Jump to char")
 
     "e" '(:ignore t :wk "Emacs")
+    "e e" 'eval-last-sexp
+    "e E" 'eval-defun
     "e c" '(my/go-to-plugins-file :wk "Config")
     "e C" '(my/reload-init :wk "Reload config")
 
     "o" '(:ignore t :wk "Open")
-    "o c" '(my/go-to-plugins-file :wk "Open config")
-    "o C" '(my/reload-init :wk "Reload init")
 
     "c" '(:ignore t :wk "Code")
     "c c" '(compile :wk "Compile")
@@ -188,7 +189,7 @@
   (zig-mode . lsp-deferred))
 
 (use-package project
-  :init
+  :what
   (defun my/project-copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
     (interactive)
