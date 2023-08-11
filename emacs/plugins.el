@@ -1,4 +1,8 @@
 ;; TODO org-mode
+;; TODO general
+;; https://www.youtube.com/watch?v=fnE0lXoe7Y0
+;; https://github.com/noctuid/general.el#use-package-keywords
+;; https://github.com/jwiegley/use-package/issues/679
 
 ;; https://jwiegley.github.io/use-package/keywords/
 (use-package emacs
@@ -61,8 +65,9 @@
   (exec-path-from-shell-initialize))
 
 (use-package dabbrev
-  :bind (("M-/" . dabbrev-completion)
-         ("C-M-/" . dabbrev-expand)))
+  :bind
+    (("M-/" . dabbrev-expand)
+     ("C-M-/" . dabbrev-completion)))
 
 (use-package general
   :demand
@@ -74,10 +79,15 @@
     :keymaps '(normal insert visual emacs)
     :prefix "SPC")
 
-  (my/leader-key-def 'normal 'override
+  (my/leader-key-def '(normal visual) 'override
     "." 'find-file
     ">" '(dired-jump :wk "Dired")
     "SPC" 'project-find-file
+
+    "s" '(:ignore t :wk "Search")
+    "s s" 'consult-line
+    "s i" 'consult-imenu
+    "s j" '(evil-avy-goto-char-2 :wk "Jump to char")
 
     "e" '(:ignore t :wk "Emacs")
     "e c" '(my/go-to-plugins-file :wk "Config")
@@ -108,7 +118,7 @@
   (evil-visual-state-cursor 'hollow)
   (which-key-allow-evil-operators t)
   (which-key-show-operator-state-maps t)
-  :init
+  :config
   (evil-mode 1))
 
 (use-package evil-collection
@@ -117,6 +127,11 @@
   :config
   (evil-collection-init))
 
+(use-package evil-surround
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
+
 (use-package lsp-mode
   :custom
   (lsp-headerline-breadcrumb-enable nil)
@@ -124,7 +139,7 @@
   :init
   (defun my/lsp-mode-setup-completion ()
     (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless))) ;; Configure orderless
+          '(orderless basic))) ;; Configure orderless
   (my/leader-key-def 'normal 'override
     :keymaps 'lsp-mode-map
     "l" '(:ignore t :wk "LSP")
@@ -151,7 +166,7 @@
 (use-package ruby-mode
   :hook
   (ruby-mode . lsp-deferred)
-  ;; (ruby-mode . display-line-numbers-mode)
+  (ruby-mode . display-line-numbers-mode)
   (ruby-mode . display-fill-column-indicator-mode))
 
 (use-package yaml-mode
@@ -298,15 +313,13 @@
   :init
   (my/leader-key-def 'normal 'override
     "f" '(:ignore t :wk "Fuzzy Search")
-    "f /" 'consult-line
-    "f ?" 'consult-line-multi
+    "f l" 'consult-line-multi
     "f B" 'consult-buffer
-    "f I" 'consult-imenu-multi
+    "f i" 'consult-imenu-multi
     "f b" 'consult-project-buffer
     "f f" 'consult-find
-    "f i" 'consult-imenu
     "f r" 'consult-recent-file
-    "f g" 'consult-ripgrep))
+    "f s" 'consult-ripgrep))
 
 (use-package orderless
   :custom
@@ -317,6 +330,9 @@
 (use-package corfu
   :custom
   (corfu-auto t)
+  (corfu-cycle t)
+  (corfu-auto-prefix 3)
+  (corfu-auto-delay 0.2)
   :init
   (general-define-key
    :keymaps 'corfu-map
@@ -324,6 +340,12 @@
    "RET" nil
    "<return>" nil)
   (global-corfu-mode 1))
+
+(use-package cape
+  :after corfu
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-file))
 
 (use-package corfu-terminal
   :unless (display-graphic-p)
@@ -338,3 +360,5 @@
   (my/leader-key-def 'normal 'override
     "o t" 'vterm-other-window
     "o T" 'vterm))
+
+(use-package avy)
