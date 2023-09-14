@@ -11,7 +11,6 @@
             (emacs-init-time "%.2f")
             gcs-done)))
 
-
 (defconst my/config-directory "~/workspace/myconfigs/emacs")
 
 (defconst my/init-file-name
@@ -22,6 +21,15 @@
 
 (defconst my/config-file-name
   (expand-file-name "config.el" my/config-directory))
+
+(defun my/compile (command)
+  "Compile COMMAND using region or from prompt."
+  (interactive
+   (list
+    (read-string "Compile command: "
+                 (if (use-region-p)
+                     (buffer-substring-no-properties (region-beginning) (region-end))))))
+  (compile command))
 
 (defun my/reload-init ()
   "Reload my init & configs."

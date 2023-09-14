@@ -1,4 +1,5 @@
 ;; TODO org-mode
+;; TODO Move all keybinds to one area
 ;; TODO general
 ;; https://www.youtube.com/watch?v=fnE0lXoe7Y0
 ;; https://github.com/noctuid/general.el#use-package-keywords
@@ -16,23 +17,25 @@
    display-line-numbers-type 'relative
    display-fill-column-indicator-column 85)
   :custom
-  (completion-cycle-threshold 3)
-  (tab-always-indent 'complete)
-  (confirm-kill-emacs 'y-or-n-p)
-  (require-final-newline t)
   (apropos-do-all t)
+  (completion-cycle-threshold 3)
+  (confirm-kill-emacs 'y-or-n-p)
   (create-lockfiles nil)
   (global-auto-revert-non-file-buffers t)
   (inhibit-startup-message t)
   (initial-scratch-message "")
   (make-backup-files nil)
   (read-process-output-max (* 1024 1024))
+  (require-final-newline t)
   (ring-bell-function 'ignore)
+  (tab-always-indent 'complete)
+  (use-dialog-box nil)
   (vc-follow-symlinks t)
   :hook
   (before-save . delete-trailing-whitespace)
   :config
-  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-13-*-*-*-p-0-iso10646-1")
+  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
+  ;; (set-face-attribute 'default nil :height 200)
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 120))
   ;; (fido-vertical-mode nil) ;; replaced by vertico
@@ -73,6 +76,7 @@
   :demand
   :config
   (general-define-key
+   "M-j" '(evil-avy-goto-char-2 :wk "Jump to char")
    "<escape>" '(keyboard-escape-quit :wk "Quit"))
 
   (general-create-definer my/leader-key-def
@@ -98,27 +102,27 @@
     "o" '(:ignore t :wk "Open")
 
     "c" '(:ignore t :wk "Code")
-    "c c" '(compile :wk "Compile")
+    "c c" '(my/compile :wk "Compile")
     "c r" '(recompile :wk "Recompile")))
 
 (use-package evil
-  :custom
-  ;; https://evil.readthedocs.io/en/latest/settings.html?highlight=evil-want#settings
-  (evil-want-integration t)
-  (evil-want-keybinding nil)
-  (evil-want-C-u-scroll t)
-  (evil-want-C-u-delete t)
-  (evil-want-C-u-scroll t)
-  (evil-want-Y-yank-to-eol t)
-  (evil-shift-width 2)
-  (evil-search-module 'evil-search)
-  (evil-insert-state-cursor 'bar)
-  (evil-normal-state-cursor 'box)
-  (evil-motion-state-cursor 'hollow)
-  (evil-visual-state-cursor 'hollow)
-  (which-key-allow-evil-operators t)
-  (which-key-show-operator-state-maps t)
+  :init
+  (setq evil-want-keybinding nil)
+  (setq evil-want-integration t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-u-delete t)
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-Y-yank-to-eol t)
+  (setq evil-shift-width 2)
+  (setq evil-search-module 'evil-search)
+  (setq evil-insert-state-cursor 'bar)
+  (setq evil-normal-state-cursor 'box)
+  (setq evil-motion-state-cursor 'hollow)
+  (setq evil-visual-state-cursor 'hollow)
+  (setq which-key-allow-evil-operators t)
+  (setq which-key-show-operator-state-maps t)
   :config
+  ;; https://evil.readthedocs.io/en/latest/settings.html?highlight=evil-want#settings
   (evil-mode 1))
 
 (use-package evil-collection
@@ -176,6 +180,7 @@
 (use-package elixir-mode
   :init
   (setq lsp-elixir-ls-download-url "https://github.com/elixir-lsp/elixir-ls/releases/download/v0.15.1/elixir-ls-v0.15.1.zip")
+  (setq lsp-elixir-suggest-specs nil)
   :hook
   (elixir-mode . display-line-numbers-mode)
   (elixir-mode . lsp-deferred))
@@ -203,14 +208,17 @@
     "p B" 'project-list-buffers
     "p c" 'project-compile
     "p d" 'project-find-dir
-    "p D" 'project-dired
+    "p ." 'project-dired
+    "p D" 'project-forget-project
     "p f" 'project-find-file
     "p p" 'project-switch-project
     "p R" 'project-query-replace-regexp
-    "p g" 'project-find-regexp
+    ;; "p g" 'project-find-regexp ;; opens up in xref-mode which prevents wgrep
+    "p g" 'rg-project
+    "p G" 'rg-dwim
     "p y" 'my/project-copy-relative-file-name))
 
-(use-package ripgrep)
+(use-package rg)
 
 (use-package which-key
   :custom
@@ -362,3 +370,11 @@
     "o T" 'vterm))
 
 (use-package avy)
+
+(use-package wgrep)
+
+(use-package inf-lisp
+  :if (file-exists-p "~/.quicklisp/slime-helper.el")
+  :config
+  (load (expand-file-name "~/.quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "sbcl"))

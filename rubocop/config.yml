@@ -10,27 +10,25 @@ Style/FrozenStringLiteralComment:
   Enabled: No
 
 Style/StringLiterals:
-  EnforcedStyle: single_quotes
+  EnforcedStyle: single_quotes # default
 
 Style/StringLiteralsInInterpolation:
-  EnforcedStyle: single_quotes
+  EnforcedStyle: single_quotes # default
 
 Layout/MultilineOperationIndentation:
-  EnforcedStyle: aligned
+  EnforcedStyle: aligned # default
 
 Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented_relative_to_receiver
 
 Layout/LineLength:
-  Max: 90
+  Max: 90 # default is 120
 
 Metrics/MethodLength:
-  Max: 25
+  Max: 25 # default is 10
 
 Metrics/ClassLength:
-  Max: 150
+  Max: 150 # default is 100
 
 Metrics/AbcSize:
-  Enabled: No
-
-    
+  Enabled: No # too annoying
