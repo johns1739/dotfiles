@@ -1,3 +1,5 @@
+;; TODO emacs flymake config
+;; TODO treemacs
 ;; TODO Keybindgs of org / modes to 'm'
 ;; TODO Use eglot? https://github.com/joaotavora/eglot
 ;; TODO Move all keybinds to one area
@@ -92,7 +94,6 @@
     "s" '(:ignore t :wk "Search")
     "s s" 'consult-line
     "s i" 'consult-imenu
-    "s j" '(evil-avy-goto-char-2 :wk "Jump to char")
 
     "e" '(:ignore t :wk "Emacs")
     "e e" 'eval-last-sexp
@@ -101,8 +102,6 @@
     "e C" '(my/reload-init :wk "Reload config")
 
     "o" '(:ignore t :wk "Open")
-
-    "n" '(:ignore t :wk "Notes")
 
     "c" '(:ignore t :wk "Code")
     "c c" '(my/compile :wk "Compile")
@@ -275,25 +274,6 @@
 (use-package tree-sitter-langs
   :after tree-sitter)
 
-;; (use-package treemacs
-;;   :init
-;;   (setq treemacs-no-png-images t)
-;;   (my/leader-key-def 'normal 'override
-;;     "f e" '(treemacs :wk "Treemacs"))
-;;   :config
-;;   (treemacs-follow-mode t)
-;;   (treemacs-filewatch-mode t)
-;;   (treemacs-fringe-indicator-mode 'always))
-
-;; (use-package treemacs-evil
-;;   :after treemacs)
-
-;; (use-package treemacs-projectile
-;;   :after treemacs)
-
-;; (use-package treemacs-magit
-;;   :after (treemacs magit))
-
 (use-package git-link
   :after magit
   :init
@@ -377,12 +357,6 @@
 
 (use-package wgrep)
 
-(use-package inf-lisp
-  :if (file-exists-p "~/.quicklisp/slime-helper.el")
-  :config
-  (load (expand-file-name "~/.quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program "sbcl"))
-
 (use-package org
   :mode (("\\.org$" . org-mode)))
 
@@ -396,6 +370,7 @@
 (use-package org-roam
   :init
   (my/leader-key-def 'normal 'override
+    "n" '(:ignore t :wk "Org Notes")
     "n l" 'org-roam-buffer-toggle
     "n f" 'org-roam-node-find
     "n g" 'org-roam-graph
