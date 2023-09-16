@@ -1,4 +1,5 @@
-;; TODO org-mode
+;; TODO Keybindgs of org / modes to 'm'
+;; TODO Use eglot? https://github.com/joaotavora/eglot
 ;; TODO Move all keybinds to one area
 ;; TODO general
 ;; https://www.youtube.com/watch?v=fnE0lXoe7Y0
@@ -101,6 +102,8 @@
 
     "o" '(:ignore t :wk "Open")
 
+    "n" '(:ignore t :wk "Notes")
+
     "c" '(:ignore t :wk "Code")
     "c c" '(my/compile :wk "Compile")
     "c r" '(recompile :wk "Recompile")))
@@ -113,6 +116,7 @@
   (setq evil-want-C-u-delete t)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-Y-yank-to-eol t)
+  (setq evil-want-C-i-jump nil)
   (setq evil-shift-width 2)
   (setq evil-search-module 'evil-search)
   (setq evil-insert-state-cursor 'bar)
@@ -378,3 +382,28 @@
   :config
   (load (expand-file-name "~/.quicklisp/slime-helper.el"))
   (setq inferior-lisp-program "sbcl"))
+
+(use-package org
+  :mode (("\\.org$" . org-mode)))
+
+(use-package evil-org
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+
+(use-package org-roam
+  :init
+  (my/leader-key-def 'normal 'override
+    "n l" 'org-roam-buffer-toggle
+    "n f" 'org-roam-node-find
+    "n g" 'org-roam-graph
+    "n i" 'org-roam-node-insert
+    "n j" 'org-roam-dailies-capture-today
+    "n c" 'org-roam-capture)
+  :custom
+  (org-roam-directory (file-truename "~/workspace/notes/org"))
+  :config
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode))
