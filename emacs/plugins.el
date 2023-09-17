@@ -1,5 +1,3 @@
-;; TODO emacs flymake config
-;; TODO treemacs
 ;; TODO Keybindgs of org / modes to 'm'
 ;; TODO Use eglot? https://github.com/joaotavora/eglot
 ;; TODO Move all keybinds to one area
@@ -18,7 +16,7 @@
    truncate-lines nil
    indent-tabs-mode nil
    display-line-numbers-type 'relative
-   display-fill-column-indicator-column 85)
+   display-fill-column-indicator-column 90)
   :custom
   (apropos-do-all t)
   (completion-cycle-threshold 3)
@@ -75,37 +73,7 @@
   (("M-/" . dabbrev-expand)
    ("C-M-/" . dabbrev-completion)))
 
-(use-package general
-  :demand
-  :config
-  (general-define-key
-   "M-j" '(evil-avy-goto-char-2 :wk "Jump to char")
-   "<escape>" '(keyboard-escape-quit :wk "Quit"))
-
-  (general-create-definer my/leader-key-def
-    :keymaps '(normal insert visual emacs)
-    :prefix "SPC")
-
-  (my/leader-key-def '(normal visual) 'override
-    "." 'find-file
-    ">" '(dired-jump :wk "Dired")
-    "SPC" 'project-find-file
-
-    "s" '(:ignore t :wk "Search")
-    "s s" 'consult-line
-    "s i" 'consult-imenu
-
-    "e" '(:ignore t :wk "Emacs")
-    "e e" 'eval-last-sexp
-    "e E" 'eval-defun
-    "e c" '(my/go-to-plugins-file :wk "Config")
-    "e C" '(my/reload-init :wk "Reload config")
-
-    "o" '(:ignore t :wk "Open")
-
-    "c" '(:ignore t :wk "Code")
-    "c c" '(my/compile :wk "Compile")
-    "c r" '(recompile :wk "Recompile")))
+(use-package general)
 
 (use-package evil
   :init
@@ -139,34 +107,19 @@
   :config
   (global-evil-surround-mode 1))
 
+;; NOTE lsp formatting for solargraph does not work
+(use-package eglot
+  :disabled)
+
 (use-package lsp-mode
   :custom
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-completion-provider :none) ;; we use corfu
-  :init
-  (defun my/lsp-mode-setup-completion ()
-    (setf (alist-get 'styles (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless basic))) ;; Configure orderless
-  (my/leader-key-def 'normal 'override
-    :keymaps 'lsp-mode-map
-    "l" '(:ignore t :wk "LSP")
-    "l d" 'lsp-find-definition
-    "l r" 'lsp-find-references
-    "l f" 'lsp-format-buffer)
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
-  (lsp-completion-mode . my/lsp-mode-setup-completion)
   :commands (lsp lsp-deferred))
 
 (use-package flycheck
-  :init
-  (my/leader-key-def 'normal 'override
-    :keymaps 'flycheck-mode-map
-    "k" '(:ignore t :wk "Flycheck")
-    "k t" '(flycheck-mode :wk "Toggle flycheck")
-    "k T" '(global-flycheck-mode :wk "Toggle global flycheck")
-    "k l" '(flycheck-list-errors :wk "List errors"))
-  :commands flycheck-mode
   :config
   (global-flycheck-mode))
 
@@ -181,19 +134,9 @@
   (yaml-mode . display-line-numbers-mode))
 
 (use-package elixir-mode
-  :init
-  (setq lsp-elixir-ls-download-url "https://github.com/elixir-lsp/elixir-ls/releases/download/v0.15.1/elixir-ls-v0.15.1.zip")
-  (setq lsp-elixir-suggest-specs nil)
   :hook
-  (elixir-mode . display-line-numbers-mode)
-  (elixir-mode . lsp-deferred))
-
-(use-package zig-mode
-  :init
-  (setq lsp-zig-zls-executable "/Users/juanbanda/workspace/zls/zig-out/bin/zls")
-  :hook
-  (zig-mode . display-line-numbers-mode)
-  (zig-mode . lsp-deferred))
+  (elixir-mode . lsp-deferred)
+  (elixir-mode . display-line-numbers-mode))
 
 (use-package project
   :init
@@ -201,25 +144,7 @@
     "Copy file path of current buffer relative to project directory."
     (interactive)
     (kill-new
-     (file-relative-name (buffer-file-name) (project-root (project-current t)))))
-
-  (my/leader-key-def 'normal 'override
-    "p" '(:ignore t :wk "Project")
-    "p !" 'project-shell-command
-    "p &" 'project-async-shell-command
-    "p b" 'project-switch-to-buffer
-    "p B" 'project-list-buffers
-    "p c" 'project-compile
-    "p d" 'project-find-dir
-    "p ." 'project-dired
-    "p D" 'project-forget-project
-    "p f" 'project-find-file
-    "p p" 'project-switch-project
-    "p R" 'project-query-replace-regexp
-    ;; "p g" 'project-find-regexp ;; opens up in xref-mode which prevents wgrep
-    "p g" 'rg-project
-    "p G" 'rg-dwim
-    "p y" 'my/project-copy-relative-file-name))
+     (file-relative-name (buffer-file-name) (project-root (project-current t))))))
 
 (use-package rg)
 
@@ -227,26 +152,10 @@
   :custom
   (which-key-idle-delay 1)
   (which-key-idle-secondary-delay nil)
-  :diminish which-key-mode
   :config
   (which-key-mode))
 
-(use-package magit
-  :init
-  (my/leader-key-def 'normal 'override
-    "g" '(:ignore t :wk "Git")
-    "g g" '(magit-status :wk "Git status")
-    "g G" '(magit-file-dispatch :wk "Git dispatch buffer")
-    "g B" '(magit-blame-addition :wk "Show blame")
-    "g l" '(magit-log-buffer-file :wk "Git logs")
-    "g d" '(magit-diff-buffer-file :wk "Git diff")
-    "g b" '(magit-blame :wk "Git blame")))
-
-(use-package doom-themes
-  :disabled
-  :custom
-  (doom-themes-enable-bold nil)
-  (doom-themes-enable-italic nil))
+(use-package magit)
 
 (use-package doom-modeline
   :custom
@@ -275,10 +184,7 @@
   :after tree-sitter)
 
 (use-package git-link
-  :after magit
-  :init
-  (my/leader-key-def '(normal visual) 'override
-    "g y" '(git-link :wk "Git link")))
+  :after magit)
 
 (use-package gruvbox-theme
   :init
@@ -301,17 +207,7 @@
   :init
   (marginalia-mode 1))
 
-(use-package consult
-  :init
-  (my/leader-key-def 'normal 'override
-    "f" '(:ignore t :wk "Fuzzy Search")
-    "f l" 'consult-line-multi
-    "f B" 'consult-buffer
-    "f i" 'consult-imenu-multi
-    "f b" 'consult-project-buffer
-    "f f" 'consult-find
-    "f r" 'consult-recent-file
-    "f s" 'consult-ripgrep))
+(use-package consult)
 
 (use-package orderless
   :custom
@@ -326,11 +222,6 @@
   (corfu-auto-prefix 3)
   (corfu-auto-delay 0.2)
   :init
-  (general-define-key
-   :keymaps 'corfu-map
-   "C-SPC" 'corfu-insert-separator
-   "RET" nil
-   "<return>" nil)
   (global-corfu-mode 1))
 
 (use-package cape
@@ -347,15 +238,7 @@
 (use-package vterm
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000)
-  :init
-  (my/leader-key-def 'normal 'override
-    "o t" 'vterm-other-window
-    "o T" 'vterm))
-
-(use-package avy)
-
-(use-package wgrep)
+  (vterm-max-scrollback 100000))
 
 (use-package org
   :mode (("\\.org$" . org-mode)))
@@ -368,15 +251,6 @@
   (evil-org-agenda-set-keys))
 
 (use-package org-roam
-  :init
-  (my/leader-key-def 'normal 'override
-    "n" '(:ignore t :wk "Org Notes")
-    "n l" 'org-roam-buffer-toggle
-    "n f" 'org-roam-node-find
-    "n g" 'org-roam-graph
-    "n i" 'org-roam-node-insert
-    "n j" 'org-roam-dailies-capture-today
-    "n c" 'org-roam-capture)
   :custom
   (org-roam-directory (file-truename "~/workspace/notes/org"))
   :config

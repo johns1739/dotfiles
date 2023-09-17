@@ -11,6 +11,8 @@
             (emacs-init-time "%.2f")
             gcs-done)))
 
+;; My definitions
+
 (defconst my/config-directory "~/workspace/myconfigs/emacs")
 
 (defconst my/init-file-name
@@ -19,8 +21,8 @@
 (defconst my/plugins-file-name
   (expand-file-name "plugins.el" my/config-directory))
 
-(defconst my/config-file-name
-  (expand-file-name "config.el" my/config-directory))
+(defconst my/keymaps-file-name
+  (expand-file-name "keymaps.el" my/config-directory))
 
 (defun my/compile (command)
   "Compile COMMAND using region or from prompt."
@@ -32,7 +34,7 @@
   (compile command))
 
 (defun my/reload-init ()
-  "Reload my init & configs."
+  "Reload my emacs configuration."
   (interactive)
   (load-file my/init-file-name))
 
@@ -41,6 +43,12 @@
   (interactive)
   (find-file my/plugins-file-name))
 
+(defun my/go-to-keymaps-file ()
+  "Go to my keymaps file."
+  (interactive)
+  (find-file my/keymaps-file-name))
+
+;; Install and configure the straight package
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -53,11 +61,13 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-(straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 (setq use-package-compute-statistics t)
-(eval-when-compile (require 'use-package))
-(load-file my/plugins-file-name)
 
+;; Install plugins
+(load-file my/plugins-file-name)
+(load-file my/keymaps-file-name)
+
+;; Custom file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (unless (file-exists-p custom-file) (write-region "" nil custom-file))
