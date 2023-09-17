@@ -1,12 +1,5 @@
 ;; TODO Keybindgs of org / modes to 'm'
-;; TODO Use eglot? https://github.com/joaotavora/eglot
-;; TODO Move all keybinds to one area
-;; TODO general
-;; https://www.youtube.com/watch?v=fnE0lXoe7Y0
-;; https://github.com/noctuid/general.el#use-package-keywords
-;; https://github.com/jwiegley/use-package/issues/679
 
-;; https://jwiegley.github.io/use-package/keywords/
 (use-package emacs
   :demand
   :init
@@ -36,10 +29,8 @@
   (before-save . delete-trailing-whitespace)
   :config
   (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
-  ;; (set-face-attribute 'default nil :height 200)
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 120))
-  ;; (fido-vertical-mode nil) ;; replaced by vertico
   (delete-selection-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (global-auto-revert-mode t)
