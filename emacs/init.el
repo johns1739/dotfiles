@@ -18,8 +18,8 @@
 (defconst my/init-file-name
   (expand-file-name "init.el" my/config-directory))
 
-(defconst my/plugins-file-name
-  (expand-file-name "plugins.el" my/config-directory))
+(defconst my/packages-file-name
+  (expand-file-name "packages.el" my/config-directory))
 
 (defconst my/keymaps-file-name
   (expand-file-name "keymaps.el" my/config-directory))
@@ -38,10 +38,15 @@
   (interactive)
   (load-file my/init-file-name))
 
-(defun my/go-to-plugins-file ()
-  "Go to my plugins file."
+(defun my/go-to-init-file ()
+  "Go to my init file."
   (interactive)
-  (find-file my/plugins-file-name))
+  (find-file my/init-file-name))
+
+(defun my/go-to-packages-file ()
+  "Go to my packages file."
+  (interactive)
+  (find-file my/packages-file-name))
 
 (defun my/go-to-keymaps-file ()
   "Go to my keymaps file."
@@ -61,11 +66,13 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 (setq use-package-compute-statistics t)
 
-;; Install plugins
-(load-file my/plugins-file-name)
+;; Install packages
+(load-file my/packages-file-name)
 (load-file my/keymaps-file-name)
 
 ;; Custom file

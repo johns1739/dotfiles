@@ -1,5 +1,3 @@
-;; TODO Keybindgs of org / modes to 'm'
-
 (use-package emacs
   :demand
   :init
@@ -32,12 +30,17 @@
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 120))
   (delete-selection-mode 1)
+  (electric-pair-mode -1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (global-auto-revert-mode t)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (show-paren-mode 1)
   (tool-bar-mode -1))
+
+(use-package undo-tree
+  :config
+  (global-undo-tree-mode 1))
 
 (use-package savehist
   :init
@@ -55,36 +58,32 @@
   :if (memq window-system '(mac ns))
   :demand
   :config
-  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+  (dolist (var '(
+                 "SSH_AUTH_SOCK"
+                 "SSH_AGENT_PID"
+                 "GPG_AGENT_INFO"
+                 "GOPATH"
+                 "LANG"
+                 "LC_CTYPE"
+                 "NIX_SSL_CERT_FILE"
+                 "NIX_PATH"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
-(use-package dabbrev
-  :bind
-  (("M-/" . dabbrev-expand)
-   ("C-M-/" . dabbrev-completion)))
-
-(use-package general)
-
 (use-package evil
   :init
-  (setq evil-want-keybinding nil)
-  (setq evil-want-integration t)
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-C-u-delete t)
+  (setq evil-disable-insert-state-bindings t)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-Y-yank-to-eol t)
-  (setq evil-want-C-i-jump nil)
-  (setq evil-shift-width 2)
+  (setq evil-undo-system 'undo-tree)
   (setq evil-search-module 'evil-search)
   (setq evil-insert-state-cursor 'bar)
   (setq evil-normal-state-cursor 'box)
   (setq evil-motion-state-cursor 'hollow)
   (setq evil-visual-state-cursor 'hollow)
-  (setq which-key-allow-evil-operators t)
-  (setq which-key-show-operator-state-maps t)
+  (setq evil-want-keybinding nil)
+  (setq evil-want-integration t)
   :config
-  ;; https://evil.readthedocs.io/en/latest/settings.html?highlight=evil-want#settings
   (evil-mode 1))
 
 (use-package evil-collection
@@ -114,6 +113,9 @@
   :config
   (global-flycheck-mode))
 
+(use-package lsp-ui
+  :disabled)
+
 (use-package ruby-mode
   :hook
   (ruby-mode . lsp-deferred)
@@ -125,6 +127,8 @@
   (yaml-mode . display-line-numbers-mode))
 
 (use-package elixir-mode
+  :init
+  (setq lsp-elixir-suggest-specs nil)
   :hook
   (elixir-mode . lsp-deferred)
   (elixir-mode . display-line-numbers-mode))
@@ -176,10 +180,6 @@
 
 (use-package git-link
   :after magit)
-
-(use-package gruvbox-theme
-  :init
-  (load-theme 'gruvbox-dark-hard t))
 
 (use-package vertico
   :straight (:files (:defaults "extensions/*"))
@@ -247,3 +247,7 @@
   :config
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
+
+(use-package gruvbox-theme
+  :init
+  (load-theme 'gruvbox-dark-hard t))
