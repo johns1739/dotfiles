@@ -1,6 +1,11 @@
 (use-package emacs
   :demand
   :init
+  (defun my/project-copy-relative-file-name ()
+    "Copy file path of current buffer relative to project directory."
+    (interactive)
+    (kill-new
+     (file-relative-name (buffer-file-name) (project-root (project-current t)))))
   (setq-default
    cursor-type 'bar
    frame-title-format '("%b")
@@ -22,12 +27,11 @@
   (ring-bell-function 'ignore)
   (tab-always-indent 'complete)
   (use-dialog-box nil)
-  (vc-follow-symlinks t)
   :hook
   (before-save . delete-trailing-whitespace)
   :config
   (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
-  (add-to-list 'default-frame-alist '(height . 60))
+  (add-to-list 'default-frame-alist '(height . 50))
   (add-to-list 'default-frame-alist '(width . 120))
   (delete-selection-mode 1)
   (electric-pair-mode -1)
@@ -36,23 +40,29 @@
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (show-paren-mode 1)
-  (tool-bar-mode -1))
+  (tool-bar-mode -1)
+  (savehist-mode 1)
+  (save-place-mode 1)
+  (recentf-mode 1)
+
+  ;; Should use:
+  ;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
+  ;; at least once per installation or while changing this list
+  (setq treesit-language-source-alist
+        '((heex "https://github.com/phoenixframework/tree-sitter-heex")
+          (elixir "https://github.com/elixir-lang/tree-sitter-elixir")))
+
+  (setq major-mode-remap-alist
+        '((elixir-mode . elixir-ts-mode))))
+
+(use-package eglot
+  :config
+  (add-to-list 'eglot-server-programs '(elixir-ts-mode "~/.config/elixir_ls/language_server.sh"))
+  (add-to-list 'eglot-server-programs '(heex-ts-mode "~/.config/elixir_ls/language_server.sh")))
 
 (use-package undo-tree
   :config
   (global-undo-tree-mode 1))
-
-(use-package savehist
-  :init
-  (savehist-mode 1))
-
-(use-package saveplace
-  :init
-  (save-place-mode 1))
-
-(use-package recentf
-  :init
-  (recentf-mode 1))
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
@@ -97,28 +107,8 @@
   :config
   (global-evil-surround-mode 1))
 
-;; NOTE lsp formatting for solargraph does not work
-(use-package eglot
-  :disabled)
-
-(use-package lsp-mode
-  :custom
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-completion-provider :none) ;; we use corfu
-  :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  :commands (lsp lsp-deferred))
-
-(use-package flycheck
-  :config
-  (global-flycheck-mode))
-
-(use-package lsp-ui
-  :disabled)
-
 (use-package ruby-mode
   :hook
-  (ruby-mode . lsp-deferred)
   (ruby-mode . display-line-numbers-mode)
   (ruby-mode . display-fill-column-indicator-mode))
 
@@ -126,20 +116,16 @@
   :hook
   (yaml-mode . display-line-numbers-mode))
 
-(use-package elixir-mode
+(use-package elixir-ts-mode
   :init
   (setq lsp-elixir-suggest-specs nil)
   :hook
-  (elixir-mode . lsp-deferred)
-  (elixir-mode . display-line-numbers-mode))
+  (elixir-ts-mode . eglot-ensure))
 
-(use-package project
-  :init
-  (defun my/project-copy-relative-file-name ()
-    "Copy file path of current buffer relative to project directory."
-    (interactive)
-    (kill-new
-     (file-relative-name (buffer-file-name) (project-root (project-current t))))))
+(use-package heex-ts-mode
+  :after elixir-ts-mode
+  :hook
+  (heex-ts-mode . eglot-ensure))
 
 (use-package rg)
 
@@ -169,15 +155,6 @@
   :init
   (xclip-mode 1))
 
-(use-package tree-sitter
-  :hook
-  (tree-sitter-after-on . tree-sitter-hl-mode)
-  :config
-  (global-tree-sitter-mode 1))
-
-(use-package tree-sitter-langs
-  :after tree-sitter)
-
 (use-package git-link
   :after magit)
 
@@ -185,14 +162,6 @@
   :straight (:files (:defaults "extensions/*"))
   :init
   (vertico-mode 1))
-
-(use-package vertico-reverse
-  :disabled
-  :after vertico
-  :straight nil
-  :load-path "straight/repos/vertico/extensions/"
-  :init
-  (vertico-reverse-mode 1))
 
 (use-package marginalia
   :init
@@ -224,7 +193,7 @@
 (use-package corfu-terminal
   :unless (display-graphic-p)
   :config
-  (corfu-terminal-mode +1))
+  (corfu-terminal-mode 1))
 
 (use-package vterm
   :custom

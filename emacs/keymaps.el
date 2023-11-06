@@ -91,9 +91,6 @@
 
 (defun set-lsp-bindings ()
   "Inject lsp bindings."
-  (define-key evil-motion-state-local-map (kbd "g r") 'lsp-find-references)
-  (define-key evil-motion-state-local-map (kbd "g = =") 'lsp-format-buffer)
-  (define-key evil-motion-state-local-map (kbd "g = r") 'lsp-format-region)
-  (define-key evil-motion-state-local-map (kbd "g R") 'lsp-rename)
-  (define-key evil-motion-state-local-map (kbd "g d") 'lsp-find-definition))
-(add-hook 'lsp-mode-hook 'set-lsp-bindings)
+  (define-key evil-motion-state-local-map (kbd "g = =") 'eglot-format-buffer)
+  (define-key evil-motion-state-local-map (kbd "g R") 'eglot-rename))
+(add-hook 'eglot-managed-mode-hook 'set-lsp-bindings)
