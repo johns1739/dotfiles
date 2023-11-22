@@ -24,6 +24,9 @@ Layout/MultilineMethodCallIndentation:
 Layout/LineLength:
   Max: 90 # default is 120
 
+Metrics/CyclomaticComplexity:
+  Max: 9 # default is 7
+
 Metrics/MethodLength:
   Max: 25 # default is 10
 

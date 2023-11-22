@@ -27,16 +27,24 @@
     (define-key m (kbd "i") '("init.el" . my/go-to-init-file))
     (define-key m (kbd "R") '("Restart Emacs" . restart-emacs))
     m)
-  "Editor")
+  "Emacs")
+
+(defvar my-search-keymap
+  (let ((m (make-sparse-keymap)))
+    (define-key m (kbd "i") '("Imenu" . consult-imenu))
+    (define-key m (kbd "j") '("Jump" . avy-goto-char-timer))
+    (define-key m (kbd "g") '("Occur" . occur))
+    (define-key m (kbd "s") '("Search" . consult-line))
+    m)
+  "Local Search")
 
 (defvar my-find-keymap
   (let ((m (make-sparse-keymap)))
     (define-key m (kbd "B") '("All buffers" . consult-buffer))
-    (define-key m (kbd "I") '("Imenus" . consult-imenu-multi))
     (define-key m (kbd "b") '("Buffer" . consult-project-buffer))
     (define-key m (kbd "d") '("Dir" . project-find-dir))
     (define-key m (kbd "g") '("Grep" . project-find-regexp))
-    (define-key m (kbd "i") '("Imenu" . consult-imenu))
+    (define-key m (kbd "i") '("Imenus" . consult-imenu-multi))
     (define-key m (kbd "p") '("Project" . project-switch-project))
     (define-key m (kbd "r") '("Recentf" . consult-recent-file))
     (define-key m (kbd "s") '("Search" . consult-ripgrep))
@@ -72,10 +80,11 @@
     (define-key m (kbd "t") '("Terminal other" . vterm-other-window))
 
     (define-key m (kbd "n") (cons "Note-taking"  my-note-taking-keymap))
-    (define-key m (kbd "e") (cons "Editor" my-editor-keymap))
-    (define-key m (kbd "f") (cons "Find" my-find-keymap))
+    (define-key m (kbd "e") (cons "Emacs" my-editor-keymap))
+    (define-key m (kbd "f") (cons "Find (global)" my-find-keymap))
     (define-key m (kbd "c") (cons "Code" my-code-keymap))
     (define-key m (kbd "g") (cons "Git" my-git-keymap))
+    (define-key m (kbd "s") (cons "Search (local)" my-search-keymap))
     m)
   "Leader")
 
@@ -89,8 +98,17 @@
   (local-set-key (kbd "SPC") my-leader-keymap))
 (add-hook 'magit-mode-hook 'set-my-leader-bindings)
 
-(defun set-lsp-bindings ()
-  "Inject lsp bindings."
+(defun set-eglot-bindings ()
+  "Inject eglot bindings."
   (define-key evil-motion-state-local-map (kbd "g = =") 'eglot-format-buffer)
   (define-key evil-motion-state-local-map (kbd "g R") 'eglot-rename))
-(add-hook 'eglot-managed-mode-hook 'set-lsp-bindings)
+(add-hook 'eglot-managed-mode-hook 'set-eglot-bindings)
+
+(defun set-lsp-bindings ()
+  "Inject lsp bindings."
+  (define-key evil-motion-state-local-map (kbd "g r") 'lsp-find-references)
+  (define-key evil-motion-state-local-map (kbd "g = =") 'lsp-format-buffer)
+  (define-key evil-motion-state-local-map (kbd "g = r") 'lsp-format-region)
+  (define-key evil-motion-state-local-map (kbd "g R") 'lsp-rename)
+  (define-key evil-motion-state-local-map (kbd "g d") 'lsp-find-definition))
+(add-hook 'lsp-mode-hook 'set-lsp-bindings)

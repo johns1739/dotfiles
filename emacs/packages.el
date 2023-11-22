@@ -1,11 +1,6 @@
 (use-package emacs
   :demand
   :init
-  (defun my/project-copy-relative-file-name ()
-    "Copy file path of current buffer relative to project directory."
-    (interactive)
-    (kill-new
-     (file-relative-name (buffer-file-name) (project-root (project-current t)))))
   (setq-default
    cursor-type 'bar
    frame-title-format '("%b")
@@ -44,16 +39,24 @@
   (savehist-mode 1)
   (save-place-mode 1)
   (recentf-mode 1)
+  (auto-save-visited-mode 1)
 
-  ;; Should use:
+  ;; To install grammars:
   ;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
-  ;; at least once per installation or while changing this list
   (setq treesit-language-source-alist
         '((heex "https://github.com/phoenixframework/tree-sitter-heex")
           (elixir "https://github.com/elixir-lang/tree-sitter-elixir")))
 
   (setq major-mode-remap-alist
         '((elixir-mode . elixir-ts-mode))))
+
+(use-package lsp-mode
+  :custom
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-completion-provider :none) ;; we use corfu
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  :commands (lsp lsp-deferred))
 
 (use-package eglot
   :config
@@ -62,6 +65,11 @@
 
 (use-package undo-tree
   :config
+  (let ((undo-tree-history-directory (file-name-as-directory
+                   (file-name-concat user-emacs-directory "undo-tree-history"))))
+    (unless (file-exists-p undo-tree-history-directory)
+      (dired-create-directory undo-tree-history-directory))
+    (setq undo-tree-history-directory-alist (list (cons "."  undo-tree-history-directory))))
   (global-undo-tree-mode 1))
 
 (use-package exec-path-from-shell
@@ -109,6 +117,7 @@
 
 (use-package ruby-mode
   :hook
+  (ruby-mode . lsp-deferred)
   (ruby-mode . display-line-numbers-mode)
   (ruby-mode . display-fill-column-indicator-mode))
 
@@ -137,18 +146,6 @@
   (which-key-mode))
 
 (use-package magit)
-
-(use-package doom-modeline
-  :custom
-  (doom-modeline-icon nil)
-  (doom-modeline-minor-modes nil)
-  (doom-modeline-indent-info nil)
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-vcs-max-length 20)
-  (doom-modeline-display-misc-in-all-mode-lines nil)
-  (doom-modeline-env-version nil)
-  :init
-  (doom-modeline-mode 1))
 
 (use-package xclip
   :unless (display-graphic-p)
@@ -184,16 +181,17 @@
   :init
   (global-corfu-mode 1))
 
+(use-package corfu-terminal
+  :unless (display-graphic-p)
+  :after corfu
+  :config
+  (corfu-terminal-mode 1))
+
 (use-package cape
   :after corfu
   :init
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file))
-
-(use-package corfu-terminal
-  :unless (display-graphic-p)
-  :config
-  (corfu-terminal-mode 1))
 
 (use-package vterm
   :custom
@@ -217,6 +215,23 @@
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
 
+(use-package avy)
+
+
+;;;; VISUAL
+
 (use-package gruvbox-theme
   :init
   (load-theme 'gruvbox-dark-hard t))
+
+(use-package doom-modeline
+  :custom
+  (doom-modeline-icon nil)
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-indent-info nil)
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-vcs-max-length 20)
+  (doom-modeline-display-misc-in-all-mode-lines nil)
+  (doom-modeline-env-version nil)
+  :init
+  (doom-modeline-mode 1))

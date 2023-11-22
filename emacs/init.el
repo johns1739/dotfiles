@@ -13,6 +13,12 @@
 
 ;; My definitions
 
+(defun my/project-copy-relative-file-name ()
+  "Copy file path of current buffer relative to project directory."
+  (interactive)
+  (kill-new
+   (file-relative-name (buffer-file-name) (project-root (project-current t)))))
+
 (defconst my/config-directory "~/workspace/myconfigs/emacs")
 
 (defconst my/init-file-name
