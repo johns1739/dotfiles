@@ -10,7 +10,6 @@
    display-fill-column-indicator-column 90)
   :custom
   (apropos-do-all t)
-  (completion-cycle-threshold 3)
   (confirm-kill-emacs 'y-or-n-p)
   (create-lockfiles nil)
   (global-auto-revert-non-file-buffers t)
@@ -51,11 +50,17 @@
         '((elixir-mode . elixir-ts-mode))))
 
 (use-package lsp-mode
+  :init
+  (defun my/lsp-mode-set-default-styles ()
+    (setf (alist-get 'styles
+                     (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
   :custom
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-completion-provider :none) ;; we use corfu
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
+  (lsp-completion-mode . my/lsp-mode-set-default-styles)
   :commands (lsp lsp-deferred))
 
 (use-package eglot
@@ -65,6 +70,7 @@
 
 (use-package undo-tree
   :config
+  (setq undo-tree-visualizer-timestamps t)
   (let ((undo-tree-history-directory (file-name-as-directory
                    (file-name-concat user-emacs-directory "undo-tree-history"))))
     (unless (file-exists-p undo-tree-history-directory)
@@ -166,33 +172,6 @@
 
 (use-package consult)
 
-(use-package orderless
-  :custom
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles basic partial-completion)))))
-
-(use-package corfu
-  :custom
-  (corfu-auto t)
-  (corfu-cycle t)
-  (corfu-auto-prefix 3)
-  (corfu-auto-delay 0.2)
-  :init
-  (global-corfu-mode 1))
-
-(use-package corfu-terminal
-  :unless (display-graphic-p)
-  :after corfu
-  :config
-  (corfu-terminal-mode 1))
-
-(use-package cape
-  :after corfu
-  :init
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-file))
-
 (use-package vterm
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
@@ -217,6 +196,43 @@
 
 (use-package avy)
 
+
+;;;; COMPLETION
+
+(use-package corfu
+  :straight (corfu :files (:defaults "extensions/*.el")
+                   :includes (corfu-echo))
+  ;; Completion in region function
+  ;; https://github.com/minad/corfu#key-bindings
+  :custom
+  (corfu-cycle t) ; Allows cycling through candidates
+  (corfu-auto t) ; Enable auto completion
+  (corfu-auto-prefix 3) ; Enable auto completion
+  (corfu-auto-delay 1) ; Enable auto completion
+  (corfu-echo-delay '(1 . 0.5))
+  :init
+  (global-corfu-mode 1)
+  (corfu-echo-mode))
+
+
+(use-package corfu-terminal
+  :unless (display-graphic-p)
+  :after corfu
+  :config
+  (corfu-terminal-mode 1))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package cape
+  :after corfu
+  :custom
+  (completion-at-point-functions
+   '(cape-file
+     cape-dabbrev
+     cape-dict)))
 
 ;;;; VISUAL
 

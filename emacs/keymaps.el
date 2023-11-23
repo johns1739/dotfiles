@@ -1,10 +1,8 @@
 ;; TODO
 ;; Keybindgs of org / modes to 'm'
 
-(keymap-global-set "ESC" '("Quit" . keyboard-escape-quit))
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
-(keymap-global-set "ESC" '("Quit" . keyboard-escape-quit))
 (keymap-global-set "<remap> <dabbrev-expand>" 'hippie-expand)
 
 (keymap-set corfu-map "RET" nil)
