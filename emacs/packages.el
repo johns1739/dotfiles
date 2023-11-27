@@ -177,8 +177,15 @@
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 100000))
 
+
+;;;; ORG MODE
+
 (use-package org
-  :mode (("\\.org$" . org-mode)))
+  :demand t
+  :mode (("\\.org$" . org-mode))
+  :config
+  (setq org-directory "~/workspace/notes/org")
+  (setq org-startup-indented t))
 
 (use-package evil-org
   :after org
@@ -189,7 +196,7 @@
 
 (use-package org-roam
   :custom
-  (org-roam-directory (file-truename "~/workspace/notes/org"))
+  (org-roam-directory (file-truename "~/workspace/notes/org/roam"))
   :config
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))

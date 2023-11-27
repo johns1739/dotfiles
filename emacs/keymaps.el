@@ -1,5 +1,5 @@
 ;; TODO
-;; Keybindgs of org / modes to 'm'
+;; look through org-mode documentation
 
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
@@ -13,12 +13,11 @@
     (keymap-set m "f" '("Find" . org-roam-node-find))
     (keymap-set m "i" '("Insert" . org-roam-node-insert))
     (keymap-set m "j" '("Today" . org-roam-dailies-goto-date))
-    (keymap-set m "l" '("Toggle" . org-roam-buffer-toggle))
-    (keymap-set m "t" '("Template" . org-insert-structure-template))
+    (keymap-set m "l" '("Store" . org-store-link))
     m)
-  "Note-taking")
+  "Notes Keymap")
 
-(defvar my-editor-keymap
+(defvar my-editor-settings-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "I" '("Reload init.el" . my/reload-init))
     (keymap-set m "p" '("packages.el" . my/go-to-packages-file))
@@ -26,7 +25,7 @@
     (keymap-set m "i" '("init.el" . my/go-to-init-file))
     (keymap-set m "R" '("Restart Emacs" . restart-emacs))
     m)
-  "Emacs")
+  "Settings Keymap")
 
 (defvar my-search-keymap
   (let ((m (make-sparse-keymap)))
@@ -35,7 +34,7 @@
     (keymap-set m "g" '("Occur" . occur))
     (keymap-set m "s" '("Search" . consult-line))
     m)
-  "Local Search")
+  "Search Word Keymap")
 
 (defvar my-find-keymap
   (let ((m (make-sparse-keymap)))
@@ -48,16 +47,18 @@
     (keymap-set m "r" '("Recentf" . consult-recent-file))
     (keymap-set m "s" '("Search" . consult-ripgrep))
     m)
-  "Find")
+  "Find Keymap")
 
-(defvar my-code-keymap
+(defvar my-console-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "C" '("Project compile" . project-compile))
     (keymap-set m "c" '("Compile" . my/compile))
     (keymap-set m "r" '("Recompile" . recompile))
     (keymap-set m "y" '("Yank filename" . my/project-copy-relative-file-name))
+    (keymap-set m "T" '("Terminal" . vterm))
+    (keymap-set m "t" '("Terminal other" . vterm-other-window))
     m)
-  "Code")
+  "Console Keymap")
 
 (defvar my-git-keymap
   (let ((m (make-sparse-keymap)))
@@ -69,21 +70,19 @@
     (keymap-set m "l" '("Git logs" . magit-log-buffer-file))
     (keymap-set m "y" '("Git link" . git-link))
     m)
-  "Git")
+  "Git Keymap")
 
 (defvar my-leader-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "SPC" '("Find file" . project-find-file))
     (keymap-set m "." '("Dired" . project-dired))
-    (keymap-set m "T" '("Terminal" . vterm))
-    (keymap-set m "t" '("Terminal other" . vterm-other-window))
 
-    (keymap-set m "n" (cons "Note-taking"  my-note-taking-keymap))
-    (keymap-set m "e" (cons "Emacs" my-editor-keymap))
-    (keymap-set m "f" (cons "Find (global)" my-find-keymap))
-    (keymap-set m "c" (cons "Code" my-code-keymap))
+    (keymap-set m "n" (cons "Notes"  my-note-taking-keymap))
+    (keymap-set m "e" (cons "Emacs Settings" my-editor-settings-keymap))
+    (keymap-set m "f" (cons "Find" my-find-keymap))
+    (keymap-set m "c" (cons "Console" my-console-keymap))
     (keymap-set m "g" (cons "Git" my-git-keymap))
-    (keymap-set m "s" (cons "Search (local)" my-search-keymap))
+    (keymap-set m "s" (cons "Search" my-search-keymap))
     m)
   "Leader")
 
