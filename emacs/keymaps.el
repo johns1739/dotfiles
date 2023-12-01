@@ -20,6 +20,7 @@
 (defvar my-editor-settings-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "I" '("Reload init.el" . my/reload-init))
+    (keymap-set m "e" '("emacs.el" . my/go-to-emacs-file))
     (keymap-set m "p" '("packages.el" . my/go-to-packages-file))
     (keymap-set m "k" '("keymaps.el" . my/go-to-keymaps-file))
     (keymap-set m "i" '("init.el" . my/go-to-init-file))
@@ -43,6 +44,7 @@
     (keymap-set m "d" '("Dir" . project-find-dir))
     (keymap-set m "g" '("Grep" . project-find-regexp))
     (keymap-set m "i" '("Imenus" . consult-imenu-multi))
+    (keymap-set m "n" '("Notes" . org-roam-node-find))
     (keymap-set m "p" '("Project" . project-switch-project))
     (keymap-set m "r" '("Recentf" . consult-recent-file))
     (keymap-set m "s" '("Search" . consult-ripgrep))

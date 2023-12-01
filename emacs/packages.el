@@ -1,53 +1,21 @@
-(use-package emacs
-  :demand
-  :init
-  (setq-default
-   cursor-type 'bar
-   frame-title-format '("%b")
-   truncate-lines nil
-   indent-tabs-mode nil
-   display-line-numbers-type 'relative
-   display-fill-column-indicator-column 90)
-  :custom
-  (apropos-do-all t)
-  (confirm-kill-emacs 'y-or-n-p)
-  (create-lockfiles nil)
-  (global-auto-revert-non-file-buffers t)
-  (inhibit-startup-message t)
-  (initial-scratch-message "")
-  (make-backup-files nil)
-  (read-process-output-max (* 1024 1024))
-  (require-final-newline t)
-  (ring-bell-function 'ignore)
-  (tab-always-indent 'complete)
-  (use-dialog-box nil)
-  :hook
-  (before-save . delete-trailing-whitespace)
-  :config
-  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
-  (add-to-list 'default-frame-alist '(height . 50))
-  (add-to-list 'default-frame-alist '(width . 120))
-  (delete-selection-mode 1)
-  (electric-pair-mode -1)
-  (fset 'yes-or-no-p 'y-or-n-p)
-  (global-auto-revert-mode t)
-  (menu-bar-mode -1)
-  (scroll-bar-mode -1)
-  (show-paren-mode 1)
-  (tool-bar-mode -1)
-  (savehist-mode 1)
-  (save-place-mode 1)
-  (recentf-mode 1)
-  (auto-save-visited-mode 1)
+;; -*- lexical-binding: t; -*-
 
-  ;; To install grammars:
-  ;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
-  (setq treesit-language-source-alist
-        '((heex "https://github.com/phoenixframework/tree-sitter-heex")
-          (elixir "https://github.com/elixir-lang/tree-sitter-elixir")))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-  (setq major-mode-remap-alist
-        '((elixir-mode . elixir-ts-mode))))
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t)
+(setq use-package-compute-statistics t)
 
 (use-package lsp-mode
   :init
@@ -94,6 +62,54 @@
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
+(use-package rg)
+
+(use-package avy)
+
+(use-package which-key
+  :custom
+  (which-key-idle-delay 1)
+  (which-key-idle-secondary-delay nil)
+  :config
+  (which-key-mode))
+
+(use-package xclip
+  :unless (display-graphic-p)
+  :init
+  (xclip-mode 1))
+
+(use-package vertico
+  :straight (:files (:defaults "extensions/*"))
+  :init
+  (vertico-mode 1))
+
+(use-package marginalia
+  :init
+  (marginalia-mode 1))
+
+(use-package consult)
+
+(use-package vterm
+  :custom
+  (vterm-copy-mode-remove-fake-newlines t)
+  (vterm-max-scrollback 100000))
+
+
+;;;; GIT
+
+(use-package magit)
+
+(use-package magit-todos
+  :after magit
+  :config
+  (magit-todos-mode 1))
+
+(use-package git-link
+  :after magit)
+
+
+;;;; EVIL
+
 (use-package evil
   :init
   (setq evil-disable-insert-state-bindings t)
@@ -121,6 +137,21 @@
   :config
   (global-evil-surround-mode 1))
 
+
+;;;; LANGUAGES
+
+(use-package elixir-ts-mode
+  :init
+  (setq lsp-elixir-suggest-specs nil)
+  (add-to-list 'major-mode-remap-alist '(elixir-mode . elixir-ts-mode))
+  :hook
+  (elixir-ts-mode . eglot-ensure))
+
+(use-package heex-ts-mode
+  :after elixir-ts-mode
+  :hook
+  (heex-ts-mode . eglot-ensure))
+
 (use-package ruby-mode
   :hook
   (ruby-mode . lsp-deferred)
@@ -130,52 +161,6 @@
 (use-package yaml-mode
   :hook
   (yaml-mode . display-line-numbers-mode))
-
-(use-package elixir-ts-mode
-  :init
-  (setq lsp-elixir-suggest-specs nil)
-  :hook
-  (elixir-ts-mode . eglot-ensure))
-
-(use-package heex-ts-mode
-  :after elixir-ts-mode
-  :hook
-  (heex-ts-mode . eglot-ensure))
-
-(use-package rg)
-
-(use-package which-key
-  :custom
-  (which-key-idle-delay 1)
-  (which-key-idle-secondary-delay nil)
-  :config
-  (which-key-mode))
-
-(use-package magit)
-
-(use-package xclip
-  :unless (display-graphic-p)
-  :init
-  (xclip-mode 1))
-
-(use-package git-link
-  :after magit)
-
-(use-package vertico
-  :straight (:files (:defaults "extensions/*"))
-  :init
-  (vertico-mode 1))
-
-(use-package marginalia
-  :init
-  (marginalia-mode 1))
-
-(use-package consult)
-
-(use-package vterm
-  :custom
-  (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000))
 
 
 ;;;; ORG MODE
@@ -201,8 +186,6 @@
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
 
-(use-package avy)
-
 
 ;;;; COMPLETION
 
@@ -219,8 +202,19 @@
   (corfu-echo-delay '(1 . 0.5))
   :init
   (global-corfu-mode 1)
-  (corfu-echo-mode))
-
+  (corfu-echo-mode)
+  :config
+  (defun corfu-enable-always-in-minibuffer ()
+    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
+    (unless (or (bound-and-true-p mct--active)
+                (bound-and-true-p vertico--input)
+                (eq (current-local-map) read-passwd-map))
+      ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
+      (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
+                  corfu-popupinfo-delay nil
+                  corfu-auto-delay 0.3)
+      (corfu-mode 1)))
+  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1))
 
 (use-package corfu-terminal
   :unless (display-graphic-p)
@@ -241,7 +235,8 @@
      cape-dabbrev
      cape-dict)))
 
-;;;; VISUAL
+
+;;;; GRAPHICS
 
 (use-package gruvbox-theme
   :init
