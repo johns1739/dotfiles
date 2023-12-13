@@ -264,8 +264,7 @@
   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
   (dashboard-items '((recents  . 5)
                      (bookmarks . 5)
-                     (agenda . 5)
-                     (registers . 5)))
+                     (agenda . 5)))
   :config
   (dashboard-setup-startup-hook))
 
