@@ -13,6 +13,9 @@ Thumbs.db
 # vi
 *~
 
+# Emacs
+.dir-locals.el
+
 # General
 log/
 *.log

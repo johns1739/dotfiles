@@ -1,16 +1,5 @@
 ;; -*- lexical-binding: t; -*-
 
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (setq gc-cons-threshold 16777216)
-            (setq gc-cons-percentage 0.1)))
-
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "*** Emacs loaded in %s seconds with %d garbage collections."
-                     (emacs-init-time "%.2f")
-                     gcs-done)))
-
 
 ;;;; SETTINGS
 
@@ -18,8 +7,7 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq create-lockfiles nil)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(setq gc-cons-percentage 0.6)
-(setq gc-cons-threshold most-positive-fixnum)
+(setq eldoc-echo-area-use-multiline-p t)
 (setq global-auto-revert-non-file-buffers t)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
@@ -39,6 +27,7 @@
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 120))
+(column-number-mode 1)
 (delete-selection-mode 1)
 (electric-pair-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -56,8 +45,25 @@
 ;; To install grammars:
 ;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 (with-eval-after-load 'treesit
- (add-to-list 'treesit-language-source-alist '(heex "https://github.com/phoenixframework/tree-sitter-heex"))
- (add-to-list 'treesit-language-source-alist '(elixir "https://github.com/elixir-lang/tree-sitter-elixir")))
+  (setq treesit-language-source-alist
+        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (cmake "https://github.com/uyha/tree-sitter-cmake")
+          (css "https://github.com/tree-sitter/tree-sitter-css")
+          (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+          (go "https://github.com/tree-sitter/tree-sitter-go")
+          (html "https://github.com/tree-sitter/tree-sitter-html")
+          (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+          (json "https://github.com/tree-sitter/tree-sitter-json")
+          (make "https://github.com/alemuller/tree-sitter-make")
+          (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (toml "https://github.com/tree-sitter/tree-sitter-toml")
+          (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+          (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+          (elixir "https://github.com/elixir-lang/tree-sitter-elixir")
+          (heex "https://github.com/phoenixframework/tree-sitter-heex")
+          (ruby "https://github.com/tree-sitter/tree-sitter-ruby"))))
 
 
 ;;;; DEFINITIONS

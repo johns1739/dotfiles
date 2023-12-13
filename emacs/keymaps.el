@@ -93,11 +93,6 @@
 
 ;; Hooks
 
-(defun set-my-leader-bindings ()
-  "Inject leader keymap of SPC."
-  (local-set-key "SPC" my-leader-keymap))
-(add-hook 'magit-mode-hook 'set-my-leader-bindings)
-
 (defun set-eglot-bindings ()
   "Inject eglot bindings."
   (keymap-set evil-motion-state-local-map "g = =" 'eglot-format-buffer)
@@ -110,5 +105,6 @@
   (keymap-set evil-motion-state-local-map "g = =" 'lsp-format-buffer)
   (keymap-set evil-motion-state-local-map "g = r" 'lsp-format-region)
   (keymap-set evil-motion-state-local-map "g R" 'lsp-rename)
-  (keymap-set evil-motion-state-local-map "g d" 'lsp-find-definition))
+  (keymap-set evil-motion-state-local-map "g d" 'lsp-find-definition)
+  (keymap-set evil-motion-state-local-map "K" 'eldoc-doc-buffer))
 (add-hook 'lsp-mode-hook 'set-lsp-bindings)

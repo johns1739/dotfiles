@@ -17,30 +17,14 @@
 (setq straight-use-package-by-default t)
 (setq use-package-compute-statistics t)
 
-(use-package lsp-mode
-  :init
-  (defun my/lsp-mode-set-default-styles ()
-    (setf (alist-get 'styles
-                     (alist-get 'lsp-capf completion-category-defaults))
-          '(orderless)))
-  :custom
-  (lsp-headerline-breadcrumb-enable nil)
-  (lsp-completion-provider :none) ;; we use corfu
-  :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  (lsp-completion-mode . my/lsp-mode-set-default-styles)
-  :commands (lsp lsp-deferred))
 
-(use-package eglot
-  :config
-  (add-to-list 'eglot-server-programs '(elixir-ts-mode "~/.config/elixir_ls/language_server.sh"))
-  (add-to-list 'eglot-server-programs '(heex-ts-mode "~/.config/elixir_ls/language_server.sh")))
+;;;; PACKAGES
 
 (use-package undo-tree
   :config
   (setq undo-tree-visualizer-timestamps t)
   (let ((undo-tree-history-directory (file-name-as-directory
-                   (file-name-concat user-emacs-directory "undo-tree-history"))))
+                                      (file-name-concat user-emacs-directory "undo-tree-history"))))
     (unless (file-exists-p undo-tree-history-directory)
       (dired-create-directory undo-tree-history-directory))
     (setq undo-tree-history-directory-alist (list (cons "."  undo-tree-history-directory))))
@@ -100,6 +84,7 @@
 (use-package magit)
 
 (use-package magit-todos
+  :disabled
   :after magit
   :config
   (magit-todos-mode 1))
@@ -137,30 +122,63 @@
   :config
   (global-evil-surround-mode 1))
 
+(use-package flycheck)
+
+(use-package command-log-mode)
 
 ;;;; LANGUAGES
 
-(use-package elixir-ts-mode
+(use-package lsp-mode
   :init
-  (setq lsp-elixir-suggest-specs nil)
-  (add-to-list 'major-mode-remap-alist '(elixir-mode . elixir-ts-mode))
+  (defun my/lsp-mode-set-default-styles ()
+    (setf (alist-get 'styles
+                     (alist-get 'lsp-capf completion-category-defaults))
+          '(orderless)))
+  :custom
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-completion-provider :none) ;; we use corfu
+  (lsp-signature-auto-activate '(:on-trigger-char :on-server-request))
+  (lsp-signature-render-documentation t)
   :hook
-  (elixir-ts-mode . eglot-ensure))
+  (lsp-mode . lsp-enable-which-key-integration)
+  (lsp-completion-mode . my/lsp-mode-set-default-styles)
+  :commands (lsp lsp-deferred)
+  :config
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]_build\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
+  (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]erl_crash.dump\\'"))
 
-(use-package heex-ts-mode
-  :after elixir-ts-mode
-  :hook
-  (heex-ts-mode . eglot-ensure))
+(use-package lsp-ui
+  :after lsp-mode
+  :custom
+  (lsp-ui-doc-delay 1.0)
+  (lsp-ui-doc-show-with-mouse nil)
+  (lsp-eldoc-render-all t)
+  (lsp-ui-sideline-delay 2)
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-sideline-show-code-actions t))
 
-(use-package ruby-mode
+(use-package ruby-ts-mode
+  :init
+  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   :hook
-  (ruby-mode . lsp-deferred)
-  (ruby-mode . display-line-numbers-mode)
-  (ruby-mode . display-fill-column-indicator-mode))
+  (ruby-ts-mode . display-fill-column-indicator-mode)
+  (ruby-ts-mode . display-line-numbers-mode)
+  (ruby-ts-mode . lsp-deferred))
 
-(use-package yaml-mode
+
+(use-package elixir-ts-mode
+  :custom
+  (lsp-elixir-suggest-specs nil)
   :hook
-  (yaml-mode . display-line-numbers-mode))
+  (elixir-ts-mode . lsp-deferred)
+  (heex-ts-mode . lsp-deferred))
+
+(use-package yaml-ts-mode
+  :mode "\\.yaml\\|.yml\\'"
+  :hook
+  (yaml-ts-mode . lsp-deffered)
+  (yaml-ts-mode . display-line-numbers-mode))
 
 
 ;;;; ORG MODE
@@ -198,7 +216,7 @@
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-auto t) ; Enable auto completion
   (corfu-auto-prefix 3) ; Enable auto completion
-  (corfu-auto-delay 1) ; Enable auto completion
+  (corfu-auto-delay 0.5) ; Enable auto completion
   (corfu-echo-delay '(1 . 0.5))
   :init
   (global-corfu-mode 1)
@@ -231,16 +249,14 @@
   :after corfu
   :custom
   (completion-at-point-functions
-   '(cape-file
-     cape-dabbrev
+   '(cape-dabbrev
      cape-dict)))
 
 
 ;;;; GRAPHICS
 
-(use-package gruvbox-theme
-  :init
-  (load-theme 'gruvbox-dark-hard t))
+(use-package gruvbox-theme)
+(use-package modus-themes :ensure t)
 
 (use-package doom-modeline
   :custom
@@ -253,3 +269,5 @@
   (doom-modeline-env-version nil)
   :init
   (doom-modeline-mode 1))
+
+(load-theme 'modus-vivendi-tritanopia t)
