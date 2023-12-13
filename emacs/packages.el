@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+;; TODO: Search key-bindings to use region as input
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -151,10 +153,10 @@
 (use-package lsp-ui
   :after lsp-mode
   :custom
-  (lsp-ui-doc-delay 1.0)
+  (lsp-ui-doc-delay 1)
   (lsp-ui-doc-show-with-mouse nil)
   (lsp-eldoc-render-all t)
-  (lsp-ui-sideline-delay 2)
+  (lsp-ui-sideline-delay 1)
   (lsp-ui-sideline-show-diagnostics t)
   (lsp-ui-sideline-show-code-actions t))
 
@@ -255,7 +257,20 @@
 
 ;;;; GRAPHICS
 
+(use-package dashboard
+  :custom
+  (dashboard-center-content t)
+  (dashboard-week-agenda t)
+  (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
+  (dashboard-items '((recents  . 5)
+                     (bookmarks . 5)
+                     (agenda . 5)
+                     (registers . 5)))
+  :config
+  (dashboard-setup-startup-hook))
+
 (use-package gruvbox-theme)
+
 (use-package modus-themes :ensure t)
 
 (use-package doom-modeline
