@@ -30,10 +30,12 @@
 
 (defvar my-search-keymap
   (let ((m (make-sparse-keymap)))
+    (keymap-set m "b" '("Search" . consult-bookmark))
     (keymap-set m "i" '("Imenu" . consult-imenu))
     (keymap-set m "j" '("Jump" . avy-goto-char-timer))
     (keymap-set m "g" '("Occur" . occur))
     (keymap-set m "s" '("Search" . consult-line))
+    (keymap-set m "r" '("Register" . consult-register))
     m)
   "Search Word Keymap")
 
@@ -106,5 +108,5 @@
   (keymap-set evil-motion-state-local-map "g = r" 'lsp-format-region)
   (keymap-set evil-motion-state-local-map "g R" 'lsp-rename)
   (keymap-set evil-motion-state-local-map "g d" 'lsp-find-definition)
-  (keymap-set evil-motion-state-local-map "K" 'eldoc-doc-buffer))
+  (keymap-set evil-motion-state-local-map "K" 'eldoc))
 (add-hook 'lsp-mode-hook 'set-lsp-bindings)

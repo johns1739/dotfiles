@@ -100,18 +100,21 @@
 (use-package evil
   :init
   (setq evil-disable-insert-state-bindings t)
+  (setq evil-ex-search-persistent-highlight nil)
+  (setq evil-insert-state-cursor 'bar)
+  (setq evil-motion-state-cursor 'hollow)
+  (setq evil-normal-state-cursor 'box)
+  (setq evil-search-module 'evil-search)
+  (setq evil-undo-system 'undo-tree)
+  (setq evil-visual-state-cursor 'hollow)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-Y-yank-to-eol t)
-  (setq evil-undo-system 'undo-tree)
-  (setq evil-search-module 'evil-search)
-  (setq evil-insert-state-cursor 'bar)
-  (setq evil-normal-state-cursor 'box)
-  (setq evil-motion-state-cursor 'hollow)
-  (setq evil-visual-state-cursor 'hollow)
-  (setq evil-want-keybinding nil)
   (setq evil-want-integration t)
+  (setq evil-want-keybinding nil)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (evil-select-search-module 'evil-search-module 'evil-search))
+
 
 (use-package evil-collection
   :demand
@@ -141,6 +144,7 @@
   (lsp-completion-provider :none) ;; we use corfu
   (lsp-signature-auto-activate '(:on-trigger-char :on-server-request))
   (lsp-signature-render-documentation t)
+  (lsp-eldoc-render-all t)
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
   (lsp-completion-mode . my/lsp-mode-set-default-styles)
@@ -151,11 +155,11 @@
   (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]erl_crash.dump\\'"))
 
 (use-package lsp-ui
+  :disabled
   :after lsp-mode
   :custom
   (lsp-ui-doc-delay 1)
   (lsp-ui-doc-show-with-mouse nil)
-  (lsp-eldoc-render-all t)
   (lsp-ui-sideline-delay 1)
   (lsp-ui-sideline-show-diagnostics t)
   (lsp-ui-sideline-show-code-actions t))
@@ -252,7 +256,25 @@
   :custom
   (completion-at-point-functions
    '(cape-dabbrev
-     cape-dict)))
+     cape-keyword
+     cape-dict))
+  :bind (("C-c p p" . completion-at-point) ;; capf
+         ("C-c p t" . complete-tag)        ;; etags
+         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("C-c p h" . cape-history)
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)
+         ("C-c p s" . cape-elisp-symbol)
+         ("C-c p e" . cape-elisp-block)
+         ("C-c p a" . cape-abbrev)
+         ("C-c p l" . cape-line)
+         ("C-c p w" . cape-dict)
+         ("C-c p :" . cape-emoji)
+         ("C-c p \\" . cape-tex)
+         ("C-c p _" . cape-tex)
+         ("C-c p ^" . cape-tex)
+         ("C-c p &" . cape-sgml)
+         ("C-c p r" . cape-rfc1345)))
 
 
 ;;;; GRAPHICS
@@ -268,20 +290,34 @@
   :config
   (dashboard-setup-startup-hook))
 
+(use-package indent-guide
+  :config
+  (indent-guide-global-mode))
+
 (use-package gruvbox-theme)
 
-(use-package modus-themes :ensure t)
-
-(use-package doom-modeline
+(use-package modus-themes
+  :ensure t
   :custom
-  (doom-modeline-icon nil)
-  (doom-modeline-minor-modes nil)
-  (doom-modeline-indent-info nil)
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-vcs-max-length 20)
-  (doom-modeline-display-misc-in-all-mode-lines nil)
-  (doom-modeline-env-version nil)
-  :init
-  (doom-modeline-mode 1))
+  ;; https://protesilaos.com/emacs/modus-themes
+  (modus-vivendi-tritanopia-palette-overrides
+   '((fringe unspecified)
+     (bg-line-number-active unspecified)
+     (bg-line-number-inactive unspecified)
+     (border-mode-line-active unspecified)
+     (border-mode-line-inactive unspecified)
+     (bg-main "#171717")))
+  :config
+  (load-theme 'modus-vivendi-tritanopia t))
 
-(load-theme 'modus-vivendi-tritanopia t)
+  (use-package doom-modeline
+    :custom
+    (doom-modeline-icon nil)
+    (doom-modeline-minor-modes nil)
+    (doom-modeline-indent-info nil)
+    (doom-modeline-buffer-encoding nil)
+    (doom-modeline-vcs-max-length 20)
+    (doom-modeline-display-misc-in-all-mode-lines nil)
+    (doom-modeline-env-version nil)
+    :init
+    (doom-modeline-mode 1))

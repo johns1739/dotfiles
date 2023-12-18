@@ -7,7 +7,7 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq create-lockfiles nil)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(setq eldoc-echo-area-use-multiline-p t)
+(setq eldoc-echo-area-use-multiline-p nil)
 (setq global-auto-revert-non-file-buffers t)
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
@@ -29,6 +29,7 @@
 (add-to-list 'default-frame-alist '(width . 120))
 (column-number-mode 1)
 (delete-selection-mode 1)
+(desktop-save-mode -1)
 (electric-pair-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t)
@@ -40,6 +41,7 @@
 (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
 (show-paren-mode 1)
 (tool-bar-mode -1)
+(window-divider-mode 1)
 ;; (auto-save-visited-mode 1)
 
 ;; To install grammars:
