@@ -111,7 +111,7 @@
 (defun my/project-copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
   (interactive)
-  (kill-new (my/project-copy-relative-file-name)))
+  (kill-new (my/project-relative-file-name)))
 
 (defun my/rails-buffer-test-file-p ()
   (string-match-p "_test.rb\\'" (buffer-file-name)))
@@ -119,22 +119,16 @@
 (defun my/rails-test-file-compile-command ()
   (let ((linum (number-to-string (line-number-at-pos)))
         (file-name (my/project-relative-file-name)))
-    (string-join (list "rails t " (s-concat file-name ":" linum)))))
+    (string-join (list "rails t " (s-concat file-name ":" linum) " "))))
 
 (defun my/rails-dwim-compile-command ()
   (cond ((my/rails-buffer-test-file-p) (my/rails-test-file-compile-command))
         (t compile-command)))
 
-(defun my/rails-compile (command &optional comint)
-  "Dwim compilation for ruby files."
-  (interactive
-   (list
-    (let ((command (my/rails-dwim-compile-command)))
-      (if (or compilation-read-command current-prefix-arg)
-          (compilation-read-command command)
-        command))
-    (consp current-prefix-arg)))
-  (compile command comint))
+(defun my/rails-compile ()
+  (interactive)
+  (let ((compile-command (my/rails-dwim-compile-command)))
+    (call-interactively #'project-compile)))
 
 (defun my/rails-compile-comint ()
   "Dwim compilation for ruby files."

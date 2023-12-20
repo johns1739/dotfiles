@@ -34,6 +34,8 @@
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
   :demand
+  :custom
+  (exec-path-from-shell-warn-duration-millis 1000)
   :config
   (dolist (var '(
                  "SSH_AUTH_SOCK"
@@ -307,7 +309,7 @@
      (border-mode-line-active unspecified)
      (border-mode-line-inactive unspecified)
      (fg-main "#e0e0e0")
-     (bg-main "#090909")))
+     (bg-main "#101010")))
   :config
   (load-theme 'modus-vivendi-tritanopia t))
 
