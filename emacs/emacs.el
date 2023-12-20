@@ -100,9 +100,13 @@
   (interactive)
   (find-file my/keymaps-file-name))
 
+(defun my/project-directory ()
+  "Current project directory."
+  (project-root (project-current t)))
+
 (defun my/project-relative-file-name ()
   "Relative project path to file."
-  (file-relative-name (buffer-file-name) (project-root (project-current t))))
+  (file-relative-name (buffer-file-name) (my/project-directory)))
 
 (defun my/project-copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
