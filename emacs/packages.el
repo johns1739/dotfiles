@@ -1,6 +1,5 @@
 ;; -*- lexical-binding: t; -*-
-
-;; TODO: Search key-bindings to use region as input
+;; Third party packages
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -228,6 +227,7 @@
   (global-corfu-mode 1)
   (corfu-echo-mode)
   :config
+  (keymap-set corfu-map "RET" nil) ;; Prevent enter from auto-completing
   (defun corfu-enable-always-in-minibuffer ()
     "Enable Corfu in the minibuffer if Vertico/Mct are not active."
     (unless (or (bound-and-true-p mct--active)
@@ -306,7 +306,8 @@
      (bg-line-number-inactive unspecified)
      (border-mode-line-active unspecified)
      (border-mode-line-inactive unspecified)
-     (bg-main "#171717")))
+     (fg-main "#e0e0e0")
+     (bg-main "#090909")))
   :config
   (load-theme 'modus-vivendi-tritanopia t))
 

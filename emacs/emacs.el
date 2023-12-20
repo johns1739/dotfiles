@@ -1,5 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 
+;; This contains builtin emacs logic.
+;; Does not depend on any third party packages.
 
 ;;;; SETTINGS
 
@@ -67,23 +69,11 @@
           (heex "https://github.com/phoenixframework/tree-sitter-heex")
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby"))))
 
+(unless (file-exists-p custom-file)
+  (write-region "" nil custom-file))
 
-;;;; DEFINITIONS
 
-(defun my/project-copy-relative-file-name ()
-  "Copy file path of current buffer relative to project directory."
-  (interactive)
-  (kill-new
-   (file-relative-name (buffer-file-name) (project-root (project-current t)))))
-
-(defun my/compile (command)
-  "Compile COMMAND using region or from prompt."
-  (interactive
-   (list
-    (read-string "Compile command: "
-                 (if (use-region-p)
-                     (buffer-substring-no-properties (region-beginning) (region-end))))))
-  (compile command))
+;; COMMANDS
 
 (defun my/reload-init ()
   "Reload my emacs configuration."
@@ -110,5 +100,40 @@
   (interactive)
   (find-file my/keymaps-file-name))
 
-(unless (file-exists-p custom-file)
-  (write-region "" nil custom-file))
+(defun my/project-relative-file-name ()
+  "Relative project path to file."
+  (file-relative-name (buffer-file-name) (project-root (project-current t))))
+
+(defun my/project-copy-relative-file-name ()
+  "Copy file path of current buffer relative to project directory."
+  (interactive)
+  (kill-new (my/project-copy-relative-file-name)))
+
+(defun my/rails-buffer-test-file-p ()
+  (string-match-p "_test.rb\\'" (buffer-file-name)))
+
+(defun my/rails-test-file-compile-command ()
+  (let ((linum (number-to-string (line-number-at-pos)))
+        (file-name (my/project-relative-file-name)))
+    (string-join (list "rails t " (s-concat file-name ":" linum)))))
+
+(defun my/rails-dwim-compile-command ()
+  (cond ((my/rails-buffer-test-file-p) (my/rails-test-file-compile-command))
+        (t compile-command)))
+
+(defun my/rails-compile (command &optional comint)
+  "Dwim compilation for ruby files."
+  (interactive
+   (list
+    (let ((command (my/rails-dwim-compile-command)))
+      (if (or compilation-read-command current-prefix-arg)
+          (compilation-read-command command)
+        command))
+    (consp current-prefix-arg)))
+  (compile command comint))
+
+(defun my/rails-compile-comint ()
+  "Dwim compilation for ruby files."
+  (interactive)
+  (universal-argument)
+  (command-execute 'my/rails-compile))

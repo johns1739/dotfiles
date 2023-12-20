@@ -1,13 +1,11 @@
-;; TODO
-;; look through org-mode documentation
+;; -*- lexical-binding: t; -*-
+;; Anything and all key-binding related logic.
 
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
-(keymap-global-set "<remap> <dabbrev-expand>" 'hippie-expand)
+(keymap-global-set "M-/" 'hippie-expand)
 
-(keymap-set corfu-map "RET" nil)
-
-(defvar my-note-taking-keymap
+(defvar my/note-taking-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "c" '("Capture" . org-roam-capture))
     (keymap-set m "f" '("Find" . org-roam-node-find))
@@ -15,9 +13,9 @@
     (keymap-set m "j" '("Today" . org-roam-dailies-goto-date))
     (keymap-set m "l" '("Store" . org-store-link))
     m)
-  "Notes Keymap")
+  "Note Keymap")
 
-(defvar my-editor-settings-keymap
+(defvar my/editor-settings-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "I" '("Reload init.el" . my/reload-init))
     (keymap-set m "e" '("emacs.el" . my/go-to-emacs-file))
@@ -26,9 +24,9 @@
     (keymap-set m "i" '("init.el" . my/go-to-init-file))
     (keymap-set m "R" '("Restart Emacs" . restart-emacs))
     m)
-  "Settings Keymap")
+  "Editor Keymap")
 
-(defvar my-search-keymap
+(defvar my/search-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "b" '("Search" . consult-bookmark))
     (keymap-set m "i" '("Imenu" . consult-imenu))
@@ -37,9 +35,9 @@
     (keymap-set m "s" '("Search" . consult-line))
     (keymap-set m "r" '("Register" . consult-register))
     m)
-  "Search Word Keymap")
+  "Search Keymap")
 
-(defvar my-find-keymap
+(defvar my/find-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "B" '("All buffers" . consult-buffer))
     (keymap-set m "b" '("Buffer" . consult-project-buffer))
@@ -53,10 +51,10 @@
     m)
   "Find Keymap")
 
-(defvar my-console-keymap
+(defvar my/console-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "C" '("Project compile" . project-compile))
-    (keymap-set m "c" '("Compile" . my/compile))
+    (keymap-set m "c" '("Compile" . compile))
     (keymap-set m "r" '("Recompile" . recompile))
     (keymap-set m "y" '("Yank filename" . my/project-copy-relative-file-name))
     (keymap-set m "T" '("Terminal" . vterm))
@@ -64,7 +62,7 @@
     m)
   "Console Keymap")
 
-(defvar my-git-keymap
+(defvar my/git-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "B" '("Show blame" . magit-blame-addition))
     (keymap-set m "G" '("Git dispatch buffer" . magit-file-dispatch))
@@ -76,37 +74,44 @@
     m)
   "Git Keymap")
 
-(defvar my-leader-keymap
+(defvar my/leader-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "SPC" '("Find file" . project-find-file))
     (keymap-set m "." '("Dired" . project-dired))
-
-    (keymap-set m "n" (cons "Notes"  my-note-taking-keymap))
-    (keymap-set m "e" (cons "Emacs Settings" my-editor-settings-keymap))
-    (keymap-set m "f" (cons "Find" my-find-keymap))
-    (keymap-set m "c" (cons "Console" my-console-keymap))
-    (keymap-set m "g" (cons "Git" my-git-keymap))
-    (keymap-set m "s" (cons "Search" my-search-keymap))
+    (keymap-set m "n" (cons "Notes"  my/note-taking-keymap))
+    (keymap-set m "e" (cons "Emacs Settings" my/editor-settings-keymap))
+    (keymap-set m "f" (cons "Find" my/find-keymap))
+    (keymap-set m "c" (cons "Console" my/console-keymap))
+    (keymap-set m "g" (cons "Git" my/git-keymap))
+    (keymap-set m "s" (cons "Search" my/search-keymap))
     m)
-  "Leader")
+  "Leader Keymap")
 
-(keymap-set evil-normal-state-map "SPC" my-leader-keymap)
-(keymap-set evil-visual-state-map "SPC" my-leader-keymap)
+(keymap-global-set "C-SPC" my/leader-keymap)
+(keymap-set evil-normal-state-map "SPC" my/leader-keymap)
+(keymap-set evil-visual-state-map "SPC" my/leader-keymap)
 
-;; Hooks
 
-(defun set-eglot-bindings ()
+;;;; LSP Bindings (eglot vs lsp-mode)
+
+(defun my/set-eglot-bindings ()
   "Inject eglot bindings."
-  (keymap-set evil-motion-state-local-map "g = =" 'eglot-format-buffer)
-  (keymap-set evil-motion-state-local-map "g R" 'eglot-rename))
-(add-hook 'eglot-managed-mode-hook 'set-eglot-bindings)
+  (evil-local-set-key 'normal "g==" 'eglot-format-buffer)
+  (evil-local-set-key 'normal "gR" 'eglot-rename))
+(add-hook 'eglot-managed-mode-hook 'my/set-eglot-bindings)
 
-(defun set-lsp-bindings ()
+(defun my/set-lsp-bindings ()
   "Inject lsp bindings."
-  (keymap-set evil-motion-state-local-map "g r" 'lsp-find-references)
-  (keymap-set evil-motion-state-local-map "g = =" 'lsp-format-buffer)
-  (keymap-set evil-motion-state-local-map "g = r" 'lsp-format-region)
-  (keymap-set evil-motion-state-local-map "g R" 'lsp-rename)
-  (keymap-set evil-motion-state-local-map "g d" 'lsp-find-definition)
-  (keymap-set evil-motion-state-local-map "K" 'eldoc))
-(add-hook 'lsp-mode-hook 'set-lsp-bindings)
+  (evil-local-set-key 'normal "g==" 'lsp-format-buffer)
+  (evil-local-set-key 'normal "gr" 'lsp-find-references)
+  (evil-local-set-key 'normal "g=r" 'lsp-format-region)
+  (evil-local-set-key 'normal "gR" 'lsp-rename)
+  (evil-local-set-key 'normal "gd" 'lsp-find-definition)
+  (evil-local-set-key 'normal "K" 'eldoc))
+(add-hook 'lsp-mode-hook 'my/set-lsp-bindings)
+
+(defun my/set-ruby-keybindings ()
+  "Inject ruby specific keybindings"
+  (keymap-set evil-normal-state-local-map "SPC c c" '("Compile" . my/rails-compile))
+  (keymap-set evil-normal-state-local-map "SPC c C" '("Comint" . my/rails-compile-comint)))
+(add-hook 'ruby-ts-mode-hook 'my/set-ruby-keybindings)
