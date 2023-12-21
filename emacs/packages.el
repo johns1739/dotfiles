@@ -37,15 +37,8 @@
   :custom
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
-  (dolist (var '(
-                 "SSH_AUTH_SOCK"
-                 "SSH_AGENT_PID"
-                 "GPG_AGENT_INFO"
-                 "GOPATH"
-                 "LANG"
-                 "LC_CTYPE"
-                 "NIX_SSL_CERT_FILE"
-                 "NIX_PATH"))
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "GOPATH"
+                 "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
@@ -287,8 +280,7 @@
   (dashboard-week-agenda t)
   (dashboard-filter-agenda-entry 'dashboard-no-filter-agenda)
   (dashboard-items '((recents  . 5)
-                     (bookmarks . 5)
-                     (agenda . 5)))
+                     (bookmarks . 5)))
   :config
   (dashboard-setup-startup-hook))
 
@@ -313,14 +305,14 @@
   :config
   (load-theme 'modus-vivendi-tritanopia t))
 
-  (use-package doom-modeline
-    :custom
-    (doom-modeline-icon nil)
-    (doom-modeline-minor-modes nil)
-    (doom-modeline-indent-info nil)
-    (doom-modeline-buffer-encoding nil)
-    (doom-modeline-vcs-max-length 20)
-    (doom-modeline-display-misc-in-all-mode-lines nil)
-    (doom-modeline-env-version nil)
-    :init
-    (doom-modeline-mode 1))
+(use-package doom-modeline
+  :custom
+  (doom-modeline-icon nil)
+  (doom-modeline-minor-modes nil)
+  (doom-modeline-indent-info nil)
+  (doom-modeline-buffer-encoding nil)
+  (doom-modeline-vcs-max-length 20)
+  (doom-modeline-display-misc-in-all-mode-lines nil)
+  (doom-modeline-env-version nil)
+  :init
+  (doom-modeline-mode 1))

@@ -127,8 +127,8 @@
 
 (defun my/rails-compile ()
   (interactive)
-  (let ((compile-command (my/rails-dwim-compile-command)))
-    (call-interactively #'project-compile)))
+  (setq compile-command (my/rails-dwim-compile-command))
+  (call-interactively #'project-compile))
 
 (defun my/rails-compile-comint ()
   "Dwim compilation for ruby files."
