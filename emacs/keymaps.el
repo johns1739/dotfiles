@@ -4,13 +4,13 @@
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
 (keymap-global-set "M-/" 'hippie-expand)
+(keymap-global-set "M-o" 'ace-window)
 
 (defvar my/note-taking-keymap
   (let ((m (make-sparse-keymap)))
-    (keymap-set m "c" '("Capture" . org-roam-capture))
-    (keymap-set m "f" '("Find" . org-roam-node-find))
-    (keymap-set m "i" '("Insert" . org-roam-node-insert))
-    (keymap-set m "j" '("Today" . org-roam-dailies-goto-date))
+    (keymap-set m "c" '("Create" . denote))
+    (keymap-set m "f" '("Find" . consult-notes))
+    (keymap-set m "s" '("Search" . consult-notes-search-in-all-notes))
     (keymap-set m "l" '("Store" . org-store-link))
     m)
   "Note Keymap")
@@ -18,6 +18,7 @@
 (defvar my/editor-settings-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "I" '("Reload init.el" . my/reload-init))
+    (keymap-set m "c" '("custom.el" . my/go-to-custom-file))
     (keymap-set m "e" '("emacs.el" . my/go-to-emacs-file))
     (keymap-set m "p" '("packages.el" . my/go-to-packages-file))
     (keymap-set m "k" '("keymaps.el" . my/go-to-keymaps-file))
@@ -77,7 +78,6 @@
 (defvar my/leader-keymap
   (let ((m (make-sparse-keymap)))
     (keymap-set m "SPC" '("Find file" . project-find-file))
-    (keymap-set m "." '("Dired" . project-dired))
     (keymap-set m "n" (cons "Notes"  my/note-taking-keymap))
     (keymap-set m "e" (cons "Emacs Settings" my/editor-settings-keymap))
     (keymap-set m "f" (cons "Find" my/find-keymap))

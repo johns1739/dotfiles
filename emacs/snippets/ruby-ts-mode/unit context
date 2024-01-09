@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: unit context
+# key: <c
+# --
+context '${1:when something}' do
+  $0
+end

@@ -1,10 +1,14 @@
 ;; -*- lexical-binding: t; -*-
 ;; Third party packages
 
+;; Auto-install straight
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 6))
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
         (url-retrieve-synchronously
@@ -13,13 +17,17 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
-(straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
-(setq use-package-compute-statistics t)
-
 
 ;;;; PACKAGES
+
+(use-package ansi-color
+  :init
+  (defun my/ansi-colorize-buffer ()
+    (let ((buffer-read-only nil))
+      (ansi-color-apply-on-region (point-min) (point-max))))
+  :config
+  (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
 
 (use-package undo-tree
   :config
@@ -45,6 +53,8 @@
 (use-package rg)
 
 (use-package avy)
+
+(use-package ace-window)
 
 (use-package which-key
   :custom
@@ -109,7 +119,6 @@
   (evil-mode 1)
   (evil-select-search-module 'evil-search-module 'evil-search))
 
-
 (use-package evil-collection
   :demand
   :after evil
@@ -121,12 +130,22 @@
   :config
   (global-evil-surround-mode 1))
 
+;; https://www.flycheck.org/en/latest/
 (use-package flycheck)
 
-(use-package command-log-mode)
+(use-package command-log-mode
+  :disabled)
+
+;; https://joaotavora.github.io/yasnippet/index.html
+(use-package yasnippet
+  :config
+  (setq yas-snippet-dirs (list my/yas-snippet-dir))
+  (yas-global-mode 1))
+
 
 ;;;; LANGUAGES
 
+;; https://emacs-lsp.github.io/lsp-mode/
 (use-package lsp-mode
   :init
   (defun my/lsp-mode-set-default-styles ()
@@ -166,6 +185,9 @@
   (ruby-ts-mode . display-line-numbers-mode)
   (ruby-ts-mode . lsp-deferred))
 
+(use-package lsp-haskell
+  :hook
+  (haskell-mode . lsp-deferred))
 
 (use-package elixir-ts-mode
   :custom
@@ -175,41 +197,81 @@
   (heex-ts-mode . lsp-deferred))
 
 (use-package yaml-ts-mode
-  :mode "\\.yaml\\|.yml\\'"
+  :mode "\\(\\.yaml\\|.yml\\)\\'"
   :hook
-  (yaml-ts-mode . lsp-deffered)
+  (yaml-ts-mode . lsp-deferred)
   (yaml-ts-mode . display-line-numbers-mode))
 
+(use-package sqlformat
+  :config
+  (setq sqlformat-command 'pgformatter)
+  (setq sqlformat-args '("-s2" "-g")))
+
+;; https://www.nongnu.org/geiser/index.html
+;; https://www.gnu.org/software/guile/manual/guile.html
+(use-package geiser-guile)
+
+;; http://pub.gajendra.net/src/paredit-refcard.pdf
+(use-package paredit
+  :hook
+  (scheme-mode . enable-paredit-mode)
+  (emacs-lisp-mode . enable-paredit-mode))
 
 ;;;; ORG MODE
 
+;; https://orgmode.org/
 (use-package org
   :demand t
   :mode (("\\.org$" . org-mode))
   :config
   (setq org-directory "~/workspace/notes/org")
-  (setq org-startup-indented t))
+  (setq org-startup-indented t)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t)
+     (emacs-lisp . t))))
 
 (use-package evil-org
   :after org
-  :hook (org-mode . (lambda () evil-org-mode))
+  :hook (org-mode . evil-org-mode)
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+(use-package denote
+  :custom
+  (denote-file-type 'org)
+  (denote-directory "~/workspace/notes/denote"))
+
+(use-package consult-notes
+  :after denote
+  :config
+  (consult-notes-denote-mode))
+
 (use-package org-roam
+  :disabled
+  :after org
   :custom
   (org-roam-directory (file-truename "~/workspace/notes/org/roam"))
   :config
   (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
   (org-roam-db-autosync-mode))
 
+(use-package deft
+  :disabled
+  :after org-roam
+  :custom
+  (deft-recursive t)
+  (deft-use-filter-string-for-filename t)
+  (deft-use-filename-as-title)
+  (deft-default-extension "org")
+  (deft-directory org-roam-directory))
+
 
 ;;;; COMPLETION
 
 (use-package corfu
-  :straight (corfu :files (:defaults "extensions/*.el")
-                   :includes (corfu-echo))
+  :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
   ;; Completion in region function
   ;; https://github.com/minad/corfu#key-bindings
   :custom
@@ -288,21 +350,31 @@
   :config
   (indent-guide-global-mode))
 
+(use-package olivetti)
+
 (use-package gruvbox-theme)
 
 (use-package modus-themes
   :ensure t
-  :custom
-  ;; https://protesilaos.com/emacs/modus-themes
-  (modus-vivendi-tritanopia-palette-overrides
-   '((fringe unspecified)
-     (bg-line-number-active unspecified)
-     (bg-line-number-inactive unspecified)
-     (border-mode-line-active unspecified)
-     (border-mode-line-inactive unspecified)
-     (fg-main "#e0e0e0")
-     (bg-main "#101010")))
   :config
+  ;; https://protesilaos.com/emacs/modus-themes
+  (if (display-graphic-p)
+      ;; GUI
+      (setq modus-vivendi-tritanopia-palette-overrides
+            '((fringe unspecified)
+              (bg-line-number-active unspecified)
+              (bg-line-number-inactive unspecified)
+              (border-mode-line-active unspecified)
+              (border-mode-line-inactive unspecified)
+              (fg-main "#d0d0d0")
+              (bg-main "#14191e")))
+    ;; Terminal
+    (setq modus-vivendi-tritanopia-palette-overrides
+          '((fringe unspecified)
+            (bg-line-number-active unspecified)
+            (bg-line-number-inactive unspecified)
+            (border-mode-line-active unspecified)
+            (border-mode-line-inactive unspecified))))
   (load-theme 'modus-vivendi-tritanopia t))
 
 (use-package doom-modeline
