@@ -185,6 +185,27 @@
   (ruby-ts-mode . display-line-numbers-mode)
   (ruby-ts-mode . lsp-deferred))
 
+(use-package erlang
+  :straight nil
+  :load-path "/opt/homebrew/lib/erlang/lib/tools-3.6/emacs/"
+  :hook
+  (erlang-mode . lsp-deferred)
+  :mode (("\\.erl?$" . erlang-mode)
+         ("rebar\\.config$" . erlang-mode)
+         ("relx\\.config$" . erlang-mode)
+         ("sys\\.config\\.src$" . erlang-mode)
+         ("sys\\.config$" . erlang-mode)
+         ("\\.config\\.src?$" . erlang-mode)
+         ("\\.config\\.script?$" . erlang-mode)
+         ("\\.hrl?$" . erlang-mode)
+         ("\\.app?$" . erlang-mode)
+         ("\\.app.src?$" . erlang-mode)
+         ("\\Emakefile" . erlang-mode))
+  :config
+  (setq erlang-root-dir "/opt/homebrew/lib/erlang")
+  (add-to-list 'exec-path "/opt/homebrew/lib/erlang/bin")
+  (require 'erlang-start))
+
 (use-package lsp-haskell
   :hook
   (haskell-mode . lsp-deferred))
