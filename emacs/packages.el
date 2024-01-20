@@ -207,6 +207,7 @@
   (require 'erlang-start))
 
 (use-package lsp-haskell
+  :disabled
   :hook
   (haskell-mode . lsp-deferred))
 
@@ -230,7 +231,8 @@
 
 ;; https://www.nongnu.org/geiser/index.html
 ;; https://www.gnu.org/software/guile/manual/guile.html
-(use-package geiser-guile)
+(use-package geiser-guile
+  :disabled)
 
 ;; http://pub.gajendra.net/src/paredit-refcard.pdf
 (use-package paredit
@@ -371,9 +373,11 @@
   :config
   (indent-guide-global-mode))
 
-(use-package olivetti)
+(use-package olivetti
+  :disabled)
 
-(use-package gruvbox-theme)
+(use-package gruvbox-theme
+  :disabled)
 
 (use-package modus-themes
   :ensure t

@@ -12,7 +12,7 @@
 ;;             (message "*** Emacs loaded in %s seconds with %d garbage collections."
 ;;                      (emacs-init-time "%.2f") gcs-done)))
 
-(defconst my/config-directory "~/workspace/myconfigs/emacs")
+(defconst my/config-directory "~/workspace/personal/myconfigs/emacs")
 (defconst my/init-file-name (expand-file-name "init.el" my/config-directory))
 (defconst my/emacs-file-name (expand-file-name "emacs.el" my/config-directory))
 (defconst my/packages-file-name (expand-file-name "packages.el" my/config-directory))
@@ -24,6 +24,5 @@
 (load-file my/keymaps-file-name)
 
 ;; TODO
-;; ruby tests: ability to run whole test file from the actual class
 ;; ruby tests: rgrep/consult filter to see desc/context/test labels for better test navigation
 ;; Send bash region to vterm from other buffer
