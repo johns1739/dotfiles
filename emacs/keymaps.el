@@ -1,6 +1,8 @@
 ;; -*- lexical-binding: t; -*-
 ;; Anything and all key-binding related logic.
 
+;; TODO: Make this more bearable.
+
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
 (keymap-global-set "M-/" 'hippie-expand)

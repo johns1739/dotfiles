@@ -18,6 +18,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 (setq straight-use-package-by-default t)
+(setq use-package-always-defer t)
 
 ;;;; PACKAGES
 
@@ -52,7 +53,8 @@
 
 (use-package rg)
 
-(use-package avy)
+(use-package avy
+  :bind ([remap other-window] . ace-window))
 
 (use-package ace-window)
 
@@ -61,7 +63,7 @@
   (which-key-idle-delay 1)
   (which-key-idle-secondary-delay nil)
   :config
-  (which-key-mode))
+  (which-key-mode 1))
 
 (use-package xclip
   :unless (display-graphic-p)
@@ -89,12 +91,6 @@
 
 (use-package magit)
 
-(use-package magit-todos
-  :disabled
-  :after magit
-  :config
-  (magit-todos-mode 1))
-
 (use-package git-link
   :after magit)
 
@@ -102,6 +98,7 @@
 ;;;; EVIL
 
 (use-package evil
+  :demand t
   :init
   (setq evil-disable-insert-state-bindings t)
   (setq evil-ex-search-persistent-highlight nil)
@@ -120,21 +117,19 @@
   (evil-select-search-module 'evil-search-module 'evil-search))
 
 (use-package evil-collection
-  :demand
+  :demand t
   :after evil
   :config
   (evil-collection-init))
 
 (use-package evil-surround
+  :demand t
   :after evil
   :config
   (global-evil-surround-mode 1))
 
 ;; https://www.flycheck.org/en/latest/
 (use-package flycheck)
-
-(use-package command-log-mode
-  :disabled)
 
 ;; https://joaotavora.github.io/yasnippet/index.html
 (use-package yasnippet
@@ -167,16 +162,6 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
   (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]erl_crash.dump\\'"))
 
-(use-package lsp-ui
-  :disabled
-  :after lsp-mode
-  :custom
-  (lsp-ui-doc-delay 1)
-  (lsp-ui-doc-show-with-mouse nil)
-  (lsp-ui-sideline-delay 1)
-  (lsp-ui-sideline-show-diagnostics t)
-  (lsp-ui-sideline-show-code-actions t))
-
 (use-package ruby-ts-mode
   :init
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
@@ -207,7 +192,6 @@
   (require 'erlang-start))
 
 (use-package lsp-haskell
-  :disabled
   :hook
   (haskell-mode . lsp-deferred))
 
@@ -232,7 +216,7 @@
 ;; https://www.nongnu.org/geiser/index.html
 ;; https://www.gnu.org/software/guile/manual/guile.html
 (use-package geiser-guile
-  :disabled)
+  :commands (geiser-mode))
 
 ;; http://pub.gajendra.net/src/paredit-refcard.pdf
 (use-package paredit
@@ -240,11 +224,11 @@
   (scheme-mode . enable-paredit-mode)
   (emacs-lisp-mode . enable-paredit-mode))
 
+
 ;;;; ORG MODE
 
 ;; https://orgmode.org/
 (use-package org
-  :demand t
   :mode (("\\.org$" . org-mode))
   :config
   (setq org-directory "~/workspace/notes/org")
@@ -270,25 +254,6 @@
   :after denote
   :config
   (consult-notes-denote-mode))
-
-(use-package org-roam
-  :disabled
-  :after org
-  :custom
-  (org-roam-directory (file-truename "~/workspace/notes/org/roam"))
-  :config
-  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-  (org-roam-db-autosync-mode))
-
-(use-package deft
-  :disabled
-  :after org-roam
-  :custom
-  (deft-recursive t)
-  (deft-use-filter-string-for-filename t)
-  (deft-use-filename-as-title)
-  (deft-default-extension "org")
-  (deft-directory org-roam-directory))
 
 
 ;;;; COMPLETION
@@ -360,6 +325,7 @@
 ;;;; GRAPHICS
 
 (use-package dashboard
+  :demand t
   :custom
   (dashboard-center-content t)
   (dashboard-week-agenda t)
@@ -370,16 +336,14 @@
   (dashboard-setup-startup-hook))
 
 (use-package indent-guide
+  :demand t
   :config
   (indent-guide-global-mode))
 
-(use-package olivetti
-  :disabled)
-
-(use-package gruvbox-theme
-  :disabled)
+(use-package gruvbox-theme)
 
 (use-package modus-themes
+  :demand t
   :ensure t
   :config
   ;; https://protesilaos.com/emacs/modus-themes
@@ -403,6 +367,7 @@
   (load-theme 'modus-vivendi-tritanopia t))
 
 (use-package doom-modeline
+  :demand t
   :custom
   (doom-modeline-icon nil)
   (doom-modeline-minor-modes nil)

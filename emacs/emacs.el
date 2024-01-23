@@ -3,6 +3,7 @@
 ;; This contains builtin emacs logic.
 ;; Does not depend on any third party packages.
 
+
 ;;;; SETTINGS
 
 (setq apropos-do-all t)
@@ -61,8 +62,6 @@
 ;; (desktop-save-mode -1)
 ;; (auto-save-visited-mode 1)
 
-;; To install grammars:
-;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 (with-eval-after-load 'treesit
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -144,9 +143,13 @@
   (universal-argument)
   (command-execute 'my/rails-compile))
 
+(defun my/treesit-install-languages ()
+  "Install all registered languages."
+  (interactive)
+  (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
+
 
 ;;;; HELPERS
-
 
 (defun my/project-directory ()
   "Current project directory."
