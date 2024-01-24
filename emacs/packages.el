@@ -1,6 +1,7 @@
 ;; -*- lexical-binding: t; -*-
 ;; Third party packages
 
+
 ;; Auto-install straight
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -20,6 +21,7 @@
 (setq straight-use-package-by-default t)
 (setq use-package-always-defer t)
 
+
 ;;;; PACKAGES
 
 (use-package ansi-color
@@ -31,6 +33,7 @@
   (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
 
 (use-package undo-tree
+  :demand t
   :config
   (setq undo-tree-visualizer-timestamps t)
   (let ((undo-tree-history-directory (file-name-as-directory
@@ -42,7 +45,7 @@
 
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
-  :demand
+  :demand t
   :custom
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
@@ -53,30 +56,26 @@
 
 (use-package rg)
 
-(use-package avy
+(use-package avy)
+
+(use-package ace-window
   :bind ([remap other-window] . ace-window))
 
-(use-package ace-window)
-
-(use-package which-key
-  :custom
-  (which-key-idle-delay 1)
-  (which-key-idle-secondary-delay nil)
-  :config
-  (which-key-mode 1))
-
 (use-package xclip
+  :demand t
   :unless (display-graphic-p)
-  :init
+  :config
   (xclip-mode 1))
 
 (use-package vertico
+  :demand t
   :straight (:files (:defaults "extensions/*"))
-  :init
+  :config
   (vertico-mode 1))
 
 (use-package marginalia
-  :init
+  :demand t
+  :config
   (marginalia-mode 1))
 
 (use-package consult)
@@ -142,6 +141,7 @@
 
 ;; https://emacs-lsp.github.io/lsp-mode/
 (use-package lsp-mode
+  :commands (lsp lsp-deferred)
   :init
   (defun my/lsp-mode-set-default-styles ()
     (setf (alist-get 'styles
@@ -154,9 +154,8 @@
   (lsp-signature-render-documentation t)
   (lsp-eldoc-render-all t)
   :hook
-  (lsp-mode . lsp-enable-which-key-integration)
+  ;; (lsp-mode . lsp-enable-which-key-integration)
   (lsp-completion-mode . my/lsp-mode-set-default-styles)
-  :commands (lsp lsp-deferred)
   :config
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]_build\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
@@ -193,7 +192,11 @@
 
 (use-package lsp-haskell
   :hook
-  (haskell-mode . lsp-deferred))
+  (haskell-mode . lsp-deferred)
+  (haskell-mode . display-fill-column-indicator-mode)
+  (haskell-mode . display-line-numbers-mode)
+  (haskell-cabal-mode . display-line-numbers-mode)
+  (haskell-literal-mode . lsp-deferred))
 
 (use-package elixir-ts-mode
   :custom
@@ -325,6 +328,7 @@
 ;;;; GRAPHICS
 
 (use-package dashboard
+  :disabled
   :demand t
   :custom
   (dashboard-center-content t)
@@ -344,7 +348,6 @@
 
 (use-package modus-themes
   :demand t
-  :ensure t
   :config
   ;; https://protesilaos.com/emacs/modus-themes
   (if (display-graphic-p)

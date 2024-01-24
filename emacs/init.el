@@ -7,10 +7,10 @@
             (setq gc-cons-threshold 16777216)
             (setq gc-cons-percentage 0.1)))
 
-;; (add-hook 'emacs-startup-hook
-;;           (lambda ()
-;;             (message "*** Emacs loaded in %s seconds with %d garbage collections."
-;;                      (emacs-init-time "%.2f") gcs-done)))
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (message "*** Emacs loaded in %s seconds with %d garbage collections."
+                     (emacs-init-time "%.2f") gcs-done)))
 
 (defconst my/config-directory "~/workspace/personal/myconfigs/emacs")
 (defconst my/init-file-name (expand-file-name "init.el" my/config-directory))
