@@ -161,11 +161,14 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
   (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]erl_crash.dump\\'"))
 
+(use-package elm-mode
+  :hook
+  (elm-mode . eglot-ensure))
+
 (use-package ruby-ts-mode
   :init
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   :hook
-  (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-ts-mode . display-line-numbers-mode)
   (ruby-ts-mode . lsp-deferred))
 
@@ -340,6 +343,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package indent-guide
+  :disabled
   :demand t
   :config
   (indent-guide-global-mode))
