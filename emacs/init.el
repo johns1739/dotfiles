@@ -64,7 +64,7 @@
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (window-divider-mode 1)
-;; (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
+(set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
 ;; (desktop-save-mode -1)
 ;; (auto-save-visited-mode 1)
 
@@ -190,6 +190,13 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 (setq straight-use-package-by-default t)
+
+
+;; GLOBAL KEYMAP
+
+(keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
+(keymap-global-set "C-x l" '("Next buffer" . next-buffer))
+(keymap-global-set "M-/" 'hippie-expand)
 
 
 ;;;; PACKAGES
@@ -574,8 +581,8 @@
           (bg-line-number-inactive unspecified)
           (border-mode-line-active unspecified)
           (border-mode-line-inactive unspecified)))
-  (if (display-graphic-p)
-      (add-to-list 'modus-vivendi-tritanopia-palette-overrides '(fg-main "#d0d0d0"))
+  (when (display-graphic-p)
+    (add-to-list 'modus-vivendi-tritanopia-palette-overrides '(fg-main "#d0d0d0"))
     (add-to-list 'modus-vivendi-tritanopia-palette-overrides '(bg-main "#14191e")))
   (load-theme 'modus-vivendi-tritanopia t))
 
@@ -592,12 +599,7 @@
   (doom-modeline-mode 1))
 
 
-;; GLOBAL KEYMAP
-
-(keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
-(keymap-global-set "C-x l" '("Next buffer" . next-buffer))
-(keymap-global-set "M-/" 'hippie-expand)
-
+;; CUSTOM FILE
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 (load custom-file)
