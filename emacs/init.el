@@ -1,6 +1,7 @@
 ;;-*- lexical-binding: t; -*-
 
 ;; TODO
+;; Open VTERM at project root
 ;; ruby tests: rgrep/consult filter to see desc/context/test labels for better test navigation
 ;; Send bash region to vterm from other buffer
 
@@ -14,6 +15,7 @@
 
 (setq apropos-do-all t)
 (setq compilation-always-kill t)
+(setq compilation-scroll-output t)
 (setq compilation-max-output-line-length nil)
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq create-lockfiles nil)
@@ -58,6 +60,7 @@
 (global-auto-revert-mode t)
 (menu-bar-mode -1)
 (recentf-mode 1)
+(electric-indent-mode 1)
 (save-place-mode 1)
 (savehist-mode 1)
 (scroll-bar-mode -1)
@@ -90,7 +93,8 @@
           (elixir "https://github.com/elixir-lang/tree-sitter-elixir")
           (heex "https://github.com/phoenixframework/tree-sitter-heex")
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
-          (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
+          (scheme "https://github.com/6cdh/tree-sitter-scheme")
+          (sql "https://github.com/DerekStride/tree-sitter-sql"))))
 
 
 ;; COMMANDS
@@ -126,6 +130,17 @@
   (interactive)
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
+(defun my/expand-region ()
+  "Expand selection under cursor using treesit nodes."
+  (interactive)
+  (let ((repeated (and (eq last-command this-command) (mark t))))
+    (setq current-node (if repeated (treesit-node-parent current-node) (treesit-node-at (point))))
+    (setq repeated-count (if repeated (1+ repeated-count) 0))
+    (goto-char (treesit-node-start current-node))
+    (save-excursion
+      (push-mark
+       (goto-char (treesit-node-end current-node))
+       nil t))))
 
 ;;;; HELPERS
 
@@ -166,10 +181,6 @@
 (defun my/rails-dwim-compile-command ()
   (cond ((my/rails-buffer-test-file-p)
          (my/rails-test-file-compile-command))
-        ((my/rails-test-file-exists-p)
-         (save-current-buffer
-           (my/rails-goto-test-file)
-           (my/rails-test-file-compile-command)))
         (t compile-command)))
 
 
@@ -197,6 +208,7 @@
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
 (keymap-global-set "M-/" 'hippie-expand)
+(keymap-global-set "M-o" 'my/expand-region)
 
 
 ;;;; PACKAGES
@@ -259,13 +271,8 @@
   (evil-collection-init))
 
 (use-package ansi-color
-  :defer t
-  :init
-  (defun my/ansi-colorize-buffer ()
-    (let ((buffer-read-only nil))
-      (ansi-color-apply-on-region (point-min) (point-max))))
-  :config
-  (add-hook 'compilation-filter-hook 'my/ansi-colorize-buffer))
+  :hook
+  (compilation-filter . ansi-color-compilation-filter))
 
 (use-package undo-tree
   :config
@@ -363,7 +370,9 @@
 
 ;; https://www.flycheck.org/en/latest/
 (use-package flycheck
-  :defer t)
+  :defer t
+  :custom
+  (flycheck-indication-mode 'right-fringe))
 
 ;; https://joaotavora.github.io/yasnippet/index.html
 (use-package yasnippet

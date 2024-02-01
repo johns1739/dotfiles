@@ -7,3 +7,5 @@
 /emacs/eln-cache/
 /emacs/bookmarks
 /emacs/.lsp-session-v1
+/emacs/.cache/
+/emacs/eshell/
