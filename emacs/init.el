@@ -2,7 +2,6 @@
 
 ;; TODO
 ;; Open VTERM at project root
-;; ruby tests: rgrep/consult filter to see desc/context/test labels for better test navigation
 ;; Send bash region to vterm from other buffer
 
 (add-hook 'emacs-startup-hook
@@ -51,23 +50,27 @@
         try-complete-file-name
         try-expand-dabbrev-from-kill))
 
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+(add-hook 'prog-mode-hook #'treesit-nav-major-mode-setup)
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 120))
+(add-to-list 'load-path (expand-file-name "site-lisp/treesit-nav" user-emacs-directory))
 (column-number-mode 1)
 (delete-selection-mode 1)
+(electric-indent-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t)
 (menu-bar-mode -1)
 (recentf-mode 1)
-(electric-indent-mode 1)
+(require 'treesit-nav)
 (save-place-mode 1)
 (savehist-mode 1)
 (scroll-bar-mode -1)
+(set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (window-divider-mode 1)
-(set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
+
 ;; (desktop-save-mode -1)
 ;; (auto-save-visited-mode 1)
 
@@ -95,7 +98,6 @@
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
           (scheme "https://github.com/6cdh/tree-sitter-scheme")
           (sql "https://github.com/DerekStride/tree-sitter-sql"))))
-
 
 ;; COMMANDS
 
@@ -130,19 +132,12 @@
   (interactive)
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
-(defun my/expand-region ()
-  "Expand selection under cursor using treesit nodes."
-  (interactive)
-  (let ((repeated (and (eq last-command this-command) (mark t))))
-    (setq current-node (if repeated (treesit-node-parent current-node) (treesit-node-at (point))))
-    (setq repeated-count (if repeated (1+ repeated-count) 0))
-    (goto-char (treesit-node-start current-node))
-    (save-excursion
-      (push-mark
-       (goto-char (treesit-node-end current-node))
-       nil t))))
 
 ;;;; HELPERS
+
+(defun treesit-nav-major-mode-setup ()
+  (when treesit-defun-type-regexp
+    (keymap-local-set "M-o" #'treesit-nav-expand-region)))
 
 (defun my/project-directory ()
   "Current project directory."
@@ -208,7 +203,7 @@
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
 (keymap-global-set "M-/" 'hippie-expand)
-(keymap-global-set "M-o" 'my/expand-region)
+(keymap-global-set "M-o" #'mark-sexp)
 
 
 ;;;; PACKAGES
@@ -443,8 +438,11 @@
   :custom
   (lsp-elixir-suggest-specs nil)
   :hook
+  (elixir-ts-mode . display-line-numbers-mode)
+  (heex-ts-mode . display-line-numbers-mode)
   (elixir-ts-mode . lsp-deferred)
   (heex-ts-mode . lsp-deferred))
+
 
 (use-package yaml-ts-mode
   :defer t
@@ -524,14 +522,15 @@
 ;;;; COMPLETION
 
 (use-package corfu
+  ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
   ;; Completion in region function
   ;; https://github.com/minad/corfu#key-bindings
   :custom
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-auto t) ; Enable auto completion
-  (corfu-auto-prefix 3) ; Enable auto completion
-  (corfu-auto-delay 0.5) ; Enable auto completion
+  (corfu-auto-prefix 2) ; Enable auto completion
+  (corfu-auto-delay 0.2) ; Enable auto completion
   (corfu-echo-delay '(1 . 0.5))
   :init
   (global-corfu-mode 1)
@@ -559,18 +558,18 @@
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
+  (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package cape
+  ;; Cape provides Completion At Point Extensions
   :after corfu
   :custom
   (completion-at-point-functions
    '(cape-dabbrev
      cape-keyword
-     cape-line
      cape-dict
      cape-file)))
-
 
 ;;;; GRAPHICS
 
