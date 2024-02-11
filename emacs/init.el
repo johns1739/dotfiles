@@ -1,7 +1,6 @@
 ;;-*- lexical-binding: t; -*-
 
 ;; TODO
-;; Open VTERM at project root
 ;; Send bash region to vterm from other buffer
 
 (add-hook 'emacs-startup-hook
@@ -51,10 +50,8 @@
         try-expand-dabbrev-from-kill))
 
 (add-hook 'before-save-hook #'delete-trailing-whitespace)
-(add-hook 'prog-mode-hook #'treesit-nav-major-mode-setup)
 (add-to-list 'default-frame-alist '(height . 50))
 (add-to-list 'default-frame-alist '(width . 120))
-(add-to-list 'load-path (expand-file-name "site-lisp/treesit-nav" user-emacs-directory))
 (column-number-mode 1)
 (delete-selection-mode 1)
 (electric-indent-mode 1)
@@ -62,7 +59,6 @@
 (global-auto-revert-mode t)
 (menu-bar-mode -1)
 (recentf-mode 1)
-(require 'treesit-nav)
 (save-place-mode 1)
 (savehist-mode 1)
 (scroll-bar-mode -1)
@@ -74,6 +70,8 @@
 ;; (desktop-save-mode -1)
 ;; (auto-save-visited-mode 1)
 
+;; Install grammars
+;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 (with-eval-after-load 'treesit
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -127,17 +125,8 @@
   (universal-argument)
   (command-execute 'my/rails-compile))
 
-(defun my/treesit-install-languages ()
-  "Install all registered languages."
-  (interactive)
-  (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
-
 
 ;;;; HELPERS
-
-(defun treesit-nav-major-mode-setup ()
-  (when treesit-defun-type-regexp
-    (keymap-local-set "M-o" #'treesit-nav-expand-region)))
 
 (defun my/project-directory ()
   "Current project directory."
@@ -203,7 +192,6 @@
 (keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
 (keymap-global-set "C-x l" '("Next buffer" . next-buffer))
 (keymap-global-set "M-/" 'hippie-expand)
-(keymap-global-set "M-o" #'mark-sexp)
 
 
 ;;;; PACKAGES
@@ -331,11 +319,21 @@
 (use-package vterm
   :defer t
   :bind (:map evil-normal-state-map
-              ("SPC c T" . vterm)
-              ("SPC c t" . vterm-other-window))
+              ("SPC c t" . project-vterm))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000))
+  (vterm-max-scrollback 100000)
+  :init
+  (defun project-vterm ()
+    (interactive)
+    (let ((default-directory (my/project-directory)))
+      (call-interactively #'vterm)))
+
+  (add-to-list 'display-buffer-alist
+               '("\\*vterm\\*"
+                 (display-buffer-at-bottom)
+                 (window-height . 12)
+                 (dedicated . t))))
 
 (use-package magit
   :defer t
@@ -442,7 +440,6 @@
   (heex-ts-mode . display-line-numbers-mode)
   (elixir-ts-mode . lsp-deferred)
   (heex-ts-mode . lsp-deferred))
-
 
 (use-package yaml-ts-mode
   :defer t
@@ -558,7 +555,6 @@
 (use-package orderless
   :custom
   (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package cape
