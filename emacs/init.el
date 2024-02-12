@@ -31,6 +31,8 @@
 (setq ring-bell-function 'ignore)
 (setq tab-always-indent 'complete)
 (setq use-dialog-box nil)
+(setq history-length 500)
+(setq history-delete-duplicates t)
 (setq-default cursor-type 'bar)
 (setq-default display-fill-column-indicator-column 90)
 (setq-default display-line-numbers-type 'relative)
@@ -466,38 +468,10 @@
   (scheme-mode . enable-paredit-mode)
   (emacs-lisp-mode . enable-paredit-mode))
 
-
-;;;; ORG MODE
-
-;; https://orgmode.org/
-(use-package org
-  :defer t
-  :init
-  (setq org-directory "~/.notes/org")
-  :mode (("\\.org$" . org-mode))
-  :bind (:map evil-normal-state-map
-              ("SPC n l" . org-store-link))
-  :config
-  (setq org-startup-indented t)
-  (unless (file-exists-p org-directory)
-    (make-directory org-directory))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell . t)
-     (emacs-lisp . t))))
-
-(use-package evil-org
-  :defer t
-  :after org
-  :hook (org-mode . evil-org-mode)
-  :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
-
 (use-package denote
   :defer t
   :init
-  (setq denote-file-type 'org)
+  (setq denote-file-type 'markdown-yaml)
   (setq denote-directory "~/.notes/denote")
   :bind
   (:map evil-normal-state-map
