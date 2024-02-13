@@ -8,16 +8,12 @@
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
                      (emacs-init-time "%.2f") gcs-done)))
 
-(defconst my/config-file-name (expand-file-name "init.el" user-emacs-directory))
-(defconst my/yas-snippet-dir (expand-file-name "snippets" user-emacs-directory))
-
 (setq apropos-do-all t)
 (setq compilation-always-kill t)
 (setq compilation-scroll-output t)
 (setq compilation-max-output-line-length nil)
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq create-lockfiles nil)
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (setq eldoc-echo-area-use-multiline-p nil)
 (setq gc-cons-percentage 0.1)
 (setq gc-cons-threshold (* 16 1000 1000)) ;; 16 MB
@@ -68,9 +64,15 @@
 (show-paren-mode 1)
 (tool-bar-mode -1)
 (window-divider-mode 1)
+(global-hl-line-mode 1)
 
 ;; (desktop-save-mode -1)
 ;; (auto-save-visited-mode 1)
+
+;; Org setup
+(setq org-directory (expand-file-name "org" user-emacs-directory))
+(unless (file-exists-p org-directory)
+  (make-directory org-directory))
 
 ;; Install grammars
 ;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
@@ -99,17 +101,13 @@
           (scheme "https://github.com/6cdh/tree-sitter-scheme")
           (sql "https://github.com/DerekStride/tree-sitter-sql"))))
 
-;; COMMANDS
 
-(defun my/reload-config ()
-  "Reload my emacs configuration."
-  (interactive)
-  (load-file my/config-file-name))
+;; COMMANDS
 
 (defun my/go-to-config-file ()
   "Go to my config file."
   (interactive)
-  (find-file my/config-file-name))
+  (find-file (expand-file-name "init.el" user-emacs-directory)))
 
 (defun my/project-copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
@@ -132,7 +130,7 @@
 
 (defun my/project-directory ()
   "Current project directory."
-  (project-root (project-current t)))
+  (project-root (project-current)))
 
 (defun my/project-relative-file-name ()
   "Relative project path to file."
@@ -231,7 +229,6 @@
   (setq evil-want-keybinding nil)
   :bind (:map evil-normal-state-map
               ("SPC SPC" . project-find-file)
-              ("SPC e I" . my/reload-config)
               ("SPC e i" . my/go-to-config-file)
               ("SPC e R" . restart-emacs)
               ("SPC s g" . occur)
@@ -262,8 +259,7 @@
 (use-package undo-tree
   :config
   (setq undo-tree-visualizer-timestamps t)
-  (let ((undo-tree-history-directory (file-name-as-directory
-                                      (file-name-concat user-emacs-directory "undo-tree-history"))))
+  (let ((undo-tree-history-directory (expand-file-name "undo-tree-history" user-emacs-directory)))
     (unless (file-exists-p undo-tree-history-directory)
       (make-directory undo-tree-history-directory))
     (setq undo-tree-history-directory-alist (list (cons "."  undo-tree-history-directory))))
@@ -297,13 +293,22 @@
   (xclip-mode 1))
 
 (use-package vertico
-  :straight (:files (:defaults "extensions/*"))
   :config
   (vertico-mode 1))
 
 (use-package marginalia
   :config
   (marginalia-mode 1))
+
+(use-package embark
+  :bind
+  (("M->" . embark-act)         ;; pick some comfortable binding
+   ("M-." . embark-dwim)        ;; good alternative: M-.
+   ("C-h B" . embark-bindings))) ;; alternative for `describe-bindings'
+
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package consult
   :defer t
@@ -314,13 +319,24 @@
               ("SPC s r" . consult-register)
               ("SPC f B" . consult-buffer)
               ("SPC f b" . consult-project-buffer)
-              ("SPC f i" . consult-imenu-multi)
               ("SPC f r" . consult-recent-file)
               ("SPC f s" . consult-ripgrep)))
 
+(use-package consult-notes
+  :defer t
+  :bind
+  (:map evil-normal-state-map
+        ("SPC n f" . consult-notes)
+        ("SPC n s" . consult-notes-search-in-all-notes))
+  :config
+  (consult-notes-denote-mode))
+
 (use-package vterm
   :defer t
-  :bind (:map evil-normal-state-map
+  :init
+  :bind (:map vterm-mode-map
+              ("C-w" . evil-window-map)
+         :map evil-normal-state-map
               ("SPC c t" . project-vterm))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
@@ -328,9 +344,8 @@
   :init
   (defun project-vterm ()
     (interactive)
-    (let ((default-directory (my/project-directory)))
+    (let ((default-directory (or (and (project-current) (my/project-directory)) default-directory)))
       (call-interactively #'vterm)))
-
   (add-to-list 'display-buffer-alist
                '("\\*vterm\\*"
                  (display-buffer-at-bottom)
@@ -339,19 +354,10 @@
 
 (use-package magit
   :defer t
-  :commands (magit-blame-addition
-             magit-file-dispatch
-             magit-blame
-             magit-diff-buffer-file
-             magit-status
-             magit-log-buffer-file)
+  :commands (magit-file-dispatch magit-status)
   :bind (:map evil-normal-state-map
-              ("SPC g B" . magit-blame-addition)
-              ("SPC g G" . magit-file-dispatch)
-              ("SPC g b" . magit-blame)
-              ("SPC g d" . magit-diff-buffer-file)
-              ("SPC g g" . magit-status)
-              ("SPC g l" .  magit-log-buffer-file)))
+              ("SPC g ." . magit-file-dispatch)
+              ("SPC g g" . magit-status)))
 
 (use-package git-link
   :defer t
@@ -371,8 +377,9 @@
 
 ;; https://joaotavora.github.io/yasnippet/index.html
 (use-package yasnippet
+  :init
+  (setq yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory)))
   :config
-  (setq yas-snippet-dirs (list my/yas-snippet-dir))
   (yas-global-mode 1))
 
 ;; https://emacs-lsp.github.io/lsp-mode/
@@ -406,6 +413,9 @@
   :defer t
   :straight nil
   :load-path "/opt/homebrew/lib/erlang/lib/tools-3.6/emacs/"
+  :init
+  (setq erlang-root-dir "/opt/homebrew/lib/erlang")
+  (add-to-list 'exec-path "/opt/homebrew/lib/erlang/bin")
   :hook
   (erlang-mode . lsp-deferred)
   :mode
@@ -421,8 +431,6 @@
    ("\\.app.src?$" . erlang-mode)
    ("\\Emakefile" . erlang-mode))
   :config
-  (setq erlang-root-dir "/opt/homebrew/lib/erlang")
-  (add-to-list 'exec-path "/opt/homebrew/lib/erlang/bin")
   (require 'erlang-start))
 
 (use-package lsp-haskell
@@ -439,9 +447,9 @@
   (lsp-elixir-suggest-specs nil)
   :hook
   (elixir-ts-mode . display-line-numbers-mode)
+  (elixir-ts-mode . eglot-ensure)
   (heex-ts-mode . display-line-numbers-mode)
-  (elixir-ts-mode . lsp-deferred)
-  (heex-ts-mode . lsp-deferred))
+  (heex-ts-mode . eglot-ensure))
 
 (use-package yaml-ts-mode
   :defer t
@@ -456,8 +464,6 @@
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
 
-;; https://www.nongnu.org/geiser/index.html
-;; https://www.gnu.org/software/guile/manual/guile.html
 (use-package geiser-guile
   :commands (geiser-mode))
 
@@ -469,10 +475,8 @@
   (emacs-lisp-mode . enable-paredit-mode))
 
 (use-package denote
-  :defer t
   :init
-  (setq denote-file-type 'markdown-yaml)
-  (setq denote-directory "~/.notes/denote")
+  (setq denote-directory (expand-file-name "denote" user-emacs-directory))
   :bind
   (:map evil-normal-state-map
         ("SPC n n" . denote))
@@ -480,45 +484,21 @@
   (unless (file-exists-p denote-directory)
     (make-directory denote-directory)))
 
-(use-package consult-notes
-  :defer t
-  :bind
-  (:map evil-normal-state-map
-        ("SPC n f" . consult-notes)
-        ("SPC n s" . consult-notes-search-in-all-notes))
-  :config
-  (consult-notes-denote-mode))
-
-
-;;;; COMPLETION
-
 (use-package corfu
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
-  ;; Completion in region function
-  ;; https://github.com/minad/corfu#key-bindings
   :custom
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-auto t) ; Enable auto completion
   (corfu-auto-prefix 2) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
   (corfu-echo-delay '(1 . 0.5))
+  (corfu-separator ?\s)
   :init
   (global-corfu-mode 1)
   (corfu-echo-mode)
   :config
-  (keymap-set corfu-map "RET" nil) ;; Prevent enter from auto-completing
-  (defun corfu-enable-always-in-minibuffer ()
-    "Enable Corfu in the minibuffer if Vertico/Mct are not active."
-    (unless (or (bound-and-true-p mct--active)
-                (bound-and-true-p vertico--input)
-                (eq (current-local-map) read-passwd-map))
-      ;; (setq-local corfu-auto nil) ;; Enable/disable auto completion
-      (setq-local corfu-echo-delay nil ;; Disable automatic echo and popup
-                  corfu-popupinfo-delay nil
-                  corfu-auto-delay 0.5)
-      (corfu-mode 1)))
-  (add-hook 'minibuffer-setup-hook #'corfu-enable-always-in-minibuffer 1))
+  (keymap-set corfu-map "RET" nil)) ;; Prevent enter from auto-completing
 
 (use-package corfu-terminal
   :unless (display-graphic-p)
@@ -540,8 +520,6 @@
      cape-keyword
      cape-dict
      cape-file)))
-
-;;;; GRAPHICS
 
 (use-package indent-guide
   :config
@@ -577,7 +555,8 @@
   (doom-modeline-mode 1))
 
 
-;; CUSTOM FILE
+;; CUSTOM set and load file
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 (load custom-file)
