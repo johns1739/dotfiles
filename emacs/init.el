@@ -1,8 +1,9 @@
 ;;-*- lexical-binding: t; -*-
 
-;; TODO
-;; Send bash region to vterm from other buffer
+;; Find file and open in other window
 
+;; TODO: Move all gui settings to separate load-file.
+;;       And then load file as first package.
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
@@ -11,7 +12,7 @@
 (setq apropos-do-all t)
 (setq compilation-always-kill t)
 (setq compilation-scroll-output t)
-(setq compilation-max-output-line-length nil)
+(setq compilation-max-output-line-length 200)
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq create-lockfiles nil)
 (setq eldoc-echo-area-use-multiline-p nil)
@@ -20,20 +21,19 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq hippie-expand-verbose t)
 (setq inhibit-startup-message t)
-(setq initial-scratch-message "")
 (setq make-backup-files nil)
 (setq read-process-output-max (* 1024 1024))
 (setq require-final-newline t)
-(setq ring-bell-function 'ignore)
 (setq tab-always-indent 'complete)
+(setq ring-bell-function 'ignore)
 (setq use-dialog-box nil)
-(setq history-length 500)
+(setq history-length 1000)
 (setq history-delete-duplicates t)
 (setq-default cursor-type 'bar)
 (setq-default display-fill-column-indicator-column 90)
-(setq-default display-line-numbers-type 'relative)
+(setq-default display-line-numbers-type nil)
 (setq-default fill-column 120)
-(setq-default frame-title-format '("%b"))
+(setq-default frame-title-format '("%f"))
 (setq-default indent-tabs-mode nil)
 
 (setq hippie-expand-try-functions-list
@@ -47,12 +47,16 @@
         try-complete-file-name
         try-expand-dabbrev-from-kill))
 
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
-(add-to-list 'default-frame-alist '(height . 50))
-(add-to-list 'default-frame-alist '(width . 120))
+(add-hook 'before-save-hook #'whitespace-cleanup)
+(add-hook 'compilation-filter #'ansi-color-compilation-filter)
+
+(add-to-list 'default-frame-alist '(height . 60))
+(add-to-list 'default-frame-alist '(width . 130))
+
+(set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
+
 (column-number-mode 1)
 (delete-selection-mode 1)
-(electric-indent-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t)
 (menu-bar-mode -1)
@@ -60,16 +64,11 @@
 (save-place-mode 1)
 (savehist-mode 1)
 (scroll-bar-mode -1)
-(set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
-(show-paren-mode 1)
 (tool-bar-mode -1)
 (window-divider-mode 1)
 (global-hl-line-mode 1)
+(desktop-save-mode -1)
 
-;; (desktop-save-mode -1)
-;; (auto-save-visited-mode 1)
-
-;; Org setup
 (setq org-directory (expand-file-name "org" user-emacs-directory))
 (unless (file-exists-p org-directory)
   (make-directory org-directory))
@@ -114,16 +113,10 @@
   (interactive)
   (kill-new (my/project-relative-file-name)))
 
-(defun my/rails-compile ()
+(defun rails-compile ()
   (interactive)
   (setq compile-command (my/rails-dwim-compile-command))
   (call-interactively #'project-compile))
-
-(defun my/rails-compile-comint ()
-  "Dwim compilation for ruby files."
-  (interactive)
-  (universal-argument)
-  (command-execute 'my/rails-compile))
 
 
 ;;;; HELPERS
@@ -187,13 +180,6 @@
 (setq straight-use-package-by-default t)
 
 
-;; GLOBAL KEYMAP
-
-(keymap-global-set "C-x h" '("Previous buffer" . previous-buffer))
-(keymap-global-set "C-x l" '("Next buffer" . next-buffer))
-(keymap-global-set "M-/" 'hippie-expand)
-
-
 ;;;; PACKAGES
 
 (use-package evil
@@ -213,8 +199,7 @@
     (keymap-set evil-normal-state-local-map "K" 'eldoc))
   (defun my/set-ruby-bindings ()
     "Inject ruby specific keybindings"
-    (keymap-set evil-normal-state-local-map "SPC c c" 'my/rails-compile)
-    (keymap-set evil-normal-state-local-map "SPC c C" 'my/rails-compile-comint))
+    (keymap-set evil-normal-state-local-map "SPC c" 'rails-compile))
   (setq evil-disable-insert-state-bindings t)
   (setq evil-ex-search-persistent-highlight nil)
   (setq evil-insert-state-cursor 'bar)
@@ -223,38 +208,74 @@
   (setq evil-search-module 'evil-search)
   (setq evil-undo-system 'undo-tree)
   (setq evil-visual-state-cursor 'hollow)
-  (setq evil-want-C-u-scroll t)
+  (setq evil-want-C-u-scroll nil)
   (setq evil-want-Y-yank-to-eol t)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  (setq evil-want-C-w-in-emacs-state t)
   :bind (:map evil-normal-state-map
+              ("SPC C-SPC" . consult-recent-file)
               ("SPC SPC" . project-find-file)
-              ("SPC e i" . my/go-to-config-file)
-              ("SPC e R" . restart-emacs)
-              ("SPC s g" . occur)
-              ("SPC f p" . project-switch-project)
-              ("SPC f d" . project-find-dir)
-              ("SPC f g" . project-find-regexp)
-              ("SPC c C" . project-compile)
-              ("SPC c c" . compile)
-              ("SPC c r" . recompile)
-              ("SPC c y" . my/project-copy-relative-file-name))
+
+              ("SPC b" . magit-blame-addition)
+
+              ("SPC c" . compile)
+              ("SPC C" . recompile)
+
+              ("SPC f" . consult-project-buffer)
+              ("SPC F" . consult-buffer)
+
+              ("SPC g" . magit-status)
+              ("SPC G" . magit-file-dispatch)
+
+              ("SPC i" . consult-imenu)
+              ("SPC I" . consult-line)
+
+              ("SPC j" . avy-goto-char-2)
+              ("SPC J" . avy-goto-char-timer)
+
+              ("SPC l" . magit-log-buffer-file)
+              ("SPC L" . magit-diff-buffer-file)
+
+              ("SPC m" . consult-bookmark)
+              ("SPC M" . consult-register)
+
+              ("SPC n" . consult-notes)
+              ("SPC N" . consult-notes-search-in-all-notes)
+
+              ("SPC p" . project-switch-project)
+
+              ("SPC R" . restart-emacs)
+
+              ("SPC s" . consult-ripgrep)
+              ("SPC S" . rg-project)
+
+              ("SPC t" . project-vterm)
+
+              ("SPC y" . my/project-copy-relative-file-name)
+              ("SPC Y" . git-link)
+
+              ("SPC ;" . scratch-buffer)
+              ("SPC :" . denote)
+
+              ("SPC ." . my/go-to-config-file))
   :hook
   (eglot-managed-mode . my/set-eglot-bindings)
   (lsp-managed-mode . my/set-lsp-bindings)
   (ruby-ts-mode . my/set-ruby-bindings)
   :config
-  (evil-mode 1)
-  (evil-select-search-module 'evil-search-module 'evil-search))
+  (evil-select-search-module 'evil-search-module 'evil-search)
+  (evil-mode 1))
 
 (use-package evil-collection
   :after evil
   :config
   (evil-collection-init))
 
-(use-package ansi-color
-  :hook
-  (compilation-filter . ansi-color-compilation-filter))
+(use-package evil-surround
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package undo-tree
   :config
@@ -280,8 +301,7 @@
 
 (use-package avy
   :defer t
-  :bind (:map evil-normal-state-map
-              ("SPC s j" . avy-goto-char-2)))
+  :bind (("C-c j" . avy-goto-char-timer)))
 
 (use-package ace-window
   :defer t
@@ -302,45 +322,31 @@
 
 (use-package embark
   :bind
-  (("M->" . embark-act)         ;; pick some comfortable binding
-   ("M-." . embark-dwim)        ;; good alternative: M-.
-   ("C-h B" . embark-bindings))) ;; alternative for `describe-bindings'
+  (("C-c e" . embark-act)
+   ("C-c E" . embark-export)))
 
 (use-package embark-consult
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package consult
+  :defer t)
+
+(use-package denote
   :defer t
-  :bind (:map evil-normal-state-map
-              ("SPC s b" . consult-bookmark)
-              ("SPC s i" . consult-imenu)
-              ("SPC s s" . consult-line)
-              ("SPC s r" . consult-register)
-              ("SPC f B" . consult-buffer)
-              ("SPC f b" . consult-project-buffer)
-              ("SPC f r" . consult-recent-file)
-              ("SPC f s" . consult-ripgrep)))
+  :init
+  (setq denote-directory (expand-file-name "denote" user-emacs-directory))
+  :config
+  (unless (file-exists-p denote-directory)
+    (make-directory denote-directory)))
 
 (use-package consult-notes
-  :defer t
-  :bind
-  (:map evil-normal-state-map
-        ("SPC n f" . consult-notes)
-        ("SPC n s" . consult-notes-search-in-all-notes))
+  :after denote
   :config
   (consult-notes-denote-mode))
 
 (use-package vterm
   :defer t
-  :init
-  :bind (:map vterm-mode-map
-              ("C-w" . evil-window-map)
-         :map evil-normal-state-map
-              ("SPC c t" . project-vterm))
-  :custom
-  (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000)
   :init
   (defun project-vterm ()
     (interactive)
@@ -350,24 +356,18 @@
                '("\\*vterm\\*"
                  (display-buffer-at-bottom)
                  (window-height . 12)
-                 (dedicated . t))))
+                 (dedicated . t)))
+  :bind (:map vterm-mode-map
+              ("C-w" . evil-window-map))
+  :custom
+  (vterm-copy-mode-remove-fake-newlines t)
+  (vterm-max-scrollback 10000))
 
 (use-package magit
-  :defer t
-  :commands (magit-file-dispatch magit-status)
-  :bind (:map evil-normal-state-map
-              ("SPC g ." . magit-file-dispatch)
-              ("SPC g g" . magit-status)))
+  :defer t)
 
 (use-package git-link
-  :defer t
-  :bind (:map evil-normal-state-map
-              ("SPC g y" . git-link)))
-
-(use-package evil-surround
-  :after evil
-  :config
-  (global-evil-surround-mode 1))
+  :defer t)
 
 ;; https://www.flycheck.org/en/latest/
 (use-package flycheck
@@ -406,6 +406,7 @@
   :init
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   :hook
+  (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-ts-mode . display-line-numbers-mode)
   (ruby-ts-mode . lsp-deferred))
 
@@ -443,20 +444,21 @@
 
 (use-package elixir-ts-mode
   :defer t
+  :init
+  (add-to-list 'exec-path "~/.bin/elixir-ls")
   :custom
   (lsp-elixir-suggest-specs nil)
   :hook
+  (elixir-ts-mode . lsp-deferred)
+  (heex-ts-mode . lsp-deferred)
   (elixir-ts-mode . display-line-numbers-mode)
-  (elixir-ts-mode . eglot-ensure)
-  (heex-ts-mode . display-line-numbers-mode)
-  (heex-ts-mode . eglot-ensure))
+  (heex-ts-mode . display-line-numbers-mode))
 
 (use-package yaml-ts-mode
   :defer t
   :mode "\\(\\.yaml\\|.yml\\)\\'"
   :hook
-  (yaml-ts-mode . lsp-deferred)
-  (yaml-ts-mode . display-line-numbers-mode))
+  (yaml-ts-mode . lsp-deferred))
 
 (use-package sqlformat
   :commands (sqlformat)
@@ -473,16 +475,6 @@
   :hook
   (scheme-mode . enable-paredit-mode)
   (emacs-lisp-mode . enable-paredit-mode))
-
-(use-package denote
-  :init
-  (setq denote-directory (expand-file-name "denote" user-emacs-directory))
-  :bind
-  (:map evil-normal-state-map
-        ("SPC n n" . denote))
-  :config
-  (unless (file-exists-p denote-directory)
-    (make-directory denote-directory)))
 
 (use-package corfu
   ;; Corfu enhances in-buffer completion with a small completion popup.
@@ -521,25 +513,30 @@
      cape-dict
      cape-file)))
 
+(use-package which-key
+  :config
+  (which-key-mode)
+  (which-key-setup-side-window-right-bottom))
+
 (use-package indent-guide
   :config
   (indent-guide-global-mode))
 
-(use-package gruvbox-theme
-  :disabled t)
+(use-package gruvbox-theme)
+(use-package ef-themes)
 
 (use-package modus-themes
   :config
   ;; https://protesilaos.com/emacs/modus-themes
-  (setq modus-vivendi-tritanopia-palette-overrides
-        '((fringe unspecified)
-          (bg-line-number-active unspecified)
-          (bg-line-number-inactive unspecified)
-          (border-mode-line-active unspecified)
-          (border-mode-line-inactive unspecified)))
   (when (display-graphic-p)
-    (add-to-list 'modus-vivendi-tritanopia-palette-overrides '(fg-main "#d0d0d0"))
-    (add-to-list 'modus-vivendi-tritanopia-palette-overrides '(bg-main "#14191e")))
+    (setq modus-vivendi-tritanopia-palette-overrides
+          '((fringe unspecified)
+            (bg-line-number-active unspecified)
+            (bg-line-number-inactive unspecified)
+            (border-mode-line-active unspecified)
+            (border-mode-line-inactive unspecified)
+            (fg-main "#d0d0d0")
+            (bg-main "#14191e"))))
   (load-theme 'modus-vivendi-tritanopia t))
 
 (use-package doom-modeline
@@ -553,6 +550,15 @@
   (doom-modeline-env-version nil)
   :init
   (doom-modeline-mode 1))
+
+
+;; GLOBAL KEYMAP
+
+(keymap-global-set "C-x h" #'previous-buffer)
+(keymap-global-set "C-x l" #'next-buffer)
+(keymap-global-set "C-O" #'previous-buffer)
+(keymap-global-set "C-I" #'next-buffer)
+(keymap-global-set "M-/" #'hippie-expand)
 
 
 ;; CUSTOM set and load file
