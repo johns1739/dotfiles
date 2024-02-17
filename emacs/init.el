@@ -30,8 +30,8 @@
 (setq history-length 1000)
 (setq history-delete-duplicates t)
 (setq-default cursor-type 'bar)
-(setq-default display-fill-column-indicator-column 90)
-(setq-default display-line-numbers-type nil)
+(setq-default display-fill-column-indicator-column 100)
+(setq-default display-line-numbers-type 'relative)
 (setq-default fill-column 120)
 (setq-default frame-title-format '("%f"))
 (setq-default indent-tabs-mode nil)
@@ -49,6 +49,8 @@
 
 (add-hook 'before-save-hook #'whitespace-cleanup)
 (add-hook 'compilation-filter #'ansi-color-compilation-filter)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 (add-to-list 'default-frame-alist '(height . 60))
 (add-to-list 'default-frame-alist '(width . 130))
@@ -57,8 +59,12 @@
 
 (column-number-mode 1)
 (delete-selection-mode 1)
+(desktop-save-mode -1)
+(electric-indent-mode 1)
+(electric-pair-mode 1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t)
+(global-hl-line-mode 1)
 (menu-bar-mode -1)
 (recentf-mode 1)
 (save-place-mode 1)
@@ -66,8 +72,6 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (window-divider-mode 1)
-(global-hl-line-mode 1)
-(desktop-save-mode -1)
 
 (setq org-directory (expand-file-name "org" user-emacs-directory))
 (unless (file-exists-p org-directory)
@@ -221,6 +225,9 @@
 
               ("SPC c" . compile)
               ("SPC C" . recompile)
+
+              ("SPC d" . project-find-dir)
+              ("SPC D" . project-dired)
 
               ("SPC f" . consult-project-buffer)
               ("SPC F" . consult-buffer)
@@ -407,7 +414,6 @@
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   :hook
   (ruby-ts-mode . display-fill-column-indicator-mode)
-  (ruby-ts-mode . display-line-numbers-mode)
   (ruby-ts-mode . lsp-deferred))
 
 (use-package erlang
@@ -438,8 +444,6 @@
   :defer t
   :hook
   (haskell-mode . lsp-deferred)
-  (haskell-mode . display-line-numbers-mode)
-  (haskell-cabal-mode . display-line-numbers-mode)
   (haskell-literal-mode . lsp-deferred))
 
 (use-package elixir-ts-mode
@@ -450,9 +454,7 @@
   (lsp-elixir-suggest-specs nil)
   :hook
   (elixir-ts-mode . lsp-deferred)
-  (heex-ts-mode . lsp-deferred)
-  (elixir-ts-mode . display-line-numbers-mode)
-  (heex-ts-mode . display-line-numbers-mode))
+  (heex-ts-mode . lsp-deferred))
 
 (use-package yaml-ts-mode
   :defer t
@@ -552,16 +554,12 @@
   (doom-modeline-mode 1))
 
 
-;; GLOBAL KEYMAP
-
 (keymap-global-set "C-x h" #'previous-buffer)
 (keymap-global-set "C-x l" #'next-buffer)
-(keymap-global-set "C-O" #'previous-buffer)
-(keymap-global-set "C-I" #'next-buffer)
 (keymap-global-set "M-/" #'hippie-expand)
 
 
-;; CUSTOM set and load file
+;; CUSTOM
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
