@@ -1,9 +1,5 @@
 ;;-*- lexical-binding: t; -*-
 
-;; Find file and open in other window
-
-;; TODO: Move all gui settings to separate load-file.
-;;       And then load file as first package.
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
@@ -37,15 +33,20 @@
 (setq-default indent-tabs-mode nil)
 
 (setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev
+      '(try-expand-dabbrev-visible
+        try-expand-dabbrev
         try-expand-dabbrev-all-buffers
-        try-expand-line
+        try-expand-dabbrev-from-kill
+        try-expand-all-abbrevs
         try-expand-list
-        try-complete-lisp-symbol-partially
+        try-expand-list-all-buffers
+        try-expand-line
+        try-expand-line-all-buffers
+        ;; try-complete-lisp-symbol
+        ;; try-complete-lisp-symbol-partially
         try-complete-file-name-partially
-        try-complete-lisp-symbol
         try-complete-file-name
-        try-expand-dabbrev-from-kill))
+        try-expand-whole-kill))
 
 (add-hook 'before-save-hook #'whitespace-cleanup)
 (add-hook 'compilation-filter #'ansi-color-compilation-filter)
@@ -218,7 +219,7 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-w-in-emacs-state t)
   :bind (:map evil-normal-state-map
-              ("SPC C-SPC" . consult-recent-file)
+              ("SPC C-SPC" . consult-project-buffer)
               ("SPC SPC" . project-find-file)
 
               ("SPC b" . magit-blame-addition)
@@ -229,23 +230,20 @@
               ("SPC d" . project-find-dir)
               ("SPC D" . project-dired)
 
-              ("SPC f" . consult-project-buffer)
-              ("SPC F" . consult-buffer)
+              ("SPC f" . consult-buffer)
+              ("SPC F" . consult-buffer-other-window)
 
               ("SPC g" . magit-status)
               ("SPC G" . magit-file-dispatch)
 
               ("SPC i" . consult-imenu)
-              ("SPC I" . consult-line)
+              ("SPC I" . consult-imenu-multi)
 
               ("SPC j" . avy-goto-char-2)
               ("SPC J" . avy-goto-char-timer)
 
-              ("SPC l" . magit-log-buffer-file)
-              ("SPC L" . magit-diff-buffer-file)
-
-              ("SPC m" . consult-bookmark)
-              ("SPC M" . consult-register)
+              ("SPC l" . consult-line)
+              ("SPC L" . consult-line-multi)
 
               ("SPC n" . consult-notes)
               ("SPC N" . consult-notes-search-in-all-notes)
@@ -255,7 +253,6 @@
               ("SPC R" . restart-emacs)
 
               ("SPC s" . consult-ripgrep)
-              ("SPC S" . rg-project)
 
               ("SPC t" . project-vterm)
 
@@ -307,12 +304,13 @@
   :defer t)
 
 (use-package avy
-  :defer t
-  :bind (("C-c j" . avy-goto-char-timer)))
+  :defer t)
 
 (use-package ace-window
   :defer t
-  :bind ([remap other-window] . ace-window))
+  :bind
+  ([remap other-window] . ace-window)
+  ([remap evil-window-next] . ace-window))
 
 (use-package xclip
   :unless (display-graphic-p)
@@ -329,8 +327,8 @@
 
 (use-package embark
   :bind
-  (("C-c e" . embark-act)
-   ("C-c E" . embark-export)))
+  (("C-c e e" . embark-act)
+   ("C-c e E" . embark-export)))
 
 (use-package embark-consult
   :hook
@@ -411,8 +409,8 @@
 (use-package ruby-ts-mode
   :defer t
   :init
-  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   :hook
+  (ruby-mode . ruby-ts-mode)
   (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-ts-mode . lsp-deferred))
 
@@ -484,9 +482,9 @@
   :custom
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-auto t) ; Enable auto completion
-  (corfu-auto-prefix 2) ; Enable auto completion
+  (corfu-auto-prefix 3) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
-  (corfu-echo-delay '(1 . 0.5))
+  (corfu-echo-delay 0.2)
   (corfu-separator ?\s)
   :init
   (global-corfu-mode 1)
@@ -502,23 +500,24 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(basic orderless))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
   :after corfu
+  :init
   :custom
   (completion-at-point-functions
-   '(cape-dabbrev
-     cape-keyword
-     cape-dict
-     cape-file)))
+   (list #'cape-dabbrev
+         #'cape-abbrev
+         #'cape-keyword
+         #'cape-dict
+         #'cape-file)))
 
 (use-package which-key
   :config
-  (which-key-mode)
-  (which-key-setup-side-window-right-bottom))
+  (which-key-mode))
 
 (use-package indent-guide
   :config
