@@ -11,7 +11,7 @@
 (setq compilation-max-output-line-length 200)
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq create-lockfiles nil)
-(setq eldoc-echo-area-use-multiline-p nil)
+(setq eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
 (setq gc-cons-percentage 0.1)
 (setq gc-cons-threshold (* 16 1000 1000)) ;; 16 MB
 (setq global-auto-revert-non-file-buffers t)
@@ -19,6 +19,7 @@
 (setq inhibit-startup-message t)
 (setq make-backup-files nil)
 (setq read-process-output-max (* 1024 1024))
+(setq max-mini-window-height 0.2)
 (setq require-final-newline t)
 (setq tab-always-indent 'complete)
 (setq ring-bell-function 'ignore)
@@ -116,57 +117,37 @@
 (defun my/project-copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
   (interactive)
-  (kill-new (my/project-relative-file-name)))
+  (kill-new (project-relative-file-name)))
 
 (defun rails-compile ()
   (interactive)
-  (setq compile-command (my/rails-dwim-compile-command))
+  (setq compile-command
+        (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
+               (let ((linum (number-to-string (line-number-at-pos)))
+                     (file-name (project-relative-file-name)))
+                 (if (< (line-number-at-pos) 5)
+                     (string-join (list "rails t " file-name))
+                   (string-join (list "rails t " (s-concat file-name ":" linum))))))
+              (t compile-command)))
   (call-interactively #'project-compile))
 
 
 ;;;; HELPERS
 
-(defun my/project-directory ()
+(defun project-directory ()
   "Current project directory."
   (project-root (project-current)))
 
-(defun my/project-relative-file-name ()
+(defun project-relative-file-name ()
   "Relative project path to file."
-  (file-relative-name (buffer-file-name) (my/project-directory)))
+  (file-relative-name (buffer-file-name) (project-directory)))
 
-(defun my/project-expand (file-name)
-  (f-join (my/project-directory) file-name))
-
-(defun my/rails-buffer-test-file-p ()
-  (string-match-p "_test.rb\\'" (buffer-file-name)))
-
-(defun my/rails-buffer-ruby-file-p ()
-  (string-match-p ".rb\\'" (buffer-file-name)))
-
-(defun my/rails-test-file-compile-command ()
-  (let ((linum (number-to-string (line-number-at-pos)))
-        (file-name (my/project-relative-file-name)))
-    (if (< (line-number-at-pos) 5)
-        (string-join (list "rails t " file-name))
-      (string-join (list "rails t " (s-concat file-name ":" linum))))))
-
-(defun my/rails-test-file-exists-p ()
-  (and (my/rails-buffer-ruby-file-p)
-       (file-exists-p (my/project-expand (my/rails-generate-test-file-name)))))
-
-(defun my/rails-generate-test-file-name ()
-  (let* ((file-name (my/project-relative-file-name))
-         (test-file-name (concat (f-base file-name) "_test.rb"))
-         (folder-split (cdr (s-split "/" (f-dirname file-name)))))
-    (f-join "test" (apply 'f-join  folder-split) test-file-name)))
-
-(defun my/rails-dwim-compile-command ()
-  (cond ((my/rails-buffer-test-file-p)
-         (my/rails-test-file-compile-command))
-        (t compile-command)))
+(defun project-expand-path (file-name)
+  (f-join (project-directory) file-name))
 
 
-;; INSTALL PACKAGE MANAGER
+;;;; PACKAGE MANAGER
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
@@ -190,21 +171,6 @@
 (use-package evil
   :demand t
   :init
-  (defun my/set-eglot-bindings ()
-    "Inject eglot bindings."
-    (keymap-set evil-normal-state-local-map "g = =" 'eglot-format-buffer)
-    (keymap-set evil-normal-state-local-map "g R" 'eglot-rename))
-  (defun my/set-lsp-bindings ()
-    "Inject lsp bindings."
-    (keymap-set evil-normal-state-local-map "g = =" 'lsp-format-buffer)
-    (keymap-set evil-normal-state-local-map "g r" 'lsp-find-references)
-    (keymap-set evil-normal-state-local-map "g = r" 'lsp-format-region)
-    (keymap-set evil-normal-state-local-map "g R" 'lsp-rename)
-    (keymap-set evil-normal-state-local-map "g d" 'lsp-find-definition)
-    (keymap-set evil-normal-state-local-map "K" 'eldoc))
-  (defun my/set-ruby-bindings ()
-    "Inject ruby specific keybindings"
-    (keymap-set evil-normal-state-local-map "SPC c" 'rails-compile))
   (setq evil-disable-insert-state-bindings t)
   (setq evil-ex-search-persistent-highlight nil)
   (setq evil-insert-state-cursor 'bar)
@@ -263,10 +229,6 @@
               ("SPC :" . denote)
 
               ("SPC ." . my/go-to-config-file))
-  :hook
-  (eglot-managed-mode . my/set-eglot-bindings)
-  (lsp-managed-mode . my/set-lsp-bindings)
-  (ruby-ts-mode . my/set-ruby-bindings)
   :config
   (evil-select-search-module 'evil-search-module 'evil-search)
   (evil-mode 1))
@@ -355,7 +317,7 @@
   :init
   (defun project-vterm ()
     (interactive)
-    (let ((default-directory (or (and (project-current) (my/project-directory)) default-directory)))
+    (let ((default-directory (or (and (project-current) (project-directory)) default-directory)))
       (call-interactively #'vterm)))
   (add-to-list 'display-buffer-alist
                '("\\*vterm\\*"
@@ -396,6 +358,17 @@
   (lsp-signature-auto-activate '(:on-trigger-char :on-server-request))
   (lsp-signature-render-documentation t)
   (lsp-eldoc-render-all t)
+  :init
+  (defun set-lsp-bindings ()
+    "Inject lsp bindings."
+    (keymap-set evil-normal-state-local-map "g = =" 'lsp-format-buffer)
+    (keymap-set evil-normal-state-local-map "g r" 'lsp-find-references)
+    (keymap-set evil-normal-state-local-map "g = r" 'lsp-format-region)
+    (keymap-set evil-normal-state-local-map "g R" 'lsp-rename)
+    (keymap-set evil-normal-state-local-map "g d" 'lsp-find-definition)
+    (keymap-set evil-normal-state-local-map "K" 'eldoc))
+  :hook
+  (lsp-managed-mode . set-lsp-bindings)
   :config
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]_build\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
@@ -409,10 +382,14 @@
 (use-package ruby-ts-mode
   :defer t
   :init
+  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
+  (defun set-ruby-bindings ()
+    "Inject ruby specific keybindings"
+    (keymap-set evil-normal-state-local-map "SPC c" 'rails-compile))
   :hook
-  (ruby-mode . ruby-ts-mode)
+  (ruby-ts-mode . set-ruby-bindings)
   (ruby-ts-mode . display-fill-column-indicator-mode)
-  (ruby-ts-mode . lsp-deferred))
+  (ruby-ts-mode . eglot-ensure))
 
 (use-package erlang
   :defer t
@@ -448,11 +425,15 @@
   :defer t
   :init
   (add-to-list 'exec-path "~/.bin/elixir-ls")
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs '(elixir-ts-mode "language_server.sh")))
   :custom
   (lsp-elixir-suggest-specs nil)
   :hook
-  (elixir-ts-mode . lsp-deferred)
-  (heex-ts-mode . lsp-deferred))
+  (elixir-ts-mode . eglot-ensure)
+  (heex-ts-mode . eglot-ensure))
+  ;; (elixir-ts-mode . lsp-deferred)
+  ;; (heex-ts-mode . lsp-deferred))
 
 (use-package yaml-ts-mode
   :defer t
@@ -467,6 +448,7 @@
   (setq sqlformat-args '("-s2" "-g")))
 
 (use-package geiser-guile
+  :disabled t
   :commands (geiser-mode))
 
 ;; http://pub.gajendra.net/src/paredit-refcard.pdf
@@ -482,15 +464,15 @@
   :custom
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-auto t) ; Enable auto completion
-  (corfu-auto-prefix 3) ; Enable auto completion
+  (corfu-auto-prefix 2) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
   (corfu-echo-delay 0.2)
   (corfu-separator ?\s)
-  :init
-  (global-corfu-mode 1)
-  (corfu-echo-mode)
+  :bind (:map corfu-map
+              ("RET" . nil))
   :config
-  (keymap-set corfu-map "RET" nil)) ;; Prevent enter from auto-completing
+  (global-corfu-mode 1)
+  (corfu-echo-mode))
 
 (use-package corfu-terminal
   :unless (display-graphic-p)
@@ -500,13 +482,29 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(basic orderless))
+  (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
   :after corfu
-  :init
+  :bind (("C-c p p" . completion-at-point) ;; capf
+         ("C-c p t" . complete-tag)        ;; etags
+         ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
+         ("C-c p h" . cape-history)
+         ("C-c p f" . cape-file)
+         ("C-c p k" . cape-keyword)
+         ("C-c p s" . cape-elisp-symbol)
+         ("C-c p e" . cape-elisp-block)
+         ("C-c p a" . cape-abbrev)
+         ("C-c p l" . cape-line)
+         ("C-c p w" . cape-dict)
+         ("C-c p :" . cape-emoji)
+         ("C-c p \\" . cape-tex)
+         ("C-c p _" . cape-tex)
+         ("C-c p ^" . cape-tex)
+         ("C-c p &" . cape-sgml)
+         ("C-c p r" . cape-rfc1345))
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -523,8 +521,11 @@
   :config
   (indent-guide-global-mode))
 
-(use-package gruvbox-theme)
-(use-package ef-themes)
+(use-package gruvbox-theme
+  :disabled t)
+
+(use-package ef-themes
+  :disabled t)
 
 (use-package modus-themes
   :config
@@ -549,16 +550,21 @@
   (doom-modeline-vcs-max-length 20)
   (doom-modeline-display-misc-in-all-mode-lines nil)
   (doom-modeline-env-version nil)
-  :init
+  :config
   (doom-modeline-mode 1))
-
 
 (keymap-global-set "C-x h" #'previous-buffer)
 (keymap-global-set "C-x l" #'next-buffer)
 (keymap-global-set "M-/" #'hippie-expand)
 
+(defun set-eglot-bindings ()
+  "Inject eglot bindings."
+  (keymap-set evil-normal-state-local-map "g = =" 'eglot-format-buffer)
+  (keymap-set evil-normal-state-local-map "g R" 'eglot-rename))
+(add-hook 'eglot-managed-mode-hook #'set-eglot-bindings)
 
-;; CUSTOM
+
+;; Custom File
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
