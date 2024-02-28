@@ -1,5 +1,10 @@
 ;;-*- lexical-binding: t; -*-
 
+;; TODO:
+;; Eglot is slow to update diagnostics
+;; Eglot sometimes causes lag
+;; Unable to turn on ruby-formatting in Eglot
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
@@ -11,7 +16,7 @@
 (setq compilation-max-output-line-length 200)
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq create-lockfiles nil)
-(setq eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
+(setq eldoc-echo-area-use-multiline-p nil)
 (setq gc-cons-percentage 0.1)
 (setq gc-cons-threshold (* 16 1000 1000)) ;; 16 MB
 (setq global-auto-revert-non-file-buffers t)
@@ -179,7 +184,7 @@
   (setq evil-search-module 'evil-search)
   (setq evil-undo-system 'undo-tree)
   (setq evil-visual-state-cursor 'hollow)
-  (setq evil-want-C-u-scroll nil)
+  (setq evil-want-C-u-scroll t)
   (setq evil-want-Y-yank-to-eol t)
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -342,6 +347,9 @@
   :custom
   (flycheck-indication-mode 'right-fringe))
 
+(use-package consult-flycheck
+  :defer t)
+
 ;; https://joaotavora.github.io/yasnippet/index.html
 (use-package yasnippet
   :init
@@ -389,7 +397,8 @@
   :hook
   (ruby-ts-mode . set-ruby-bindings)
   (ruby-ts-mode . display-fill-column-indicator-mode)
-  (ruby-ts-mode . eglot-ensure))
+  ;; (ruby-ts-mode . eglot-ensure))
+  (ruby-ts-mode . lsp-deferred))
 
 (use-package erlang
   :defer t
