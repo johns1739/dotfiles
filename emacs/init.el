@@ -54,6 +54,12 @@
         try-complete-file-name
         try-expand-whole-kill))
 
+(defadvice hippie-expand (around hippie-expand-case-fold)
+  "Try to do case-sensitive matching (not effective with all functions)."
+  (let ((case-fold-search nil))
+    ad-do-it))
+(ad-activate 'hippie-expand)
+
 (add-hook 'before-save-hook #'whitespace-cleanup)
 (add-hook 'compilation-filter #'ansi-color-compilation-filter)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
@@ -78,7 +84,7 @@
 (savehist-mode 1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
-(window-divider-mode 1)
+(window-divider-mode -1)
 
 (setq org-directory (expand-file-name "org" user-emacs-directory))
 (unless (file-exists-p org-directory)
@@ -278,6 +284,9 @@
   :bind
   ([remap other-window] . ace-window)
   ([remap evil-window-next] . ace-window))
+
+(use-package expand-region
+  :bind ("M-o" . er/expand-region))
 
 (use-package xclip
   :unless (display-graphic-p)
@@ -530,14 +539,15 @@
   :config
   (indent-guide-global-mode))
 
-(use-package gruvbox-theme
-  :disabled t)
+(use-package gruvbox-theme)
 
 (use-package ef-themes
-  :disabled t)
+  :init
+  (setq ef-melissa-light-palette-overrides
+        '((fringe unspecified))))
 
 (use-package modus-themes
-  :config
+  :init
   ;; https://protesilaos.com/emacs/modus-themes
   (when (display-graphic-p)
     (setq modus-vivendi-tritanopia-palette-overrides
@@ -547,8 +557,7 @@
             (border-mode-line-active unspecified)
             (border-mode-line-inactive unspecified)
             (fg-main "#d0d0d0")
-            (bg-main "#14191e"))))
-  (load-theme 'modus-vivendi-tritanopia t))
+            (bg-main "#14191e")))))
 
 (use-package doom-modeline
   :custom
