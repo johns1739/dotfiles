@@ -370,13 +370,14 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :custom
+      Shift
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-completion-provider :none) ;; we use corfu
   (lsp-signature-auto-activate '(:on-trigger-char :on-server-request))
   (lsp-signature-render-documentation t)
   (lsp-eldoc-render-all t)
   :init
-  (defun set-lsp-bindings ()
+  (defun lsp-set-bindings ()
     "Inject lsp bindings."
     (keymap-set evil-normal-state-local-map "g = =" 'lsp-format-buffer)
     (keymap-set evil-normal-state-local-map "g r" 'lsp-find-references)
@@ -384,8 +385,12 @@
     (keymap-set evil-normal-state-local-map "g R" 'lsp-rename)
     (keymap-set evil-normal-state-local-map "g d" 'lsp-find-definition)
     (keymap-set evil-normal-state-local-map "K" 'eldoc))
+  (defun corfu-lsp-setup ()
+    (setq completion-styles '(orderless)
+          completion-category-defaults nil))
   :hook
-  (lsp-managed-mode . set-lsp-bindings)
+  (lsp-managed-mode . lsp-set-bindings)
+  (lsp-managed-mode . corfu-lsp-setup)
   :config
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]_build\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
@@ -575,11 +580,11 @@
 (keymap-global-set "C-x l" #'next-buffer)
 (keymap-global-set "M-/" #'hippie-expand)
 
-(defun set-eglot-bindings ()
+(defun eglot-set-bindings ()
   "Inject eglot bindings."
   (keymap-set evil-normal-state-local-map "g = =" 'eglot-format-buffer)
   (keymap-set evil-normal-state-local-map "g R" 'eglot-rename))
-(add-hook 'eglot-managed-mode-hook #'set-eglot-bindings)
+(add-hook 'eglot-managed-mode-hook #'eglot-set-bindings)
 
 
 ;; Custom File
