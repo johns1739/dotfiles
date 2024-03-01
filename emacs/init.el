@@ -5,6 +5,7 @@
 ;; Eglot sometimes causes lag
 ;; Unable to turn on ruby-formatting in Eglot
 
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
@@ -236,7 +237,7 @@
               ("SPC y" . my/project-copy-relative-file-name)
               ("SPC Y" . git-link)
 
-              ("SPC ;" . scratch-buffer)
+              ("SPC ;" . denote-journal-extras-new-or-existing-entry)
               ("SPC :" . denote)
 
               ("SPC ." . my/go-to-config-file))
@@ -303,8 +304,8 @@
 
 (use-package embark
   :bind
-  (("C-c e e" . embark-act)
-   ("C-c e E" . embark-export)))
+  (("C-c e" . embark-act)
+   ("C-c E" . embark-export)))
 
 (use-package embark-consult
   :hook
@@ -361,20 +362,24 @@
 
 ;; https://joaotavora.github.io/yasnippet/index.html
 (use-package yasnippet
+  :bind (:map yas-minor-mode-map
+              ("M-z" . yas-expand))
   :init
   (setq yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory)))
   :config
   (yas-global-mode 1))
 
+(use-package yasnippet-snippets
+  :after yasnippet)
+
 ;; https://emacs-lsp.github.io/lsp-mode/
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :custom
-      Shift
   (lsp-headerline-breadcrumb-enable nil)
-  (lsp-completion-provider :none) ;; we use corfu
   (lsp-signature-auto-activate '(:on-trigger-char :on-server-request))
   (lsp-signature-render-documentation t)
+  (lsp-signature-doc-lines 12)
   (lsp-eldoc-render-all t)
   :init
   (defun lsp-set-bindings ()
@@ -505,13 +510,14 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(basic orderless))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
   :after corfu
-  :bind (("C-c p p" . completion-at-point) ;; capf
+  :bind (("M-l" . cape-line)
+         ("C-c p p" . completion-at-point) ;; capf
          ("C-c p t" . complete-tag)        ;; etags
          ("C-c p d" . cape-dabbrev)        ;; or dabbrev-completion
          ("C-c p h" . cape-history)
@@ -541,8 +547,7 @@
   (which-key-mode))
 
 (use-package indent-guide
-  :config
-  (indent-guide-global-mode))
+  :hook (prog-mode . indent-guide-mode))
 
 (use-package gruvbox-theme)
 
@@ -592,3 +597,8 @@
 (unless (file-exists-p custom-file)
   (write-region "" nil custom-file))
 (load custom-file)
+
+;; Theme selection
+(if (display-graphic-p)
+    (consult-theme 'ef-melissa-light)
+  (consult-theme 'modus-vivendi-tritanopia))

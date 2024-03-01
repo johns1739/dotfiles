@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: unit describe
-# key: <d
+# key: describe
 # --
-describe '${1:method}' do
+describe '${1:method name}' do
   $0
 end

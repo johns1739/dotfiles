@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Unit Test
-# key: <t
+# key: test
 # --
-test '${1:something}' do
+test '${1:what}' do
   $0
 end
