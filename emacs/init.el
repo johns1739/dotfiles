@@ -4,7 +4,7 @@
 ;; Eglot is slow to update diagnostics
 ;; Eglot sometimes causes lag
 ;; Unable to turn on ruby-formatting in Eglot
-
+;; Formatting in elixir issue with GUI emacs
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -75,7 +75,7 @@
 (delete-selection-mode 1)
 (desktop-save-mode -1)
 (electric-indent-mode 1)
-(electric-pair-mode 1)
+(electric-pair-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t)
 (global-hl-line-mode 1)
@@ -121,12 +121,12 @@
 
 ;; COMMANDS
 
-(defun my/go-to-config-file ()
+(defun goto-config-file ()
   "Go to my config file."
   (interactive)
   (find-file (expand-file-name "init.el" user-emacs-directory)))
 
-(defun my/project-copy-relative-file-name ()
+(defun project-copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
   (interactive)
   (kill-new (project-relative-file-name)))
@@ -143,8 +143,16 @@
               (t compile-command)))
   (call-interactively #'project-compile))
 
+(defun rails-comint ()
+  (interactive)
+  (universal-argument)
+  (command-execute #'rails-compile))
 
-;;;; HELPERS
+(defun comint ()
+  (interactive)
+  (universal-argument)
+  (command-execute #'compile))
+
 
 (defun project-directory ()
   "Current project directory."
@@ -203,7 +211,7 @@
               ("SPC b" . magit-blame-addition)
 
               ("SPC c" . compile)
-              ("SPC C" . recompile)
+              ("SPC C" . comint)
 
               ("SPC d" . project-find-dir)
               ("SPC D" . project-dired)
@@ -234,13 +242,13 @@
 
               ("SPC t" . project-vterm)
 
-              ("SPC y" . my/project-copy-relative-file-name)
+              ("SPC y" . project-copy-relative-file-name)
               ("SPC Y" . git-link)
 
               ("SPC ;" . denote-journal-extras-new-or-existing-entry)
               ("SPC :" . denote)
 
-              ("SPC ." . my/go-to-config-file))
+              ("SPC ." . goto-config-file))
   :config
   (evil-select-search-module 'evil-search-module 'evil-search)
   (evil-mode 1))
@@ -362,15 +370,13 @@
 
 ;; https://joaotavora.github.io/yasnippet/index.html
 (use-package yasnippet
-  :bind (:map yas-minor-mode-map
-              ("M-z" . yas-expand))
+  :bind (:map yas-minor-mode-map ("M-z" . yas-expand))
   :init
   (setq yas-snippet-dirs (list (expand-file-name "snippets" user-emacs-directory)))
   :config
   (yas-global-mode 1))
 
-(use-package yasnippet-snippets
-  :after yasnippet)
+(use-package yasnippet-snippets)
 
 ;; https://emacs-lsp.github.io/lsp-mode/
 (use-package lsp-mode
@@ -391,7 +397,7 @@
     (keymap-set evil-normal-state-local-map "g d" 'lsp-find-definition)
     (keymap-set evil-normal-state-local-map "K" 'eldoc))
   (defun corfu-lsp-setup ()
-    (setq completion-styles '(orderless)
+    (setq completion-styles '(basic orderless)
           completion-category-defaults nil))
   :hook
   (lsp-managed-mode . lsp-set-bindings)
@@ -412,7 +418,8 @@
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   (defun set-ruby-bindings ()
     "Inject ruby specific keybindings"
-    (keymap-set evil-normal-state-local-map "SPC c" 'rails-compile))
+    (keymap-set evil-normal-state-local-map "SPC c" 'rails-compile)
+    (keymap-set evil-normal-state-local-map "SPC C" 'rails-comint))
   :hook
   (ruby-ts-mode . set-ruby-bindings)
   (ruby-ts-mode . display-fill-column-indicator-mode)
@@ -454,7 +461,11 @@
   :init
   (add-to-list 'exec-path "~/.bin/elixir-ls")
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '(elixir-ts-mode "language_server.sh")))
+    (add-to-list 'eglot-server-programs
+                 '(elixir-ts-mode
+                   "language_server.sh"
+                   :initializationOptions
+                   (:formatting t))))
   :custom
   (lsp-elixir-suggest-specs nil)
   :hook
