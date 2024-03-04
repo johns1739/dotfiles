@@ -1,10 +1,10 @@
 require:
-    - rubocop-minitest
-    - rubocop-performance
+    # - rubocop-minitest
     - rubocop-rails
-    - rubocop-thread_safety
-    - rubocop-rake
-    - rubocop-factory_bot
+    # - rubocop-factory_bot
+    # - rubocop-thread_safety
+    # - rubocop-rake
+    # - rubocop-performance
 
 AllCops:
     SuggestExtensions: false

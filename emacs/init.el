@@ -4,7 +4,6 @@
 ;; Eglot is slow to update diagnostics
 ;; Eglot sometimes causes lag
 ;; Unable to turn on ruby-formatting in Eglot
-;; Formatting in elixir issue with GUI emacs
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -62,7 +61,7 @@
 (ad-activate 'hippie-expand)
 
 (add-hook 'before-save-hook #'whitespace-cleanup)
-(add-hook 'compilation-filter #'ansi-color-compilation-filter)
+(add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
@@ -278,7 +277,7 @@
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "GOPATH"
-                 "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"))
+                 "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH" "TIINGO_API_TOKEN"))
     (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
@@ -423,7 +422,6 @@
   :hook
   (ruby-ts-mode . set-ruby-bindings)
   (ruby-ts-mode . display-fill-column-indicator-mode)
-  ;; (ruby-ts-mode . eglot-ensure))
   (ruby-ts-mode . lsp-deferred))
 
 (use-package erlang
@@ -450,29 +448,25 @@
   :config
   (require 'erlang-start))
 
+(use-package elixir-ts-mode
+  :defer t
+  :init
+  ;; (add-to-list 'exec-path "~/.bin/elixir-ls")
+  ;; (with-eval-after-load 'eglot
+  ;;   (add-to-list 'eglot-server-programs
+  ;;                '(elixir-ts-mode "language_server.sh")))
+  :custom
+  (lsp-elixir-ls-download-url "https://github.com/elixir-lsp/elixir-ls/releases/download/v0.20.0/elixir-ls-v0.20.0.zip")
+  (lsp-elixir-suggest-specs nil)
+  :hook
+  (elixir-ts-mode . lsp-deferred)
+  (heex-ts-mode . lsp-deferred))
+
 (use-package lsp-haskell
   :defer t
   :hook
   (haskell-mode . lsp-deferred)
   (haskell-literal-mode . lsp-deferred))
-
-(use-package elixir-ts-mode
-  :defer t
-  :init
-  (add-to-list 'exec-path "~/.bin/elixir-ls")
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(elixir-ts-mode
-                   "language_server.sh"
-                   :initializationOptions
-                   (:formatting t))))
-  :custom
-  (lsp-elixir-suggest-specs nil)
-  :hook
-  (elixir-ts-mode . eglot-ensure)
-  (heex-ts-mode . eglot-ensure))
-  ;; (elixir-ts-mode . lsp-deferred)
-  ;; (heex-ts-mode . lsp-deferred))
 
 (use-package yaml-ts-mode
   :defer t
