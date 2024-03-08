@@ -19,5 +19,6 @@
            "config/package-langs.el"
            ;; "config/package-evil.el"
            "config/package-themes.el"
-           "config/keybindings.el"))
+           "config/keybindings.el"
+           "custom.el"))
   (load (locate-user-emacs-file config-file-name)))

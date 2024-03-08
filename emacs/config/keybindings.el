@@ -98,11 +98,11 @@
  ("RET" . nil))
 
 (defun flymake-set-bindings ()
-  (keymap-local-set "M-g l" #'consult-flymake))
+  (keymap-local-set "C-c x" #'consult-flymake))
 (add-hook 'fymake-mode-hook #'flymake-set-bindings)
 
 (defun flycheck-set-bindings ()
-  (keymap-local-set "M-g l" #'consult-flycheck))
+  (keymap-local-set "C-c x" #'consult-flycheck))
 (add-hook 'flycheck-mode-hook #'flycheck-set-bindings)
 
 (with-eval-after-load 'eglot
