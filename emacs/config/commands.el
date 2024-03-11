@@ -3,6 +3,11 @@
   (interactive)
   (find-file (locate-user-emacs-file "init.el")))
 
+(defun indent-buffer ()
+      (interactive)
+      (save-excursion
+        (indent-region (point-min) (point-max) nil)))
+
 (defun project-copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
   (interactive)

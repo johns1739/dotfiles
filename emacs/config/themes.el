@@ -1,5 +1,10 @@
 (use-package gruvbox-theme)
 
+(use-package catppuccin-theme
+  :config
+  ;; (catppuccin-reload)
+  (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
+
 (use-package ef-themes
   :init
   (setq ef-melissa-light-palette-overrides '((fringe unspecified))))
@@ -32,3 +37,4 @@
 ;; LOAD THEME
 (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
 (consult-theme 'modus-vivendi-tritanopia)
+;; (consult-theme 'catppuccin)

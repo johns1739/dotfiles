@@ -1,4 +1,4 @@
-;; Utilities
+;;; Utilities
 (setq apropos-do-all t)
 (setq global-auto-revert-non-file-buffers t)
 (setq read-process-output-max (* 1024 1024))
@@ -9,9 +9,9 @@
 (setq-default indent-tabs-mode nil)
 
 (delete-selection-mode 1)
-(desktop-save-mode 1)
+(desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 (electric-indent-mode 1)
-(electric-pair-mode -1)
+(electric-pair-mode 1)
 (global-auto-revert-mode t)
 (recentf-mode 1)
 (save-place-mode 1)
@@ -41,6 +41,7 @@
 
 
 ;; Look and feel
+(setopt use-short-answers t)
 (setq confirm-kill-emacs 'y-or-n-p)
 (setq eldoc-echo-area-use-multiline-p nil)
 (setq inhibit-startup-message t)

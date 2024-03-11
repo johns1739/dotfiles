@@ -2,11 +2,12 @@
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
   :custom
-  (corfu-cycle t) ; Allows cycling through candidates
   (corfu-auto t) ; Enable auto completion
-  (corfu-auto-prefix 2) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
+  (corfu-auto-prefix 2) ; Enable auto completion
+  (corfu-cycle t) ; Allows cycling through candidates
   (corfu-echo-delay 0.2)
+  (corfu-preselect 'valid)
   (corfu-separator ?\s)
   :config
   (global-corfu-mode 1)
@@ -91,19 +92,14 @@
 
 (use-package vterm
   :defer t
-  :init
-  (defun project-vterm ()
-    (interactive)
-    (let ((default-directory (or (and (project-current) (project-directory)) default-directory)))
-      (call-interactively #'vterm)))
-  (add-to-list 'display-buffer-alist
-               '("\\*vterm\\*"
-                 (display-buffer-at-bottom)
-                 (window-height . 12)
-                 (dedicated . t)))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 10000))
+
+(use-package vterm-toggle
+  :after vterm
+  :custom
+  (vterm-toggle-scope 'project))
 
 (use-package rg
   :defer t)
@@ -112,8 +108,11 @@
   ;; Jump to text
   :defer t)
 
+(use-package multiple-cursors
+  :defer t)
+
 (use-package expand-region
-  :disabled t)
+  :defer t)
 
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
