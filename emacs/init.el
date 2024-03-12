@@ -16,6 +16,7 @@
            "config/git.el"
            "config/org.el"
            "config/tree-sitter.el"
+           "config/completion.el"
            "config/utils.el"
            "config/langs.el"
            "config/evil.el"

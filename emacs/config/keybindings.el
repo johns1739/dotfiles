@@ -18,6 +18,8 @@
   "c a" #'embark-act
   "c E" #'embark-export
   "c y" #'project-copy-relative-file-name
+  "c n" #'next-error
+  "c p" #'previous-error
 
   ;; Notes
   "n n" #'denote
@@ -26,8 +28,6 @@
   ;; Gotos
   "g f" #'find-file-at-point
   "g d" #'project-dired
-  "g n" #'next-error
-  "g p" #'previous-error
   "g c" #'goto-configs
   "g l" #'consult-goto-line
 
@@ -63,7 +63,6 @@
   "k K" #'flymake-show-project-diagnostics
   "k n" #'flymake-goto-next-error
   "k p" #'flymake-goto-prev-error)
-
 
 (keymap-global-set "M-SPC" global-leader-map)
 (with-eval-after-load 'evil
@@ -120,16 +119,13 @@
              ([remap flymake-goto-prev-error] . flycheck-previous-error)))
 (add-hook 'flycheck-mode-hook #'flycheck-set-bindings)
 
-(with-eval-after-load 'eglot
-  (bind-keys :map (current-local-map)
-             ([remap indent-buffer] . lsp-format-buffer)))
-
 (defun lsp-set-bindings ()
   "Inject lsp bindings."
   (bind-keys :map (current-local-map)
              ([remap indent-buffer] . lsp-format-buffer)
              ([remap xref-find-references] . lsp-find-references)
-             ([remap xref-find-definitions] . lsp-find-definition)))
+             ([remap xref-find-definitions] . lsp-find-definition)
+             ([remap evil-goto-definition] . lsp-find-definition)))
 (add-hook 'lsp-managed-mode-hook #'lsp-set-bindings)
 
 (defun ruby-set-bindings ()

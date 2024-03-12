@@ -31,7 +31,7 @@ Layout/MultilineMethodCallIndentation:
     EnforcedStyle: indented_relative_to_receiver
 
 Layout/LineLength:
-    Max: 90 # default is 120
+    Max: 100 # default is 120
 
 Metrics/CyclomaticComplexity:
     Max: 9 # default is 7

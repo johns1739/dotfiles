@@ -15,6 +15,9 @@
   (when (display-graphic-p)
     (setq modus-vivendi-tritanopia-palette-overrides
           '((fringe unspecified)
+            (bg-added-fringe "SeaGreen4")
+            (bg-removed-fringe "IndianRed4")
+            (bg-changed-fringe "SteelBlue4")
             (bg-line-number-active unspecified)
             (bg-line-number-inactive unspecified)
             (border-mode-line-active unspecified)
