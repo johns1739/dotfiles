@@ -18,3 +18,18 @@
   :after corfu
   :config
   (corfu-terminal-mode 1))
+
+(use-package orderless
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package cape
+  ;; Cape provides Completion At Point Extensions
+  :custom
+  (completion-at-point-functions
+   (list #'cape-dabbrev
+         #'cape-abbrev
+         #'cape-keyword
+         #'cape-dict
+         #'cape-file)))
