@@ -4,23 +4,32 @@
   "SPC" #'consult-buffer
   "=" #'indent-buffer
 
-  "o" #'vterm-toggle
-  "O" #'vterm-toggle-cd
-  "y" #'project-copy-relative-file-name
-  ";" #'denote-journal-extras-new-or-existing-entry
-  ":" #'denote
-  "." #'goto-configs
+  "." #'xref-find-definitions
+  "?" #'xref-find-references
 
-  ;; Mode actions
+  ;; Toggled buffers
+  "o o" #'vterm-toggle
+  "o O" #'vterm-toggle-cd
+
+  ;; Code actions
   "c c" #'compile
   "c i" #'comint
   "c r" #'recompile
-  "c t" #'project-vterm
-  "c e" #'embark-act
+  "c a" #'embark-act
   "c E" #'embark-export
   "c y" #'project-copy-relative-file-name
-  "c ;" #'denote-journal-extras-new-or-existing-entry
-  "c :" #'denote
+
+  ;; Notes
+  "n n" #'denote
+  "n ;" #'denote-journal-extras-new-or-existing-entry
+
+  ;; Gotos
+  "g f" #'find-file-at-point
+  "g d" #'project-dired
+  "g n" #'next-error
+  "g p" #'previous-error
+  "g c" #'goto-configs
+  "g l" #'consult-goto-line
 
   ;; Searches
   "s f" #'project-find-file
@@ -38,9 +47,14 @@
 
   ;; Git
   "j b" #'magit-blame-addition
+  "j i" #'diff-hl-show-hunk
   "j j" #'magit-status
   "j J" #'magit-file-dispatch
   "j l" #'magit-buffer-log
+  "j n" #'diff-hl-next-hunk
+  "j p" #'diff-hl-previous-hunk
+  "j s" #'diff-hl-stage-dwim
+  "j X" #'diff-hl-revert-hunk
   "j y" #'git-link
 
   ;; Diagnostics
@@ -72,39 +86,8 @@
  ([remap other-window] . ace-window)
  ([remap evil-window-next] . ace-window)
 
- ;; Emacs core extended
- ("C-x C-d" . project-dired)
-
- ;; Mode actions
- ("C-c c" . compile)
- ("C-c i" . comint)
- ("C-c r" . recompile)
- ("C-c e" . embark-act)
- ("C-c E" . embark-export)
-
- ;; Searches
- ("M-s f" . project-find-file)
- ("M-s i" . consult-imenu)
- ("M-s M-i" . consult-imenu-multi)
- ("M-s l" . consult-line)
- ("M-s M-l" . consult-line-multi)
- ("M-s m" . consult-mark)
- ("M-s M-m" . consult-global-mark)
- ("M-s n" . consult-notes)
- ("M-s M-n" . consult-notes-search-in-all-notes)
- ("M-s p" . project-switch-project)
- ("M-s s" . consult-ripgrep)
-
- ;; Gotos
- ("M-g f" . find-file-at-point)
-
- ;; Help
+ ;; Extended emacs core
  ("C-h B" . embark-bindings)
-
- ;; Quickshots
- ("M-." . xref-find-definitions)
- ("M-?" . xref-find-references)
- ("M-o" . er/expand-region)
  ("C-S-j" . avy-goto-char-2)
  ("C-S-m" . mc/mark-all-dwim)
  ("C->" . mc/mark-next-like-this)

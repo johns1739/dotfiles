@@ -13,6 +13,7 @@
          '("config/package-manager.el"
            "config/defaults.el"
            "config/commands.el"
+           "config/git.el"
            "config/org.el"
            "config/tree-sitter.el"
            "config/utils.el"

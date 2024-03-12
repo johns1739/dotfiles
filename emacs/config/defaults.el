@@ -31,7 +31,7 @@
 ;; Compilation
 (setq compilation-always-kill t)
 (setq compilation-scroll-output t)
-(setq compilation-max-output-line-length 200)
+(setq compilation-max-output-line-length nil)
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 

@@ -82,14 +82,6 @@
           `(("." . ,undo-tree-history-directory))))
   (global-undo-tree-mode 1))
 
-(use-package magit
-  :defer t
-  :config
-  (setq magit-list-refs-sortby "-creatordate"))
-
-(use-package git-link
-  :defer t)
-
 (use-package vterm
   :defer t
   :custom
