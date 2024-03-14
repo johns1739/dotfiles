@@ -3,15 +3,18 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq read-process-output-max (* 1024 1024))
 (setq ring-bell-function 'ignore)
-(setq history-length 1000)
-(setq history-delete-duplicates t)
-(setq-default indent-tabs-mode nil)
 
 (delete-selection-mode 1)
-(desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 (electric-indent-mode 1)
 (electric-pair-mode 1)
 (global-auto-revert-mode t)
+
+
+;; Tracking history
+(setq history-length 1000)
+(setq history-delete-duplicates t)
+(desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
+(setq recentf-max-saved-items 25)
 (recentf-mode 1)
 (save-place-mode 1)
 (savehist-mode 1)
@@ -35,6 +38,7 @@
 
 
 ;; Spacing
+(setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
 (add-hook 'before-save-hook #'whitespace-cleanup)
 

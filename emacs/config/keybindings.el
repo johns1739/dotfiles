@@ -1,7 +1,7 @@
 (defvar-keymap global-leader-map
   :doc "Leader mapping to be shared by emacs and evil modes."
-  "M-SPC" #'consult-buffer
-  "SPC" #'consult-buffer
+  "M-SPC" #'project-switch-to-buffer
+  "SPC" #'project-switch-to-buffer
   "=" #'indent-buffer
 
   "." #'xref-find-definitions
@@ -32,8 +32,9 @@
   "g l" #'consult-goto-line
 
   ;; Searches
-  "s f" #'project-find-file
+  "s b" #'consult-buffer
   "s d" #'project-find-dir
+  "s f" #'project-find-file
   "s i" #'consult-imenu
   "s I" #'consult-imenu-multi
   "s l" #'consult-line
@@ -87,6 +88,7 @@
 
  ;; Extended emacs core
  ("C-h B" . embark-bindings)
+ ("C-S-j" . avy-goto-char-2)
  ("C-S-j" . avy-goto-char-2)
  ("C-S-m" . mc/mark-all-dwim)
  ("C->" . mc/mark-next-like-this)
