@@ -2,7 +2,6 @@
 (setq apropos-do-all t)
 (setq global-auto-revert-non-file-buffers t)
 (setq read-process-output-max (* 1024 1024))
-(setq tab-always-indent 'complete)
 (setq ring-bell-function 'ignore)
 (setq history-length 1000)
 (setq history-delete-duplicates t)
@@ -62,32 +61,3 @@
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
 (window-divider-mode -1)
-
-(add-to-list 'default-frame-alist '(height . 60))
-(add-to-list 'default-frame-alist '(width . 130))
-
-
-;; Hippie
-(setq hippie-expand-verbose t)
-(setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev-visible
-        try-expand-dabbrev
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-expand-all-abbrevs
-        try-expand-list
-        try-expand-list-all-buffers
-        try-expand-line
-        try-expand-line-all-buffers
-        ;; try-complete-lisp-symbol
-        ;; try-complete-lisp-symbol-partially
-        try-complete-file-name-partially
-        try-complete-file-name
-        try-expand-whole-kill))
-
-(defadvice hippie-expand (around hippie-expand-case-fold)
-  "Try to do case-sensitive matching (not effective with all functions)."
-  (let ((case-fold-search nil))
-    ad-do-it))
-
-(ad-activate 'hippie-expand)
