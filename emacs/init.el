@@ -10,13 +10,13 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
 (dolist (config-file-name
-         '("config/package-manager.el"
-           "config/defaults.el"
+         '("config/defaults.el"
+           "config/package-manager.el"
            "config/commands.el"
            "config/git.el"
-           "config/org.el"
            "config/tree-sitter.el"
            "config/completion.el"
+           "config/notes.el"
            "config/utils.el"
            "config/langs.el"
            "config/evil.el"

@@ -1,29 +1,31 @@
-(use-package gruvbox-theme)
+(use-package gruvbox-theme
+  :disabled)
 
 (use-package catppuccin-theme
+  :disabled
   :config
   ;; (catppuccin-reload)
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
 (use-package ef-themes
+  :disabled
   :init
   (setq ef-melissa-light-palette-overrides '((fringe unspecified))))
 
 (use-package modus-themes
   :init
   ;; https://protesilaos.com/emacs/modus-themes
-  (when (display-graphic-p)
-    (setq modus-vivendi-tritanopia-palette-overrides
-          '((fringe unspecified)
-            (bg-added-fringe "SeaGreen4")
-            (bg-removed-fringe "IndianRed4")
-            (bg-changed-fringe "SteelBlue4")
-            (bg-line-number-active unspecified)
-            (bg-line-number-inactive unspecified)
-            (border-mode-line-active unspecified)
-            (border-mode-line-inactive unspecified)
-            (fg-main "#d0d0d0")
-            (bg-main "#14191e")))))
+  (setq modus-vivendi-tritanopia-palette-overrides
+        '((fringe unspecified)
+          (bg-added-fringe "SeaGreen4")
+          (bg-removed-fringe "IndianRed4")
+          (bg-changed-fringe "SteelBlue4")
+          (bg-line-number-active unspecified)
+          (bg-line-number-inactive unspecified)
+          (border-mode-line-active unspecified)
+          (border-mode-line-inactive unspecified)
+          (fg-main "#d0d0d0")
+          (bg-main "#14191e"))))
 
 (use-package doom-modeline
   :custom

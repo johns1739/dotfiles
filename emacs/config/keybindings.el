@@ -1,15 +1,15 @@
 (defvar-keymap global-leader-map
   :doc "Leader mapping to be shared by emacs and evil modes."
-  "M-SPC" #'project-switch-to-buffer
-  "SPC" #'project-switch-to-buffer
+  "SPC" #'switch-to-buffer
   "=" #'indent-buffer
 
   "." #'xref-find-definitions
   "?" #'xref-find-references
+  "J" #'avy-goto-char-2
 
   ;; Toggled buffers
-  "o o" #'vterm-toggle
-  "o O" #'vterm-toggle-cd
+  "o v" #'vterm-toggle
+  "o V" #'vterm-toggle-cd
 
   ;; Code actions
   "c c" #'compile
@@ -23,6 +23,7 @@
 
   ;; Notes
   "n n" #'denote
+  "n t" #'org-todo-list
   "n ;" #'denote-journal-extras-new-or-existing-entry
 
   ;; Gotos
@@ -32,7 +33,6 @@
   "g l" #'consult-goto-line
 
   ;; Searches
-  "s b" #'consult-buffer
   "s d" #'project-find-dir
   "s f" #'project-find-file
   "s i" #'consult-imenu
@@ -88,12 +88,10 @@
 
  ;; Extended emacs core
  ("C-h B" . embark-bindings)
- ("C-S-j" . avy-goto-char-2)
- ("C-S-j" . avy-goto-char-2)
- ("C-S-m" . mc/mark-all-dwim)
- ("C->" . mc/mark-next-like-this)
- ("C-<" . mc/mark-previous-like-this)
- ("S-<return>" . join-line)
+ ("M-j" . avy-goto-char-2)
+ ("M-M" . mc/mark-all-dwim)
+ ("M->" . mc/mark-next-like-this)
+ ("M-<" . mc/mark-previous-like-this)
  ("<home>" . next-buffer)
  ("<end>" . previous-buffer)
 

@@ -23,19 +23,6 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package denote
-  :defer t
-  :init
-  (setq denote-directory (locate-user-emacs-file "denote"))
-  :config
-  (unless (file-exists-p denote-directory)
-    (make-directory denote-directory)))
-
-(use-package consult-notes
-  :after denote
-  :config
-  (consult-notes-denote-mode))
-
 (use-package undo-tree
   :config
   (setq undo-tree-visualizer-timestamps t)
