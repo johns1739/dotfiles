@@ -6,6 +6,7 @@
   :custom
   (org-hide-leading-stars t)
   (org-special-ctrl-a/e t)
+  (org-startup-indented t)
   :config
   (unless (file-exists-p org-directory)
     (make-directory org-directory)))
