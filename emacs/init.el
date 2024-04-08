@@ -1,6 +1,7 @@
 ;;-*- lexical-binding: t; -*-
 
 ;; TODO:
+;; Use custom mode line instead of doom mode line
 
 (add-hook 'emacs-startup-hook
           (lambda ()

@@ -1,5 +1,7 @@
 (use-package evil
   :demand t
+  :custom
+  (evil-lookup-func 'eldoc)
   :init
   (setq evil-disable-insert-state-bindings t)
   (setq evil-ex-search-persistent-highlight nil)

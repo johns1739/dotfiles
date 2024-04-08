@@ -1,5 +1,5 @@
 ;; Install grammars
-;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
+;; (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist))
 (with-eval-after-load 'treesit
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")

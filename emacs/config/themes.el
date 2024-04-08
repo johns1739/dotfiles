@@ -1,18 +1,29 @@
 (use-package gruvbox-theme
-  :disabled)
+  :if (display-graphic-p))
 
 (use-package catppuccin-theme
   :disabled
+  :if (display-graphic-p)
   :config
   ;; (catppuccin-reload)
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
-(use-package ef-themes
+(use-package autothemer
   :disabled
+  :ensure t)
+
+(use-package rose-pine-emacs
+  :disabled
+  :after autothemer
+  :straight (rose-pine-emacs :type git :host github :repo "thongpv87/rose-pine-emacs" :branch "master"))
+
+(use-package ef-themes
+  :if (display-graphic-p)
   :init
   (setq ef-melissa-light-palette-overrides '((fringe unspecified))))
 
 (use-package modus-themes
+  :if (display-graphic-p)
   :init
   ;; https://protesilaos.com/emacs/modus-themes
   (setq modus-vivendi-tritanopia-palette-overrides

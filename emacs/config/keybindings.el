@@ -5,14 +5,14 @@
 
   "." #'xref-find-definitions
   "?" #'xref-find-references
-  "J" #'avy-goto-char-2
+   "K" #'eldoc
 
   ;; Toggled buffers
   "o v" #'vterm-toggle
   "o V" #'vterm-toggle-cd
 
   ;; Code actions
-  "c c" #'compile
+  "c c" #'compile-dwim
   "c i" #'comint
   "c r" #'recompile
   "c a" #'embark-act
@@ -30,7 +30,9 @@
   "g f" #'find-file-at-point
   "g d" #'project-dired
   "g c" #'goto-configs
-  "g l" #'consult-goto-line
+  "g w" #'avy-goto-char-2
+  "g h" #'move-beginning-of-line
+  "g l" #'move-end-of-line
 
   ;; Searches
   "s d" #'project-find-dir
@@ -66,7 +68,14 @@
   "k p" #'flymake-goto-prev-error)
 
 (keymap-global-set "M-SPC" global-leader-map)
+
 (with-eval-after-load 'evil
+  (bind-keys*
+   ([remap find-file-at-point] . evil-find-file-at-point-with-line)
+   :map evil-normal-state-map
+   ("g h" . evil-beginning-of-line)
+   ("g l" . evil-end-of-line)
+   ("g w" . avy-goto-char-2))
   (keymap-set evil-visual-state-map "SPC" global-leader-map)
   (keymap-set evil-normal-state-map "SPC" global-leader-map))
 
@@ -88,10 +97,6 @@
 
  ;; Extended emacs core
  ("C-h B" . embark-bindings)
- ("M-j" . avy-goto-char-2)
- ("M-M" . mc/mark-all-dwim)
- ("M->" . mc/mark-next-like-this)
- ("M-<" . mc/mark-previous-like-this)
  ("<home>" . next-buffer)
  ("<end>" . previous-buffer)
 
@@ -119,6 +124,12 @@
              ([remap flymake-goto-prev-error] . flycheck-previous-error)))
 (add-hook 'flycheck-mode-hook #'flycheck-set-bindings)
 
+(defun eglot-set-bindings ()
+  "Inject eglot bindings."
+  (bind-keys :map (current-local-map)
+             ([remap indent-buffer] . eglot-format-buffer)))
+(add-hook 'eglot-managed-mode-hook #'eglot-set-bindings)
+
 (defun lsp-set-bindings ()
   "Inject lsp bindings."
   (bind-keys :map (current-local-map)
@@ -131,6 +142,6 @@
 (defun ruby-set-bindings ()
   "Inject ruby specific keybindings"
   (bind-keys :map (current-local-map)
-             ([remap compile] . rails-compile)
+             ([remap compile-dwim] . rails-compile)
              ([remap comint] . rails-comint)))
 (add-hook 'ruby-ts-mode-hook #'ruby-set-bindings)

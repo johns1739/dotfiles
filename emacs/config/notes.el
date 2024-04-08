@@ -3,6 +3,10 @@
   :init
   (setq org-directory (locate-user-emacs-file "denote"))
   (setq org-agenda-files `(,org-directory))
+  (setq org-todo-keywords '((sequence "TODO" "STARTED" "|" "DONE")))
+  (setq org-todo-keyword-faces
+        '(("TODO" . org-warning)
+          ("STARTED" . "yellow")))
   :custom
   (org-hide-leading-stars t)
   (org-special-ctrl-a/e t)

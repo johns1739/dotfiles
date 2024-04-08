@@ -23,17 +23,23 @@
                      (string-join (list "rails t " file-name))
                    (string-join (list "rails t " (s-concat file-name ":" linum))))))
               (t compile-command)))
-  (call-interactively #'project-compile))
+  (call-interactively #'compile-dwim))
 
 (defun rails-comint ()
   (interactive)
   (universal-argument)
   (command-execute #'rails-compile))
 
+(defun compile-dwim ()
+  (interactive)
+  (if (project-current)
+      (call-interactively #'project-compile)
+    (call-interactively #'compile)))
+
 (defun comint ()
   (interactive)
   (universal-argument)
-  (command-execute #'compile))
+  (command-execute #'compile-dwim))
 
 (defun project-directory ()
   "Current project directory."

@@ -22,6 +22,24 @@
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
   (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]erl_crash.dump\\'"))
 
+(use-package go-ts-mode
+  :mode "\\.go\\'"
+  :init
+  (defun lsp-go-save-hooks ()
+    (setq tab-width 4)
+    (setq go-ts-mode-indent-offset 4)
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+
+  (setq lsp-go-analyses '((shadow . t)
+                          (unusedvariable . t)
+                          (unusedwrite . t)
+                          (useany . t)
+                          (fieldalignment . t)))
+  :hook
+  (go-ts-mode . lsp-go-save-hooks)
+  (go-ts-mode . lsp-deferred))
+
 (use-package elm-mode
   :defer t
   :hook
@@ -59,17 +77,21 @@
   :config
   (require 'erlang-start))
 
+;; TODO: Update compilation-error-regexp-alist-alist to match elixir file names
 (use-package elixir-ts-mode
   :defer t
   :init
-  ;; (add-to-list 'exec-path "~/.bin/elixir-ls")
+  (add-to-list 'exec-path "~/.bin/elixir-ls")
   ;; (with-eval-after-load 'eglot
   ;;   (add-to-list 'eglot-server-programs
   ;;                '(elixir-ts-mode "language_server.sh")))
   :custom
   (lsp-elixir-ls-download-url "https://github.com/elixir-lsp/elixir-ls/releases/download/v0.20.0/elixir-ls-v0.20.0.zip")
   (lsp-elixir-suggest-specs nil)
+  (lsp-elixir-enable-test-lenses nil)
   :hook
+  ;; (elixir-ts-mode . eglot-ensure)
+  ;; (heex-ts-mode . eglot-ensure))
   (elixir-ts-mode . lsp-deferred)
   (heex-ts-mode . lsp-deferred))
 

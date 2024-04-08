@@ -1,4 +1,4 @@
-;;; Utilities
+;; Utilities
 (setq apropos-do-all t)
 (setq global-auto-revert-non-file-buffers t)
 (setq read-process-output-max (* 1024 1024))
