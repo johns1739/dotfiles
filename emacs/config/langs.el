@@ -49,7 +49,10 @@
   :defer t
   :init
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
+  (defun ruby-set-outline-regexp ()
+    (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)"))
   :hook
+  (ruby-ts-mode . ruby-set-outline-regexp)
   (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-ts-mode . lsp-deferred))
 

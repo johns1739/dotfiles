@@ -1,21 +1,14 @@
 (use-package gruvbox-theme
   :if (display-graphic-p))
 
+(use-package timu-rouge-theme)
+
 (use-package catppuccin-theme
   :disabled
   :if (display-graphic-p)
   :config
   ;; (catppuccin-reload)
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
-
-(use-package autothemer
-  :disabled
-  :ensure t)
-
-(use-package rose-pine-emacs
-  :disabled
-  :after autothemer
-  :straight (rose-pine-emacs :type git :host github :repo "thongpv87/rose-pine-emacs" :branch "master"))
 
 (use-package ef-themes
   :if (display-graphic-p)
@@ -55,8 +48,8 @@
 (when (display-graphic-p)
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 130))
-  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
-  (consult-theme 'modus-vivendi-tritanopia))
+  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1"))
 
-(unless (display-graphic-p)
-  (consult-theme 'modus-vivendi))
+;; (if (display-graphic-p)
+;;     (consult-theme 'modus-vivendi-tritanopia)
+;;   (consult-theme 'modus-vivendi))

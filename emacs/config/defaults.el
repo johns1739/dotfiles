@@ -60,7 +60,8 @@
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 (add-hook 'prog-mode-hook #'hl-line-mode)
 
-(column-number-mode 1)
+(column-number-mode -1)
+(line-number-mode -1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)

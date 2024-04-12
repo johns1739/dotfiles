@@ -2,37 +2,46 @@
   :doc "Leader mapping to be shared by emacs and evil modes."
   "SPC" #'switch-to-buffer
   "=" #'indent-buffer
-
-  "." #'xref-find-definitions
-  "?" #'xref-find-references
    "K" #'eldoc
 
   ;; Toggled buffers
   "o v" #'vterm-toggle
   "o V" #'vterm-toggle-cd
 
-  ;; Code actions
+  ;; Compilation actions
   "c c" #'compile-dwim
   "c i" #'comint
   "c r" #'recompile
   "c a" #'embark-act
   "c E" #'embark-export
-  "c y" #'project-copy-relative-file-name
+  "c y" #'project-copy-relative-file-name ;; seems out of place
   "c n" #'next-error
   "c p" #'previous-error
+
+  ;; Eval Actions
+  "x e" #'eval-last-sexp
+  "x E" #'eval-print-last-sexp
+  "x :" #'eval-expression
+  "x b" #'eval-buffer
+  "x r" #'eval-region
+  "x f" #'eval-defun
 
   ;; Notes
   "n n" #'denote
   "n t" #'org-todo-list
   "n ;" #'denote-journal-extras-new-or-existing-entry
+  "n ," #'org-insert-structure-template
 
   ;; Gotos
   "g f" #'find-file-at-point
-  "g d" #'project-dired
+  "g d" #'xref-find-definitions
+  "g r" #'xref-find-references
   "g c" #'goto-configs
   "g w" #'avy-goto-char-2
   "g h" #'move-beginning-of-line
   "g l" #'move-end-of-line
+  "g n" #'next-buffer
+  "g p" #'previous-buffer
 
   ;; Searches
   "s d" #'project-find-dir
@@ -46,6 +55,7 @@
   "s n" #'consult-notes
   "s N" #'consult-notes-search-in-all-notes
   "s p" #'project-switch-project
+  "s o" #'consult-outline
   "s s" #'consult-ripgrep
 
   ;; Git
@@ -73,8 +83,12 @@
   (bind-keys*
    ([remap find-file-at-point] . evil-find-file-at-point-with-line)
    :map evil-normal-state-map
+   ("g d" . xref-find-definitions)
    ("g h" . evil-beginning-of-line)
    ("g l" . evil-end-of-line)
+   ("g n" . next-buffer)
+   ("g p" . previous-buffer)
+   ("g r" . xref-find-references)
    ("g w" . avy-goto-char-2))
   (keymap-set evil-visual-state-map "SPC" global-leader-map)
   (keymap-set evil-normal-state-map "SPC" global-leader-map))
@@ -111,10 +125,6 @@
  :map corfu-map
  ("RET" . nil))
 
-(defun flymake-set-bindings ()
-  (keymap-local-set "M-SPC x" #'consult-flymake))
-(add-hook 'fymake-mode-hook #'flymake-set-bindings)
-
 (defun flycheck-set-bindings ()
   (bind-keys :map (current-local-map)
              ([remap consult-flymake] . consult-flycheck)
@@ -134,6 +144,8 @@
   "Inject lsp bindings."
   (bind-keys :map (current-local-map)
              ([remap indent-buffer] . lsp-format-buffer)
+             ([remap evil-lookup] . lsp-describe-thing-at-point)
+             ([remap eldoc] . lsp-describe-thing-at-point)
              ([remap xref-find-references] . lsp-find-references)
              ([remap xref-find-definitions] . lsp-find-definition)
              ([remap evil-goto-definition] . lsp-find-definition)))

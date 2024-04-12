@@ -13,6 +13,7 @@
 (dolist (config-file-name
          '("config/defaults.el"
            "config/package-manager.el"
+           "config/debugging.el"
            "config/commands.el"
            "config/git.el"
            "config/tree-sitter.el"
