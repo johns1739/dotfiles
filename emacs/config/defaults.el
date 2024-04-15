@@ -50,6 +50,8 @@
 (setq inhibit-startup-message t)
 (setq max-mini-window-height 0.2)
 (setq use-dialog-box nil)
+(setq scroll-margin 25)
+(setq scroll-conservatively 101)
 (setq-default cursor-type 'bar)
 (setq-default fill-column 120)
 (setq-default frame-title-format '("%f"))
