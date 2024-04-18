@@ -31,7 +31,7 @@
   :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
   :custom
   (corfu-auto t) ; Enable auto completion
-  (corfu-auto-delay 0.3) ; Enable auto completion
+  (corfu-auto-delay 0.2) ; Enable auto completion
   (corfu-auto-prefix 3) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-echo-delay 0.3)

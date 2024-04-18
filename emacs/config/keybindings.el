@@ -14,7 +14,6 @@
   "c r" #'recompile
   "c a" #'embark-act
   "c E" #'embark-export
-  "c y" #'project-copy-relative-file-name ;; seems out of place
   "c n" #'next-error
   "c p" #'previous-error
 
@@ -26,6 +25,12 @@
   "x r" #'eval-region
   "x f" #'eval-defun
 
+  ;; Editor Actions
+  "e y" #'project-copy-relative-file-name
+  "e Y" #'project-insert-relative-file-name
+  "e c" #'goto-configs
+  "e t" #'load-theme
+
   ;; Notes
   "n n" #'denote
   "n t" #'org-todo-list
@@ -36,12 +41,12 @@
   "g f" #'find-file-at-point
   "g d" #'xref-find-definitions
   "g r" #'xref-find-references
-  "g c" #'goto-configs
   "g w" #'avy-goto-char-2
   "g h" #'move-beginning-of-line
   "g l" #'move-end-of-line
   "g n" #'next-buffer
   "g p" #'previous-buffer
+  "g u" #'goto-address-at-point
 
   ;; Searches
   "s d" #'project-find-dir
@@ -89,6 +94,7 @@
    ("g n" . next-buffer)
    ("g p" . previous-buffer)
    ("g r" . xref-find-references)
+   ("g u" . goto-address-at-point)
    ("g w" . avy-goto-char-2))
   (keymap-set evil-visual-state-map "SPC" global-leader-map)
   (keymap-set evil-normal-state-map "SPC" global-leader-map))
@@ -108,6 +114,7 @@
  ([remap yank-pop] . consult-yank-pop)
  ([remap other-window] . ace-window)
  ([remap evil-window-next] . ace-window)
+ ([remap load-theme] . consult-theme)
 
  ;; Extended emacs core
  ("C-h B" . embark-bindings)

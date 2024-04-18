@@ -13,6 +13,11 @@
   (interactive)
   (kill-new (project-relative-file-name)))
 
+(defun project-insert-relative-file-name ()
+  "Insert file path of current buffer relative to project directory."
+  (interactive)
+  (insert (project-relative-file-name)))
+
 (defun rails-compile ()
   (interactive)
   (setq compile-command
