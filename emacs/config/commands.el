@@ -13,10 +13,10 @@
   (interactive)
   (kill-new (project-relative-file-name)))
 
-(defun project-insert-relative-file-name ()
-  "Insert file path of current buffer relative to project directory."
+(defun copy-absolute-file-name ()
+  "Copy absolute file path of current buffer."
   (interactive)
-  (insert (project-relative-file-name)))
+  (kill-new (absolute-file-name)))
 
 (defun rails-compile ()
   (interactive)
@@ -46,6 +46,10 @@
   (universal-argument)
   (command-execute #'compile-dwim))
 
+(defun vterm-named ()
+  (interactive)
+  (vterm (read-string "Session name: ")))
+
 (defun project-directory ()
   "Current project directory."
   (project-root (project-current)))
@@ -53,6 +57,10 @@
 (defun project-relative-file-name ()
   "Relative project path to file."
   (file-relative-name (buffer-file-name) (project-directory)))
+
+(defun absolute-file-name ()
+  "Absolute path to file."
+  (expand-file-name (buffer-file-name)))
 
 (defun project-expand-path (file-name)
   (f-join (project-directory) file-name))

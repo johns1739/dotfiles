@@ -2,9 +2,7 @@
 
 ;; TODO:
 ;; Use custom mode line instead of doom mode line
-;; go to file should be smarter with parsing line and column
-;; oT open vterm with open to provide a different buffer name
-;; Better key descriptions
+;; Better key description
 ;; grep / rg within a DIR
 
 (add-hook 'emacs-startup-hook

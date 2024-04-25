@@ -14,8 +14,8 @@
         try-expand-line-all-buffers
         ;; try-complete-lisp-symbol
         ;; try-complete-lisp-symbol-partially
-        try-complete-file-name-partially
         try-complete-file-name
+        try-complete-file-name-partially
         try-expand-whole-kill))
 
 (defadvice hippie-expand (around hippie-expand-case-fold)
@@ -60,4 +60,6 @@
          #'cape-abbrev
          #'cape-keyword
          #'cape-dict
-         #'cape-file)))
+         #'cape-file
+         #'cape-line
+         )))

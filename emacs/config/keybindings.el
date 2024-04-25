@@ -2,11 +2,11 @@
   :doc "Leader mapping to be shared by emacs and evil modes."
   "SPC" #'switch-to-buffer
   "=" #'indent-buffer
-   "K" #'eldoc
+  "K" #'eldoc
 
-  ;; Toggled buffers
-  "o v" #'vterm-toggle
-  "o V" #'vterm-toggle-cd
+  ;; Open/Toggle
+  "o t" #'vterm-toggle
+  "o T" #'vterm-named
 
   ;; Compilation actions
   "c c" #'compile-dwim
@@ -27,7 +27,7 @@
 
   ;; Editor Actions
   "e y" #'project-copy-relative-file-name
-  "e Y" #'project-insert-relative-file-name
+  "e Y" #'copy-absolute-file-name
   "e c" #'goto-configs
   "e t" #'load-theme
 
@@ -48,20 +48,21 @@
   "g p" #'previous-buffer
   "g u" #'goto-address-at-point
 
-  ;; Searches
-  "s d" #'project-find-dir
-  "s f" #'project-find-file
-  "s i" #'consult-imenu
-  "s I" #'consult-imenu-multi
-  "s l" #'consult-line
-  "s L" #'consult-line-multi
-  "s m" #'consult-mark
-  "s M" #'consult-global-mark
-  "s n" #'consult-notes
-  "s N" #'consult-notes-search-in-all-notes
-  "s p" #'project-switch-project
-  "s o" #'consult-outline
-  "s s" #'consult-ripgrep
+  ;; Find
+  "f d" #'project-find-dir
+  "f f" #'project-find-file
+  "f g" #'consult-git-grep
+  "f i" #'consult-imenu
+  "f I" #'consult-imenu-multi
+  "f w" #'consult-line
+  "f W" #'consult-line-multi
+  "f m" #'consult-mark
+  "f M" #'consult-global-mark
+  "f n" #'consult-notes
+  "f N" #'consult-notes-search-in-all-notes
+  "f p" #'project-switch-project
+  "f o" #'consult-outline
+  "f s" #'consult-ripgrep
 
   ;; Git
   "j b" #'magit-blame-addition
@@ -80,7 +81,22 @@
   "k k" #'flymake-show-buffer-diagnostics
   "k K" #'flymake-show-project-diagnostics
   "k n" #'flymake-goto-next-error
-  "k p" #'flymake-goto-prev-error)
+  "k p" #'flymake-goto-prev-error
+
+  ;; Completions
+  "i ." #'completion-at-point
+  "i :" #'cape-emoji
+  "i a" #'cape-abbrev
+  "i d" #'cape-dabbrev
+  "i e" #'cape-elisp-block
+  "i f" #'cape-file
+  "i h" #'cape-history
+  "i k" #'cape-keyword
+  "i l" #'cape-line
+  "i s" #'cape-elisp-symbol
+  "i t" #'completion-tag
+  "i w" #'cape-dict
+  )
 
 (keymap-global-set "M-SPC" global-leader-map)
 
