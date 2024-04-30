@@ -12,8 +12,6 @@
   "c c" #'compile-dwim
   "c i" #'comint
   "c r" #'recompile
-  "c a" #'embark-act
-  "c E" #'embark-export
   "c n" #'next-error
   "c p" #'previous-error
 
@@ -25,10 +23,17 @@
   "x r" #'eval-region
   "x f" #'eval-defun
 
+  ;; Help
+  "h E" #'embark-bindings
+
   ;; Editor Actions
+  "e ." #'embark-dwim
+  "e a" #'embark-act
+  "e c" #'embark-collect
+  "e C" #'embark-export
   "e y" #'project-copy-relative-file-name
   "e Y" #'copy-absolute-file-name
-  "e c" #'goto-configs
+  "e ," #'goto-configs
   "e t" #'load-theme
 
   ;; Notes
@@ -36,6 +41,8 @@
   "n t" #'org-todo-list
   "n ;" #'denote-journal-extras-new-or-existing-entry
   "n ," #'org-insert-structure-template
+  "n f f" #'consult-notes
+  "n f w" #'consult-notes-search-in-all-notes
 
   ;; Gotos
   "g f" #'find-file-at-point
@@ -49,35 +56,36 @@
   "g u" #'goto-address-at-point
 
   ;; Find
+  "f ." #'rg-dwim
   "f d" #'project-find-dir
   "f f" #'project-find-file
   "f g" #'consult-git-grep
   "f i" #'consult-imenu
+  "f k" #'consult-flymake
   "f I" #'consult-imenu-multi
   "f w" #'consult-line
   "f W" #'consult-line-multi
   "f m" #'consult-mark
   "f M" #'consult-global-mark
-  "f n" #'consult-notes
-  "f N" #'consult-notes-search-in-all-notes
   "f p" #'project-switch-project
   "f o" #'consult-outline
+  "f r" #'consult-recent-file
   "f s" #'consult-ripgrep
+  "f S" #'rg
 
   ;; Git
   "j b" #'magit-blame-addition
-  "j i" #'diff-hl-show-hunk
   "j j" #'magit-status
   "j J" #'magit-file-dispatch
-  "j l" #'magit-buffer-log
+  "j l" #'magit-log-buffer-file
   "j n" #'diff-hl-next-hunk
   "j p" #'diff-hl-previous-hunk
-  "j s" #'diff-hl-stage-dwim
+  "j s" #'diff-hl-show-hunk
+  "j S" #'diff-hl-stage-dwim
   "j X" #'diff-hl-revert-hunk
   "j y" #'git-link
 
   ;; Diagnostics
-  "k s" #'consult-flymake
   "k k" #'flymake-show-buffer-diagnostics
   "k K" #'flymake-show-project-diagnostics
   "k n" #'flymake-goto-next-error
@@ -131,11 +139,6 @@
  ([remap other-window] . ace-window)
  ([remap evil-window-next] . ace-window)
  ([remap load-theme] . consult-theme)
-
- ;; Extended emacs core
- ("C-h B" . embark-bindings)
- ("<home>" . next-buffer)
- ("<end>" . previous-buffer)
 
  :map isearch-mode-map
  ("M-s l" . consult-line)

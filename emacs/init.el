@@ -1,10 +1,5 @@
 ;;-*- lexical-binding: t; -*-
 
-;; TODO:
-;; Use custom mode line instead of doom mode line
-;; Better key description
-;; grep / rg within a DIR
-
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
@@ -13,10 +8,10 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
 (dolist (config-file-name
-         '("config/defaults.el"
+         '("config/emacs-defaults.el"
+           "config/emacs-interactive-commands.el"
            "config/package-manager.el"
-           "config/debugging.el"
-           "config/commands.el"
+           "config/debug-tools.el"
            "config/git.el"
            "config/tree-sitter.el"
            "config/completion.el"

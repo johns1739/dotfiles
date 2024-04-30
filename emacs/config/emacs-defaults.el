@@ -6,7 +6,7 @@
 
 (delete-selection-mode 1)
 (electric-indent-mode 1)
-(electric-pair-mode 1)
+(electric-pair-mode -1)
 (global-auto-revert-mode t)
 
 
@@ -14,7 +14,7 @@
 (setq history-length 1000)
 (setq history-delete-duplicates t)
 (desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
-(setq recentf-max-saved-items 25)
+(setq recentf-max-saved-items 50)
 (recentf-mode 1)
 (save-place-mode 1)
 (savehist-mode 1)
@@ -33,7 +33,7 @@
 ;; Compilation
 (setq compilation-always-kill t)
 (setq compilation-scroll-output t)
-(setq compilation-max-output-line-length nil)
+(setq compilation-max-output-line-length 200)
 (add-hook 'compilation-filter-hook #'ansi-color-compilation-filter)
 
 
