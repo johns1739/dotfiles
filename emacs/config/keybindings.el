@@ -1,14 +1,20 @@
 (defvar-keymap global-leader-map
   :doc "Leader mapping to be shared by emacs and evil modes."
-  "SPC" #'switch-to-buffer
+  "SPC" #'project-switch-to-buffer
+  "S-SPC" #'switch-to-buffer
   "=" #'indent-buffer
   "K" #'eldoc
+  "." #'dired
+  ":" #'consult-goto-line
+  ";" #'scratch-buffer
 
-  ;; Open/Toggle
+  ;; Open / Toggle
+  "o ." #'dired-jump
   "o t" #'vterm-toggle
   "o T" #'vterm-named
 
   ;; Compilation actions
+  "c s" #'consult-compile-error
   "c c" #'compile-dwim
   "c i" #'comint
   "c r" #'recompile
@@ -21,28 +27,26 @@
   "x :" #'eval-expression
   "x b" #'eval-buffer
   "x r" #'eval-region
-  "x f" #'eval-defun
-
-  ;; Help
-  "h E" #'embark-bindings
+  "x ." #'eval-defun
 
   ;; Editor Actions
   "e ." #'embark-dwim
   "e a" #'embark-act
   "e c" #'embark-collect
   "e C" #'embark-export
-  "e y" #'project-copy-relative-file-name
   "e Y" #'copy-absolute-file-name
   "e ," #'goto-configs
   "e t" #'load-theme
+  "e h" #'embark-bindings
 
   ;; Notes
   "n n" #'denote
+  "n j" #'denote-journal-extras-new-or-existing-entry
+  "n ;" #'scratch-buffer
   "n t" #'org-todo-list
-  "n ;" #'denote-journal-extras-new-or-existing-entry
-  "n ," #'org-insert-structure-template
-  "n f f" #'consult-notes
-  "n f w" #'consult-notes-search-in-all-notes
+  "n a" #'org-agenda
+  "n f" #'consult-notes
+  "n s" #'consult-notes-search-in-all-notes
 
   ;; Gotos
   "g f" #'find-file-at-point
@@ -55,20 +59,25 @@
   "g p" #'previous-buffer
   "g u" #'goto-address-at-point
 
+  ;; Buffer Navigation
+  "s ." #'isearch-forward-symbol-at-point
+  "s s" #'consult-line
+  "s i" #'consult-imenu
+  "s I" #'consult-imenu-multi
+  "s L" #'consult-keep-lines
+  "s m" #'consult-mark
+  "s M" #'consult-global-mark
+  "s o" #'consult-outline
+  "s n" #'consult-org-heading ;; TODO: mode specific
+  "s N" #'consult-org-agenda  ;; TODO: mode specific
+
   ;; Find
   "f ." #'rg-dwim
+  "f SPC" #'switch-to-buffer
   "f d" #'project-find-dir
   "f f" #'project-find-file
+  "f F" #'consult-find
   "f g" #'consult-git-grep
-  "f i" #'consult-imenu
-  "f k" #'consult-flymake
-  "f I" #'consult-imenu-multi
-  "f w" #'consult-line
-  "f W" #'consult-line-multi
-  "f m" #'consult-mark
-  "f M" #'consult-global-mark
-  "f p" #'project-switch-project
-  "f o" #'consult-outline
   "f r" #'consult-recent-file
   "f s" #'consult-ripgrep
   "f S" #'rg
@@ -86,6 +95,7 @@
   "j y" #'git-link
 
   ;; Diagnostics
+  "k s" #'consult-flymake
   "k k" #'flymake-show-buffer-diagnostics
   "k K" #'flymake-show-project-diagnostics
   "k n" #'flymake-goto-next-error
@@ -104,6 +114,14 @@
   "i s" #'cape-elisp-symbol
   "i t" #'completion-tag
   "i w" #'cape-dict
+
+  ;; project
+  "p ." #'project-dired
+  "p y" #'project-copy-relative-file-name
+  "p o" #'project-display-buffer
+  "p p" #'project-switch-project
+  "p K" #'project-kill-buffers
+  "p R" #'project-query-replace-regexp
   )
 
 (keymap-global-set "M-SPC" global-leader-map)
@@ -112,6 +130,8 @@
   (bind-keys*
    ([remap find-file-at-point] . evil-find-file-at-point-with-line)
    :map evil-normal-state-map
+   ("q" . nil)
+   ("Q" . evil-record-macro)
    ("g d" . xref-find-definitions)
    ("g h" . evil-beginning-of-line)
    ("g l" . evil-end-of-line)

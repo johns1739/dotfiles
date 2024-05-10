@@ -18,6 +18,7 @@
   (setq evil-want-C-w-in-emacs-state t)
   :config
   (evil-select-search-module 'evil-search-module 'evil-search)
+  (fset 'evil-visual-update-x-selection 'ignore)
   (evil-mode 1))
 
 (use-package evil-collection

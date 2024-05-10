@@ -14,6 +14,9 @@
   (org-special-ctrl-a/e t)
   (org-startup-indented t)
   :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages '((emacs-lisp . t)
+                               (shell . t)))
   (unless (file-exists-p org-directory)
     (make-directory org-directory)))
 

@@ -61,5 +61,5 @@
          #'cape-keyword
          #'cape-dict
          #'cape-file
-         #'cape-line
+         ;; #'cape-line ;; Kinda buggy
          )))

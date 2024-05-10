@@ -51,6 +51,16 @@
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   (defun ruby-set-outline-regexp ()
     (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)"))
+  (with-eval-after-load 'compile
+    (push 'minitest-test compilation-error-regexp-alist)
+    (push '(minitest-test "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]"
+                          1 ;; file
+                          2 ;; line
+                          nil ;; col
+                          nil ;; type
+                          1 ;;hyperlink
+                          )
+          compilation-error-regexp-alist-alist))
   :hook
   (ruby-ts-mode . ruby-set-outline-regexp)
   (ruby-ts-mode . display-fill-column-indicator-mode)
