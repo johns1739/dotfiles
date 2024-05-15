@@ -18,8 +18,9 @@
            "config/notes.el"
            "config/utils.el"
            "config/langs.el"
-           "config/evil.el"
            "config/themes.el"
            "config/keybindings.el"
+           "config/meow.el"
+           ;;"config/evil.el"
            "custom.el"))
   (load (locate-user-emacs-file config-file-name)))

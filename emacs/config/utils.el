@@ -13,6 +13,17 @@
   (advice-add #'register-preview :override #'consult-register-window)
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
+  :bind (([remap Info-search] . consult-info)
+         ([remap goto-line] . consult-goto-line)
+         ([remap isearch-edit-string] . consult-isearch-history)
+         ([remap project-switch-to-buffer] . consult-project-buffer)
+         ([remap repeat-complex-command] . consult-complex-command)
+         ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
+         ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
+         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+         ([remap switch-to-buffer] . consult-buffer)
+         ([remap yank-pop] . consult-yank-pop)
+         ([remap load-theme] . consult-theme))
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
 
@@ -60,8 +71,18 @@
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
   :defer t
+  :init
+  (defun flycheck-set-bindings ()
+    (bind-keys :map (current-local-map)
+               ([remap consult-flymake] . consult-flycheck)
+               ([remap flymake-show-buffer-diagnostics] . flycheck-list-errors)
+               ([remap flymake-show-project-diagnostics] . nil)
+               ([remap flymake-goto-next-error] . flycheck-next-error)
+               ([remap flymake-goto-prev-error] . flycheck-previous-error)))
   :custom
-  (flycheck-indication-mode 'right-fringe))
+  (flycheck-indication-mode 'right-fringe)
+  :hook
+  (flycheck-mode . flycheck-set-bindings))
 
 (use-package consult-flycheck
   :defer t)
@@ -85,6 +106,8 @@
 
 (use-package ace-window
   ;; Jump to a window
+  :bind  (([remap other-window] . ace-window)
+          ([remap evil-window-next] . ace-window))
   :defer t)
 
 (use-package exec-path-from-shell

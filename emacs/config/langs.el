@@ -2,6 +2,13 @@
 ;; Eglot sometimes causes lag
 ;; Unable to turn on ruby-formatting in Eglot
 
+(defun eglot-set-bindings ()
+  "Inject eglot bindings."
+  (bind-keys :map (current-local-map)
+             ([remap indent-buffer] . eglot-format-buffer)))
+(add-hook 'eglot-managed-mode-hook #'eglot-set-bindings)
+
+
 ;; https://emacs-lsp.github.io/lsp-mode/
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -15,8 +22,18 @@
   (defun corfu-lsp-setup ()
     (setq completion-styles '(basic orderless)
           completion-category-defaults nil))
+  (defun lsp-set-bindings ()
+    "Inject lsp bindings."
+    (bind-keys :map (current-local-map)
+               ([remap indent-buffer] . lsp-format-buffer)
+               ([remap evil-lookup] . lsp-describe-thing-at-point)
+               ([remap eldoc] . lsp-describe-thing-at-point)
+               ([remap xref-find-references] . lsp-find-references)
+               ([remap xref-find-definitions] . lsp-find-definition)
+               ([remap evil-goto-definition] . lsp-find-definition)))
   :hook
   (lsp-managed-mode . corfu-lsp-setup)
+  (lsp-managed-mode . lsp-set-bindings)
   :config
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]_build\\'")
   (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
@@ -51,6 +68,11 @@
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   (defun ruby-set-outline-regexp ()
     (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)"))
+  (defun ruby-set-bindings ()
+    "Inject ruby specific keybindings"
+    (bind-keys :map (current-local-map)
+               ([remap compile-dwim] . rails-compile)
+               ([remap comint] . rails-comint)))
   (with-eval-after-load 'compile
     (push 'minitest-test compilation-error-regexp-alist)
     (push '(minitest-test "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]"
@@ -62,6 +84,7 @@
                           )
           compilation-error-regexp-alist-alist))
   :hook
+  (ruby-ts-mode-hook . ruby-set-bindings)
   (ruby-ts-mode . ruby-set-outline-regexp)
   (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-ts-mode . lsp-deferred))

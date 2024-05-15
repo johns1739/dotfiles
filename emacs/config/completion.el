@@ -29,8 +29,10 @@
 (use-package corfu
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
+  :bind (:map corfu-map
+              ("RET" . nil))
   :custom
-  (corfu-auto t) ; Enable auto completion
+  (corfu-auto nil) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
   (corfu-auto-prefix 3) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
@@ -67,6 +69,8 @@
 (use-package copilot
   :ensure t
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :custom
+  (copilot-indent-offset-warning-disable t)
   :init
   (with-eval-after-load 'copilot
     (bind-keys :map copilot-completion-map
