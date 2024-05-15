@@ -43,6 +43,7 @@
   :config
   (doom-modeline-mode 1))
 
+
 ;; LOAD THEME
 
 (when (display-graphic-p)
@@ -51,5 +52,5 @@
   (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1"))
 
 ;; (if (display-graphic-p)
-;;     (consult-theme 'modus-vivendi-tritanopia)
+(consult-theme 'modus-vivendi-tritanopia)
 ;;   (consult-theme 'modus-vivendi))

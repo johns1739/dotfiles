@@ -63,3 +63,16 @@
          #'cape-file
          ;; #'cape-line ;; Kinda buggy
          )))
+
+(use-package copilot
+  :ensure t
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :init
+  (with-eval-after-load 'copilot
+    (bind-keys :map copilot-completion-map
+               ("M-n" . copilot-accept-completion-by-line)
+               ("M-f" . copilot-accept-completion-by-word)
+               ("<tab>" . copilot-accept-completion)
+               ("TAB" . copilot-accept-completion)))
+  :hook
+  (prog-mode . copilot-mode))
