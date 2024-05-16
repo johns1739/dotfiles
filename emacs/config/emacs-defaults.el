@@ -47,6 +47,7 @@
 (setq scroll-margin 3)
 (setq scroll-conservatively 101)
 
+
 ;; Look and feel
 (setopt use-short-answers t)
 (setq confirm-kill-emacs 'y-or-n-p)

@@ -1,5 +1,6 @@
 (use-package gruvbox-theme
-  :if (display-graphic-p))
+  ;; :if (display-graphic-p)
+  )
 
 (use-package timu-rouge-theme)
 
@@ -11,12 +12,12 @@
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
 (use-package ef-themes
-  :if (display-graphic-p)
+  ;; :if (display-graphic-p)
   :init
   (setq ef-melissa-light-palette-overrides '((fringe unspecified))))
 
 (use-package modus-themes
-  :if (display-graphic-p)
+  ;; :if (display-graphic-p)
   :init
   ;; https://protesilaos.com/emacs/modus-themes
   (setq modus-vivendi-tritanopia-palette-overrides

@@ -63,9 +63,11 @@
   :defer t)
 
 (use-package multiple-cursors
+  :disabled t
   :defer t)
 
 (use-package expand-region
+  :disabled t
   :defer t)
 
 (use-package flycheck

@@ -1,103 +1,154 @@
-(defvar-keymap global-leader-map
-  :doc "Leader mappings"
-  "SPC" #'project-switch-to-buffer
+(keymap-global-set "M-u" #'undo-tree-undo)
+(keymap-global-set "M-U" #'undo-tree-redo)
+
+(setq goto-map
+      (define-keymap
+        "g" #'beginning-of-buffer
+        "M-g" #'beginning-of-buffer
+        "G" #'end-of-buffer
+        "," #'goto-configs
+        ":" #'goto-line
+        ";" #'scratch-buffer
+        "f" #'find-file-at-point
+        "d" #'xref-find-definitions
+        "k" #'eldoc
+        "n" #'next-buffer
+        "p" #'previous-buffer
+        "r" #'xref-find-references
+        "w" #'avy-goto-char-2
+        "u" #'goto-address-at-point))
+(keymap-global-set "M-g" goto-map)
+
+(setq search-map
+      (define-keymap
+        "s" #'consult-line
+        "M-s" #'consult-line
+        "." #'isearch-forward-symbol-at-point
+        "i" #'consult-imenu
+        "m" #'consult-mark
+        "o" #'consult-outline))
+(keymap-global-set "M-s" search-map)
+
+(defvar-keymap compilation-map
+  :doc "Compilation map"
+  "c" #'compile-dwim
+  "M-c" #'compile-dwim
+  "." #'eval-defun
   "=" #'indent-buffer
-  "." #'dired
-  ":" #'consult-goto-line
+  "E" #'embark-export
+  "i" #'comint
+  "n" #'next-error
+  "p" #'previous-error
+  "r" #'recompile
+  "s" #'consult-compile-error
+  "t" #'vterm-toggle)
+(keymap-global-set "M-c" compilation-map)
 
-  ;; Compilation / Code actions
-  "c c" #'compile-dwim
-  "c ." #'eval-defun
-  "c E" #'embark-export
-  "c i" #'comint
-  "c n" #'next-error
-  "c p" #'previous-error
-  "c r" #'recompile
-  "c s" #'consult-compile-error
-  "c t" #'vterm-toggle
+(defvar-keymap notes-map
+  :doc "Notes map"
+  "n" #'consult-notes
+  "M-n" #'consult-notes
+  "c" #'denote
+  "j" #'denote-journal-extras-new-or-existing-entry
+  ";" #'scratch-buffer
+  "t" #'org-todo-list
+  "a" #'org-agenda
+  "s" #'consult-notes-search-in-all-notes
+  "Y" #'copy-absolute-file-name
+  "y" #'project-copy-relative-file-name)
+;; (keymap-global-set "M-n" notes-map)
 
-  ;; Note-taking
-  "n n" #'denote
-  "n j" #'denote-journal-extras-new-or-existing-entry
-  "n ;" #'scratch-buffer
-  "n t" #'org-todo-list
-  "n a" #'org-agenda
-  "n f" #'consult-notes
-  "n s" #'consult-notes-search-in-all-notes
-  "n Y" #'copy-absolute-file-name
-  "n y" #'project-copy-relative-file-name
+(defvar-keymap buffer-map
+  :doc "Buffer map"
+  "SPC" #'switch-to-buffer
+  "M-SPC" #'switch-to-buffer
+  "k" #'kill-this-buffer
+  "n" #'next-buffer
+  "p" #'previous-buffer
+  "r" #'rename-buffer
+  "w" #'write-file)
+;; (keymap-global-set "M-b" buffer-map)
 
-  ;; Buffers
-  "b b" #'switch-to-buffer
-  "b n" #'next-buffer
-  "b p" #'previous-buffer
+(defvar-keymap find-map
+  :doc "Find map"
+  "f" #'project-find-file
+  "M-f" #'project-find-file
+  "F" #'project-switch-to-buffer
+  "." #'rg-dwim
+  "d" #'project-find-dir
+  "g" #'consult-git-grep
+  "r" #'rg
+  "s" #'consult-ripgrep)
+;; (keymap-global-set "M-f" find-map)
 
-  ;; Gotos
-  "g ," #'goto-configs
-  "g f" #'find-file-at-point
-  "g d" #'xref-find-definitions
-  "g k" #'eldoc
-  "g r" #'xref-find-references
-  "g w" #'avy-goto-char-2
-  "g u" #'goto-address-at-point
+(defvar-keymap git-map
+  :doc "Git map"
+  ;Git
+  "j" #'magit-status
+  "M-j" #'magit-status
+  "." #'diff-hl-show-hunk
+  "b" #'magit-blame-addition
+  "J" #'magit-file-dispatch
+  "l" #'magit-log-buffer-file
+  "n" #'diff-hl-next-hunk
+  "p" #'diff-hl-previous-hunk
+  "S" #'diff-hl-stage-dwim
+  "K" #'diff-hl-revert-hunk
+  "y" #'git-link)
+;; (keymap-global-set "M-j" git-map)
 
-  ;; Search within buffer
-  "s ." #'isearch-forward-symbol-at-point
-  "s s" #'consult-line
-  "s i" #'consult-imenu
-  "s m" #'consult-mark
-  "s o" #'consult-outline
+(defvar-keymap diagnostics-map
+  :doc "Diagnostics map"
+  "k" #'consult-flymake
+  "M-k" #'consult-flymake
+  "." #'flymake-show-buffer-diagnostics
+  "P" #'flymake-show-project-diagnostics
+  "n" #'flymake-goto-next-error
+  "p" #'flymake-goto-prev-error)
+;; (keymap-global-set "M-k" diagnostics-map)
 
-  ;; Find
-  "f ." #'rg-dwim
-  "f d" #'project-find-dir
-  "f f" #'project-find-file
-  "f g" #'consult-git-grep
-  "f r" #'consult-recent-file
-  "f s" #'consult-ripgrep
-  "f S" #'rg
+(defvar-keymap completions-map
+  :doc "Completions map"
+  "i" #'hippie-expand
+  "M-i" #'hippie-expand
+  "." #'completion-at-point
+  "a" #'cape-abbrev
+  "d" #'cape-dabbrev
+  "e" #'cape-elisp-block
+  "f" #'cape-file
+  "h" #'cape-history
+  "k" #'cape-keyword
+  "l" #'cape-line
+  "s" #'cape-elisp-symbol
+  "t" #'completion-tag
+  "w" #'cape-dict)
+(keymap-global-set "M-i" completions-map)
 
-  ;; Git
-  "j ." #'diff-hl-show-hunk
-  "j b" #'magit-blame-addition
-  "j j" #'magit-status
-  "j J" #'magit-file-dispatch
-  "j l" #'magit-log-buffer-file
-  "j n" #'diff-hl-next-hunk
-  "j p" #'diff-hl-previous-hunk
-  "j S" #'diff-hl-stage-dwim
-  "j K" #'diff-hl-revert-hunk
-  "j y" #'git-link
+(defvar-keymap project-map
+  :doc "Project map"
+  "p" #'project-switch-project
+  "M-p" #'project-switch-project
+  "SPC" #'project-switch-to-buffer
+  "." #'project-dired
+  "y" #'project-copy-relative-file-name
+  "o" #'project-display-buffer
+  "K" #'project-kill-buffers
+  "%" #'project-query-replace-regexp)
+;; (keymap-global-set "M-p" project-map)
 
-  ;; Diagnostics
-  "k k" #'consult-flymake
-  "k ." #'flymake-show-buffer-diagnostics
-  "k P" #'flymake-show-project-diagnostics
-  "k n" #'flymake-goto-next-error
-  "k p" #'flymake-goto-prev-error
-
-  ;; Completions
-  "i i" #'hippie-expand
-  "i ." #'completion-at-point
-  "i :" #'cape-emoji
-  "i a" #'cape-abbrev
-  "i d" #'cape-dabbrev
-  "i e" #'cape-elisp-block
-  "i f" #'cape-file
-  "i h" #'cape-history
-  "i k" #'cape-keyword
-  "i l" #'cape-line
-  "i s" #'cape-elisp-symbol
-  "i t" #'completion-tag
-  "i w" #'cape-dict
-
-  ;; project
-  "p ." #'project-dired
-  "p y" #'project-copy-relative-file-name
-  "p o" #'project-display-buffer
-  "p p" #'project-switch-project
-  "p K" #'project-kill-buffers
-  "p R" #'project-query-replace-regexp
- )
-
+(defvar-keymap global-leader-map
+  :doc "Leader map"
+  "SPC" #'switch-to-buffer
+  "M-SPC" #'switch-to-buffer
+  "=" #'indent-buffer
+  "g" goto-map
+  "f" find-map
+  "s" search-map
+  "n" notes-map
+  "b" buffer-map
+  "c" compilation-map
+  "i" completions-map
+  "k" diagnostics-map
+  "j" git-map
+  "p" project-map)
 (keymap-global-set "M-SPC" global-leader-map)

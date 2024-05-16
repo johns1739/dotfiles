@@ -63,7 +63,7 @@
          #'cape-keyword
          #'cape-dict
          #'cape-file
-         ;; #'cape-line ;; Kinda buggy
+         #'cape-line ;; Kinda buggy
          )))
 
 (use-package copilot

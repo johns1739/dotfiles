@@ -84,7 +84,7 @@
                           )
           compilation-error-regexp-alist-alist))
   :hook
-  (ruby-ts-mode-hook . ruby-set-bindings)
+  (ruby-ts-mode . ruby-set-bindings)
   (ruby-ts-mode . ruby-set-outline-regexp)
   (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-ts-mode . lsp-deferred))
