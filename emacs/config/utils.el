@@ -35,6 +35,8 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package undo-tree
+  :bind (("M-u" . undo-tree-undo)
+         ("M-U" . undo-tree-redo))
   :config
   (setq undo-tree-visualizer-timestamps t)
   (let ((undo-tree-history-directory (locate-user-emacs-file "undo-tree-history")))
@@ -109,7 +111,8 @@
 (use-package ace-window
   ;; Jump to a window
   :bind  (([remap other-window] . ace-window)
-          ([remap evil-window-next] . ace-window))
+          ([remap evil-window-next] . ace-window)
+          ("M-o" . ace-window))
   :defer t)
 
 (use-package exec-path-from-shell

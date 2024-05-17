@@ -55,13 +55,14 @@
 (setq inhibit-startup-message t)
 (setq max-mini-window-height 0.2)
 (setq use-dialog-box nil)
+(setq dired-kill-when-opening-new-dired-buffer t)
 (setq-default cursor-type 'bar)
 (setq-default fill-column 120)
 (setq-default frame-title-format '("%f"))
 (setq-default display-fill-column-indicator-column 100)
-(setq-default display-line-numbers-type 'relative)
+(setq-default display-line-numbers-type t)
 
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 ;; (add-hook 'prog-mode-hook #'hl-line-mode)
 

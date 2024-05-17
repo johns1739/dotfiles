@@ -1,4 +1,4 @@
-(setq tab-always-indent 'complete)
+(setq tab-always-indent t)
 
 ;; Hippie
 (setq hippie-expand-verbose t)
