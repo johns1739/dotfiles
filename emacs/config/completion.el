@@ -1,6 +1,9 @@
 (setq tab-always-indent t)
 
+(electric-pair-mode 1)
+
 ;; Hippie
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
 (setq hippie-expand-verbose t)
 (setq hippie-expand-try-functions-list
       '(try-expand-dabbrev-visible
@@ -22,9 +25,7 @@
   "Try to do case-sensitive matching (not effective with all functions)."
   (let ((case-fold-search nil))
     ad-do-it))
-
 (ad-activate 'hippie-expand)
-
 
 (use-package corfu
   ;; Corfu enhances in-buffer completion with a small completion popup.
@@ -63,7 +64,7 @@
          #'cape-keyword
          #'cape-dict
          #'cape-file
-         #'cape-line ;; Kinda buggy
+         ;; #'cape-line ;; Kinda buggy
          )))
 
 (use-package copilot
@@ -74,9 +75,22 @@
   :init
   (with-eval-after-load 'copilot
     (bind-keys :map copilot-completion-map
-               ("M-n" . copilot-accept-completion-by-line)
-               ("M-f" . copilot-accept-completion-by-word)
+               ("C-n" . copilot-accept-completion-by-line)
+               ("C-f" . copilot-accept-completion-by-word)
                ("<tab>" . copilot-accept-completion)
                ("TAB" . copilot-accept-completion)))
   :hook
   (prog-mode . copilot-mode))
+
+
+(use-package paredit
+  :disabled t
+  ;; http://pub.gajendra.net/src/paredit-refcard.pdf
+  :hook
+  (scheme-mode . enable-paredit-mode)
+  (emacs-lisp-mode . enable-paredit-mode))
+
+(use-package smartparens
+  :disabled t
+  :config
+  (require 'smartparens-config))

@@ -3,10 +3,11 @@
   :init
   (setq org-directory (locate-user-emacs-file "denote"))
   (setq org-agenda-files `(,org-directory))
-  (setq org-todo-keywords '((sequence "TODO" "WORKING" "|" "DONE" "CANCELED")))
+  (setq org-todo-keywords '((sequence "TODO" "BUILDING" "PULLREQUEST" "|" "DONE" "CANCELED")))
   (setq org-todo-keyword-faces
         '(("TODO" . "goldenrod1")
-          ("WORKING" . "green2")
+          ("BUILDING" . "green2")
+          ("PULLREQUEST" . "green4")
           ("DONE" . "SlateGray4")
           ("CANCELED" . "SlateGray4")))
   :custom

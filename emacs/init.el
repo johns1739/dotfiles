@@ -1,5 +1,9 @@
 ;;-*- lexical-binding: t; -*-
 
+;; Documentation
+;; https://karthinks.com/ (Check for any new posts)
+;; TODO: Master paraedit
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
@@ -10,7 +14,9 @@
 (dolist (config-file-name
          '("config/emacs-defaults.el"
            "config/emacs-interactive-commands.el"
+           "config/keybindings.el"
            "config/package-manager.el"
+           "config/window-configuration.el"
            "config/debug-tools.el"
            "config/git.el"
            "config/tree-sitter.el"
@@ -19,7 +25,6 @@
            "config/utils.el"
            "config/langs.el"
            "config/themes.el"
-           "config/keybindings.el"
            "config/meow.el"
            ;;"config/evil.el"
            "custom.el"))

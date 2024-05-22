@@ -5,8 +5,6 @@
 (setq ring-bell-function 'ignore)
 
 (delete-selection-mode 1)
-(electric-indent-mode 1)
-(electric-pair-mode -1)
 (global-auto-revert-mode t)
 
 
@@ -41,6 +39,7 @@
 (setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
 (add-hook 'before-save-hook #'whitespace-cleanup)
+(electric-indent-mode 1)
 
 
 ; Scrolling

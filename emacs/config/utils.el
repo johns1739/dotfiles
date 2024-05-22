@@ -14,6 +14,7 @@
   (setq xref-show-xrefs-function #'consult-xref
         xref-show-definitions-function #'consult-xref)
   :bind (([remap Info-search] . consult-info)
+         ([remap bookmark-jump] . consult-bookmark)
          ([remap goto-line] . consult-goto-line)
          ([remap isearch-edit-string] . consult-isearch-history)
          ([remap project-switch-to-buffer] . consult-project-buffer)
@@ -35,8 +36,6 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package undo-tree
-  :bind (("M-u" . undo-tree-undo)
-         ("M-U" . undo-tree-redo))
   :config
   (setq undo-tree-visualizer-timestamps t)
   (let ((undo-tree-history-directory (locate-user-emacs-file "undo-tree-history")))
@@ -53,6 +52,7 @@
   (vterm-max-scrollback 10000))
 
 (use-package vterm-toggle
+  :disabled t
   :after vterm
   :custom
   (vterm-toggle-scope 'project))
@@ -108,13 +108,6 @@
 (use-package indent-guide
   :hook (prog-mode . indent-guide-mode))
 
-(use-package ace-window
-  ;; Jump to a window
-  :bind  (([remap other-window] . ace-window)
-          ([remap evil-window-next] . ace-window)
-          ("M-o" . ace-window))
-  :defer t)
-
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
   :custom
@@ -130,10 +123,3 @@
   :unless (display-graphic-p)
   :config
   (xclip-mode 1))
-
-(use-package paredit
-  ;; http://pub.gajendra.net/src/paredit-refcard.pdf
-  :disabled t
-  :hook
-  (scheme-mode . enable-paredit-mode)
-  (emacs-lisp-mode . enable-paredit-mode))

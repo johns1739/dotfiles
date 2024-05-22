@@ -1,111 +1,89 @@
-(setq goto-map
-      (define-keymap
-        "g" #'beginning-of-buffer
-        "M-g" #'beginning-of-buffer
-        "G" #'end-of-buffer
-        "SPC" #'project-switch-project
-        "," #'goto-configs
-        ":" #'goto-line
-        ";" #'scratch-buffer
-        "f" #'find-file-at-point
-        "d" #'xref-find-definitions
-        "k" #'eldoc
-        "n" #'next-error
-        "p" #'previous-error
-        "o" #'ace-window
-        "N" #'next-buffer
-        "P" #'previous-buffer
-        "r" #'xref-find-references
-        "w" #'avy-goto-char-2
-        "u" #'goto-address-at-point))
-(keymap-global-set "M-g" goto-map)
+;; Better default emacs keybindings
 
-;; (setq search-map
-;;       (define-keymap
-;;         "s" #'consult-line
-;;         "M-s" #'consult-line
-;;         "SPC" #'consult-project-buffer
-;;         "." #'isearch-forward-symbol-at-point
-;;         "i" #'consult-imenu
-;;         "m" #'consult-mark
-;;         "o" #'consult-outline))
-(setq search-map
-      (define-keymap
-        "s" #'consult-ripgrep
-        "M-s" #'consult-ripgrep
-        "S" #'rg-dwim
-        "SPC" #'consult-buffer
-        "." #'isearch-forward-symbol-at-point
-        "l" #'consult-line
-        "L" #'consult-keep-lines
-        "b" #'consult-project-buffer
-        "i" #'consult-imenu
-        "m" #'consult-mark
-        "o" #'consult-outline
-        "f" #'project-find-file
-        "d" #'project-find-dir
-        "g" #'consult-git-grep
-        "r" #'rg))
-(keymap-global-set "M-s" search-map)
+;; TODO: Create repeat keymaps for those with prev/next bindings
+(bind-keys*
+ ("M-J" . join-line)
+ ("C-o" . pop-global-mark)
+ ("M-o" . other-window))
+
+(defvar-keymap go-to-map
+  :doc "GoTo Keymap"
+  "g" #'beginning-of-buffer
+  "G" #'end-of-buffer
+  "M-g" #'goto-line-relative
+  "SPC" #'project-switch-project
+  "," #'goto-configs
+  ":" #'goto-line
+  ";" #'scratch-buffer
+  "b" #'bookmark-jump
+  "f" #'find-file-at-point
+  "d" #'xref-find-definitions
+  "k" #'eldoc
+  "l" #'avy-goto-line
+  "m" #'consult-global-mark
+  "n" #'next-error
+  "p" #'previous-error
+  "N" #'next-buffer
+  "P" #'previous-buffer
+  "r" #'xref-find-references
+  "w" #'avy-goto-char-2
+  "u" #'goto-address-at-point)
+(keymap-global-set "M-g" go-to-map)
+
+(defvar-keymap project-search-map
+  :doc "Project Search Keymap"
+  "SPC" #'switch-to-buffer
+  "s" #'consult-ripgrep
+  "M-s" #'consult-ripgrep
+  "." #'rg-dwim
+  "l" #'consult-line
+  "L" #'consult-keep-lines
+  "i" #'consult-imenu
+  "m" #'consult-mark
+  "o" #'consult-outline
+  "f" #'project-find-file
+  "d" #'project-find-dir
+  "g" #'consult-git-grep)
+(keymap-global-set "M-s" project-search-map)
+
+(defvar-keymap completions-map
+  :doc "Completions map"
+  "i" #'completion-at-point
+  "M-i" #'completion-at-point
+  "." #'cape-dabbrev
+  "a" #'cape-abbrev
+  "e" #'cape-elisp-block
+  "f" #'cape-file
+  "h" #'cape-history
+  "k" #'cape-keyword
+  "l" #'cape-line
+  "s" #'cape-elisp-symbol
+  "t" #'completion-tag
+  "d" #'cape-dict)
+(keymap-global-set "M-i" completions-map)
 
 (defvar-keymap compilation-map
   :doc "Compilation map"
   "c" #'compile-dwim
-  "M-c" #'compile-dwim
-  "." #'eval-defun
-  ">" #'eval-buffer
-  "=" #'indent-buffer
-  "E" #'embark-export
   "i" #'comint
-  "n" #'next-error
-  "p" #'previous-error
   "r" #'recompile
   "s" #'consult-compile-error
-  "t" #'vterm-toggle)
-(keymap-global-set "M-c" compilation-map)
+  "t" #'vterm)
 
 (defvar-keymap notes-map
   :doc "Notes map"
   "n" #'consult-notes
-  "M-n" #'consult-notes
   "c" #'denote
   "j" #'denote-journal-extras-new-or-existing-entry
-  ";" #'scratch-buffer
   "t" #'org-todo-list
   "a" #'org-agenda
   "s" #'consult-notes-search-in-all-notes
-  "Y" #'copy-absolute-file-name
-  "y" #'project-copy-relative-file-name)
-(keymap-global-set "M-n" notes-map)
-
-(defvar-keymap buffer-map
-  :doc "Buffer map"
-  "SPC" #'switch-to-buffer
-  "M-SPC" #'switch-to-buffer
-  "k" #'kill-this-buffer
-  "n" #'next-buffer
-  "p" #'previous-buffer
-  "r" #'rename-buffer
-  "w" #'write-file)
-;; (keymap-global-set "M-b" buffer-map)
-
-(defvar-keymap find-map
-  :doc "Find map"
-  "f" #'project-find-file
-  "M-f" #'project-find-file
-  "SPC" #'consult-buffer
-  "." #'rg-dwim
-  "d" #'project-find-dir
-  "g" #'consult-git-grep
-  "r" #'rg
-  "s" #'consult-ripgrep)
-;; (keymap-global-set "M-f" find-map)
+  "y" #'project-copy-relative-file-name
+  "Y" #'copy-absolute-file-name)
 
 (defvar-keymap git-map
   :doc "Git map"
-  ;Git
   "j" #'magit-status
-  "M-j" #'magit-status
   "." #'diff-hl-show-hunk
   "b" #'magit-blame-addition
   "J" #'magit-file-dispatch
@@ -115,60 +93,41 @@
   "S" #'diff-hl-stage-dwim
   "K" #'diff-hl-revert-hunk
   "y" #'git-link)
-(keymap-global-set "M-j" git-map)
 
+;; TODO: Have flymake respect next-eror / previous-error bindings
 (defvar-keymap diagnostics-map
   :doc "Diagnostics map"
   "k" #'consult-flymake
-  "M-k" #'consult-flymake
   "." #'flymake-show-buffer-diagnostics
   "P" #'flymake-show-project-diagnostics
   "n" #'flymake-goto-next-error
   "p" #'flymake-goto-prev-error)
-(keymap-global-set "M-k" diagnostics-map)
 
-(defvar-keymap completions-map
-  :doc "Completions map"
-  "i" #'completion-at-point
-  "M-i" #'completion-at-point
-  "." #'hippie-expand
-  "a" #'cape-abbrev
-  "d" #'cape-dabbrev
-  "e" #'cape-elisp-block
-  "f" #'cape-file
-  "h" #'cape-history
-  "k" #'cape-keyword
-  "l" #'cape-line
-  "s" #'cape-elisp-symbol
-  "t" #'completion-tag
-  "w" #'cape-dict)
-(keymap-global-set "M-i" completions-map)
-
-(defvar-keymap project-map
-  :doc "Project map"
-  "p" #'project-switch-project
-  "M-p" #'project-switch-project
-  "SPC" #'project-switch-to-buffer
-  "." #'project-dired
-  "y" #'project-copy-relative-file-name
-  "o" #'project-display-buffer
-  "K" #'project-kill-buffers
-  "%" #'project-query-replace-regexp)
-(keymap-global-set "M-p" project-map)
+(defvar-keymap popper-map
+  :doc "Popper map"
+  "o" #'popper-toggle
+  "O" #'popper-toggle-type
+  "n" #'popper-cycle
+  "p" #'popper-cycle-backwards
+  "k" #'popper-kill-latest-popup)
 
 (defvar-keymap global-leader-map
   :doc "Leader map"
   "SPC" #'switch-to-buffer
-  "M-SPC" #'switch-to-buffer
-  "=" #'indent-buffer
-  "g" goto-map
-  "f" find-map
-  "s" search-map
-  "n" notes-map
-  "b" buffer-map
-  "c" compilation-map
+  "TAB" #'indent-buffer
+  "<tab>" #'indent-buffer
+  ";" #'scratch-buffer
+
+  "A" #'embark-act
+  "E" #'embark-export
+
+  "g" go-to-map
+  "s" project-search-map
   "i" completions-map
+  "c" compilation-map
+  "n" notes-map
   "k" diagnostics-map
   "j" git-map
-  "p" project-map)
-(keymap-global-set "M-SPC" global-leader-map)
+  "o" popper-map
+  )
+(keymap-global-set "C-;" global-leader-map)
