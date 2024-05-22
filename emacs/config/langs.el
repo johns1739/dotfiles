@@ -1,8 +1,3 @@
-;; TODO: Attempt to re-introduce eglot for better integrated experience
-;; Eglot is slow to update diagnostics
-;; Eglot sometimes causes lag
-;; Unable to turn on ruby-formatting in Eglot
-
 (defun eglot-set-bindings ()
   "Inject eglot bindings."
   (bind-keys :map (current-local-map)

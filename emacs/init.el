@@ -3,6 +3,11 @@
 ;; Documentation
 ;; https://karthinks.com/ (Check for any new posts)
 ;; TODO: Master paraedit
+;; TODO: Attempt to re-introduce eglot for better integrated experience
+;; Eglot is slow to update diagnostics
+;; Eglot sometimes causes lag
+;; Unable to turn on ruby-formatting in Eglot
+;; TODO: Create repeat keymaps for those with prev/next bindings
 
 (add-hook 'emacs-startup-hook
           (lambda ()

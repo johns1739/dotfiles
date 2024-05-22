@@ -8,10 +8,10 @@
       (save-excursion
         (indent-region (point-min) (point-max) nil)))
 
-(defun project-copy-relative-file-name ()
+(defun copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
   (interactive)
-  (kill-new (project-relative-file-name)))
+  (kill-new (relative-file-name)))
 
 (defun copy-absolute-file-name ()
   "Copy absolute file path of current buffer."
@@ -54,13 +54,10 @@
   "Current project directory."
   (project-root (project-current)))
 
-(defun project-relative-file-name ()
-  "Relative project path to file."
-  (file-relative-name (buffer-file-name) (project-directory)))
+(defun relative-file-name ()
+  "Relative from project or cwd directory."
+  (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
 
 (defun absolute-file-name ()
   "Absolute path to file."
   (expand-file-name (buffer-file-name)))
-
-(defun project-expand-path (file-name)
-  (f-join (project-directory) file-name))

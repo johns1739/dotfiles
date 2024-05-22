@@ -1,6 +1,5 @@
 ;; Better default emacs keybindings
 
-;; TODO: Create repeat keymaps for those with prev/next bindings
 (bind-keys*
  ("M-J" . join-line)
  ("C-o" . pop-global-mark)
@@ -10,7 +9,7 @@
   :doc "GoTo Keymap"
   "g" #'beginning-of-buffer
   "G" #'end-of-buffer
-  "M-g" #'goto-line-relative
+  "M-g" #'goto-line
   "SPC" #'project-switch-project
   "," #'goto-configs
   ":" #'goto-line
@@ -35,12 +34,15 @@
   "SPC" #'switch-to-buffer
   "s" #'consult-ripgrep
   "M-s" #'consult-ripgrep
+  "S"  #'rg
   "." #'rg-dwim
   "l" #'consult-line
   "L" #'consult-keep-lines
   "i" #'consult-imenu
   "m" #'consult-mark
   "o" #'consult-outline
+  "r" #'query-replace-regexp
+  "R" #'project-query-replace-regexp
   "f" #'project-find-file
   "d" #'project-find-dir
   "g" #'consult-git-grep)
@@ -73,12 +75,13 @@
 (defvar-keymap notes-map
   :doc "Notes map"
   "n" #'consult-notes
+  ";" #'scratch-buffer
   "c" #'denote
   "j" #'denote-journal-extras-new-or-existing-entry
   "t" #'org-todo-list
   "a" #'org-agenda
   "s" #'consult-notes-search-in-all-notes
-  "y" #'project-copy-relative-file-name
+  "y" #'copy-relative-file-name
   "Y" #'copy-absolute-file-name)
 
 (defvar-keymap git-map
@@ -94,7 +97,6 @@
   "K" #'diff-hl-revert-hunk
   "y" #'git-link)
 
-;; TODO: Have flymake respect next-eror / previous-error bindings
 (defvar-keymap diagnostics-map
   :doc "Diagnostics map"
   "k" #'consult-flymake
@@ -116,7 +118,6 @@
   "SPC" #'switch-to-buffer
   "TAB" #'indent-buffer
   "<tab>" #'indent-buffer
-  ";" #'scratch-buffer
 
   "A" #'embark-act
   "E" #'embark-export

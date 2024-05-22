@@ -5,7 +5,7 @@
   :defer t)
 
 (use-package popper
-  :commands (popper-toggle popper-cycle popper-toggle-type)
+  :demand t
   :init
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)

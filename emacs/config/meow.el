@@ -3,12 +3,15 @@
   :custom
   (meow-use-clipboard t)
   (meow-visit-collect-min-length 2)
+
   :init
   (defun meow-setup ()
     (setq meow-keypad--self-insert-undefined nil)
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+
     (meow-motion-overwrite-define-key
      '("<escape>" . ignore))
+
     (meow-normal-define-key
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)

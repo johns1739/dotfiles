@@ -1,23 +1,19 @@
-(use-package gruvbox-theme
-  ;; :if (display-graphic-p)
-  )
+(use-package gruvbox-theme)
 
 (use-package timu-rouge-theme)
 
 (use-package catppuccin-theme
-  :disabled
+  :disabled t
   :if (display-graphic-p)
   :config
   ;; (catppuccin-reload)
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
 (use-package ef-themes
-  ;; :if (display-graphic-p)
   :init
   (setq ef-melissa-light-palette-overrides '((fringe unspecified))))
 
 (use-package modus-themes
-  ;; :if (display-graphic-p)
   :init
   ;; https://protesilaos.com/emacs/modus-themes
   (setq modus-vivendi-tritanopia-palette-overrides
@@ -52,6 +48,4 @@
   (add-to-list 'default-frame-alist '(width . 130))
   (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1"))
 
-;; (if (display-graphic-p)
 (consult-theme 'modus-vivendi-tritanopia)
-;;   (consult-theme 'modus-vivendi))
