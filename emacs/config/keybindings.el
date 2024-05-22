@@ -69,8 +69,7 @@
   "c" #'compile-dwim
   "i" #'comint
   "r" #'recompile
-  "s" #'consult-compile-error
-  "t" #'vterm)
+  "s" #'consult-compile-error)
 
 (defvar-keymap notes-map
   :doc "Notes map"
@@ -111,7 +110,8 @@
   "O" #'popper-toggle-type
   "n" #'popper-cycle
   "p" #'popper-cycle-backwards
-  "k" #'popper-kill-latest-popup)
+  "k" #'popper-kill-latest-popup
+  "t" #'vterm)
 
 (defvar-keymap global-leader-map
   :doc "Leader map"
