@@ -47,6 +47,10 @@
 (setq scroll-conservatively 101)
 
 
+;; File matching
+(with-eval-after-load 'ffap
+  (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1)))
+
 ;; Look and feel
 (setopt use-short-answers t)
 (setq confirm-kill-emacs 'y-or-n-p)

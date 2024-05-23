@@ -66,6 +66,9 @@
 
 (defvar-keymap compilation-map
   :doc "Compilation map"
+  "!" #'project-shell-command
+  "." #'eval-defun
+  "b" #'eval-buffer
   "c" #'compile-dwim
   "i" #'comint
   "r" #'recompile

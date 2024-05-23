@@ -23,7 +23,7 @@
   (setq compile-command
         (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
                (let ((linum (number-to-string (line-number-at-pos)))
-                     (file-name (project-relative-file-name)))
+                     (file-name (relative-file-name)))
                  (if (< (line-number-at-pos) 5)
                      (string-join (list "rails t " file-name))
                    (string-join (list "rails t " (s-concat file-name ":" linum))))))
@@ -61,3 +61,9 @@
 (defun absolute-file-name ()
   "Absolute path to file."
   (expand-file-name (buffer-file-name)))
+
+(defun ffap-project-match-1 (name)
+  (let ((filename (match-string 1 name)))
+    (if (project-current)
+        (expand-file-name filename (project-directory))
+      (expand-file-name filename default-directory))))

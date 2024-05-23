@@ -2,12 +2,13 @@
 
 ;; Documentation
 ;; https://karthinks.com/ (Check for any new posts)
-;; TODO: Master paraedit
 ;; TODO: Attempt to re-introduce eglot for better integrated experience
 ;; Eglot is slow to update diagnostics
 ;; Eglot sometimes causes lag
 ;; Unable to turn on ruby-formatting in Eglot
 ;; TODO: Create repeat keymaps for those with prev/next bindings
+;; TODO: Review meow tutorials
+;; TODO: Review popper tutorials
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -17,8 +18,8 @@
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
 (dolist (config-file-name
-         '("config/emacs-defaults.el"
-           "config/emacs-interactive-commands.el"
+         '("config/emacs-interactive-commands.el"
+           "config/emacs-defaults.el"
            "config/keybindings.el"
            "config/package-manager.el"
            "config/window-configuration.el"

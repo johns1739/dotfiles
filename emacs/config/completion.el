@@ -5,21 +5,23 @@
 ;; Hippie
 (global-set-key [remap dabbrev-expand] 'hippie-expand)
 (setq hippie-expand-verbose t)
+;; Ordered from specific to general
 (setq hippie-expand-try-functions-list
-      '(try-expand-dabbrev-visible
-        try-expand-dabbrev
-        try-expand-dabbrev-all-buffers
-        try-expand-dabbrev-from-kill
-        try-expand-all-abbrevs
-        try-expand-list
-        try-expand-list-all-buffers
-        try-expand-line
-        try-expand-line-all-buffers
-        ;; try-complete-lisp-symbol
-        ;; try-complete-lisp-symbol-partially
+      '(try-complete-file-name-partially
         try-complete-file-name
-        try-complete-file-name-partially
-        try-expand-whole-kill))
+        try-expand-all-abbrevs
+        try-expand-dabbrev-visible
+        try-expand-dabbrev
+        try-expand-dabbrev-from-kill
+        try-expand-whole-kill
+        try-expand-list
+        try-expand-line
+        try-expand-dabbrev-all-buffers
+        try-expand-list-all-buffers
+        try-expand-line-all-buffers
+        ;; try-complete-lisp-symbol-partially
+        ;; try-complete-lisp-symbol
+        ))
 
 (defadvice hippie-expand (around hippie-expand-case-fold)
   "Try to do case-sensitive matching (not effective with all functions)."
@@ -75,8 +77,8 @@
   :init
   (with-eval-after-load 'copilot
     (bind-keys :map copilot-completion-map
-               ("C-n" . copilot-accept-completion-by-line)
-               ("C-f" . copilot-accept-completion-by-word)
+               ("M-n" . copilot-accept-completion-by-line)
+               ("M-f" . copilot-accept-completion-by-word)
                ("<tab>" . copilot-accept-completion)
                ("TAB" . copilot-accept-completion)))
   :hook
@@ -85,7 +87,7 @@
 
 (use-package paredit
   :disabled t
-  ;; http://pub.gajendra.net/src/paredit-refcard.pdf
+  ;; https://paredit.org/releases/26/paredit.html
   :hook
   (scheme-mode . enable-paredit-mode)
   (emacs-lisp-mode . enable-paredit-mode))

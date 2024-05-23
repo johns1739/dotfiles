@@ -1,9 +1,15 @@
+(defvar notes-directory (locate-user-emacs-file "notes"))
+(unless (file-exists-p notes-directory)
+  (make-directory notes-directory))
+
 (use-package org
   :defer t
   :init
-  (setq org-directory (locate-user-emacs-file "denote"))
+  (setq org-directory notes-directory)
   (setq org-agenda-files `(,org-directory))
-  (setq org-todo-keywords '((sequence "TODO" "BUILDING" "PULLREQUEST" "|" "DONE" "CANCELED")))
+  (setq org-log-done 'time)
+  (setq org-todo-keywords
+        '((sequence "TODO" "BUILDING" "PULLREQUEST" "|" "DONE" "CANCELED")))
   (setq org-todo-keyword-faces
         '(("TODO" . "goldenrod1")
           ("BUILDING" . "green2")
@@ -16,17 +22,14 @@
   (org-startup-indented t)
   :config
   (org-babel-do-load-languages
-   'org-babel-load-languages '((emacs-lisp . t)
-                               (shell . t)))
-  (unless (file-exists-p org-directory)
-    (make-directory org-directory)))
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t))))
 
 (use-package denote
   :init
-  (setq denote-directory (locate-user-emacs-file "denote"))
-  :config
-  (unless (file-exists-p denote-directory)
-    (make-directory denote-directory)))
+  (setq denote-directory notes-directory)
+  (setq denote-journal-extras-directory notes-directory))
 
 (use-package consult-notes
   :after denote
