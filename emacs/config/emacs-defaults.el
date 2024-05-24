@@ -40,8 +40,8 @@
 ;; Tracking history
 (setq history-length 1000)
 (setq history-delete-duplicates t)
-(desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 (setq recentf-max-saved-items 50)
+(desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 (recentf-mode 1)
 (save-place-mode 1)
 (savehist-mode 1)
@@ -75,6 +75,8 @@
 ; Scrolling
 (setq scroll-margin 3)
 (setq scroll-conservatively 101)
+(setq scroll-preserve-screen-position t)
+(setq fast-but-imprecise-scrolling t)
 
 
 ;; File matching
@@ -95,6 +97,7 @@
 (setq eshell-scroll-to-bottom-on-output 'this)
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
 (global-auto-revert-mode t)
+(global-so-long-mode t)
 
 
 ;; Look and feel
