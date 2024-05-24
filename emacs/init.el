@@ -17,21 +17,25 @@
 
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
-(dolist (config-file-name
-         '("config/emacs-interactive-commands.el"
-           "config/emacs-defaults.el"
-           "config/keybindings.el"
-           "config/package-manager.el"
-           "config/window-configuration.el"
-           "config/debug-tools.el"
-           "config/git.el"
-           "config/tree-sitter.el"
-           "config/completion.el"
-           "config/notes.el"
-           "config/utils.el"
-           "config/langs.el"
-           "config/themes.el"
-           "config/meow.el"
-           ;;"config/evil.el"
-           "custom.el"))
+(setq module-file-names
+      (if (display-graphic-p)
+          '("config/emacs-interactive-commands.el"
+            "config/emacs-core.el"
+            "config/package-keybindings.el"
+            "config/package-manager.el"
+            "config/window-configuration.el"
+            "config/debug-tools.el"
+            "config/git.el"
+            "config/tree-sitter.el"
+            "config/completion.el"
+            "config/notes.el"
+            "config/utils.el"
+            "config/langs.el"
+            "config/themes.el"
+            "config/meow.el"
+            ;;"config/evil.el"
+            "custom.el")
+        '("config/emacs-slim.el")))
+
+(dolist (config-file-name module-file-names)
   (load (locate-user-emacs-file config-file-name)))

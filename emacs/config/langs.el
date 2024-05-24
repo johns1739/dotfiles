@@ -43,7 +43,6 @@
     (setq go-ts-mode-indent-offset 4)
     (add-hook 'before-save-hook #'lsp-format-buffer t t)
     (add-hook 'before-save-hook #'lsp-organize-imports t t))
-
   (setq lsp-go-analyses '((shadow . t)
                           (unusedvariable . t)
                           (unusedwrite . t)

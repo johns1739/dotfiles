@@ -16,7 +16,6 @@
   ";" #'scratch-buffer
   "b" #'bookmark-jump
   "f" #'find-file-at-point
-  "d" #'xref-find-definitions
   "k" #'eldoc
   "l" #'avy-goto-line
   "m" #'consult-global-mark

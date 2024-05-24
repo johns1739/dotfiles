@@ -1,36 +1,3 @@
-;; Completion
-(setq tab-always-indent t)
-(setq completion-category-overrides '((file (styles . (partial-completion)))))
-(electric-pair-mode 1)
-
-;; Hippie
-(global-set-key [remap dabbrev-expand] 'hippie-expand)
-(setq hippie-expand-verbose t)
-;; Ordered from specific to general
-(setq hippie-expand-try-functions-list
-      '(try-complete-file-name-partially
-        try-complete-file-name
-        try-expand-all-abbrevs
-        try-expand-dabbrev-visible
-        try-expand-dabbrev
-        try-expand-dabbrev-from-kill
-        try-expand-whole-kill
-        try-expand-list
-        try-expand-line
-        try-expand-dabbrev-all-buffers
-        try-expand-list-all-buffers
-        try-expand-line-all-buffers
-        ;; try-complete-lisp-symbol-partially
-        ;; try-complete-lisp-symbol
-        ))
-
-(defadvice hippie-expand (around hippie-expand-case-fold)
-  "Try to do case-sensitive matching (not effective with all functions)."
-  (let ((case-fold-search nil))
-    ad-do-it))
-(ad-activate 'hippie-expand)
-
-
 ;; Utilities
 (setq apropos-do-all t)
 (setq read-process-output-max (* 1024 1024))
@@ -65,14 +32,16 @@
 
 
 ;; Spacing
-(delete-selection-mode 1)
-(setq-default indent-tabs-mode nil)
 (setq require-final-newline t)
-(add-hook 'before-save-hook #'whitespace-cleanup)
+(setq kill-do-not-save-duplicates t)
+(setq-default indent-tabs-mode nil)
+(delete-selection-mode 1)
 (electric-indent-mode 1)
+(add-hook 'before-save-hook #'whitespace-cleanup)
 
 
-; Scrolling
+;; Scrolling
+(setq auto-window-vscroll nil)
 (setq scroll-margin 3)
 (setq scroll-conservatively 101)
 (setq scroll-preserve-screen-position t)
@@ -95,6 +64,8 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq ibuffer-old-time 24)
 (setq eshell-scroll-to-bottom-on-output 'this)
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-inhibit-bpa t)
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
 (global-auto-revert-mode t)
 (global-so-long-mode t)

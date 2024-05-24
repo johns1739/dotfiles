@@ -1,3 +1,41 @@
+;; Completion
+(setq tab-always-indent t)
+(setq completion-category-overrides '((file (styles . (partial-completion)))))
+(electric-pair-mode 1)
+
+;; Spell checking
+(with-eval-after-load 'ispell
+  (when (executable-find ispell-program-name)
+    (add-hook 'text-mode-hook #'flyspell-mode)
+    (add-hook 'prog-mode-hook #'flyspell-prog-mode)))
+
+;; Hippie
+(global-set-key [remap dabbrev-expand] 'hippie-expand)
+(setq hippie-expand-verbose t)
+;; Ordered from specific to general
+(setq hippie-expand-try-functions-list
+      '(try-complete-file-name-partially
+        try-complete-file-name
+        try-expand-all-abbrevs
+        try-expand-dabbrev-visible
+        try-expand-dabbrev
+        try-expand-dabbrev-from-kill
+        try-expand-whole-kill
+        try-expand-list
+        try-expand-line
+        try-expand-dabbrev-all-buffers
+        try-expand-list-all-buffers
+        try-expand-line-all-buffers
+        ;; try-complete-lisp-symbol-partially
+        ;; try-complete-lisp-symbol
+        ))
+
+(defadvice hippie-expand (around hippie-expand-case-fold)
+  "Try to do case-sensitive matching (not effective with all functions)."
+  (let ((case-fold-search nil))
+    ad-do-it))
+(ad-activate 'hippie-expand)
+
 (use-package corfu
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
