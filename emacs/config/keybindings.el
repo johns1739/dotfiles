@@ -36,6 +36,7 @@
   "M-s" #'consult-ripgrep
   "S"  #'rg
   "." #'rg-dwim
+  "b" #'project-switch-to-buffer
   "l" #'consult-line
   "L" #'consult-keep-lines
   "i" #'consult-imenu
@@ -68,6 +69,7 @@
   :doc "Compilation map"
   "!" #'project-shell-command
   "." #'eval-defun
+  "v" #'eval-region
   "b" #'eval-buffer
   "c" #'compile-dwim
   "i" #'comint

@@ -16,6 +16,7 @@
         '("\\*Messages\\*"
           "\\*Warnings\\*"
           "Output\\*$"
+          "errors\\*$"
           "\\*Async Shell Command\\*"
           special-mode
           help-mode
