@@ -25,7 +25,6 @@
           '("config/emacs-core.el"
             "config/straight.el"
             "config/package-core.el"
-            "config/lsp.el"
             "config/goto.el"
             "config/search.el"
             "config/completion.el"
@@ -33,9 +32,13 @@
             "config/git.el"
             "config/notes.el"
             "config/toggle.el"
+
+            ;; Languages
+            "config/lsp.el"
             "config/ruby-major-mode.el"
             "config/elixir-major-mode.el"
             "config/major-modes.el"
+
             "config/debug-tools.el"
             "config/themes.el"
             "config/meow.el"

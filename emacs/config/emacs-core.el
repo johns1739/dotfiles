@@ -1,7 +1,8 @@
 ;; Completion
 (fido-vertical-mode 1)
+
 (customize-set-variable 'tab-always-indent 'complete)
-(setq completion-cycle-threshold 5)
+(setq completion-cycle-threshold 3)
 (setq completions-detailed t)
 (setq completion-category-overrides '((file (styles . (partial-completion)))))
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
@@ -27,7 +28,6 @@
   (let ((case-fold-search nil))
     ad-do-it))
 (ad-activate 'hippie-expand)
-
 
 ;; Emacs
 (setq ring-bell-function 'ignore)
@@ -312,7 +312,7 @@
 
  :map completion-map
  ("i" . completion-at-point)
- ;; ("M-i" . completion-at-point)
+ ("M-i" . completion-at-point)
 
  :map compilation-map
  ("!" . project-shell-command)
@@ -367,18 +367,24 @@
  ("s" . project-find-regexp)
  ("S" . rgrep)
  ("i" . imenu)
- ("r" . query-replace-regexp)
- ("R" . project-query-replace-regexp)
+ ("r" . recentf-open)
  ("f" . project-find-file)
  ("d" . project-find-dir)
  ("g" . grep)
  ("p" . project-switch-project)
+
+ ;; TODO: Why doesn't repeat scrolling work?
+ :repeat-map scroll-page-repeat-map
+ ("n" . scroll-up-command)
+ ("p" . scroll-down-command)
 
  :repeat-map buffer-navigation-repeat-map
  ("n" . next-buffer)
  ("p" . previous-buffer)
 
  :repeat-map isearch-repeat-map
+ ("s" . isearch-repeat-forward)
+ ("r" . isearch-repeat-backward)
  ("n" . isearch-repeat-forward)
  ("p" . isearch-repeat-backward))
 

@@ -1,6 +1,11 @@
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
   :defer t
+  :bind (:repeat-map flycheck-error-repeat-map
+                     ("n" . flycheck-next-error)
+                     ("p" . flycheck-previous-error)
+                     ("." . flycheck-display-error-at-point))
+
   :init
   (defun flycheck-set-bindings ()
     (bind-keys :map (current-local-map)
@@ -10,7 +15,6 @@
                ([remap flymake-show-project-diagnostics] . nil)
                ([remap flymake-goto-next-error] . flycheck-next-error)
                ([remap flymake-goto-prev-error] . flycheck-previous-error)))
-
   :custom
   (flycheck-indication-mode 'right-fringe)
   :hook

@@ -45,6 +45,9 @@
    ("\\.app.src?$" . erlang-mode)
    ("\\Emakefile" . erlang-mode))
   :config
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]_build\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
+  (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]erl_crash.dump\\'")
   (require 'erlang-start))
 
 (use-package lsp-haskell
