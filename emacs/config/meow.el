@@ -1,12 +1,11 @@
-;; Add kmacro bindings to meow
 (use-package meow
   :custom
   (meow-use-clipboard t)
   (meow-visit-collect-min-length 2)
+  (meow-keypad--self-insert-undefined nil)
 
   :init
   (defun meow-setup ()
-    (setq meow-keypad--self-insert-undefined nil)
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
 
     (meow-motion-overwrite-define-key

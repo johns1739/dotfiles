@@ -46,4 +46,4 @@
   (which-key-mode))
 
 (use-package indent-guide
-  :hook (prog-mode . indent-guide-mode))
+  :hook prog-mode)

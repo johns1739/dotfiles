@@ -7,7 +7,6 @@
 ;; Eglot is slow to update diagnostics
 ;; Eglot sometimes causes lag
 ;; Unable to turn on ruby-formatting in Eglot
-;; TODO: Create repeat keymaps for those with prev/next bindings
 ;; TODO: Review meow tutorials
 ;; TODO: Review popper tutorials
 
@@ -16,12 +15,15 @@
             (message "*** Emacs loaded in %s seconds with %d garbage collections."
                      (emacs-init-time "%.2f") gcs-done)))
 
+(setq use-package-verbose t)
+(setq use-package-compute-statistics t)
+
 (setq custom-file (locate-user-emacs-file "custom.el"))
 
 (setq module-file-names
       (if (display-graphic-p)
           '("config/emacs-core.el"
-            "config/package-manager.el"
+            "config/straight.el"
             "config/package-core.el"
             "config/lsp.el"
             "config/goto.el"

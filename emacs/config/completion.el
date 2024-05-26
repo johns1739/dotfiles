@@ -53,14 +53,14 @@
               ("TAB" . copilot-accept-completion))
   :custom
   (copilot-indent-offset-warning-disable t)
+  (tab-always-indent t)
   :config
-  (setq tab-always-indent t)
   (global-copilot-mode))
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
-  :init
-  (setq yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
+  :custom
+  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
   :config
   (yas-global-mode 1))
 

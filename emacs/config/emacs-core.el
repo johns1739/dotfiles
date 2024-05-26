@@ -1,6 +1,6 @@
 ;; Completion
 (fido-vertical-mode 1)
-(setq tab-always-indent 'complete)
+(customize-set-variable 'tab-always-indent 'complete)
 (setq completion-cycle-threshold 5)
 (setq completions-detailed t)
 (setq completion-category-overrides '((file (styles . (partial-completion)))))
@@ -288,13 +288,17 @@
   "n" notes-map
   "d" diagnostics-map
   "j" git-map
-  "o" toggle-map)
-(keymap-global-set "C-;" global-leader-map)
-(keymap-global-set "M-SPC" global-leader-map)
+  "o" toggle-map
+  "p" project-prefix-map)
+
+(if (display-graphic-p)
+    (keymap-global-set "C-;" global-leader-map)
+  (keymap-global-set "M-SPC" global-leader-map))
 (keymap-global-set "M-i" completion-map)
 
 
 ;; Keybindings
+(repeat-mode 1)
 (bind-keys*
  ("C-z" . nil) ;; Unbind suspend-frame
  ("M-J" . join-line)
@@ -302,13 +306,13 @@
  ("M-o" . other-window)
 
  :map global-leader-map
- ("SPC" . switch-to-buffer)
+ ("SPC" . project-switch-to-buffer)
  ("TAB" . indent-buffer)
  ("<tab>" . indent-buffer)
 
  :map completion-map
  ("i" . completion-at-point)
- ("M-i" . completion-at-point)
+ ;; ("M-i" . completion-at-point)
 
  :map compilation-map
  ("!" . project-shell-command)
@@ -319,12 +323,17 @@
  ("i" . comint)
  ("r" . recompile)
 
- :repeat-map diagnostics-map
+ :map diagnostics-map
+ ("n" . flymake-goto-next-error)
+ ("p" . flymake-goto-prev-error)
  ("." . flymake-show-diagnostic)
  ("l" . flymake-show-buffer-diagnostics)
  ("P" . flymake-show-project-diagnostics)
+
+ :repeat-map diagnostics-repeat-map
  ("n" . flymake-goto-next-error)
  ("p" . flymake-goto-prev-error)
+ ("." . flymake-show-diagnostic)
 
  :map notes-map
  (";" . scratch-buffer)
@@ -334,9 +343,13 @@
  ("Y" . copy-absolute-file-name)
 
  :map goto-map
+ ("n" . next-error)
+ ("p" . previous-error)
+ ("N" . next-buffer)
+ ("P" . previous-buffer)
  ("g" . beginning-of-buffer)
  ("G" . end-of-buffer)
- ("SPC" . project-switch-project)
+ ("SPC" . switch-to-buffer)
  ("," . goto-configs)
  (":" . goto-line)
  (";" . scratch-buffer)
@@ -344,10 +357,6 @@
  ("f" . find-file-at-point)
  ("k" . eldoc)
  ("K" . dictionary-lookup-definition)
- ("n" . next-error)
- ("p" . previous-error)
- ("N" . next-buffer)
- ("P" . previous-buffer)
  ("d" . xref-find-definitions)
  ("r" . xref-find-references)
  ("u" . goto-address-at-point)
@@ -357,13 +366,21 @@
  ("M-s" . project-find-regexp)
  ("s" . project-find-regexp)
  ("S" . rgrep)
- ("b" . switch-to-buffer)
  ("i" . imenu)
  ("r" . query-replace-regexp)
  ("R" . project-query-replace-regexp)
  ("f" . project-find-file)
  ("d" . project-find-dir)
- ("g" . grep))
+ ("g" . grep)
+ ("p" . project-switch-project)
+
+ :repeat-map buffer-navigation-repeat-map
+ ("n" . next-buffer)
+ ("p" . previous-buffer)
+
+ :repeat-map isearch-repeat-map
+ ("n" . isearch-repeat-forward)
+ ("p" . isearch-repeat-backward))
 
 ;; Terminal Experience
 (unless (display-graphic-p)

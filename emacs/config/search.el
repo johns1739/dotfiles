@@ -1,6 +1,7 @@
 (use-package consult
+  :custom
+  (register-preview-delay 0.5)
   :init
-  (setq register-preview-delay 0.5)
   (setq register-preview-function #'consult-register-format)
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
