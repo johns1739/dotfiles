@@ -1,7 +1,5 @@
 (use-package gruvbox-theme)
-
 (use-package timu-rouge-theme)
-
 (use-package catppuccin-theme
   :disabled t
   :if (display-graphic-p)
@@ -41,11 +39,8 @@
   (doom-modeline-mode 1))
 
 
-;; LOAD THEME
-
 (when (display-graphic-p)
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 130))
-  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1"))
-
-(consult-theme 'modus-vivendi-tritanopia)
+  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
+  (consult-theme 'modus-vivendi-tritanopia))

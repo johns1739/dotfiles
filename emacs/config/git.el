@@ -1,6 +1,11 @@
 (use-package magit
   :defer t
   :commands (magit-status)
+  :bind (:map git-map
+              ("j" . magit-status)
+              ("J" . magit-file-dispatch)
+              ("b" . magit-blame-addition)
+              ("l" . magit-log-buffer-file))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m")))
@@ -9,10 +14,17 @@
   (setq magit-list-refs-sortby "-creatordate"))
 
 (use-package git-link
-  :defer t)
+  :defer t
+  :bind (:map git-map
+              ("y" . git-link)))
 
 (use-package diff-hl
-  :demand t
+  :bind (:map git-map
+              ("." . diff-hl-show-hunk)
+              ("n" . diff-hl-next-hunk)
+              ("p" . diff-hl-previous-hunk)
+              ("S" . diff-hl-stage-dwim)
+              ("K" . diff-hl-revert-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)

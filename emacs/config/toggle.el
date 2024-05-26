@@ -1,11 +1,11 @@
-(use-package ace-window
-  ;; Jump to a window
-  :bind  (([remap other-window] . ace-window)
-          ([remap evil-window-next] . ace-window))
-  :defer t)
-
 (use-package popper
   :demand t
+  :bind (:map toggle-map
+              ("o" . popper-toggle)
+              ("O" . popper-toggle-type)
+              ("n" . popper-cycle)
+              ("p" . popper-cycle-backwards)
+              ("k" . popper-kill-latest-popup))
   :init
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)
@@ -32,3 +32,27 @@
   :config
   (popper-mode +1)
   (popper-echo-mode +1))
+
+(use-package vterm
+  :defer t
+  :bind (:map toggle-map
+               ("t" . vterm))
+  :custom
+  (vterm-copy-mode-remove-fake-newlines t)
+  (vterm-max-scrollback 10000))
+
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :custom
+  (exec-path-from-shell-warn-duration-millis 1000)
+  :config
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO" "GOPATH"
+                 "LANG" "LC_CTYPE" "NIX_SSL_CERT_FILE" "NIX_PATH"
+                 "TIINGO_API_TOKEN" "RUBYOPT"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
+(use-package xclip
+  :unless (display-graphic-p)
+  :config
+  (xclip-mode 1))
