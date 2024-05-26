@@ -287,7 +287,7 @@
   "c" compilation-map
   "n" notes-map
   "d" diagnostics-map
-  "j" git-map
+  "v" git-map
   "o" toggle-map
   "p" project-prefix-map)
 

@@ -2,8 +2,8 @@
   :defer t
   :commands (magit-status)
   :bind (:map git-map
-              ("j" . magit-status)
-              ("J" . magit-file-dispatch)
+              ("SPC" . magit-status)
+              ("F" . magit-file-dispatch)
               ("b" . magit-blame-addition)
               ("l" . magit-log-buffer-file))
   :init
