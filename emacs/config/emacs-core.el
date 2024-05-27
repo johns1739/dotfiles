@@ -2,7 +2,7 @@
 (fido-vertical-mode 1)
 
 (customize-set-variable 'tab-always-indent 'complete)
-(setq completion-cycle-threshold 3)
+(setq completion-cycle-threshold 5)
 (setq completions-detailed t)
 (setq completion-category-overrides '((file (styles . (partial-completion)))))
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
@@ -22,7 +22,6 @@
         try-expand-line-all-buffers
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
-(global-set-key [remap dabbrev-expand] 'hippie-expand)
 (defadvice hippie-expand (around hippie-expand-case-fold)
   "Try to do case-sensitive matching (not effective with all functions)."
   (let ((case-fold-search nil))
@@ -296,7 +295,6 @@
   (keymap-global-set "M-SPC" global-leader-map))
 (keymap-global-set "M-i" completion-map)
 
-
 ;; Keybindings
 (repeat-mode 1)
 (bind-keys*
@@ -304,6 +302,7 @@
  ("M-J" . join-line)
  ("C-o" . pop-global-mark)
  ("M-o" . other-window)
+ ("M-/" . hippie-expand) ;; Do not remap dabbrev-expand
 
  :map global-leader-map
  ("SPC" . project-switch-to-buffer)
@@ -313,6 +312,7 @@
  :map completion-map
  ("i" . completion-at-point)
  ("M-i" . completion-at-point)
+ ("." . dabbrev-completion)
 
  :map compilation-map
  ("!" . project-shell-command)

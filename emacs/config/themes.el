@@ -2,7 +2,6 @@
 (use-package timu-rouge-theme)
 (use-package catppuccin-theme
   :disabled t
-  :if (display-graphic-p)
   :config
   ;; (catppuccin-reload)
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
@@ -39,7 +38,7 @@
   (doom-modeline-mode 1))
 
 
-(when (display-graphic-p)
+(when use-emacs-core-only
   (add-to-list 'default-frame-alist '(height . 60))
   (add-to-list 'default-frame-alist '(width . 130))
   (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")

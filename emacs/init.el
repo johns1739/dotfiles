@@ -17,36 +17,40 @@
 
 (setq use-package-verbose t)
 (setq use-package-compute-statistics t)
-
 (setq custom-file (locate-user-emacs-file "custom.el"))
+(defvar use-emacs-core-only
+  (not (display-graphic-p))
+  "Use emacs core configuration only.")
 
 (setq module-file-names
-      (if (display-graphic-p)
+      (if use-emacs-core-only
           '("config/emacs-core.el"
-            "config/straight.el"
-            "config/package-core.el"
-            "config/goto.el"
-            "config/search.el"
-            "config/completion.el"
-            "config/diagnostics.el"
-            "config/git.el"
-            "config/notes.el"
-            "config/toggle.el"
-
-            ;; Languages
-            "config/lsp.el"
             "config/ruby-major-mode.el"
-            "config/elixir-major-mode.el"
-            "config/major-modes.el"
+            "config/elixir-major-mode.el")
 
-            "config/debug-tools.el"
-            "config/themes.el"
-            "config/meow.el"
-            ;;"config/evil.el"
-            "custom.el")
         '("config/emacs-core.el"
+          "config/straight.el"
+          "config/package-core.el"
+          "config/goto.el"
+          "config/search.el"
+          "config/completion.el"
+          "config/diagnostics.el"
+          "config/git.el"
+          "config/notes.el"
+          "config/toggle.el"
+
+          ;; Languages
+          "config/lsp.el"
           "config/ruby-major-mode.el"
-          "config/elixir-major-mode.el")))
+          "config/elixir-major-mode.el"
+          "config/major-modes.el"
+
+          "config/debug-tools.el"
+          "config/themes.el"
+          "config/meow.el"
+          ;;"config/evil.el"
+          "custom.el")
+        ))
 
 (dolist (config-file-name module-file-names)
   (load (locate-user-emacs-file config-file-name)))
