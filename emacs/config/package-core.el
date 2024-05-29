@@ -32,8 +32,9 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package undo-tree
+  :custom
+  (undo-tree-visualizer-timestamps t)
   :config
-  (setq undo-tree-visualizer-timestamps t)
   (let ((undo-tree-history-directory (locate-user-emacs-file "undo-tree-history")))
     (unless (file-exists-p undo-tree-history-directory)
       (make-directory undo-tree-history-directory))

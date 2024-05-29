@@ -2,7 +2,7 @@
   :defer t
   :commands (magit-status)
   :bind (:map git-map
-              ("SPC" . magit-status)
+              ("j" . magit-status)
               ("F" . magit-file-dispatch)
               ("b" . magit-blame-addition)
               ("l" . magit-log-buffer-file))
@@ -19,6 +19,7 @@
               ("y" . git-link)))
 
 (use-package diff-hl
+  :demand t
   :bind (:map git-map
               ("." . diff-hl-show-hunk)
               ("n" . diff-hl-next-hunk)

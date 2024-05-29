@@ -4,16 +4,16 @@
   :bind (:map corfu-map
               ("RET" . nil))
   :custom
-  (corfu-auto nil) ; Enable auto completion
+  (corfu-auto t) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
-  (corfu-auto-prefix 3) ; Enable auto completion
+  (corfu-auto-prefix 2) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-echo-delay 0.3)
   (corfu-preselect 'valid)
   (corfu-separator ?\s)
   :config
   (global-corfu-mode 1)
-  (corfu-echo-mode))
+  (corfu-echo-mode 1))
 
 (use-package corfu-terminal
   :unless (display-graphic-p)
@@ -38,24 +38,24 @@
    (list #'cape-dabbrev
          #'cape-abbrev
          #'cape-keyword
-         #'cape-dict
          #'cape-file
+         #'cape-dict
          #'cape-elisp-symbol
          ;; #'cape-line ;; Kinda buggy
          )))
 
 (use-package copilot
+  :disabled t
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind (:map copilot-completion-map
               ("M-n" . copilot-accept-completion-by-line)
               ("M-f" . copilot-accept-completion-by-word)
-              ("<tab>" . copilot-accept-completion)
-              ("TAB" . copilot-accept-completion))
+              ("C-<tab>" . copilot-accept-completion)
+              ("M-e" . copilot-accept-completion))
   :custom
   (copilot-indent-offset-warning-disable t)
-  (tab-always-indent t)
-  :config
-  (global-copilot-mode))
+  :hook
+  (prog-mode . copilot-mode))
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html

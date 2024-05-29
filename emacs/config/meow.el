@@ -1,16 +1,33 @@
 (use-package meow
   :custom
   (meow-use-clipboard t)
-  (meow-visit-collect-min-length 2)
+  (meow-visit-collect-min-length 1)
   (meow-keypad--self-insert-undefined nil)
-
+  (meow-expand-hint-remove-delay 1.5)
   :init
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-
     (meow-motion-overwrite-define-key
+     '("j" . meow-next)
+     '("k" . meow-prev)
      '("<escape>" . ignore))
-
+    (meow-leader-define-key
+     ;; SPC j/k will run the original command in MOTION state.
+     '("j" . "H-j")
+     '("k" . "H-k")
+     ;; Use SPC (0-9) for digit arguments.
+     '("1" . meow-digit-argument)
+     '("2" . meow-digit-argument)
+     '("3" . meow-digit-argument)
+     '("4" . meow-digit-argument)
+     '("5" . meow-digit-argument)
+     '("6" . meow-digit-argument)
+     '("7" . meow-digit-argument)
+     '("8" . meow-digit-argument)
+     '("9" . meow-digit-argument)
+     '("0" . meow-digit-argument)
+     '("/" . meow-keypad-describe-key)
+     '("?" . meow-cheatsheet))
     (meow-normal-define-key
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)
@@ -24,11 +41,8 @@
      '("1" . meow-expand-1)
      '("-" . negative-argument)
      '("_" . meow-reverse)
-     '("!" . meow-kmacro-lines)
-     '("@" . meow-end-or-call-kmacro)
      '("#" . meow-start-kmacro)
-     '("$" . meow-kmacro-matches)
-     '("%" . meow-query-replace)
+     '("$" . meow-end-or-call-kmacro)
      '("^" . nil)
      '("&" . nil)
      '("*" . nil)
@@ -45,6 +59,7 @@
      '("\\" . nil)
      '("|" . nil)
      '("TAB" . meow-indent)
+     '("<tab>" . meow-indent)
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("b" . meow-back-word)
@@ -103,7 +118,7 @@
      '(":" . goto-line)
      '("/" . meow-visit)
      '("?" . meow-cheatsheet)
-     '("<escape>" . meow-cancel-selection)))
+     '("<escape>" . nil)))
   :config
   (meow-setup)
   (meow-global-mode t))

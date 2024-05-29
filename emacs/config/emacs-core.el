@@ -1,7 +1,5 @@
 ;; Completion
-(fido-vertical-mode 1)
-
-(customize-set-variable 'tab-always-indent 'complete)
+(customize-set-variable 'tab-always-indent t)
 (setq completion-cycle-threshold 5)
 (setq completions-detailed t)
 (setq completion-category-overrides '((file (styles . (partial-completion)))))
@@ -27,6 +25,7 @@
   (let ((case-fold-search nil))
     ad-do-it))
 (ad-activate 'hippie-expand)
+(fido-vertical-mode 1)
 
 ;; Emacs
 (setq ring-bell-function 'ignore)
@@ -91,14 +90,13 @@
 
 ;; Scrolling
 (setq auto-window-vscroll nil)
-(setq scroll-margin 3)
+(setq scroll-margin 0)
 (setq scroll-conservatively 101)
 (setq scroll-preserve-screen-position t)
 (setq fast-but-imprecise-scrolling t)
 
 
 ;; File matching
-
 (with-eval-after-load 'ffap
   (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1)))
 
@@ -286,7 +284,7 @@
   "c" compilation-map
   "n" notes-map
   "d" diagnostics-map
-  "v" git-map
+  "j" git-map
   "o" toggle-map
   "p" project-prefix-map)
 
@@ -388,6 +386,5 @@
  ("n" . isearch-repeat-forward)
  ("p" . isearch-repeat-backward))
 
-;; Terminal Experience
-(unless (display-graphic-p)
+(if use-emacs-core-only
   (load-theme 'modus-vivendi t nil))

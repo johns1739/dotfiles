@@ -2,8 +2,8 @@
   ;; Jump to a window
   :defer t
   :bind  (([remap other-window] . ace-window)
-          ([remap delete-window] . ace-delete-window)
-          ([remap delete-other-windows] . ace-delete-other-windows)
+          ;; ([remap delete-window] . ace-delete-window)
+          ;; ([remap delete-other-windows] . ace-delete-other-windows)
           ([remap window-swap-states] . ace-swap-window)
           ([remap evil-window-next] . ace-window)))
 
