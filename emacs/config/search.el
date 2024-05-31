@@ -2,6 +2,7 @@
   :custom
   (register-preview-delay 0.5)
   :init
+  (setq completion-in-region-function #'consult-completion-in-region)
   (setq register-preview-function #'consult-register-format)
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)

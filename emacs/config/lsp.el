@@ -1,7 +1,6 @@
-(defalias 'lsp-ensure-caller #'lsp-deferred)
-
 ;; https://emacs-lsp.github.io/lsp-mode/
 (use-package lsp-mode
+  :disabled t
   :commands (lsp lsp-deferred)
   :custom
   (lsp-completion-provider :none)
@@ -11,8 +10,8 @@
   (lsp-signature-doc-lines 12)
   (lsp-eldoc-render-all t)
   :init
+  (defalias 'lsp-ensure-caller #'lsp-deferred)
   (defun lsp-set-bindings ()
-    "Inject lsp bindings."
     (bind-keys :map (current-local-map)
                ([remap indent-buffer] . lsp-format-buffer)
                ([remap evil-lookup] . lsp-describe-thing-at-point)

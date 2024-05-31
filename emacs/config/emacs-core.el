@@ -25,7 +25,7 @@
   (let ((case-fold-search nil))
     ad-do-it))
 (ad-activate 'hippie-expand)
-(fido-vertical-mode 1)
+(icomplete-vertical-mode 1)
 
 ;; Emacs
 (setq ring-bell-function 'ignore)
@@ -178,7 +178,7 @@
 (setq max-mini-window-height 0.2)
 (setq use-dialog-box nil)
 (setq-default cursor-type 'bar)
-(setq-default fill-column 120)
+(setq-default fill-column 80)
 (setq-default frame-title-format '("%f"))
 (setq-default display-fill-column-indicator-column 100)
 (setq-default display-line-numbers-type 'relative)
@@ -291,7 +291,6 @@
 (if (display-graphic-p)
     (keymap-global-set "C-;" global-leader-map)
   (keymap-global-set "M-SPC" global-leader-map))
-(keymap-global-set "M-i" completion-map)
 
 ;; Keybindings
 (repeat-mode 1)
@@ -301,6 +300,9 @@
  ("C-o" . pop-global-mark)
  ("M-o" . other-window)
  ("M-/" . hippie-expand) ;; Do not remap dabbrev-expand
+ ("C-<prior>" . next-buffer)
+ ("C-<next>" . previous-buffer)
+ ("M-i" . completion-at-point)
 
  :map global-leader-map
  ("SPC" . project-switch-to-buffer)
@@ -309,7 +311,6 @@
 
  :map completion-map
  ("i" . completion-at-point)
- ("M-i" . completion-at-point)
  ("." . dabbrev-completion)
 
  :map compilation-map

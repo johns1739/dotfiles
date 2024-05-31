@@ -11,9 +11,10 @@
 (use-package vertico
   :config
   (setq completion-cycle-threshold nil)
-  (fido-vertical-mode -1)
-  (icomplete-mode -1)
   (fido-mode -1)
+  (icomplete-mode -1)
+  (fido-vertical-mode -1)
+  (icomplete-vertical-mode -1)
   (vertico-mode 1))
 
 (use-package marginalia
