@@ -27,6 +27,11 @@
 (ad-activate 'hippie-expand)
 (icomplete-vertical-mode 1)
 
+
+;; Diagnostics
+(setq flymake-fringe-indicator-position 'right-fringe)
+
+
 ;; Emacs
 (setq ring-bell-function 'ignore)
 (setq apropos-do-all t)
@@ -55,7 +60,8 @@
 (setq gc-cons-threshold (* 16 1000 1000)) ;; 16 MB
 
 
-;; Backups
+;; Saves & Backups
+(auto-save-visited-mode 1)
 (setq create-lockfiles nil)
 (setq make-backup-files t)
 (setq backup-by-copying t)
@@ -86,6 +92,8 @@
 (electric-pair-mode 1)
 (electric-indent-mode 1)
 (add-hook 'before-save-hook #'whitespace-cleanup)
+(global-set-key [remap just-one-space] #'cycle-spacing)
+(add-hook 'prog-mode-hook #'flyspell-prog-mode)
 
 
 ;; Scrolling
@@ -205,11 +213,11 @@
 (setq org-todo-keywords
       '((sequence "TODO" "BUILDING" "PULLREQUEST" "|" "DONE" "CANCELED")))
 (setq org-todo-keyword-faces
-      '(("TODO" . "goldenrod1")
-        ("BUILDING" . "green2")
-        ("PULLREQUEST" . "green4")
-        ("DONE" . "SlateGray4")
-        ("CANCELED" . "SlateGray4")))
+      '(("TODO" . "goldenrod")
+        ("BUILDING" . "khaki")
+        ("PULLREQUEST" . "forest green")
+        ("DONE" . "dark olive green")
+        ("CANCELED" . "sienna")))
 (org-babel-do-load-languages
  'org-babel-load-languages '((emacs-lisp . t)
                              (shell . t)))
@@ -269,7 +277,7 @@
       (expand-file-name filename default-directory))))
 
 
-;; Keymaps
+;; Keybindings
 (defvar-keymap diagnostics-map :doc "Diagnostics map")
 (defvar-keymap notes-map :doc "Notes map")
 (defvar-keymap compilation-map :doc "Compilation map")
@@ -289,20 +297,25 @@
   "p" project-prefix-map)
 
 (if (display-graphic-p)
-    (keymap-global-set "C-;" global-leader-map)
+    (keymap-global-set "C-j" global-leader-map)
   (keymap-global-set "M-SPC" global-leader-map))
+
+(keymap-global-set "<remap> <list-buffers>" #'ibuffer)
+(keymap-set goto-map "i" completion-map)
+(keymap-set goto-map "c" compilation-map)
+(keymap-set goto-map "n" notes-map)
+(keymap-set goto-map "k" diagnostics-map)
+(keymap-set goto-map "j" git-map)
+(keymap-set goto-map "o" toggle-map)
 
 ;; Keybindings
 (repeat-mode 1)
-(bind-keys*
- ("C-z" . nil) ;; Unbind suspend-frame
+(bind-keys
  ("M-J" . join-line)
- ("C-o" . pop-global-mark)
  ("M-o" . other-window)
  ("M-/" . hippie-expand) ;; Do not remap dabbrev-expand
- ("C-<prior>" . next-buffer)
- ("C-<next>" . previous-buffer)
  ("M-i" . completion-at-point)
+ ("M-#" . dictionary-lookup-definition)
 
  :map global-leader-map
  ("SPC" . project-switch-to-buffer)
@@ -335,13 +348,13 @@
  ("." . flymake-show-diagnostic)
 
  :map notes-map
- (";" . scratch-buffer)
  ("t" . org-todo-list)
  ("a" . org-agenda)
  ("y" . copy-relative-file-name)
  ("Y" . copy-absolute-file-name)
 
  :map goto-map
+ ("a" . org-agenda)
  ("n" . next-error)
  ("p" . previous-error)
  ("N" . next-buffer)
@@ -352,12 +365,11 @@
  ("," . goto-configs)
  (":" . goto-line)
  (";" . scratch-buffer)
- ("b" . bookmark-jump)
  ("f" . find-file-at-point)
- ("k" . eldoc)
- ("K" . dictionary-lookup-definition)
  ("d" . xref-find-definitions)
+ ("D" . eldoc)
  ("r" . xref-find-references)
+ ("R" . xref-find-references-and-replace)
  ("u" . goto-address-at-point)
 
  :map search-map
@@ -365,7 +377,12 @@
  ("M-s" . project-find-regexp)
  ("s" . project-find-regexp)
  ("S" . rgrep)
+ ("b" . bookmark-jump)
  ("i" . imenu)
+ ("l" . occur)
+ ("L" . multi-occur)
+ ("k" . keep-lines)
+ ("K" . flush-lines)
  ("r" . recentf-open)
  ("f" . project-find-file)
  ("d" . project-find-dir)

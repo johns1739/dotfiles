@@ -1,4 +1,5 @@
 (use-package corfu
+  :disabled t
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el") :includes (corfu-echo))
   :bind (:map corfu-map
@@ -45,11 +46,11 @@
          )))
 
 (use-package copilot
-  :disabled t
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind (:map copilot-completion-map
               ("M-n" . copilot-accept-completion-by-line)
               ("M-f" . copilot-accept-completion-by-word)
+              ("<tab>" . copilot-accept-completion)
               ("C-<tab>" . copilot-accept-completion)
               ("M-e" . copilot-accept-completion))
   :custom

@@ -25,11 +25,11 @@
 
 (setq module-file-names
       (if use-emacs-core-only
-          '("config/emacs-core.el"
+          '("config/emacs-defaults.el"
             "config/ruby-major-mode.el"
             "config/elixir-major-mode.el")
 
-        '("config/emacs-core.el"
+        '("config/emacs-defaults.el"
           "config/straight.el"
           "config/package-core.el"
           "config/goto.el"

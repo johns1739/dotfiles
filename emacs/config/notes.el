@@ -7,9 +7,8 @@
   (setq denote-journal-extras-directory notes-directory))
 
 (use-package consult-notes
-  :after denote
   :bind (:map notes-map
-              ("n" . consult-notes)
-              ("s" . consult-notes-search-in-all-notes))
+              ("s" . consult-notes)
+              ("S" . consult-notes-search-in-all-notes))
   :config
   (consult-notes-denote-mode))
