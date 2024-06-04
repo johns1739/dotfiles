@@ -36,7 +36,15 @@
 (use-package vterm
   :defer t
   :bind (:map toggle-map
-               ("t" . vterm))
+              ("t" . vterm-dwim))
+  :init
+  (defun vterm-dwim ()
+    (interactive)
+    (let ((default-directory (or (project-directory) default-directory)))
+      (vterm)))
+  (defun vterm-named ()
+    (interactive)
+    (vterm (read-string "Session name: ")))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 10000))

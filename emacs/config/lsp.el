@@ -1,6 +1,5 @@
 ;; https://emacs-lsp.github.io/lsp-mode/
 (use-package lsp-mode
-  :disabled t
   :commands (lsp lsp-deferred)
   :custom
   (lsp-completion-provider :none)

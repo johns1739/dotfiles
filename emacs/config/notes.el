@@ -8,7 +8,7 @@
 
 (use-package consult-notes
   :bind (:map notes-map
-              ("s" . consult-notes)
-              ("S" . consult-notes-search-in-all-notes))
+              ("n" . consult-notes)
+              ("N" . consult-notes-search-in-all-notes))
   :config
   (consult-notes-denote-mode))

@@ -61,7 +61,7 @@
 
 
 ;; Saves & Backups
-(auto-save-visited-mode 1)
+(auto-save-visited-mode -1) ;; Annoying with whitespace cleanup constantly moving the point
 (setq create-lockfiles nil)
 (setq make-backup-files t)
 (setq backup-by-copying t)
@@ -141,7 +141,8 @@
 
 
 ;; Eglot
-(defalias 'lsp-ensure-caller #'eglot-ensure "Lsp command to call in major modes.")
+;; (defalias 'lsp-ensure-caller #'eglot-ensure "Lsp command to call in major modes.")
+(defalias 'lsp-ensure-caller #'lsp-deferred "Lsp command to call in major modes.")
 (defun eglot-set-bindings ()
   "Inject eglot bindings."
   (bind-keys :map (current-local-map)
@@ -254,10 +255,6 @@
   (universal-argument)
   (command-execute #'compile-dwim))
 
-(defun vterm-named ()
-  (interactive)
-  (vterm (read-string "Session name: ")))
-
 (defun project-directory ()
   "Current project directory."
   (project-root (project-current)))
@@ -277,7 +274,9 @@
       (expand-file-name filename default-directory))))
 
 
-;; Keybindings
+;; Key-maps
+(repeat-mode 1)
+
 (defvar-keymap diagnostics-map :doc "Diagnostics map")
 (defvar-keymap notes-map :doc "Notes map")
 (defvar-keymap compilation-map :doc "Compilation map")
@@ -291,116 +290,101 @@
   "i" completion-map
   "c" compilation-map
   "n" notes-map
-  "d" diagnostics-map
+  "k" diagnostics-map
   "j" git-map
   "o" toggle-map
   "p" project-prefix-map)
 
-(if (display-graphic-p)
-    (keymap-global-set "C-j" global-leader-map)
-  (keymap-global-set "M-SPC" global-leader-map))
-
+(keymap-global-set "M-SPC" global-leader-map)
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
-(keymap-set goto-map "i" completion-map)
-(keymap-set goto-map "c" compilation-map)
-(keymap-set goto-map "n" notes-map)
-(keymap-set goto-map "k" diagnostics-map)
-(keymap-set goto-map "j" git-map)
-(keymap-set goto-map "o" toggle-map)
 
-;; Keybindings
-(repeat-mode 1)
-(bind-keys
+(bind-keys*
  ("M-J" . join-line)
- ("M-o" . other-window)
  ("M-/" . hippie-expand) ;; Do not remap dabbrev-expand
  ("M-i" . completion-at-point)
  ("M-#" . dictionary-lookup-definition)
+ ("C-<tab>" . indent-buffer)
 
  :map global-leader-map
- ("SPC" . project-switch-to-buffer)
- ("TAB" . indent-buffer)
  ("<tab>" . indent-buffer)
 
  :map completion-map
- ("i" . completion-at-point)
  ("." . dabbrev-completion)
+ ("i" . completion-at-point)
 
  :map compilation-map
- ("!" . project-shell-command)
+ ("!" . project-async-shell-command)
  ("." . eval-defun)
- ("v" . eval-region)
  ("b" . eval-buffer)
  ("c" . compile-dwim)
  ("i" . comint)
  ("r" . recompile)
+ ("v" . eval-region)
 
  :map diagnostics-map
+ ("." . flymake-show-diagnostic)
+ ("K" . flymake-show-project-diagnostics)
+ ("k" . flymake-show-buffer-diagnostics)
  ("n" . flymake-goto-next-error)
  ("p" . flymake-goto-prev-error)
- ("." . flymake-show-diagnostic)
- ("l" . flymake-show-buffer-diagnostics)
- ("P" . flymake-show-project-diagnostics)
 
  :repeat-map diagnostics-repeat-map
+ ("." . flymake-show-diagnostic)
  ("n" . flymake-goto-next-error)
  ("p" . flymake-goto-prev-error)
- ("." . flymake-show-diagnostic)
 
  :map notes-map
- ("t" . org-todo-list)
- ("a" . org-agenda)
- ("y" . copy-relative-file-name)
+ (";" . scratch-buffer)
  ("Y" . copy-absolute-file-name)
+ ("a" . org-agenda)
+ ("t" . org-todo-list)
+ ("y" . copy-relative-file-name)
 
  :map goto-map
- ("a" . org-agenda)
- ("n" . next-error)
- ("p" . previous-error)
- ("N" . next-buffer)
- ("P" . previous-buffer)
- ("g" . beginning-of-buffer)
- ("G" . end-of-buffer)
  ("SPC" . switch-to-buffer)
  ("," . goto-configs)
- (":" . goto-line)
- (";" . scratch-buffer)
- ("f" . find-file-at-point)
- ("d" . xref-find-definitions)
  ("D" . eldoc)
- ("r" . xref-find-references)
+ ("G" . end-of-buffer)
+ ("N" . next-buffer)
+ ("P" . previous-buffer)
  ("R" . xref-find-references-and-replace)
+ ("a" . org-agenda)
+ ("d" . xref-find-definitions)
+ ("f" . find-file-at-point)
+ ("g" . beginning-of-buffer)
+ ("l" . goto-line)
+ ("n" . next-error)
+ ("p" . previous-error)
+ ("r" . xref-find-references)
  ("u" . goto-address-at-point)
 
  :map search-map
  ("SPC" . project-switch-to-buffer)
- ("M-s" . project-find-regexp)
- ("s" . project-find-regexp)
- ("S" . rgrep)
- ("b" . bookmark-jump)
- ("i" . imenu)
- ("l" . occur)
- ("L" . multi-occur)
- ("k" . keep-lines)
+ ("G" . rgrep)
  ("K" . flush-lines)
- ("r" . recentf-open)
- ("f" . project-find-file)
+ ("L" . multi-occur)
+ ("R" . project-query-replace-regexp)
+ ("b" . bookmark-jump)
  ("d" . project-find-dir)
- ("g" . grep)
+ ("f" . project-find-file)
+ ("g" . project-find-regexp)
+ ("i" . imenu)
+ ("k" . keep-lines)
+ ("l" . occur)
  ("p" . project-switch-project)
+ ("r" . recentf-open)
+ ("s" . isearch-forward)
 
  ;; TODO: Why doesn't repeat scrolling work?
- :repeat-map scroll-page-repeat-map
- ("n" . scroll-up-command)
- ("p" . scroll-down-command)
+ ;; :repeat-map scroll-page-repeat-map
+ ;; ("n" . scroll-up-command)
+ ;; ("p" . scroll-down-command)
 
  :repeat-map buffer-navigation-repeat-map
  ("n" . next-buffer)
  ("p" . previous-buffer)
 
  :repeat-map isearch-repeat-map
- ("s" . isearch-repeat-forward)
- ("r" . isearch-repeat-backward)
  ("n" . isearch-repeat-forward)
  ("p" . isearch-repeat-backward))
 

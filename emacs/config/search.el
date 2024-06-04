@@ -1,4 +1,4 @@
-professional_adjustment(use-package consult
+(use-package consult
   :custom
   (register-preview-delay 0.5)
   :init

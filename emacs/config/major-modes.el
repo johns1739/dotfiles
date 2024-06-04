@@ -72,3 +72,7 @@
 (use-package geiser-guile
   :disabled t
   :commands (geiser-mode))
+
+(use-package expand-region
+  :commands (er/expand-region)
+  :bind ("C-=" . er/expand-region))
