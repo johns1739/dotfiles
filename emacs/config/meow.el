@@ -55,16 +55,16 @@
      '("B" . meow-back-symbol)
 
      '("c" . meow-change)
-     '("C" . compile-dwim)
+     (cons "C" compilation-map)
 
      '("d" . meow-delete)
-     '("D" . meow-backword-delete)
+     '("D" . meow-kill)
 
      '("e" . meow-next-word)
      '("E" . meow-next-symbol)
 
-     '("f" . meow-till)
-     '("F" . meow-find)
+     '("f" . meow-find)
+     '("F" . meow-till)
 
      (cons "g" goto-map)
      '("G" . meow-grab)
@@ -76,11 +76,11 @@
      '("I" . meow-open-above)
 
      '("j" . meow-next)
-     '("J" . magit-blame-addition)
+     (cons "J" git-map)
 
      '("k" . meow-prev)
-     '("K" . nil)
-
+     (cons "K" diagnostics-map)
+     
      '("l" . meow-right)
      '("L" . recenter)
 
@@ -90,24 +90,23 @@
      '("n" . meow-search)
      (cons "N" notes-map)
 
-     '("o" . meow-pop-marker)
-     '("O" . other-window)
+     '("o" . other-window)
+     (cons "O" toggle-map)
 
      '("p" . meow-yank)
-     '("P" . meow-yank-pop)
+     (cons "P" project-prefix-map)
 
-     ;; Keep q unbound for other apps to bind.
-     '("q" . nil)
+     '("q" . nil) ;; Keep q unbound for other apps to bind.
      '("Q" . meow-quit)
 
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
 
-     '("s" . meow-kill)
+     (cons "s" search-map)
      '("S" . save-buffer)
 
-     (cons "t" toggle-map)
-     '("T" . project-vterm)
+     '("t" . meow-till)
+     '("T" . nil)
 
      '("u" . meow-undo)
      '("U" . meow-undo-in-selection)
@@ -149,13 +148,13 @@
      '(":" . meow-goto-line)
 
      '("/" . meow-visit)
-     '("?" . nil)
+     '("?" . meow-cheatsheet)
 
      '("," . meow-inner-of-thing)
-     '("<" . meow-begin-of-buffer)
+     '("<" . meow-beginning-of-thing)
 
      '("." . meow-bounds-of-thing)
-     '(">" . meow-end-of-buffer)
+     '(">" . meow-end-of-thing)
 
      '("[" . meow-beginning-of-thing)
      '("{" . nil)

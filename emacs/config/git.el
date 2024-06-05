@@ -10,7 +10,7 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m")))
   :config
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  (setq magit-display-buffer-function #'magit-display-buffer-traditional)
   (setq magit-list-refs-sortby "-creatordate"))
 
 (use-package git-link
