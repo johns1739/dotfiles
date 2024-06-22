@@ -9,6 +9,8 @@
 ;; Unable to turn on ruby-formatting in Eglot
 ;; TODO: Review meow tutorials
 ;; TODO: Review popper tutorials
+;; Recompile as comint from compile
+;; Ability rerun comint
 
 (add-hook 'emacs-startup-hook
           (lambda ()

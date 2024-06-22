@@ -3,7 +3,7 @@
   :commands (magit-status)
   :bind (:map git-map
               ("j" . magit-status)
-              ("F" . magit-file-dispatch)
+              ("f" . magit-file-dispatch)
               ("b" . magit-blame-addition)
               ("l" . magit-log-buffer-file))
   :init

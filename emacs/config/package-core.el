@@ -33,6 +33,7 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package undo-tree
+  :disabled t
   :custom
   (undo-tree-visualizer-timestamps t)
   :config
@@ -49,3 +50,7 @@
 
 (use-package indent-guide
   :hook prog-mode)
+
+;; TODO: Create jump-to-definition-dwim
+(use-package dumb-jump
+  :disabled t)

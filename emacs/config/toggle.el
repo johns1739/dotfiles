@@ -20,7 +20,8 @@
           "\\*Async Shell Command\\*"
           special-mode
           help-mode
-          compilation-mode))
+          compilation-mode
+          comint-mode))
   ;; Match eshell, shell, term and/or vterm buffers
   (setq popper-reference-buffers
         (append popper-reference-buffers

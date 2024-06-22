@@ -8,8 +8,12 @@
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
     (meow-motion-overwrite-define-key
+     '("j" . meow-next)
+     '("k" . meow-prev)
      '("<escape>" . ignore))
     (meow-leader-define-key
+     '("j" . "H-j")
+     '("k" . "H-k")
      ;; Use SPC (0-9) for digit arguments.
      '("1" . meow-digit-argument)
      '("2" . meow-digit-argument)
@@ -41,9 +45,9 @@
      '("#" . meow-end-or-call-kmacro)
      '("$" . meow-kmacro-matches)
      '("%" . meow-query-replace)
+     '("M-%" . meow-query-replace-regexp)
      '("^" . nil)
      '("&" . async-shell-command)
-     '("*" . meow-query-replace-regexp)
      '("(" . nil)
      '(")" . nil)
      '("_" . meow-reverse)
@@ -70,7 +74,7 @@
      '("G" . meow-grab)
 
      '("h" . meow-left)
-     '("H" . nil)
+     '("H" . mark-paragraph)
 
      '("i" . meow-insert)
      '("I" . meow-open-above)
@@ -80,12 +84,12 @@
 
      '("k" . meow-prev)
      (cons "K" diagnostics-map)
-     
+
      '("l" . meow-right)
      '("L" . recenter)
 
      '("m" . meow-join)
-     '("M" . meow-back-to-indentation)
+     '("M" . join-line)
 
      '("n" . meow-search)
      (cons "N" notes-map)
@@ -138,14 +142,14 @@
      '("<left>" . meow-left)
      '("S-<left>" . meow-left-expand)
 
-     '("\\" . repeat-complex-command)
-     '("|" . nil)
+     '("\\" . cycle-spacing)
+     '("|" . repeat-complex-command)
 
      '("'" . repeat)
      '("\"" . nil)
 
      '(";" . meow-comment)
-     '(":" . meow-goto-line)
+     '(":" . goto-line)
 
      '("/" . meow-visit)
      '("?" . meow-cheatsheet)
@@ -165,7 +169,8 @@
      '("`" . nil)
      '("~" . nil)
 
-     '("<tab>" . meow-indent)
+     '("<tab>" . indent-for-tab-command)
+     '("<backtab>" . indent-buffer)
      '("<escape>" . meow-cancel-selection)))
   :config
   (meow-setup)

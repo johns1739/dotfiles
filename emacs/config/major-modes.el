@@ -22,6 +22,10 @@
   :hook
   (elm-mode . eglot-ensure))
 
+(use-package js
+  :custom
+  (js-indent-level 2))
+
 (use-package erlang
   :disabled t
   :defer t

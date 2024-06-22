@@ -6,10 +6,8 @@
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 (setq hippie-expand-verbose t)
 (setq hippie-expand-try-functions-list
-      '(try-complete-file-name-partially
-        try-complete-file-name
+      '(try-expand-dabbrev-visible
         try-expand-all-abbrevs
-        try-expand-dabbrev-visible
         try-expand-dabbrev
         try-expand-dabbrev-from-kill
         try-expand-whole-kill
@@ -18,6 +16,8 @@
         try-expand-dabbrev-all-buffers
         try-expand-list-all-buffers
         try-expand-line-all-buffers
+        try-complete-file-name-partially
+        try-complete-file-name
         try-complete-lisp-symbol-partially
         try-complete-lisp-symbol))
 (defadvice hippie-expand (around hippie-expand-case-fold)
@@ -190,15 +190,16 @@
 (setq-default fill-column 80)
 (setq-default frame-title-format '("%f"))
 (setq-default display-fill-column-indicator-column 100)
-(setq-default display-line-numbers-type 'relative)
+(setq-default display-line-numbers-type t)
 ;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 ;; (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-;; (add-hook 'prog-mode-hook #'hl-line-mode)
-(column-number-mode -1)
-(line-number-mode -1)
+(add-hook 'prog-mode-hook #'hl-line-mode)
+(column-number-mode 1)
+(line-number-mode 1)
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(window-divider-mode 1)
 
 
 ;; Org
@@ -222,6 +223,9 @@
 (org-babel-do-load-languages
  'org-babel-load-languages '((emacs-lisp . t)
                              (shell . t)))
+(defun org-mode-setup ()
+  (electric-indent-local-mode -1))
+(add-hook 'org-mode-hook #'org-mode-setup)
 
 ;; Commands
 (defun goto-configs ()
@@ -339,6 +343,12 @@
  ("a" . org-agenda)
  ("t" . org-todo-list)
  ("y" . copy-relative-file-name)
+
+ :map toggle-map
+ ("0" . delete-window)
+ ("1" . delete-other-windows)
+ ("2" . split-window-below)
+ ("3" . split-window-right)
 
  :map goto-map
  ("SPC" . switch-to-buffer)
