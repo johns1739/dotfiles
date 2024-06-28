@@ -7,10 +7,12 @@
   :init
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+
     (meow-motion-overwrite-define-key
      '("j" . meow-next)
      '("k" . meow-prev)
      '("<escape>" . ignore))
+
     (meow-leader-define-key
      '("j" . "H-j")
      '("k" . "H-k")
@@ -25,6 +27,7 @@
      '("8" . meow-digit-argument)
      '("9" . meow-digit-argument)
      '("0" . meow-digit-argument))
+
     (meow-normal-define-key
      '("=" . er/expand-region)
      '("0" . meow-expand-0)
@@ -106,7 +109,7 @@
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
 
-     (cons "s" search-map)
+     (cons "s" my-search-map)
      '("S" . save-buffer)
 
      '("t" . meow-till)
@@ -152,7 +155,7 @@
      '(":" . goto-line)
 
      '("/" . meow-visit)
-     '("?" . meow-cheatsheet)
+     '("?" . isearch-forward-thing-at-point)
 
      '("," . meow-inner-of-thing)
      '("<" . meow-beginning-of-thing)

@@ -16,44 +16,40 @@
           (lambda ()
             (message
              "*** Emacs loaded in %s seconds with %d garbage collections."
-                     (emacs-init-time "%.2f") gcs-done)))
+             (emacs-init-time "%.2f") gcs-done)))
 
 (setq use-package-verbose t)
 (setq use-package-compute-statistics t)
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(defvar use-emacs-core-only
-  (not (display-graphic-p))
-  "Use emacs core configuration only.")
-
 (setq module-file-names
-      (if use-emacs-core-only
-          '("config/emacs-defaults.el"
-            "config/ruby-major-mode.el"
-            "config/elixir-major-mode.el")
+      '("config/emacs.el"
 
-        '("config/emacs-defaults.el"
-          "config/straight.el"
-          "config/package-core.el"
-          "config/goto.el"
-          "config/search.el"
-          "config/completion.el"
-          "config/diagnostics.el"
-          "config/git.el"
-          "config/notes.el"
-          "config/toggle.el"
+        ;; Package setup
+        "config/straight.el"
+        "config/package-core.el"
 
-          ;; Languages
-          "config/lsp.el"
-          "config/ruby-major-mode.el"
-          "config/elixir-major-mode.el"
-          "config/major-modes.el"
+        ;; Essentials
+        "config/goto.el"
+        "config/search.el"
+        "config/completion.el"
+        "config/compilation.el"
+        "config/diagnostics.el"
+        "config/git.el"
+        "config/notes.el"
+        "config/toggle.el"
 
-          "config/debug-tools.el"
-          "config/themes.el"
-          "config/meow.el"
-          ;;"config/evil.el"
-          "custom.el")
-        ))
+        ;; Languages
+        "config/lsp.el"
+        "config/ruby-major-mode.el"
+        "config/elixir-major-mode.el"
+        "config/major-modes.el"
+
+        ;; Utils
+        "config/debug-tools.el"
+        "config/themes.el"
+        "config/meow.el"
+        "custom.el")
+      )
 
 (dolist (config-file-name module-file-names)
   (load (locate-user-emacs-file config-file-name)))

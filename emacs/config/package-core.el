@@ -8,20 +8,6 @@
   :hook
   (lsp-managed-mode . orderless-lsp-setup))
 
-(use-package vertico
-  :config
-  (setq completion-cycle-threshold nil)
-  (fido-mode -1)
-  (icomplete-mode -1)
-  (fido-vertical-mode -1)
-  (icomplete-vertical-mode -1)
-  (vertico-mode 1))
-
-(use-package marginalia
-  :config
-  (setq completions-detailed nil)
-  (marginalia-mode 1))
-
 (use-package embark
   :defer t
   :bind (:map global-leader-map

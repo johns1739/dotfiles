@@ -1,3 +1,5 @@
+(keymap-set global-leader-map "j" git-map)
+
 (use-package magit
   :defer t
   :commands (magit-status)

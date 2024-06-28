@@ -1,3 +1,40 @@
+(keymap-set global-leader-map "i" completion-map)
+
+(bind-keys*
+ ("M-i" . completion-at-point)
+ ("M-/" . hippie-expand) ;; Do not remap dabbrev-expand
+ :map completion-map
+ ("." . dabbrev-completion)
+ ("i" . completion-at-point))
+
+(customize-set-variable 'tab-always-indent t)
+(setq completion-category-overrides '((file (styles . (partial-completion)))))
+(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+
+(setq hippie-expand-verbose t)
+(setq hippie-expand-try-functions-list
+      '(try-expand-dabbrev-visible
+        try-expand-all-abbrevs
+        try-expand-dabbrev
+        try-expand-dabbrev-from-kill
+        try-expand-whole-kill
+        try-expand-list
+        try-expand-line
+        try-expand-dabbrev-all-buffers
+        try-expand-list-all-buffers
+        try-expand-line-all-buffers
+        try-complete-file-name-partially
+        try-complete-file-name
+        try-complete-lisp-symbol-partially
+        try-complete-lisp-symbol))
+
+(defadvice hippie-expand (around hippie-expand-case-fold)
+  "Try to do case-sensitive matching (not effective with all functions)."
+  (let ((case-fold-search nil))
+    ad-do-it))
+(ad-activate 'hippie-expand)
+
+
 (use-package corfu
   :disabled t
   ;; Corfu enhances in-buffer completion with a small completion popup.
@@ -17,6 +54,7 @@
   (corfu-echo-mode 1))
 
 (use-package corfu-terminal
+  :disabled t
   :unless (display-graphic-p)
   :after corfu
   :config
@@ -67,3 +105,16 @@
 
 (use-package yasnippet-snippets
   :after yasnippet)
+
+;; (icomplete-vertical-mode 1)
+;; (setq completion-cycle-threshold 5)
+(use-package vertico
+  :config
+  (setq completion-cycle-threshold nil)
+  (vertico-mode 1))
+
+;; (setq completions-detailed t)
+(use-package marginalia
+  :config
+  (setq completions-detailed nil)
+  (marginalia-mode 1))

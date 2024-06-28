@@ -1,3 +1,26 @@
+(keymap-set global-leader-map "s" my-search-map)
+
+(keymap-global-set "<remap> <list-buffers>" #'ibuffer)
+
+(bind-keys*
+ :map my-search-map
+ ("SPC" . project-switch-to-buffer)
+ ("." . rgrep)
+ ("," . rgrep)
+ ("/" . isearch-forward-thing-at-point)
+ ("%" . project-query-replace-regexp)
+ ("b" . bookmark-jump)
+ ("d" . project-find-dir)
+ ("f" . project-find-file)
+ ("g" . project-find-regexp)
+ ("s" . rgrep)
+ ("i" . imenu)
+ ("o" . occur)
+ ("O" . multi-occur)
+ ("p" . project-switch-project)
+ ("r" . recentf-open)
+ ("t" . load-theme))
+
 (use-package consult
   :custom
   (register-preview-delay 0.5)
@@ -21,20 +44,18 @@
          ([remap switch-to-buffer] . consult-buffer)
          ([remap yank-pop] . consult-yank-pop)
          ([remap load-theme] . consult-theme)
-         :map diagnostics-map
-         ("s" . consult-flymake)
-         :map compilation-map
-         ("s" . consult-compile-error)
-         :map search-map
+         ([remap recentf-open] . consult-recent-file)
+         :map my-search-map
          ("s" . consult-ripgrep)
-         ("M-s" . consult-ripgrep)
          ("c" . consult-compile-error)
+         ("h" . consult-outline)
+         ("i" . consult-imenu)
          ("I" . consult-imenu-multi)
+         ("k" . consult-flymake)
          ("l" . consult-line)
          ("L" . consult-line-multi)
          ("m" . consult-mark)
          ("M" . consult-global-mark)
-         ("o" . consult-outline)
          ("j" . consult-register-load)
          ("J" . consult-register-store)
          ("g" . consult-git-grep))
@@ -42,6 +63,6 @@
   (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package rg
-  :bind (:map search-map
-         ("." . rg-dwim)
-         (">" . rg)))
+  :bind (:map my-search-map
+         ("S" . rg)
+         ("." . rg-dwim)))

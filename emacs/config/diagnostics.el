@@ -1,3 +1,19 @@
+(keymap-set global-leader-map "k" diagnostics-map)
+
+(bind-keys*
+ :map diagnostics-map
+ ("." . flymake-show-diagnostic)
+ ("k" . flymake-show-buffer-diagnostics)
+ ("K" . flymake-show-project-diagnostics)
+ ("n" . flymake-goto-next-error)
+ ("p" . flymake-goto-prev-error)
+ :repeat-map diagnostics-repeat-map
+ ("." . flymake-show-diagnostic)
+ ("n" . flymake-goto-next-error)
+ ("p" . flymake-goto-prev-error))
+
+(setq flymake-fringe-indicator-position 'right-fringe)
+
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
   :defer t

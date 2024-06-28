@@ -1,3 +1,5 @@
+(keymap-set global-leader-map "t" toggle-map)
+
 (use-package popper
   :demand t
   :bind (:map toggle-map
@@ -5,7 +7,11 @@
               ("O" . popper-toggle-type)
               ("n" . popper-cycle)
               ("p" . popper-cycle-backwards)
-              ("k" . popper-kill-latest-popup))
+              ("Q" . popper-kill-latest-popup)
+              :repeat-map toggle-cycle-repeat-map
+              ("n" . popper-cycle)
+              ("p" . popper-cycle-backwards)
+              ("Q" . popper-kill-latest-popup))
   :init
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)

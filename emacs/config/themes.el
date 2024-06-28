@@ -39,8 +39,9 @@
   :config
   (doom-modeline-mode 1))
 
-(unless use-emacs-core-only
-  (add-to-list 'default-frame-alist '(height . 52))
-  (add-to-list 'default-frame-alist '(width . 112))
-  (set-face-font 'default "-*-Hack Nerd Font-normal-normal-normal-*-14-*-*-*-p-0-iso10646-1")
-  (consult-theme 'modus-vivendi-tritanopia))
+(add-to-list 'default-frame-alist '(height . 52))
+(add-to-list 'default-frame-alist '(width . 112))
+;; (set-face-font 'default "-*-Hack Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+;; (set-face-font 'default "-*-Roboto Mono-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+(set-face-font 'default "-*-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+(consult-theme 'modus-vivendi-tritanopia)
