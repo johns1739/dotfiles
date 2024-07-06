@@ -4,6 +4,7 @@
   (meow-visit-collect-min-length 1)
   (meow-keypad--self-insert-undefined nil)
   (meow-expand-hint-remove-delay 1.5)
+
   :init
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -16,6 +17,7 @@
     (meow-leader-define-key
      '("j" . "H-j")
      '("k" . "H-k")
+
      ;; Use SPC (0-9) for digit arguments.
      '("1" . meow-digit-argument)
      '("2" . meow-digit-argument)
@@ -49,10 +51,10 @@
      '("$" . meow-kmacro-matches)
      '("%" . meow-query-replace)
      '("M-%" . meow-query-replace-regexp)
-     '("^" . nil)
+     '("^" . delete-indentation)
      '("&" . async-shell-command)
      '("(" . nil)
-     '(")" . nil)
+     '(")" . move-past-close-and-reindent)
      '("_" . meow-reverse)
 
      '("a" . meow-append)
@@ -71,7 +73,7 @@
      '("E" . meow-next-symbol)
 
      '("f" . meow-find)
-     '("F" . meow-till)
+     '("F" . nil)
 
      (cons "g" goto-map)
      '("G" . meow-grab)
@@ -92,7 +94,7 @@
      '("L" . recenter)
 
      '("m" . meow-join)
-     '("M" . join-line)
+     '("M" . nil)
 
      '("n" . meow-search)
      (cons "N" notes-map)
@@ -109,14 +111,14 @@
      '("r" . meow-replace)
      '("R" . meow-swap-grab)
 
-     (cons "s" my-search-map)
+     (cons "s" search-map)
      '("S" . save-buffer)
 
      '("t" . meow-till)
      '("T" . nil)
 
      '("u" . meow-undo)
-     '("U" . meow-undo-in-selection)
+     '("U" . nil)
 
      '("v" . meow-page-down)
      '("V" . meow-page-up)
@@ -133,17 +135,12 @@
      '("z" . meow-pop-selection)
      '("Z" . meow-sync-grab)
 
-     '("<down>" . meow-next)
-     '("S-<down>" . meow-next-expand)
-
-     '("<up>" . meow-prev)
-     '("S-<up>" . meow-prev-expand)
-
-     '("<right>" . meow-right)
-     '("S-<right>" . meow-right-expand)
-
-     '("<left>" . meow-left)
-     '("S-<left>" . meow-left-expand)
+     ;; Keep these unbound for other apps to bind.
+     '("<tab>" . nil)
+     '("<down>" . nil)
+     '("<up>" . nil)
+     '("<right>" . nil)
+     '("<left>" . nil)
 
      '("\\" . cycle-spacing)
      '("|" . repeat-complex-command)
@@ -158,10 +155,10 @@
      '("?" . isearch-forward-thing-at-point)
 
      '("," . meow-inner-of-thing)
-     '("<" . meow-beginning-of-thing)
+     '("<" . beginning-of-buffer)
 
      '("." . meow-bounds-of-thing)
-     '(">" . meow-end-of-thing)
+     '(">" . end-of-buffer)
 
      '("[" . meow-beginning-of-thing)
      '("{" . nil)
@@ -172,9 +169,9 @@
      '("`" . nil)
      '("~" . nil)
 
-     '("<tab>" . indent-for-tab-command)
      '("<backtab>" . indent-buffer)
      '("<escape>" . meow-cancel-selection)))
+
   :config
   (meow-setup)
   (meow-global-mode t))

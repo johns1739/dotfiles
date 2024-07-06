@@ -1,3 +1,29 @@
+(use-package emacs
+  :ensure nil
+  :bind (:map toggle-map
+              ("b" . toggle-big-font))
+  :init
+  (defvar toggle-big-font-sizes '(210 140)
+    "List of font sizes to toggle between.")
+  (defun toggle-big-font ()
+    "Toggle between the different font sizes in `toggle-big-font-sizes'."
+    (interactive)
+    (let ((current-size (pop toggle-big-font-sizes)))
+      (add-to-list 'toggle-big-font-sizes current-size t))
+    (set-face-attribute 'default nil :height (car toggle-big-font-sizes)))
+  :config
+  ;; (set-face-font 'default "-*-Hack Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+  ;; (set-face-font 'default "-*-Roboto Mono-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+  ;; (set-face-font 'default "-*-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+  (set-face-attribute 'default nil
+                      :family "JetBrainsMono Nerd Font"
+                      :height (car toggle-font-big-font-sizes)
+                      :weight 'regular
+                      :slant 'normal
+                      :width 'normal)
+  (add-to-list 'default-frame-alist '(height . 50))
+  (add-to-list 'default-frame-alist '(width . 112)))
+
 (use-package gruvbox-theme)
 
 (use-package timu-rouge-theme)
@@ -38,10 +64,3 @@
   (doom-modeline-env-version nil)
   :config
   (doom-modeline-mode 1))
-
-(add-to-list 'default-frame-alist '(height . 52))
-(add-to-list 'default-frame-alist '(width . 112))
-;; (set-face-font 'default "-*-Hack Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-;; (set-face-font 'default "-*-Roboto Mono-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-(set-face-font 'default "-*-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-(consult-theme 'modus-vivendi-tritanopia)

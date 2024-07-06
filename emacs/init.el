@@ -3,15 +3,9 @@
 ;; Documentation
 ;; https://karthinks.com/
 ;; https://emacsredux.com/
-;; TODO: Attempt to re-introduce eglot for better integrated experience
-;; Eglot is slow to update diagnostics
-;; Eglot sometimes causes lag
-;; Unable to turn on ruby-formatting in Eglot
-;; TODO: Review meow tutorials
-;; TODO: Review popper tutorials
-;; Recompile as comint from compile
-;; Ability rerun comint
 
+(setq gc-cons-percentage 0.2)
+(setq gc-cons-threshold (* 16 1000 1000))
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message
@@ -19,7 +13,7 @@
              (emacs-init-time "%.2f") gcs-done)))
 
 (setq use-package-verbose t)
-(setq use-package-compute-statistics t)
+(setq use-package-compute-statistics t) ;; use-package-report
 (setq custom-file (locate-user-emacs-file "custom.el"))
 (setq module-file-names
       '("config/emacs.el"

@@ -1,25 +1,27 @@
-(keymap-set global-leader-map "s" my-search-map)
-
-(keymap-global-set "<remap> <list-buffers>" #'ibuffer)
-
-(bind-keys*
- :map my-search-map
- ("SPC" . project-switch-to-buffer)
- ("." . rgrep)
- ("," . rgrep)
- ("/" . isearch-forward-thing-at-point)
- ("%" . project-query-replace-regexp)
- ("b" . bookmark-jump)
- ("d" . project-find-dir)
- ("f" . project-find-file)
- ("g" . project-find-regexp)
- ("s" . rgrep)
- ("i" . imenu)
- ("o" . occur)
- ("O" . multi-occur)
- ("p" . project-switch-project)
- ("r" . recentf-open)
- ("t" . load-theme))
+(use-package emacs
+  :ensure nil
+  :init
+  (setq isearch-wrap-pause 'no)
+  :bind (([remap list-buffers] . ibuffer)
+         :map search-map
+         ("SPC" . project-switch-to-buffer)
+         ("." . rgrep)
+         ("," . rgrep)
+         ("/" . isearch-forward-thing-at-point)
+         ("%" . project-query-replace-regexp)
+         ("b" . bookmark-jump)
+         ("d" . project-find-dir)
+         ("f" . project-find-file)
+         ("g" . project-find-regexp)
+         ("s" . rgrep)
+         ("i" . imenu)
+         ("n" . org-search-view)
+         ("N" . org-occur-in-agenda-files)
+         ("o" . occur)
+         ("O" . multi-occur)
+         ("p" . project-switch-project)
+         ("r" . recentf-open)
+         ("t" . load-theme)))
 
 (use-package consult
   :custom
@@ -45,24 +47,28 @@
          ([remap yank-pop] . consult-yank-pop)
          ([remap load-theme] . consult-theme)
          ([remap recentf-open] . consult-recent-file)
-         :map my-search-map
-         ("s" . consult-ripgrep)
+         :map search-map
          ("c" . consult-compile-error)
+         ("F" . consult-focus-lines)
+         ("g" . consult-git-grep)
          ("h" . consult-outline)
          ("i" . consult-imenu)
          ("I" . consult-imenu-multi)
+         ("j" . consult-register-load)
+         ("J" . consult-register-store)
          ("k" . consult-flymake)
          ("l" . consult-line)
          ("L" . consult-line-multi)
          ("m" . consult-mark)
          ("M" . consult-global-mark)
-         ("j" . consult-register-load)
-         ("J" . consult-register-store)
-         ("g" . consult-git-grep))
+         ("n" . consult-org-agenda)
+         ("s" . consult-ripgrep)
+         ("y" . consult-yank-from-kill-ring))
+
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package rg
-  :bind (:map my-search-map
+  :bind (:map search-map
          ("S" . rg)
          ("." . rg-dwim)))

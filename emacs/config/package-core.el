@@ -1,12 +1,6 @@
 (use-package orderless
-  :init
-  (defun orderless-lsp-setup ()
-    (setq completion-styles '(basic orderless)
-          completion-category-defaults nil))
   :custom
-  (completion-styles '(orderless basic))
-  :hook
-  (lsp-managed-mode . orderless-lsp-setup))
+  (completion-styles '(orderless basic)))
 
 (use-package embark
   :defer t

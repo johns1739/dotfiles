@@ -38,6 +38,6 @@
                           )
           compilation-error-regexp-alist-alist))
   :hook
-  ;;(ruby-ts-mode . display-fill-column-indicator-mode)
+  ;; (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-base-mode . ruby-setup)
-  (ruby-ts-mode . lsp-ensure-caller))
+  (ruby-ts-mode . eglot-ensure))

@@ -3,18 +3,8 @@
   :mode "\\.go\\'"
   :init
   (setq go-ts-mode-indent-offset 4)
-  (defun lsp-go-save-hooks ()
-    (setq tab-width 4)
-    (add-hook 'before-save-hook #'lsp-format-buffer t t)
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
-  (setq lsp-go-analyses '((shadow . t)
-                          (unusedvariable . t)
-                          (unusedwrite . t)
-                          (useany . t)
-                          (fieldalignment . t)))
   :hook
-  (go-ts-mode . lsp-go-save-hooks)
-  (go-ts-mode . lsp-deferred))
+  (go-ts-mode . eglot-ensure))
 
 (use-package elm-mode
   :disabled t
@@ -35,7 +25,7 @@
   (setq erlang-root-dir "/opt/homebrew/lib/erlang")
   (add-to-list 'exec-path "/opt/homebrew/lib/erlang/bin")
   :hook
-  (erlang-mode . lsp-deferred)
+  (erlang-mode . eglot-ensure)
   :mode
   (("\\.erl?$" . erlang-mode)
    ("rebar\\.config$" . erlang-mode)
@@ -49,23 +39,13 @@
    ("\\.app.src?$" . erlang-mode)
    ("\\Emakefile" . erlang-mode))
   :config
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]_build\\'")
-  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]deps\\'")
-  (add-to-list 'lsp-file-watch-ignored-files "[/\\\\]erl_crash.dump\\'")
   (require 'erlang-start))
-
-(use-package lsp-haskell
-  :disabled t
-  :defer t
-  :hook
-  (haskell-mode . lsp-deferred)
-  (haskell-literal-mode . lsp-deferred))
 
 (use-package yaml-ts-mode
   :defer t
   :mode "\\(\\.yaml\\|.yml\\)\\'"
   :hook
-  (yaml-ts-mode . lsp-deferred))
+  (yaml-ts-mode . eglot-ensure))
 
 (use-package sqlformat
   :commands (sqlformat)
@@ -74,7 +54,6 @@
   (setq sqlformat-args '("-s2" "-g")))
 
 (use-package geiser-guile
-  :disabled t
   :commands (geiser-mode))
 
 (use-package expand-region

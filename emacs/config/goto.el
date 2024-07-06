@@ -1,22 +1,30 @@
-(keymap-set global-leader-map "g" goto-map)
-
-(bind-keys*
- :map goto-map
- ("SPC" . switch-to-buffer)
- ("." . xref-find-definitions)
- ("," . xref-go-back)
- ("?" . xref-find-references)
- ("/" . xref-find-apropos)
- (";" . goto-configs)
- (":" . goto-line)
- ("%" . xref-find-references-and-replace)
- ("D" . eldoc)
- ("G" . end-of-buffer)
- ("f" . find-file-at-point)
- ("g" . beginning-of-buffer)
- ("n" . next-error)
- ("p" . previous-error)
- ("u" . goto-address-at-point))
+(use-package emacs
+  :ensure nil
+  :bind (:map goto-map
+              ("SPC" . switch-to-buffer)
+              ("." . xref-find-definitions)
+              ("," . xref-go-back)
+              ("?" . xref-find-references)
+              ("/" . xref-find-apropos)
+              (";" . goto-configs)
+              (":" . goto-line)
+              ("%" . xref-find-references-and-replace)
+              ("f" . find-file-at-point)
+              ("g" . beginning-of-buffer)
+              ("G" . end-of-buffer)
+              ("k" . eldoc)
+              ("n" . next-error)
+              ("p" . previous-error)
+              ("u" . goto-address-at-point))
+  :custom
+  (next-error-recenter nil)
+  (next-error-highlight 1.0)
+  (next-error-highlight-no-select 1.0)
+  (next-error-message-highlight t)
+  :config
+  ;; File matching
+  (with-eval-after-load 'ffap
+    (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1))))
 
 (use-package ace-window
   ;; Jump to a window

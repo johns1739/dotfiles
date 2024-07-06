@@ -5,14 +5,15 @@
   :commands (magit-status)
   :bind (:map git-map
               ("j" . magit-status)
+              ("m" . magit-blame-addition)
               ("f" . magit-file-dispatch)
-              ("b" . magit-blame-addition)
               ("l" . magit-log-buffer-file))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m")))
   :config
-  (setq magit-display-buffer-function #'magit-display-buffer-traditional)
+  ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (setq magit-list-refs-sortby "-creatordate"))
 
 (use-package git-link

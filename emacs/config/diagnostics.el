@@ -15,6 +15,7 @@
 (setq flymake-fringe-indicator-position 'right-fringe)
 
 (use-package flycheck
+  :disabled t
   ;; https://www.flycheck.org/en/latest/
   :defer t
   :bind (:repeat-map flycheck-error-repeat-map
@@ -34,9 +35,9 @@
   :custom
   (flycheck-indication-mode 'right-fringe)
   :hook
-  (flycheck-mode . flycheck-set-bindings)
-  (lsp-managed-mode . flycheck-set-bindings))
+  (flycheck-mode . flycheck-set-bindings))
 
 (use-package consult-flycheck
+  :disabled t
   :defer t
   :commands (consult-flycheck))
