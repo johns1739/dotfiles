@@ -17,7 +17,7 @@
   ;; (set-face-font 'default "-*-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
   (set-face-attribute 'default nil
                       :family "JetBrainsMono Nerd Font"
-                      :height (car toggle-font-big-font-sizes)
+                      :height (car toggle-big-font-sizes)
                       :weight 'regular
                       :slant 'normal
                       :width 'normal)

@@ -24,9 +24,13 @@
     (universal-argument)
     (command-execute #'compile-dwim))
   :hook
-  (compilation-filter . ansi-color-compilation-filter))
+  (compilation-filter . ansi-color-compilation-filter)
+  :config
+  (when (memq window-system '(mac ns))
+    (add-to-list 'exec-path "/opt/homebrew/bin")))
 
 (use-package exec-path-from-shell
+  :disabled t
   :if (memq window-system '(mac ns))
   :custom
   (exec-path-from-shell-warn-duration-millis 1000)

@@ -46,4 +46,6 @@
       )
 
 (dolist (config-file-name module-file-names)
-  (load (locate-user-emacs-file config-file-name)))
+  (message "\n\nLoading %s" config-file-name)
+  (benchmark-progn
+    (load (locate-user-emacs-file config-file-name))))
