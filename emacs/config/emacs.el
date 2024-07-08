@@ -6,12 +6,17 @@
 (defvar-keymap notes-map :doc "Notes map")
 (defvar-keymap completion-map :doc "Completion map")
 (defvar-keymap compilation-map :doc "Compilation map")
+(keymap-global-set "C-," global-leader-map)
 (keymap-global-set "M-SPC" global-leader-map)
 (keymap-global-set "<remap> <just-one-space>" #'cycle-spacing)
 (keymap-set global-leader-map "c" compilation-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "n" notes-map)
 (keymap-set global-leader-map "s" search-map)
+(keymap-set global-leader-map "i" completion-map)
+(keymap-set global-leader-map "k" diagnostics-map)
+(keymap-set global-leader-map "j" git-map)
+(keymap-set global-leader-map "t" toggle-map)
 
 ;; History
 (setq history-length 1000)

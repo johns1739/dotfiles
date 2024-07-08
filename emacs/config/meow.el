@@ -1,4 +1,5 @@
 (use-package meow
+  :unless use-minimal-emacs
   :custom
   (meow-use-clipboard t)
   (meow-visit-collect-min-length 1)

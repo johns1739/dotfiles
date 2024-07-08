@@ -13,6 +13,7 @@
   (elm-mode . eglot-ensure))
 
 (use-package js
+  :mode "\\.js\\'"
   :custom
   (js-indent-level 2))
 
@@ -48,14 +49,17 @@
   (yaml-ts-mode . eglot-ensure))
 
 (use-package sqlformat
+  :unless use-minimal-emacs
   :commands (sqlformat)
   :config
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
 
 (use-package geiser-guile
+  :unless use-minimal-emacs
   :commands (geiser-mode))
 
 (use-package expand-region
+  :unless use-minimal-emacs
   :commands (er/expand-region)
   :bind ("C-=" . er/expand-region))

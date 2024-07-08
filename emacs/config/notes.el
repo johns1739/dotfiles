@@ -1,5 +1,4 @@
 (use-package emacs
-  :ensure nil
   :init
   (defvar notes-directory (locate-user-emacs-file "notes"))
   (defun relative-file-name ()
@@ -24,8 +23,7 @@
   (unless (file-exists-p notes-directory)
     (make-directory notes-directory)))
 
-(use-package org
-  :ensure nil
+(use-package emacs ;; org
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))

@@ -1,6 +1,5 @@
-(keymap-set global-leader-map "t" toggle-map)
-
 (use-package popper
+  :unless use-minimal-emacs
   :demand t
   :bind (:map toggle-map
               ("o" . popper-toggle)
@@ -41,6 +40,7 @@
   (popper-echo-mode +1))
 
 (use-package vterm
+  :unless use-minimal-emacs
   :defer t
   :bind (:map toggle-map
               ("t" . vterm-dwim))
@@ -57,6 +57,6 @@
   (vterm-max-scrollback 10000))
 
 (use-package xclip
-  :unless (display-graphic-p)
+  :unless (or use-minimal-emacs (display-graphic-p))
   :config
   (xclip-mode 1))

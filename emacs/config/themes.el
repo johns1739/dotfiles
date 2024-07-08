@@ -1,5 +1,4 @@
 (use-package emacs
-  :ensure nil
   :bind (:map toggle-map
               ("b" . toggle-big-font))
   :init
@@ -15,6 +14,8 @@
   ;; (set-face-font 'default "-*-Hack Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
   ;; (set-face-font 'default "-*-Roboto Mono-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
   ;; (set-face-font 'default "-*-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+  ;; (set-face-font 'default "-*-Monaspace Neon-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+  ;; (set-face-font 'default "-*-Monaspace Argon-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
   (set-face-attribute 'default nil
                       :family "JetBrainsMono Nerd Font"
                       :height (car toggle-big-font-sizes)
@@ -24,21 +25,26 @@
   (add-to-list 'default-frame-alist '(height . 50))
   (add-to-list 'default-frame-alist '(width . 112)))
 
-(use-package gruvbox-theme)
+(use-package gruvbox-theme
+  :unless use-minimal-emacs)
 
-(use-package timu-rouge-theme)
+(use-package timu-rouge-theme
+  :unless use-minimal-emacs)
 
 (use-package catppuccin-theme
+  :unless use-minimal-emacs
   :disabled t
   :config
   ;; (catppuccin-reload)
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
 (use-package ef-themes
+  :unless use-minimal-emacs
   :init
   (setq ef-melissa-light-palette-overrides '((fringe unspecified))))
 
 (use-package modus-themes
+  :unless use-minimal-emacs
   :init
   ;; https://protesilaos.com/emacs/modus-themes
   (setq modus-vivendi-tritanopia-palette-overrides
@@ -54,6 +60,7 @@
           (bg-main "#14191e"))))
 
 (use-package doom-modeline
+  :unless use-minimal-emacs
   :custom
   (doom-modeline-icon nil)
   (doom-modeline-minor-modes nil)

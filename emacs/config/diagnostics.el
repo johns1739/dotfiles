@@ -1,20 +1,20 @@
-(keymap-set global-leader-map "k" diagnostics-map)
-
-(bind-keys*
- :map diagnostics-map
- ("." . flymake-show-diagnostic)
- ("k" . flymake-show-buffer-diagnostics)
- ("K" . flymake-show-project-diagnostics)
- ("n" . flymake-goto-next-error)
- ("p" . flymake-goto-prev-error)
- :repeat-map diagnostics-repeat-map
- ("." . flymake-show-diagnostic)
- ("n" . flymake-goto-next-error)
- ("p" . flymake-goto-prev-error))
-
-(setq flymake-fringe-indicator-position 'right-fringe)
+(use-package emacs
+  :bind (:map diagnostics-map
+              ("." . flymake-show-diagnostic)
+              ("," . flymake-show-buffer-diagnostics)
+              ("K" . flymake-show-project-diagnostics)
+              ("n" . flymake-goto-next-error)
+              ("p" . flymake-goto-prev-error)
+              :repeat-map diagnostics-repeat-map
+              ("." . flymake-show-diagnostic)
+              ("," . flymake-show-buffer-diagnostics)
+              ("n" . flymake-goto-next-error)
+              ("p" . flymake-goto-prev-error))
+  :custom
+  (flymake-fringe-indicator-position 'right-fringe))
 
 (use-package flycheck
+  :unless use-minimal-emacs
   :disabled t
   ;; https://www.flycheck.org/en/latest/
   :defer t
@@ -38,6 +38,7 @@
   (flycheck-mode . flycheck-set-bindings))
 
 (use-package consult-flycheck
+  :unless use-minimal-emacs
   :disabled t
   :defer t
   :commands (consult-flycheck))

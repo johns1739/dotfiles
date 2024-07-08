@@ -1,5 +1,4 @@
 (use-package emacs
-  :ensure nil
   :init
   (setq isearch-wrap-pause 'no)
   :bind (([remap list-buffers] . ibuffer)
@@ -24,6 +23,7 @@
          ("t" . load-theme)))
 
 (use-package consult
+  :unless use-minimal-emacs
   :custom
   (register-preview-delay 0.5)
   :init
@@ -64,11 +64,11 @@
          ("n" . consult-org-agenda)
          ("s" . consult-ripgrep)
          ("y" . consult-yank-from-kill-ring))
-
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package rg
+  :unless use-minimal-emacs
   :bind (:map search-map
          ("S" . rg)
          ("." . rg-dwim)))

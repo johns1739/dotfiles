@@ -1,5 +1,4 @@
 (use-package emacs
-  :ensure nil
   :bind (:map goto-map
               ("SPC" . switch-to-buffer)
               ("." . xref-find-definitions)
@@ -27,7 +26,7 @@
     (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1))))
 
 (use-package ace-window
-  ;; Jump to a window
+  :unless use-minimal-emacs
   :defer t
   :bind  (([remap other-window] . ace-window)
           ;; ([remap delete-window] . ace-delete-window)
@@ -36,6 +35,7 @@
           ([remap evil-window-next] . ace-window)))
 
 (use-package avy
+  :unless use-minimal-emacs
   :defer t
   :bind (:map goto-map
          ("l" . avy-goto-line)

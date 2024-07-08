@@ -15,14 +15,16 @@
 (setq use-package-verbose t)
 (setq use-package-compute-statistics t) ;; use-package-report
 (setq custom-file (locate-user-emacs-file "custom.el"))
+
+(defvar use-minimal-emacs (not (display-graphic-p)) "Load minimal emacs configuration.")
 (setq module-file-names
       '("config/emacs.el"
 
         ;; Package setup
-        "config/straight.el"
-        "config/package-core.el"
+        "config/package-manager.el"
 
         ;; Essentials
+        "config/core-essentials.el"
         "config/goto.el"
         "config/search.el"
         "config/completion.el"
@@ -42,8 +44,7 @@
         "config/debug-tools.el"
         "config/themes.el"
         "config/meow.el"
-        "custom.el")
-      )
+        "custom.el"))
 
 (dolist (config-file-name module-file-names)
   (message "\n\nLoading %s" config-file-name)

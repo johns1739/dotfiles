@@ -1,6 +1,5 @@
-(keymap-set global-leader-map "j" git-map)
-
 (use-package magit
+  :unless use-minimal-emacs
   :defer t
   :commands (magit-status)
   :bind (:map git-map
@@ -17,11 +16,13 @@
   (setq magit-list-refs-sortby "-creatordate"))
 
 (use-package git-link
+  :unless use-minimal-emacs
   :defer t
   :bind (:map git-map
               ("y" . git-link)))
 
 (use-package diff-hl
+  :unless use-minimal-emacs
   :demand t
   :bind (:map git-map
               ("." . diff-hl-show-hunk)
@@ -39,6 +40,7 @@
   (global-diff-hl-mode))
 
 (use-package magit-todos
+  :unless use-minimal-emacs
   :disabled t ;; Too slow for api-app
   :after magit
   :config
