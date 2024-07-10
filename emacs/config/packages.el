@@ -94,7 +94,7 @@
          ("g" . consult-git-grep)
          ("h" . consult-outline)
          ("i" . consult-imenu)
-         ("I" . consult-imenu-multi)
+         ;; ("I" . consult-imenu-multi) -- takes too long to be useful.
          ("j" . consult-register-load)
          ("J" . consult-register-store)
          ("k" . consult-flymake)
@@ -191,6 +191,8 @@
   :init
   (setq icomplete-vertical-mode nil)
   (setq icomplete-mode nil)
+  (setq fido-mode nil)
+  (setq fido-vertical-mode nil)
   (setq completion-cycle-threshold nil)
   :config
   (vertico-mode 1))
@@ -259,7 +261,7 @@
               ("l" . magit-log-buffer-file))
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "m")))
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
   :config
   ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
@@ -401,7 +403,7 @@
                               2 ;; line
                               nil ;; col
                               nil ;; type
-                              (1 compilation-info-face))) ;; hyperlink
+                              1)) ;; hyperlink
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(minitest-backtrace "^    [[ ]?\\([^ (].*\\):\\([1-9][0-9]*\\)\\(\\]\\)?"
                                       1 ;; file

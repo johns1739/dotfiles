@@ -15,16 +15,15 @@
              "*** Emacs loaded in %s seconds with %d garbage collections."
              (emacs-init-time "%.2f") gcs-done)))
 
-(unless use-minimal-emacs
-  (setq use-package-verbose t)
-  (setq use-package-compute-statistics t) ;; use-package-report
-  (setq custom-file (locate-user-emacs-file "custom.el"))
-  (load custom-file 'noerror))
+(setq use-package-verbose t)
+(setq use-package-compute-statistics t) ;; use-package-report
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load custom-file 'noerror)
 
 (setq config-modules
       (if use-minimal-emacs
-          '("config/emacs-defaults.el")
-        '("config/emacs-defaults.el"
+          '("config/emacs-core.el")
+        '("config/emacs-core.el"
           "config/emacs-extras.el"
           "config/packages.el")))
 

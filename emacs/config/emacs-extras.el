@@ -1,4 +1,148 @@
-;; Hooks
+;; Global Leader Keybindings
+(defvar-keymap global-leader-map :doc "Global leader keymap.")
+(keymap-global-set "M-SPC" global-leader-map)
+
+;; Go To
+(keymap-set global-leader-map "g" goto-map)
+(bind-keys :map goto-map
+           ("g" . beginning-of-buffer)
+           ("G" . end-of-buffer))
+
+;; Search
+(keymap-set global-leader-map "s" search-map)
+(bind-keys :map search-map
+           ("n" . org-search-view)
+           ("N" . org-occur-in-agenda-files)
+           ("t" . load-theme))
+
+;; Completion
+(defvar-keymap completion-map :doc "Completion map")
+(keymap-set global-leader-map "i" completion-map)
+(bind-keys :map completion-map
+           ("." . dabbrev-completion)
+           ("i" . completion-at-point))
+(defadvice hippie-expand (around hippie-expand-case-fold)
+  "Try to do case-sensitive matching (not effective with all functions)."
+  (let ((case-fold-search nil))
+    ad-do-it))
+(ad-activate 'hippie-expand)
+
+
+;; Toggle
+(defvar-keymap toggle-map :doc "Toggle map")
+(keymap-set global-leader-map "t" toggle-map)
+(bind-keys :map toggle-map
+           ("b" . toggle-big-font))
+(defvar toggle-big-font-sizes '(160 200 240)
+  "List of font sizes to toggle between.")
+(defun toggle-big-font ()
+  "Toggle between the different font sizes in `toggle-big-font-sizes'."
+  (interactive)
+  (let ((current-size (pop toggle-big-font-sizes)))
+    (add-to-list 'toggle-big-font-sizes current-size t))
+  (set-face-attribute 'default nil :height (car toggle-big-font-sizes))
+  (message "Font size set to %s" (car toggle-big-font-sizes)))
+
+
+;; Git
+(defvar-keymap git-map :doc "Git map")
+(keymap-set global-leader-map "j" git-map)
+
+
+;; Diagnostics
+(defvar-keymap diagnostics-map :doc "Diagnostics map")
+(keymap-set global-leader-map "k" diagnostics-map)
+(bind-keys :map diagnostics-map
+           ("." . flymake-show-diagnostic)
+           ("," . flymake-show-buffer-diagnostics)
+           ("P" . flymake-show-project-diagnostics)
+           ("n" . flymake-goto-next-error)
+           ("p" . flymake-goto-prev-error)
+           :repeat-map diagnostics-repeat-map
+           ("." . flymake-show-diagnostic)
+           ("," . flymake-show-buffer-diagnostics)
+           ("n" . flymake-goto-next-error)
+           ("p" . flymake-goto-prev-error))
+(setq flymake-fringe-indicator-position 'right-fringe)
+
+
+;; Compilation
+(defvar-keymap compilation-map :doc "Compilation map")
+(keymap-set global-leader-map "c" compilation-map)
+(bind-keys :map compilation-map
+           ("!" . project-async-shell-command)
+           ("." . eval-defun)
+           ("b" . eval-buffer)
+           ("c" . compile-dwim)
+           ("e" . eval-last-sexp)
+           ("E" . eval-print-last-sexp)
+           ("g" . recompile)
+           ("i" . comint)
+           ("p" . proced)
+           ("r" . eval-region))
+(setq-default proced-auto-update-flag t)
+(setq proced-auto-update-interval 1)
+(setq proced-enable-color-flag t)
+(setq compilation-window-height 20)
+(setq compilation-always-kill t)
+(setq compilation-scroll-output t)
+(setq compilation-max-output-line-length 200)
+(add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter)
+
+
+;; Notes
+(defvar-keymap notes-map :doc "Notes map")
+(keymap-set global-leader-map "n" notes-map)
+(bind-keys :map notes-map
+           ("," . org-capture-goto-last-stored)
+           (";" . scratch-buffer)
+           ("a" . org-agenda)
+           ("c" . org-capture)
+           ("j" . org-capture-goto-target)
+           ("l" . org-store-link)
+           ("L" . org-insert-link)
+           ("y" . copy-relative-file-name)
+           ("Y" . copy-absolute-file-name))
+(defvar notes-directory (locate-user-emacs-file "notes"))
+(unless (file-exists-p notes-directory)
+  (make-directory notes-directory))
+(setq org-directory notes-directory)
+(setq org-agenda-files `(,org-directory))
+(setq org-log-done 'time)
+(setq org-return-follows-link nil)
+(setq org-hide-leading-stars t)
+(setq org-hide-emphasis-markers t)
+(setq org-special-ctrl-a/e t)
+(setq org-startup-indented t)
+(setq org-log-into-drawer t)
+(setq org-tag-faces '(("bug"  . "sienna")
+                      ("feature" . "goldenrod")
+                      ("ticket" . "khaki")))
+(setq org-capture-templates `(("t" "Task"
+                               entry (file ,(locate-user-emacs-file "notes/tasks.org"))
+                               "* TODO %? %^g\n%t\n%i"
+                               :prepend t
+                               :empty-lines 1)
+                              ("j" "Journal"
+                               entry (file ,(locate-user-emacs-file "notes/journal.org"))
+                               "* %? %^g\n%t\n%i"
+                               :prepend t
+                               :empty-lines 1)))
+(setq org-todo-keyword-faces '(("BACKLOG" . "dark slate gray")
+                               ("TODO" . "goldenrod")
+                               ("BUILDING" . "khaki")
+                               ("PULLREQUEST" . "forest green")
+                               ("DONE" . "dark olive green")
+                               ("CANCELED" . "sienna")))
+(with-eval-after-load 'org
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((emacs-lisp . t)
+                                 (shell . t))))
+
+
+;; Buffer Maintenance
+(setq-default display-fill-column-indicator-column 100)
+(setq-default display-line-numbers-type t)
 (add-hook 'before-save-hook #'whitespace-cleanup)
 ;; (with-eval-after-load 'ispell
 ;;   (when (executable-find ispell-program-name)
@@ -7,6 +151,7 @@
 ;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 ;; (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 ;; (add-hook 'prog-mode-hook #'hl-line-mode)
+
 
 ;; Modes
 (auto-save-visited-mode -1) ;; Annoying with whitespace cleanup constantly moving the point
@@ -19,11 +164,105 @@
 (global-eldoc-mode +1)
 (global-so-long-mode t)
 (line-number-mode +1)
-(recentf-mode 1)
 (repeat-mode -1) ;; Sometimes gets in the way.
-(save-place-mode 1)
-(savehist-mode 1)
 (window-divider-mode -1)
+
+
+;; Window Tiling
+(setq-default frame-title-format '("%f"))
+(add-to-list 'display-buffer-alist
+             '("\\*Help\\*"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
+               (inhibit-same-window . t)))
+(add-to-list 'display-buffer-alist
+             '("\\*Dictionary\\*"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
+               (inhibit-same-window . t)))
+(add-to-list 'display-buffer-alist
+             '("\\*Completions\\*"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
+               (inhibit-same-window . t)
+               (window-height . 10)))
+(setq max-mini-window-height 0.3)
+
+
+;; find-file-at-point
+(defun ffap-project-match-1 (name)
+  (let ((filename (match-string 1 name)))
+    (if (project-current)
+        (expand-file-name filename (project-directory))
+      (expand-file-name filename default-directory))))
+(with-eval-after-load 'ffap
+  (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1)))
+
+
+;; Dictionary
+(setq dictionary-server "dict.org")
+
+
+;; Text, Paragraph, and Sentences
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-inhibit-bpa t)
+(setq-default fill-column 80)
+
+
+;; Eshell & Shells
+(setq eshell-scroll-to-bottom-on-output 'this)
+(setq read-process-output-max (* 1024 1024))
+
+
+;; Extra Commands & Functions
+(defun project-directory ()
+  "Current project directory."
+  (let ((project (project-current)))
+    (if project
+        (project-root project))))
+
+(defun compile-dwim ()
+  (interactive)
+  (if (project-current)
+      (call-interactively #'project-compile)
+    (call-interactively #'compile)))
+
+(defun indent-buffer ()
+  (interactive)
+  (save-excursion
+    (indent-region (point-min) (point-max) nil)))
+
+(defun comint ()
+  (interactive)
+  (universal-argument)
+  (command-execute #'compile-dwim))
+
+(defun relative-file-name ()
+  "Relative from project or cwd directory."
+  (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
+
+(defun absolute-file-name ()
+  "Absolute path to file."
+  (expand-file-name (buffer-file-name)))
+
+(defun copy-relative-file-name ()
+  "Copy file path of current buffer relative to project directory."
+  (interactive)
+  (kill-new (relative-file-name)))
+
+(defun copy-absolute-file-name ()
+  "Copy absolute file path of current buffer."
+  (interactive)
+  (kill-new (absolute-file-name)))
+
+(defun org-mode-setup ()
+  (electric-indent-local-mode -1))
+(add-hook 'org-mode-hook #'org-mode-setup)
+
+
+;; Eglot
+(defun eglot-set-bindings ()
+  "Inject eglot bindings."
+  (bind-keys :map (current-local-map)
+             ([remap indent-buffer] . eglot-format)))
+(add-hook 'eglot-managed-mode-hook #'eglot-set-bindings)
 
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
@@ -42,6 +281,11 @@
                      :references t
                      :folding t)))))
 
+;; Treesitter
+(defun treesit-install-languages ()
+  "Install all language grammars registered with Treesitter"
+  (interactive)
+  (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 (with-eval-after-load 'treesit
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -67,16 +311,19 @@
           (scheme "https://github.com/6cdh/tree-sitter-scheme")
           (sql "https://github.com/DerekStride/tree-sitter-sql"))))
 
+
+;; Theme
 ;; (set-face-font 'default "-*-Hack Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
 ;; (set-face-font 'default "-*-Roboto Mono-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
 ;; (set-face-font 'default "-*-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
 ;; (set-face-font 'default "-*-Monaspace Neon-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
 ;; (set-face-font 'default "-*-Monaspace Argon-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-(set-face-attribute 'default nil
-                    :family "JetBrainsMono Nerd Font"
-                    :height (car toggle-big-font-sizes)
-                    :weight 'light ;; thin, light, medium, regular
-                    :slant 'normal
-                    :width 'normal)
-(add-to-list 'default-frame-alist '(height . 50))
-(add-to-list 'default-frame-alist '(width . 112))
+(when (display-graphic-p)
+  (set-face-attribute 'default nil
+                      :family "JetBrainsMono Nerd Font"
+                      :height (car toggle-big-font-sizes)
+                      :weight 'light ;; thin, light, medium, regular
+                      :slant 'normal
+                      :width 'normal)
+  (add-to-list 'default-frame-alist '(height . 50))
+  (add-to-list 'default-frame-alist '(width . 112)))
