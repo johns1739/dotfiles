@@ -86,6 +86,9 @@
          ([remap yank-pop] . consult-yank-pop)
          ([remap load-theme] . consult-theme)
          ([remap recentf-open] . consult-recent-file)
+         ([remap org-search-view] . consult-org-agenda)
+         :map diagnostics-map
+         ("/" . consult-flymake)
          :map compilation-map
          ("/" . consult-compile-error)
          :map search-map
@@ -102,7 +105,6 @@
          ("L" . consult-line-multi)
          ("m" . consult-mark)
          ("M" . consult-global-mark)
-         ("n" . consult-org-agenda)
          ("s" . consult-ripgrep)
          ("y" . consult-yank-from-kill-ring))
   :hook
@@ -255,7 +257,7 @@
   :defer t
   :commands (magit-status)
   :bind (:map git-map
-              ("j" . magit-status)
+              ("," . magit-status)
               ("m" . magit-blame-addition)
               ("f" . magit-file-dispatch)
               ("l" . magit-log-buffer-file))
@@ -277,7 +279,9 @@
   :bind (:map git-map
               ("." . diff-hl-show-hunk)
               ("n" . diff-hl-next-hunk)
+              ("N" . diff-hl-show-hunk-next)
               ("p" . diff-hl-previous-hunk)
+              ("P" . diff-hl-show-hunk-previous)
               ("S" . diff-hl-stage-dwim)
               ("K" . diff-hl-revert-hunk))
   :hook
@@ -491,12 +495,14 @@
   :commands (geiser-mode))
 
 (use-package expand-region
+  :disabled t
   :commands (er/expand-region)
   :bind ("C-=" . er/expand-region))
 
 (use-package gruvbox-theme)
 
-(use-package timu-rouge-theme)
+(use-package timu-rouge-theme
+  :disabled t)
 
 (use-package catppuccin-theme
   :disabled t
@@ -504,27 +510,12 @@
   ;; (catppuccin-reload)
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
-(use-package ef-themes
-  :init
-  (setq ef-melissa-light-palette-overrides '((fringe unspecified))))
+(use-package ef-themes)
 
-(use-package modus-themes
-  :init
-  ;; https://protesilaos.com/emacs/modus-themes
-  ;; (setq modus-vivendi-tritanopia-palette-overrides
-  ;;       '((fringe unspecified)
-  ;;         (bg-added-fringe "SeaGreen4")
-  ;;         (bg-removed-fringe "IndianRed4")
-  ;;         (bg-changed-fringe "SteelBlue4")
-  ;;         (bg-line-number-active unspecified)
-  ;;         (bg-line-number-inactive unspecified)
-  ;;         (border-mode-line-active unspecified)
-  ;;         (border-mode-line-inactive unspecified)
-  ;;         (fg-main "#d0d0d0")
-  ;;         (bg-main "#14191e")))
-  )
+(use-package modus-themes)
 
 (use-package doom-modeline
+  :disabled
   :custom
   (doom-modeline-icon nil)
   (doom-modeline-minor-modes nil)
@@ -541,7 +532,7 @@
   (meow-use-clipboard t)
   (meow-visit-collect-min-length 1)
   (meow-keypad--self-insert-undefined nil)
-  (meow-expand-hint-remove-delay 1.5)
+  (meow-expand-hint-remove-delay 2)
 
   :init
   (defun meow-setup ()
@@ -660,7 +651,7 @@
      '("T" . nil)
 
      '("u" . meow-undo)
-     '("U" . nil)
+     '("U" . meow-undo-in-selection)
 
      '("v" . meow-page-down)
      '("V" . meow-page-up)
@@ -716,5 +707,5 @@
 
   :config
   (meow-setup)
-  ;; (meow-setup-indicator)
+  (meow-setup-indicator)
   (meow-global-mode 1))

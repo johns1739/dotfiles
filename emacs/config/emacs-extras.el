@@ -1,12 +1,10 @@
 ;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-global-set "M-SPC" global-leader-map)
+(keymap-global-set "C-," global-leader-map)
 
 ;; Go To
 (keymap-set global-leader-map "g" goto-map)
-(bind-keys :map goto-map
-           ("g" . beginning-of-buffer)
-           ("G" . end-of-buffer))
 
 ;; Search
 (keymap-set global-leader-map "s" search-map)
@@ -19,14 +17,14 @@
 (defvar-keymap completion-map :doc "Completion map")
 (keymap-set global-leader-map "i" completion-map)
 (bind-keys :map completion-map
-           ("." . dabbrev-completion)
-           ("i" . completion-at-point))
+           ("," . dabbrev-completion)
+           ("." . completion-at-point)
+           ("/" . hippie-expand))
 (defadvice hippie-expand (around hippie-expand-case-fold)
   "Try to do case-sensitive matching (not effective with all functions)."
   (let ((case-fold-search nil))
     ad-do-it))
 (ad-activate 'hippie-expand)
-
 
 ;; Toggle
 (defvar-keymap toggle-map :doc "Toggle map")
@@ -71,7 +69,8 @@
 (keymap-set global-leader-map "c" compilation-map)
 (bind-keys :map compilation-map
            ("!" . project-async-shell-command)
-           ("." . eval-defun)
+           ("." . compile-dwim)
+           ("," . compilation-goto-in-progress-buffer)
            ("b" . eval-buffer)
            ("c" . compile-dwim)
            ("e" . eval-last-sexp)
@@ -94,6 +93,7 @@
 (defvar-keymap notes-map :doc "Notes map")
 (keymap-set global-leader-map "n" notes-map)
 (bind-keys :map notes-map
+           ("/" . org-search-view)
            ("," . org-capture-goto-last-stored)
            (";" . scratch-buffer)
            ("a" . org-agenda)
@@ -125,7 +125,7 @@
                                :empty-lines 1)
                               ("j" "Journal"
                                entry (file ,(locate-user-emacs-file "notes/journal.org"))
-                               "* %? %^g\n%t\n%i"
+                               "* %? \n%i"
                                :prepend t
                                :empty-lines 1)))
 (setq org-todo-keyword-faces '(("BACKLOG" . "dark slate gray")
@@ -155,7 +155,7 @@
 
 ;; Modes
 (auto-save-visited-mode -1) ;; Annoying with whitespace cleanup constantly moving the point
-(column-number-mode +1)
+(column-number-mode -1)
 (delete-selection-mode -1)
 (desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 (electric-indent-mode +1)
@@ -234,9 +234,16 @@
   (universal-argument)
   (command-execute #'compile-dwim))
 
+(defun current-directory ()
+  "Current project directory or cwd."
+  (or (project-directory) default-directory))
+
+(defun current-directory-base ()
+  (f-base (current-directory)))
+
 (defun relative-file-name ()
   "Relative from project or cwd directory."
-  (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
+  (file-relative-name (buffer-file-name) (current-directory)))
 
 (defun absolute-file-name ()
   "Absolute path to file."
@@ -311,13 +318,6 @@
           (scheme "https://github.com/6cdh/tree-sitter-scheme")
           (sql "https://github.com/DerekStride/tree-sitter-sql"))))
 
-
-;; Theme
-;; (set-face-font 'default "-*-Hack Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-;; (set-face-font 'default "-*-Roboto Mono-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-;; (set-face-font 'default "-*-JetBrainsMono Nerd Font-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-;; (set-face-font 'default "-*-Monaspace Neon-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-;; (set-face-font 'default "-*-Monaspace Argon-regular-normal-normal-*-14-*-*-*-m-0-iso10646-1")
 (when (display-graphic-p)
   (set-face-attribute 'default nil
                       :family "JetBrainsMono Nerd Font"
@@ -327,3 +327,53 @@
                       :width 'normal)
   (add-to-list 'default-frame-alist '(height . 50))
   (add-to-list 'default-frame-alist '(width . 112)))
+
+(defun flymake-mode-line-format ()
+  "Display flymake diagnostics in the mode line."
+  (if (bound-and-true-p flymake-mode)
+      '(" " flymake-mode-line-exception flymake-mode-line-counters)))
+
+(defun mode-line-project-name-format ()
+  "Display project name in mode line."
+  (if (project-current)
+      (propertize (project-name (project-current)) 'face 'bold)
+    ""))
+
+(defun mode-line-buffer-name-format ()
+  "Display buffer name in mode line."
+  (let ((face (if (or (not (buffer-file-name)) (buffer-modified-p)) 'italic nil)))
+    (propertize (mode-line-buffer-name) 'face face)))
+
+(defun mode-line-buffer-name ()
+  (if (buffer-file-name)
+      (relative-file-name)
+    (buffer-name)))
+
+(defun mode-line-modified-format ()
+  "Display modified status in mode line."
+  (if (and (buffer-file-name) (buffer-modified-p))
+      " * "
+    " "))
+
+(defun mode-line-major-mode-format ()
+  "Display major mode in mode line."
+  (string-join
+   (string-split
+    (capitalize
+     (string-remove-suffix
+      "-ts"
+      (string-remove-suffix "-mode" (symbol-name major-mode))))
+    "-")
+   ""))
+
+(setq-default mode-line-format
+      '("%e"
+        (:eval (mode-line-project-name-format))
+        (:eval (mode-line-modified-format))
+        (:eval (mode-line-buffer-name-format))
+        "%n   %o  L%l%n%[%]  "
+        "%[" (:eval (mode-line-major-mode-format)) "%]"
+        (:eval (flymake-mode-line-format))
+        " "
+        mode-line-end-spaces
+        " %-"))
