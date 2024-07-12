@@ -533,11 +533,14 @@
   (meow-visit-collect-min-length 1)
   (meow-keypad--self-insert-undefined nil)
   (meow-expand-hint-remove-delay 2)
-
   :init
   (defun meow-setup ()
-    (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-
+    (setq mode-line-front-space "")
+    (setq meow-cursor-type-motion '(hbar . 2))
+    (set-face-attribute 'meow-insert-indicator nil :inherit 'bold)
+    (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
+    (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
+    (meow-setup-indicator)
     (meow-motion-overwrite-define-key
      '("Q" . meow-quit)
      '("j" . meow-next)
@@ -707,5 +710,4 @@
 
   :config
   (meow-setup)
-  (meow-setup-indicator)
   (meow-global-mode 1))

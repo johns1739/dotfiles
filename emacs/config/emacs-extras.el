@@ -367,13 +367,14 @@
    ""))
 
 (setq-default mode-line-format
-      '("%e"
-        (:eval (mode-line-project-name-format))
-        (:eval (mode-line-modified-format))
-        (:eval (mode-line-buffer-name-format))
-        "%n   %o  L%l%n%[%]  "
-        "%[" (:eval (mode-line-major-mode-format)) "%]"
-        (:eval (flymake-mode-line-format))
-        " "
-        mode-line-end-spaces
-        " %-"))
+              '("%e"
+                mode-line-front-space
+                (:eval (mode-line-project-name-format))
+                (:eval (mode-line-modified-format))
+                (:eval (mode-line-buffer-name-format))
+                "%n   %o  L%l%n%[%]  "
+                (:eval (flymake-mode-line-format))
+                " "
+                "%[" (:eval (mode-line-major-mode-format)) "%]"
+                mode-line-end-spaces
+                " %-"))
