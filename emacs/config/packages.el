@@ -91,6 +91,9 @@
          ("/" . consult-flymake)
          :map compilation-map
          ("/" . consult-compile-error)
+         :map goto-map
+         ("j" . consult-register-load)
+         ("J" . consult-register-store)
          :map search-map
          ("c" . consult-compile-error)
          ("F" . consult-focus-lines)
@@ -98,8 +101,6 @@
          ("h" . consult-outline)
          ("i" . consult-imenu)
          ;; ("I" . consult-imenu-multi) -- takes too long to be useful.
-         ("j" . consult-register-load)
-         ("J" . consult-register-store)
          ("k" . consult-flymake)
          ("l" . consult-line)
          ("L" . consult-line-multi)
@@ -177,7 +178,9 @@
   :custom
   (copilot-indent-offset-warning-disable t)
   :hook
-  (prog-mode . copilot-mode))
+  (prog-mode . copilot-mode)
+  :config
+  (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
@@ -540,6 +543,7 @@
     (set-face-attribute 'meow-insert-indicator nil :inherit 'bold)
     (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
+    (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
     (meow-setup-indicator)
     (meow-motion-overwrite-define-key
      '("Q" . meow-quit)

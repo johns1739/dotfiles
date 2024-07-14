@@ -13,6 +13,8 @@
            (":" . goto-line)
            ("%" . xref-find-references-and-replace)
            ("f" . find-file-at-point)
+           ("j" . jump-to-register)
+           ("J" . point-to-register)
            ("k" . eldoc)
            ("n" . next-error)
            ("p" . previous-error)

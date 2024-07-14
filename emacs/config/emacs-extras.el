@@ -323,7 +323,7 @@
                       :family "JetBrainsMono Nerd Font"
                       :height (car toggle-big-font-sizes)
                       :weight 'light ;; thin, light, medium, regular
-                      :slant 'normal
+                      :slant 'normal ;; italic, oblique, normal, roman
                       :width 'normal)
   (add-to-list 'default-frame-alist '(height . 50))
   (add-to-list 'default-frame-alist '(width . 112)))
@@ -341,13 +341,29 @@
 
 (defun mode-line-buffer-name-format ()
   "Display buffer name in mode line."
-  (let ((face (if (or (not (buffer-file-name)) (buffer-modified-p)) 'italic nil)))
+  (let ((face (if (or (not (buffer-file-name))
+                      (buffer-modified-p)
+                      (not (verify-visited-file-modtime)))
+                  'italic
+                nil)))
     (propertize (mode-line-buffer-name) 'face face)))
 
 (defun mode-line-buffer-name ()
   (if (buffer-file-name)
-      (relative-file-name)
+      (squish-path (relative-file-name) 50)
     (buffer-name)))
+
+(defun squish-path (path max-length)
+  "Squish path to max length."
+  (if (> (length path) max-length)
+      (let* ((parts (f-split path))
+             (name (car (last parts)))
+             (squished-parts (mapcar (lambda (part) (substring part 0 1)) (butlast parts)))
+             (new-path (string-join (append squished-parts (list name)) "/")))
+        (if (> (length new-path) max-length)
+            name
+          new-path))
+    path))
 
 (defun mode-line-modified-format ()
   "Display modified status in mode line."
