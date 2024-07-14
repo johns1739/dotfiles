@@ -358,7 +358,15 @@
   (if (> (length path) max-length)
       (let* ((parts (f-split path))
              (name (car (last parts)))
-             (squished-parts (mapcar (lambda (part) (substring part 0 1)) (butlast parts)))
+             (overflow (- (length path) max-length))
+             (squished-parts
+              (mapcar (lambda (part)
+                        (if (<= overflow 0)
+                            part
+                          (progn
+                            (setq overflow (- overflow (- (length part) 1)))
+                            (substring part 0 1))))
+                      (butlast parts)))
              (new-path (string-join (append squished-parts (list name)) "/")))
         (if (> (length new-path) max-length)
             name

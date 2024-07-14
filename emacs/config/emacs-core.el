@@ -9,7 +9,6 @@
            ("," . xref-go-back)
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
-           (";" . goto-configs)
            (":" . goto-line)
            ("%" . xref-find-references-and-replace)
            ("f" . find-file-at-point)
@@ -24,10 +23,6 @@
 (setq next-error-highlight 1.0)
 (setq next-error-highlight-no-select 1.0)
 (setq next-error-message-highlight t)
-(defun goto-configs ()
-  "Go to emacs configs."
-  (interactive)
-  (find-file (locate-user-emacs-file "init.el")))
 
 
 ;; Search
