@@ -71,6 +71,9 @@
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
+  (defun consult-ripgrep-symbol-at-point ()
+    (interactive)
+    (consult-ripgrep nil (format "%s -- -w" (thing-at-point 'symbol))))
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
          ([remap goto-line] . consult-goto-line)
@@ -95,6 +98,7 @@
          ("j" . consult-register-load)
          ("J" . consult-register-store)
          :map search-map
+         ("." . consult-ripgrep-symbol-at-point)
          ("c" . consult-compile-error)
          ("F" . consult-focus-lines)
          ("g" . consult-git-grep)
@@ -110,11 +114,6 @@
          ("y" . consult-yank-from-kill-ring))
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
-
-(use-package rg
-  :bind (:map search-map
-              ("S" . rg)
-              ("." . rg-dwim)))
 
 (use-package corfu
   ;; Corfu enhances in-buffer completion with a small completion popup.
@@ -170,11 +169,11 @@
 (use-package copilot
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind (:map copilot-completion-map
-              ("M-n" . copilot-accept-completion-by-line)
               ("M-f" . copilot-accept-completion-by-word)
-              ("<tab>" . copilot-accept-completion)
-              ("C-<tab>" . copilot-accept-completion)
-              ("M-e" . copilot-accept-completion))
+              ("M-e" . copilot-accept-completion-by-line)
+              ("M-n" . copilot-next-completion)
+              ("M-p" . copilot-previous-completion)
+              ("M-<tab>" . copilot-accept-completion))
   :custom
   (copilot-indent-offset-warning-disable t)
   :hook
@@ -257,13 +256,13 @@
   :commands (consult-flycheck))
 
 (use-package magit
-  :defer t
   :commands (magit-status)
   :bind (:map git-map
-              ("," . magit-status)
-              ("m" . magit-blame-addition)
+              ("," . magit-status-here)
+              (";" . magit-status)
               ("f" . magit-file-dispatch)
-              ("l" . magit-log-buffer-file))
+              ("l" . magit-log-buffer-file)
+              ("m" . magit-blame-addition))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
@@ -272,10 +271,7 @@
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (setq magit-list-refs-sortby "-creatordate"))
 
-(use-package git-link
-  :defer t
-  :bind (:map git-map
-              ("y" . git-link)))
+(use-package git-link :defer t :bind (:map git-map ("y" . git-link)))
 
 (use-package diff-hl
   :demand t
@@ -514,6 +510,8 @@
   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
 (use-package ef-themes)
+
+(use-package solarized-theme)
 
 (use-package modus-themes)
 

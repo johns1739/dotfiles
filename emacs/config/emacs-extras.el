@@ -52,13 +52,13 @@
 (keymap-set global-leader-map "k" diagnostics-map)
 (bind-keys :map diagnostics-map
            ("." . flymake-show-diagnostic)
-           ("," . flymake-show-buffer-diagnostics)
+           (";" . flymake-show-buffer-diagnostics)
            ("P" . flymake-show-project-diagnostics)
            ("n" . flymake-goto-next-error)
            ("p" . flymake-goto-prev-error)
            :repeat-map diagnostics-repeat-map
            ("." . flymake-show-diagnostic)
-           ("," . flymake-show-buffer-diagnostics)
+           (";" . flymake-show-buffer-diagnostics)
            ("n" . flymake-goto-next-error)
            ("p" . flymake-goto-prev-error))
 (setq flymake-fringe-indicator-position 'right-fringe)
@@ -93,14 +93,13 @@
 (defvar-keymap notes-map :doc "Notes map")
 (keymap-set global-leader-map "n" notes-map)
 (bind-keys :map notes-map
+           (";" . org-agenda)
+           ("." . org-capture-string)
            ("/" . org-search-view)
            ("," . org-capture-goto-last-stored)
-           (";" . scratch-buffer)
-           ("a" . org-agenda)
            ("c" . org-capture)
            ("j" . org-capture-goto-target)
            ("l" . org-store-link)
-           ("L" . org-insert-link)
            ("y" . copy-relative-file-name)
            ("Y" . copy-absolute-file-name))
 (defvar notes-directory (locate-user-emacs-file "notes"))
@@ -108,13 +107,12 @@
   (make-directory notes-directory))
 (setq org-directory notes-directory)
 (setq org-agenda-files `(,org-directory))
-(setq org-log-done 'time)
 (setq org-return-follows-link nil)
-(setq org-hide-leading-stars t)
 (setq org-hide-emphasis-markers t)
 (setq org-special-ctrl-a/e t)
-(setq org-startup-indented t)
-(setq org-log-into-drawer t)
+(setq org-agenda-todo-ignore-deadlines 'far)
+(setq org-agenda-sorting-strategy
+      '(time-up habit-up priority-down category-keep todo-state-down effort-down tag-up alpha-up))
 (setq org-tag-faces '(("bug"  . "sienna")
                       ("feature" . "goldenrod")
                       ("ticket" . "khaki")))
@@ -126,6 +124,10 @@
                               ("j" "Journal"
                                entry (file ,(locate-user-emacs-file "notes/journal.org"))
                                "* %? \n%i"
+                               :prepend t
+                               :empty-lines 1)
+                              ("p" "Personal"
+                               entry (file ,(locate-user-emacs-file "notes/personal.org"))
                                :prepend t
                                :empty-lines 1)))
 (setq org-todo-keyword-faces '(("BACKLOG" . "dark slate gray")

@@ -1,5 +1,5 @@
 ;; Global Keybingsddings
-(keymap-global-set "<remap> <just-one-space>" #'cycle-spacing)
+(keymap-global-set "<remap> <delete-horizontal-space>" #'cycle-spacing)
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
 
 ;; Go To
@@ -10,11 +10,12 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            (":" . goto-line)
+           ("'" . scratch-buffer)
            ("%" . xref-find-references-and-replace)
+           ("d" . eldoc)
            ("f" . find-file-at-point)
            ("j" . jump-to-register)
            ("J" . point-to-register)
-           ("k" . eldoc)
            ("n" . next-error)
            ("p" . previous-error)
            ("u" . goto-address-at-point))
