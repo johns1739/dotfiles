@@ -11,6 +11,10 @@ AllCops:
     Exclude:
         - "test/**/*.rb"
         - "spec/**/*.rb"
+        - 'node_modules/**/*'
+        - 'tmp/**/*'
+        - 'vendor/**/*'
+        - '.git/**/*'
 
 Style/Documentation:
     Enabled: No

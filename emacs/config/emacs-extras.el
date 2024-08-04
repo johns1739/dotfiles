@@ -3,8 +3,31 @@
 (keymap-global-set "M-SPC" global-leader-map)
 (keymap-global-set "C-," global-leader-map)
 
+
 ;; Go To
 (keymap-set global-leader-map "g" goto-map)
+
+
+;; Window Movement
+(defvar-keymap window-movement-map :doc "Window movement map")
+(keymap-set goto-map "w" window-movement-map)
+(bind-keys :map window-movement-map
+           ("b" . switch-to-buffer-other-window)
+           ("p" . project-other-window-command)
+           ("." . xref-find-definitions-other-window)
+           ("0" . delete-window)
+           ("1" . delete-other-windows)
+           ("2" . split-window-below-and-jump)
+           ("3" . split-window-right-and-jump))
+(defun split-window-below-and-jump ()
+  "Split window below and jump to it."
+  (interactive)
+  (select-window (split-window-below)))
+(defun split-window-right-and-jump ()
+  "Split window right and jump to it."
+  (interactive)
+  (select-window (split-window-right)))
+
 
 ;; Search
 (keymap-set global-leader-map "s" search-map)
@@ -12,6 +35,7 @@
            ("n" . org-search-view)
            ("N" . org-occur-in-agenda-files)
            ("t" . load-theme))
+
 
 ;; Completion
 (defvar-keymap completion-map :doc "Completion map")
@@ -26,12 +50,14 @@
     ad-do-it))
 (ad-activate 'hippie-expand)
 
+
 ;; Toggle
 (defvar-keymap toggle-map :doc "Toggle map")
 (keymap-set global-leader-map "t" toggle-map)
 (bind-keys :map toggle-map
            ("b" . toggle-big-font))
-(defvar toggle-big-font-sizes '(160 200 240)
+(defvar toggle-big-font-sizes)
+(setq toggle-big-font-sizes '(140 160 200 240))
   "List of font sizes to toggle between.")
 (defun toggle-big-font ()
   "Toggle between the different font sizes in `toggle-big-font-sizes'."
@@ -112,26 +138,38 @@
 (setq org-special-ctrl-a/e t)
 (setq org-agenda-todo-ignore-deadlines 'far)
 (setq org-agenda-sorting-strategy
-      '(time-up habit-up priority-down category-keep todo-state-down effort-down tag-up alpha-up))
+      '(priority-down
+        time-up
+        habit-up
+        deadline-up
+        scheduled-up
+        category-keep
+        todo-state-down
+        effort-down
+        tag-up
+        timestamp-up
+        ts-up
+        tsia-up
+        alpha-up))
 (setq org-tag-faces '(("bug"  . "sienna")
                       ("feature" . "goldenrod")
                       ("ticket" . "khaki")))
 (setq org-capture-templates `(("t" "Task"
-                               entry (file ,(locate-user-emacs-file "notes/tasks.org"))
+                               entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Tasks")
                                "* TODO %? %^g\n%t\n%i"
                                :prepend t
                                :empty-lines 1)
-                              ("j" "Journal"
-                               entry (file ,(locate-user-emacs-file "notes/journal.org"))
+                              ("n" "Note"
+                               entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Notes")
                                "* %? \n%i"
                                :prepend t
                                :empty-lines 1)
                               ("p" "Personal"
+                               "* %? \n%i"
                                entry (file ,(locate-user-emacs-file "notes/personal.org"))
                                :prepend t
                                :empty-lines 1)))
-(setq org-todo-keyword-faces '(("BACKLOG" . "dark slate gray")
-                               ("TODO" . "goldenrod")
+(setq org-todo-keyword-faces '(("TODO" . "goldenrod")
                                ("BUILDING" . "khaki")
                                ("PULLREQUEST" . "forest green")
                                ("DONE" . "dark olive green")

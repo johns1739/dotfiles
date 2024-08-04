@@ -21,7 +21,9 @@
 
 (use-package embark
   :bind (:map global-leader-map
-              ("A" . embark-act)
+              ("a" . embark-act)
+              ("A" . embark-act-all)
+              ("e" . embark-collect)
               ("E" . embark-export)))
 
 (use-package embark-consult
@@ -62,7 +64,7 @@
   :defer t
   :bind (:map goto-map
               ("l" . avy-goto-line)
-              ("w" . avy-goto-char-2)))
+              ("g" . avy-goto-char-2)))
 
 (use-package consult
   :init
@@ -336,12 +338,10 @@
                   )))
   (setq popper-window-height
         (lambda (win)
-          (let ((floored-height (floor (frame-height) 3))
-                (min-height 15)
-                (max-height (frame-height)))
-            (fit-window-to-buffer
-             win
-             (max (min min-height max-height) floored-height)))))
+          (fit-window-to-buffer
+           win
+           (floor (frame-height) 3)
+           12)))
   :config
   (popper-mode +1)
   (popper-echo-mode +1))
@@ -366,6 +366,8 @@
   :unless (display-graphic-p)
   :config
   (xclip-mode 1))
+
+(use-package csv-mode)
 
 (use-package ruby-ts-mode
   :defer t
