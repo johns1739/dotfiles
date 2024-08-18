@@ -56,9 +56,9 @@
 (keymap-set global-leader-map "t" toggle-map)
 (bind-keys :map toggle-map
            ("b" . toggle-big-font))
-(defvar toggle-big-font-sizes)
-(setq toggle-big-font-sizes '(140 160 200 240))
+(defvar toggle-big-font-sizes '(140)
   "List of font sizes to toggle between.")
+(setq toggle-big-font-sizes '(140 160 200 240))
 (defun toggle-big-font ()
   "Toggle between the different font sizes in `toggle-big-font-sizes'."
   (interactive)
@@ -106,12 +106,40 @@
            ("p" . proced)
            ("r" . eval-region))
 (setq-default proced-auto-update-flag t)
+(setq next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
 (setq proced-auto-update-interval 1)
 (setq proced-enable-color-flag t)
 (setq compilation-window-height 20)
 (setq compilation-always-kill t)
 (setq compilation-scroll-output t)
 (setq compilation-max-output-line-length 200)
+(setq compilation-error-regexp-alist '())
+(setq compilation-error-regexp-alist-alist '())
+(with-eval-after-load 'compile
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(failure-newline-target "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]"
+                          1 ;; file
+                          2 ;; line
+                          nil ;; col
+                          nil ;; type
+                          1)) ;; hyperlink
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(rails-test-target "^rails test \\([^:]+\\):\\([0-9]+\\)"
+                            1 ;; file
+                            2 ;; line
+                            nil ;; col
+                            nil ;; type
+                            1)) ;; hyperlink
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(simple-spaced-target "^ +\\([A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)"
+                                    1 ;; file
+                                    2 ;; line
+                                    nil ;; col
+                                    nil ;; type
+                                    1)) ;; hyperlink
+   (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
+   (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
+   (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target))
 (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter)
 
 

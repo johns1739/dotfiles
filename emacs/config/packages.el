@@ -394,29 +394,6 @@
     (bind-keys :map (current-local-map)
                ([remap compile-dwim] . rails-compile)
                ([remap comint] . rails-comint)))
-  (with-eval-after-load 'compile
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(minitest "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]"
-                                 1 ;; file
-                                 2 ;; line
-                                 nil ;; col
-                                 nil ;; type
-                                 1)) ;; hyperlink
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(rails-test "^rails test \\([^:]+\\):\\([0-9]+\\)"
-                              1 ;; file
-                              2 ;; line
-                              nil ;; col
-                              nil ;; type
-                              1)) ;; hyperlink
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(minitest-backtrace "^    [[ ]?\\([^ (].*\\):\\([1-9][0-9]*\\)\\(\\]\\)?"
-                                      1 ;; file
-                                      2)) ;; line
-    (add-to-list 'compilation-error-regexp-alist 'minitest)
-    (add-to-list 'compilation-error-regexp-alist 'minitest-backtrace)
-    (add-to-list 'compilation-error-regexp-alist 'rails-test))
-
   :hook
   ;; (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-base-mode . ruby-setup)
