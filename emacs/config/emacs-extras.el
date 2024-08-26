@@ -367,6 +367,7 @@
           (cmake "https://github.com/uyha/tree-sitter-cmake")
           (css "https://github.com/tree-sitter/tree-sitter-css")
           (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+          (gleam "https://github.com/gleam-lang/tree-sitter-gleam/")
           (go "https://github.com/tree-sitter/tree-sitter-go")
           (haskell "https://github.com/tree-sitter/haskell-tree-sitter")
           (html "https://github.com/tree-sitter/tree-sitter-html")

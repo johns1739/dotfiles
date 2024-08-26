@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: file
+# key: file
+# --
+`(relative-file-name)`

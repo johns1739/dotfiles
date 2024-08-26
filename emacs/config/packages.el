@@ -178,8 +178,8 @@
               ("M-<tab>" . copilot-accept-completion))
   :custom
   (copilot-indent-offset-warning-disable t)
-  :hook
-  (prog-mode . copilot-mode)
+  ;; :hook
+  ;; (prog-mode . copilot-mode)
   :config
   (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
 
@@ -367,6 +367,8 @@
   :config
   (xclip-mode 1))
 
+(use-package markdown-mode)
+
 (use-package csv-mode)
 
 (use-package ruby-ts-mode
@@ -412,6 +414,14 @@
   :hook
   (elixir-ts-mode . eglot-ensure)
   (heex-ts-mode . eglot-ensure))
+
+(use-package gleam-ts-mode
+  :straight (:host github :repo "gleam-lang/gleam-mode")
+  :mode (rx ".gleam" eos)
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(gleam-ts-mode "gleam lsp"))))
 
 (use-package go-ts-mode
   :disabled t
