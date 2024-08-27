@@ -188,13 +188,13 @@
                                :prepend t
                                :empty-lines 1)
                               ("n" "Note"
-                               entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Notes")
+                               entry (file+olp ,(locate-user-emacs-file "notes/tasks.org") "Notes")
                                "* %? \n%i"
                                :prepend t
                                :empty-lines 1)
                               ("p" "Personal"
+                               entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Inbox")
                                "* %? \n%i"
-                               entry (file ,(locate-user-emacs-file "notes/personal.org"))
                                :prepend t
                                :empty-lines 1)))
 (setq org-todo-keyword-faces '(("TODO" . "goldenrod")
