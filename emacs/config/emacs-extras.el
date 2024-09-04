@@ -56,17 +56,13 @@
 (defvar-keymap toggle-map :doc "Toggle map")
 (keymap-set global-leader-map "t" toggle-map)
 (bind-keys :map toggle-map
-           ("b" . toggle-big-font))
-(defvar toggle-big-font-sizes '(140)
-  "List of font sizes to toggle between.")
-(setq toggle-big-font-sizes '(140 160 200 240))
-(defun toggle-big-font ()
-  "Toggle between the different font sizes in `toggle-big-font-sizes'."
+           ("f" . set-font-size))
+(defun set-font-size ()
+  "Set the font size of Emacs"
   (interactive)
-  (let ((current-size (pop toggle-big-font-sizes)))
-    (add-to-list 'toggle-big-font-sizes current-size t))
-  (set-face-attribute 'default nil :height (car toggle-big-font-sizes))
-  (message "Font size set to %s" (car toggle-big-font-sizes)))
+  (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
+    (set-face-attribute 'default nil :height (* 10 font-size))
+    (message "Font size set to %s" font-size)))
 
 
 ;; Git
