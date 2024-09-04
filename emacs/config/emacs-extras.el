@@ -75,20 +75,7 @@
 
 
 ;; Diagnostics
-(defvar-keymap diagnostics-map :doc "Diagnostics map")
 (keymap-set global-leader-map "k" diagnostics-map)
-(bind-keys :map diagnostics-map
-           ("." . flymake-show-diagnostic)
-           (";" . flymake-show-buffer-diagnostics)
-           ("P" . flymake-show-project-diagnostics)
-           ("n" . flymake-goto-next-error)
-           ("p" . flymake-goto-prev-error)
-           :repeat-map diagnostics-repeat-map
-           ("." . flymake-show-diagnostic)
-           (";" . flymake-show-buffer-diagnostics)
-           ("n" . flymake-goto-next-error)
-           ("p" . flymake-goto-prev-error))
-(setq flymake-fringe-indicator-position 'right-fringe)
 
 
 ;; Compilation
@@ -234,7 +221,6 @@
 (desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 (electric-indent-mode +1)
 (electric-pair-mode +1)
-(global-auto-revert-mode +1)
 (global-eldoc-mode +1)
 (global-so-long-mode t)
 (line-number-mode +1)
@@ -393,15 +379,16 @@
           (scheme "https://github.com/6cdh/tree-sitter-scheme")
           (sql "https://github.com/DerekStride/tree-sitter-sql"))))
 
-(when (display-graphic-p)
-  (set-face-attribute 'default nil
-                      :family "JetBrainsMono Nerd Font"
-                      :height (car toggle-big-font-sizes)
-                      :weight 'light ;; thin, light, medium, regular
-                      :slant 'normal ;; italic, oblique, normal, roman
-                      :width 'normal)
-  (add-to-list 'default-frame-alist '(height . 50))
-  (add-to-list 'default-frame-alist '(width . 112)))
+;;;; Uncomment if font exists on system
+;; (when (display-graphic-p)
+;;   (set-face-attribute 'default nil
+;;                       :family "JetBrainsMono Nerd Font"
+;;                       :height (car toggle-big-font-sizes)
+;;                       :weight 'light ;; thin, light, medium, regular
+;;                       :slant 'normal ;; italic, oblique, normal, roman
+;;                       :width 'normal)
+;;   (add-to-list 'default-frame-alist '(height . 50))
+;;   (add-to-list 'default-frame-alist '(width . 112)))
 
 (defun flymake-mode-line-format ()
   "Display flymake diagnostics in the mode line."

@@ -1,6 +1,8 @@
 ;; Global Keybingsddings
 (keymap-global-set "<remap> <delete-horizontal-space>" #'cycle-spacing)
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
+(keymap-global-set "M-o" #'other-window)
+
 
 ;; Go To
 (bind-keys :map goto-map
@@ -76,6 +78,22 @@
 (fido-vertical-mode 1)
 
 
+;; Diagnostics
+(defvar-keymap diagnostics-map :doc "Diagnostics map")
+(bind-keys :map diagnostics-map
+           ("." . flymake-show-diagnostic)
+           (";" . flymake-show-buffer-diagnostics)
+           ("P" . flymake-show-project-diagnostics)
+           ("n" . flymake-goto-next-error)
+           ("p" . flymake-goto-prev-error)
+           :repeat-map diagnostics-repeat-map
+           ("." . flymake-show-diagnostic)
+           (";" . flymake-show-buffer-diagnostics)
+           ("n" . flymake-goto-next-error)
+           ("p" . flymake-goto-prev-error))
+(setq flymake-fringe-indicator-position 'right-fringe)
+
+
 ;; History
 (save-place-mode 1)
 (savehist-mode 1)
@@ -98,6 +116,10 @@
   (unless (file-exists-p backup-dir)
     (make-directory backup-dir))
   (setq backup-directory-alist `(("." . ,backup-dir))))
+
+
+;; Modes
+(global-auto-revert-mode +1)
 
 
 ;; Editing
@@ -127,9 +149,6 @@
 
 
 ;; Bells & Whistles
-;; (menu-bar-mode -1)
-;; (scroll-bar-mode -1)
-;; (tool-bar-mode -1)
 (setq ring-bell-function 'ignore)
 (setq use-short-answers t)
 (setq confirm-kill-emacs 'y-or-n-p)

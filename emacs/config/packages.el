@@ -169,6 +169,7 @@
          )))
 
 (use-package copilot
+  :disabled t ;; Only turn on if copilot server actually installed on machine
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind (:map copilot-completion-map
               ("M-f" . copilot-accept-completion-by-word)
