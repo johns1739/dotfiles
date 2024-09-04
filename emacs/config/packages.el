@@ -124,7 +124,7 @@
   ;; :bind (:map corfu-map
   ;;             ("RET" . nil))
   :custom
-  (corfu-auto nil) ; Enable auto completion
+  (corfu-auto t) ; Enable auto completion
   (corfu-auto-delay 0.5) ; Enable auto completion
   (corfu-auto-prefix 2) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
@@ -133,7 +133,7 @@
   (corfu-separator ?\s)
   (corfu-popupinfo-delay '(1.0 . 0.5))
   :config
-  (global-corfu-mode 1)
+  ;; (global-corfu-mode 1)
   (corfu-echo-mode 1)
   (corfu-history-mode 1)
   (corfu-popupinfo-mode 1))
@@ -397,7 +397,6 @@
                ([remap compile-dwim] . rails-compile)
                ([remap comint] . rails-comint)))
   :hook
-  ;; (ruby-ts-mode . display-fill-column-indicator-mode)
   (ruby-base-mode . ruby-setup)
   (ruby-ts-mode . eglot-ensure))
 
@@ -469,9 +468,7 @@
 
 (use-package yaml-ts-mode
   :defer t
-  :mode "\\(\\.yaml\\|.yml\\)\\'"
-  :hook
-  (yaml-ts-mode . eglot-ensure))
+  :mode "\\(\\.yaml\\|.yml\\)\\'")
 
 (use-package sqlformat
   :commands (sqlformat)

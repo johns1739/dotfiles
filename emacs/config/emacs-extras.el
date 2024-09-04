@@ -8,11 +8,12 @@
 (keymap-set global-leader-map "g" goto-map)
 
 
-;; Window Movement
+;; Window Movement / Buffer management
 (defvar-keymap window-movement-map :doc "Window movement map")
 (keymap-set goto-map "w" window-movement-map)
 (bind-keys :map window-movement-map
            ("b" . switch-to-buffer-other-window)
+           ("k" . kill-buffer)
            ("p" . project-other-window-command)
            ("." . xref-find-definitions-other-window)
            ("0" . delete-window)
@@ -123,6 +124,8 @@
                           nil ;; col
                           nil ;; type
                           1)) ;; hyperlink
+  ;; TODO rspec
+  ;;      # ./app/packages/flexwork/phone_numbers/spec/phone_numbers_spec.rb:15:in `block (4 levels) in <top (required)>'
   (add-to-list 'compilation-error-regexp-alist-alist
                '(rails-test-target "^rails test \\([^:]+\\):\\([0-9]+\\)"
                             1 ;; file
@@ -192,6 +195,9 @@
                                "* %? \n%i"
                                :prepend t
                                :empty-lines 1)
+                              ("j" "Journal"
+                               entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
+                               "* %?\nEntered on %U\n  %i")
                               ("p" "Personal"
                                entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Inbox")
                                "* %? \n%i"
@@ -425,6 +431,7 @@
 (defun squish-path (path max-length)
   "Squish path to max length."
   (if (> (length path) max-length)
+      ;; TODO: f-split sometimes not autoloaded ???
       (let* ((parts (f-split path))
              (name (car (last parts)))
              (overflow (- (length path) max-length))
