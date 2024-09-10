@@ -12,7 +12,7 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            (":" . goto-line)
-           ("'" . scratch-buffer)
+           (";" . scratch-buffer)
            ("%" . xref-find-references-and-replace)
            ("f" . find-file-at-point)
            ("h" . eldoc)

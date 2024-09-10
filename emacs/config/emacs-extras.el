@@ -12,9 +12,11 @@
 (defvar-keymap window-movement-map :doc "Window movement map")
 (keymap-set goto-map "w" window-movement-map)
 (bind-keys :map window-movement-map
-           ("b" . switch-to-buffer-other-window)
+           ("SPC" . switch-to-buffer-other-window)
            ("k" . kill-buffer)
+           ("o" . other-window)
            ("p" . project-other-window-command)
+           ("=" . balance-windows)
            ("." . xref-find-definitions-other-window)
            ("0" . delete-window)
            ("1" . delete-other-windows)
@@ -28,6 +30,23 @@
   "Split window right and jump to it."
   (interactive)
   (select-window (split-window-right)))
+
+;; Tab Movement
+(defvar-keymap tab-movement-map :doc "Tab movement map")
+(keymap-set goto-map "t" tab-movement-map)
+(bind-keys :map tab-movement-map
+           (";" . tab-list)
+           ("." . toggle-frame-tab-bar)
+           ("," . tab-recent)
+           ("SPC" . tab-switch)
+           ("0" . tab-close)
+           ("1" . tab-close-other)
+           ("2" . tab-new)
+           ("o" . switch-to-buffer-other-tab)
+           ("p" . tab-previous)
+           ("n" . tab-next)
+           ("u" . tab-undo))
+(tab-bar-mode -1)
 
 
 ;; Search
@@ -102,30 +121,30 @@
 (with-eval-after-load 'compile
   (add-to-list 'compilation-error-regexp-alist-alist
                '(failure-newline-target "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]"
-                          1 ;; file
-                          2 ;; line
-                          nil ;; col
-                          nil ;; type
-                          1)) ;; hyperlink
+                                        1 ;; file
+                                        2 ;; line
+                                        nil ;; col
+                                        nil ;; type
+                                        1)) ;; hyperlink
   ;; TODO rspec
   ;;      # ./app/packages/flexwork/phone_numbers/spec/phone_numbers_spec.rb:15:in `block (4 levels) in <top (required)>'
   (add-to-list 'compilation-error-regexp-alist-alist
                '(rails-test-target "^rails test \\([^:]+\\):\\([0-9]+\\)"
-                            1 ;; file
-                            2 ;; line
-                            nil ;; col
-                            nil ;; type
-                            1)) ;; hyperlink
+                                   1 ;; file
+                                   2 ;; line
+                                   nil ;; col
+                                   nil ;; type
+                                   1)) ;; hyperlink
   (add-to-list 'compilation-error-regexp-alist-alist
                '(simple-spaced-target "^ +\\([A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)"
-                                    1 ;; file
-                                    2 ;; line
-                                    nil ;; col
-                                    nil ;; type
-                                    1)) ;; hyperlink
-   (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
-   (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
-   (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target))
+                                      1 ;; file
+                                      2 ;; line
+                                      nil ;; col
+                                      nil ;; type
+                                      1)) ;; hyperlink
+  (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
+  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
+  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target))
 (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter)
 
 
@@ -374,17 +393,6 @@
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
           (scheme "https://github.com/6cdh/tree-sitter-scheme")
           (sql "https://github.com/DerekStride/tree-sitter-sql"))))
-
-;;;; Uncomment if font exists on system
-;; (when (display-graphic-p)
-;;   (set-face-attribute 'default nil
-;;                       :family "JetBrainsMono Nerd Font"
-;;                       :height (car toggle-big-font-sizes)
-;;                       :weight 'light ;; thin, light, medium, regular
-;;                       :slant 'normal ;; italic, oblique, normal, roman
-;;                       :width 'normal)
-;;   (add-to-list 'default-frame-alist '(height . 50))
-;;   (add-to-list 'default-frame-alist '(width . 112)))
 
 (defun flymake-mode-line-format ()
   "Display flymake diagnostics in the mode line."
