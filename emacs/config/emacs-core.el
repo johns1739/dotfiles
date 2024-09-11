@@ -19,6 +19,7 @@
            ("j" . jump-to-register)
            ("J" . point-to-register)
            ("n" . next-error)
+           ("o" . other-window)
            ("p" . previous-error)
            ("u" . goto-address-at-point))
 (setq eldoc-echo-area-use-multiline-p nil)
@@ -126,6 +127,7 @@
 (setq require-final-newline t)
 (setq kill-do-not-save-duplicates t)
 (setq-default indent-tabs-mode nil)
+(setq show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
 
 
 ;; Scrolling

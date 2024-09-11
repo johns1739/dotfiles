@@ -201,7 +201,7 @@
                                entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
                                "* %?\nEntered on %U\n  %i")
                               ("p" "Personal"
-                               entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Inbox")
+                               entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
                                "* %? \n%i"
                                :prepend t
                                :empty-lines 1)))
@@ -241,6 +241,7 @@
 (line-number-mode +1)
 (repeat-mode -1) ;; Sometimes gets in the way.
 (window-divider-mode -1)
+(pixel-scroll-precision-mode 1)
 
 
 ;; Window Tiling
