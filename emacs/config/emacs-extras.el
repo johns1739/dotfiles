@@ -13,6 +13,7 @@
 (keymap-set goto-map "w" window-movement-map)
 (bind-keys :map window-movement-map
            ("SPC" . switch-to-buffer-other-window)
+           ("f" . find-file-other-window)
            ("k" . kill-buffer)
            ("o" . other-window)
            ("p" . project-other-window-command)
@@ -38,16 +39,15 @@
            (";" . tab-list)
            ("." . toggle-frame-tab-bar)
            ("," . tab-recent)
-           ("SPC" . tab-switch)
+           ("/" . tab-switch)
+           ("SPC" . switch-to-buffer-other-tab)
            ("0" . tab-close)
            ("1" . tab-close-other)
            ("2" . tab-new)
-           ("o" . switch-to-buffer-other-tab)
+           ("f" . find-file-other-tab)
            ("p" . tab-previous)
            ("n" . tab-next)
            ("u" . tab-undo))
-(tab-bar-mode -1)
-
 
 ;; Search
 (keymap-set global-leader-map "s" search-map)
@@ -136,7 +136,14 @@
                                    nil ;; type
                                    1)) ;; hyperlink
   (add-to-list 'compilation-error-regexp-alist-alist
-               '(simple-spaced-target "^ +\\([A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)"
+               '(simple-spaced-target "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)"
+                                      1 ;; file
+                                      2 ;; line
+                                      nil ;; col
+                                      nil ;; type
+                                      1)) ;; hyperlink
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(rspec-backtrace-target "^ +# \\(./[A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)"
                                       1 ;; file
                                       2 ;; line
                                       nil ;; col
@@ -144,7 +151,8 @@
                                       1)) ;; hyperlink
   (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
   (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
-  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target))
+  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
+  (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target))
 (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter)
 
 
@@ -265,7 +273,7 @@
 ;; find-file-at-point
 (defun ffap-project-match-1 (name)
   (let ((filename (match-string 1 name)))
-    (if (project-current)
+    (if (and (project-current) (not (string-prefix-p "./" filename)))
         (expand-file-name filename (project-directory))
       (expand-file-name filename default-directory))))
 (with-eval-after-load 'ffap

@@ -107,6 +107,7 @@
          ("h" . consult-outline)
          ("i" . consult-imenu)
          ;; ("I" . consult-imenu-multi) -- takes too long to be useful.
+         ("j" . consult-register)
          ("k" . consult-flymake)
          ("l" . consult-line)
          ("L" . consult-line-multi)
