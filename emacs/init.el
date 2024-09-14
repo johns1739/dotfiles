@@ -29,3 +29,15 @@
 
 (dolist (config-file config-modules)
   (load (locate-user-emacs-file config-file)))
+
+;; Font snippet, can be added to custom.el
+;; Example:
+;; (when (display-graphic-p)
+;;   (set-face-attribute 'default nil
+;;                       :family "JetBrainsMono Nerd Font"
+;;                       :height (car toggle-big-font-sizes)
+;;                       :weight 'light ;; thin, light, medium, regular
+;;                       :slant 'normal ;; italic, oblique, normal, roman
+;;                       :width 'normal)
+;;   (add-to-list 'default-frame-alist '(height . 50))
+;;   (add-to-list 'default-frame-alist '(width . 112)))

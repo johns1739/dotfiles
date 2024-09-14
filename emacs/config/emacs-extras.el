@@ -423,7 +423,7 @@
   "Squish path to max length."
   (if (> (length path) max-length)
       ;; TODO: f-split sometimes not autoloaded ???
-      (let* ((parts (f-split path))
+      (let* ((parts (file-name-split path))
              (name (car (last parts)))
              (overflow (- (length path) max-length))
              (squished-parts

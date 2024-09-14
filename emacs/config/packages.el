@@ -121,8 +121,8 @@
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
-  ;; :bind (:map corfu-map
-  ;;             ("RET" . nil))
+  :bind (:map corfu-map
+              ("RET" . nil))
   :custom
   (corfu-auto t) ; Enable auto completion
   (corfu-auto-delay 0.5) ; Enable auto completion
@@ -133,13 +133,12 @@
   (corfu-separator ?\s)
   (corfu-popupinfo-delay '(1.0 . 0.5))
   :config
-  ;; (global-corfu-mode 1)
+  (global-corfu-mode 1)
   (corfu-echo-mode 1)
   (corfu-history-mode 1)
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
-  :disabled t
   :unless (display-graphic-p)
   :requires corfu
   :config
@@ -407,10 +406,14 @@
          ("\\.exs$" . elixir-ts-mode)
          ("\\.heex$" . heex-ts-mode))
   :init
-  (add-to-list 'exec-path "~/.bin/elixir-ls")
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(elixir-ts-mode "language_server.sh")))
+                 `((elixir-ts-mode heex-ts-mode) .
+                   ,(if (and (fboundp 'w32-shell-dos-semantics)
+                             (w32-shell-dos-semantics))
+                        '("language_server.bat")
+                      (eglot-alternatives
+                       '("language_server.sh" "start_lexical.sh"))))))
   :hook
   (elixir-ts-mode . eglot-ensure)
   (heex-ts-mode . eglot-ensure))
@@ -421,7 +424,7 @@
   :init
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(gleam-ts-mode "gleam lsp"))))
+                 '(gleam-ts-mode "gleam" "lsp"))))
 
 (use-package go-ts-mode
   :disabled t
@@ -476,6 +479,13 @@
   :config
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
+
+(use-package janet-mode
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(janet-mode "janet-lsp"))))
+
 
 (use-package geiser-guile
   :commands (geiser-mode))
