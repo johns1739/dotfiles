@@ -2,6 +2,7 @@
 (keymap-global-set "<remap> <delete-horizontal-space>" #'cycle-spacing)
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
 (keymap-global-set "M-o" #'other-window)
+(keymap-global-set "M-#" #'dictionary-lookup-definition)
 
 
 ;; Go To
@@ -12,7 +13,7 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            (":" . goto-line)
-           (";" . scratch-buffer)
+           ("'" . scratch-buffer)
            ("%" . xref-find-references-and-replace)
            ("f" . find-file-at-point)
            ("h" . eldoc)
