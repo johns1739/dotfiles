@@ -17,8 +17,6 @@
 
 (setq use-package-verbose t)
 (setq use-package-compute-statistics t) ;; use-package-report
-(setq custom-file (locate-user-emacs-file "custom.el"))
-(load custom-file 'noerror)
 
 (setq config-modules
       (if use-minimal-emacs
@@ -29,6 +27,9 @@
 
 (dolist (config-file config-modules)
   (load (locate-user-emacs-file config-file)))
+
+(setq custom-file (locate-user-emacs-file "custom.el"))
+(load custom-file 'noerror)
 
 ;; Font snippet, can be added to custom.el
 ;; Example:
