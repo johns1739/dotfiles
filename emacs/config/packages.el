@@ -168,21 +168,13 @@
          ;; #'cape-line ;; Kinda buggy
          )))
 
-(use-package copilot
-  :disabled t ;; Only turn on if copilot server actually installed on machine
-  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :bind (:map copilot-completion-map
-              ("M-f" . copilot-accept-completion-by-word)
-              ("M-e" . copilot-accept-completion-by-line)
-              ("M-n" . copilot-next-completion)
-              ("M-p" . copilot-previous-completion)
-              ("M-<tab>" . copilot-accept-completion))
-  :custom
-  (copilot-indent-offset-warning-disable t)
-  ;; :hook
-  ;; (prog-mode . copilot-mode)
+(use-package dumb-jump
   :config
-  (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
+(use-package beacon
+  :config
+  (beacon-mode 1))
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
@@ -280,10 +272,8 @@
   :demand t
   :bind (:map git-map
               ("." . diff-hl-show-hunk)
-              ("n" . diff-hl-next-hunk)
-              ("N" . diff-hl-show-hunk-next)
-              ("p" . diff-hl-previous-hunk)
-              ("P" . diff-hl-show-hunk-previous)
+              ("n" . diff-hl-show-hunk-next)
+              ("p" . diff-hl-show-hunk-previous)
               ("S" . diff-hl-stage-dwim)
               ("K" . diff-hl-revert-hunk))
   :hook
@@ -492,9 +482,8 @@
   :commands (geiser-mode))
 
 (use-package expand-region
-  :disabled t
   :commands (er/expand-region)
-  :bind ("C-=" . er/expand-region))
+  :bind ("M-O" . er/expand-region))
 
 (use-package gruvbox-theme)
 
