@@ -207,7 +207,7 @@
                                :empty-lines 1)
                               ("j" "Journal"
                                entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
-                               "* %?\nEntered on %U\n  %i")
+                               "* %U\n%?")
                               ("p" "Personal"
                                entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
                                "* %? \n%i"
