@@ -1,7 +1,6 @@
 ;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-global-set "M-SPC" global-leader-map)
-(keymap-global-set "C-," global-leader-map)
 
 
 ;; Go To
@@ -207,7 +206,7 @@
                                :empty-lines 1)
                               ("j" "Journal"
                                entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
-                               "* %U\n%?")
+                               "* %?\n%U")
                               ("p" "Personal"
                                entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
                                "* %? \n%i"
