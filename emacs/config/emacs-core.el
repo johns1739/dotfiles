@@ -128,6 +128,7 @@
 (setq require-final-newline t)
 (setq kill-do-not-save-duplicates t)
 (setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 (setq show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
 
 

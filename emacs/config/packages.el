@@ -362,6 +362,15 @@
 
 (use-package csv-mode)
 
+(use-package python-ts-mode
+  :straight nil ;; python-ts-mode is already built-in
+  :init
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  (defun pytyhon-setup ()
+    (setq-local tab-width 4))
+  :hook
+  (python-ts-mode . pytyhon-setup))
+
 (use-package ruby-ts-mode
   :defer t
   :init
@@ -388,11 +397,9 @@
                ([remap compile-dwim] . rails-compile)
                ([remap comint] . rails-comint)))
   :hook
-  (ruby-base-mode . ruby-setup)
-  (ruby-ts-mode . eglot-ensure))
+  (ruby-base-mode . ruby-setup))
 
 (use-package elixir-ts-mode
-  :defer t
   :mode (("\\.ex$" . elixir-ts-mode)
          ("\\.exs$" . elixir-ts-mode)
          ("\\.heex$" . heex-ts-mode))
@@ -404,10 +411,7 @@
                              (w32-shell-dos-semantics))
                         '("language_server.bat")
                       (eglot-alternatives
-                       '("language_server.sh" "start_lexical.sh"))))))
-  :hook
-  (elixir-ts-mode . eglot-ensure)
-  (heex-ts-mode . eglot-ensure))
+                       '("language_server.sh" "start_lexical.sh")))))))
 
 (use-package gleam-ts-mode
   :straight (:host github :repo "gleam-lang/gleam-mode")
@@ -418,18 +422,10 @@
                  '(gleam-ts-mode "gleam" "lsp"))))
 
 (use-package go-ts-mode
-  :disabled t
-  :mode "\\.go\\'"
-  :init
-  (setq go-ts-mode-indent-offset 4)
-  :hook
-  (go-ts-mode . eglot-ensure))
+  :mode "\\.go\\'")
 
 (use-package elm-mode
-  :disabled t
-  :defer t
-  :hook
-  (elm-mode . eglot-ensure))
+  :defer t)
 
 (use-package js
   :mode "\\.js\\'"
@@ -437,15 +433,11 @@
   (js-indent-level 2))
 
 (use-package erlang
-  :disabled t
-  :defer t
   :straight nil
   :load-path "/opt/homebrew/lib/erlang/lib/tools-3.6/emacs/"
   :init
   (setq erlang-root-dir "/opt/homebrew/lib/erlang")
   (add-to-list 'exec-path "/opt/homebrew/lib/erlang/bin")
-  :hook
-  (erlang-mode . eglot-ensure)
   :mode
   (("\\.erl?$" . erlang-mode)
    ("rebar\\.config$" . erlang-mode)
@@ -476,7 +468,6 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(janet-mode "janet-lsp"))))
-
 
 (use-package geiser-guile
   :commands (geiser-mode))

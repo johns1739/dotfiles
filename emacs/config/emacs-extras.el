@@ -372,7 +372,7 @@
                      :folding t)))))
 
 ;; Treesitter
-(defun treesit-install-languages ()
+(defun treesit-install-default-languages ()
   "Install all language grammars registered with Treesitter"
   (interactive)
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
@@ -384,7 +384,7 @@
           (elisp "https://github.com/Wilfred/tree-sitter-elisp")
           (gleam "https://github.com/gleam-lang/tree-sitter-gleam/")
           (go "https://github.com/tree-sitter/tree-sitter-go")
-          (haskell "https://github.com/tree-sitter/haskell-tree-sitter")
+          (haskell "https://github.com/tree-sitter/tree-sitter-haskell")
           (html "https://github.com/tree-sitter/tree-sitter-html")
           (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
           (json "https://github.com/tree-sitter/tree-sitter-json")
@@ -399,8 +399,7 @@
           (elixir "https://github.com/elixir-lang/tree-sitter-elixir")
           (heex "https://github.com/phoenixframework/tree-sitter-heex")
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
-          (scheme "https://github.com/6cdh/tree-sitter-scheme")
-          (sql "https://github.com/DerekStride/tree-sitter-sql"))))
+          (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
 
 (defun flymake-mode-line-format ()
   "Display flymake diagnostics in the mode line."
