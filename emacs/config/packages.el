@@ -571,7 +571,7 @@
      '("@" . meow-start-kmacro-or-insert-counter)
      '("#" . meow-end-or-call-kmacro)
      '("$" . meow-kmacro-matches)
-     '("%" . meow-query-replace)
+     '("%" . query-replace)
      '("M-%" . meow-query-replace-regexp)
      '("^" . delete-indentation)
      '("&" . async-shell-command)
