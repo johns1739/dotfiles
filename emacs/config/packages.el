@@ -472,6 +472,12 @@
 (use-package geiser-guile
   :commands (geiser-mode))
 
+(use-package multiple-cursors
+  :bind (("M-n" . mc/mark-next-like-this)
+         ("M-p" . mc/mark-previous-like-this)
+         :map mc/keymap
+         ("<return>" . nil)))
+
 (use-package expand-region
   :commands (er/expand-region)
   :bind ("M-O" . er/expand-region))
