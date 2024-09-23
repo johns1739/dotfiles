@@ -1,1 +1,6 @@
 PS1="\e[0;32m\w\$\e[0m "
+
+# Fuzzy File Search
+# https://www.dol.gov/agencies/whd/fact-sheets/28s-rules-for-certain-school-employees-fmla
+# git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+# ~/.fzf/install
