@@ -242,7 +242,7 @@
 (delete-selection-mode -1)
 (desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 (electric-indent-mode +1)
-(electric-pair-mode +1)
+(electric-pair-mode -1)
 (global-eldoc-mode +1)
 (global-so-long-mode t)
 (line-number-mode +1)

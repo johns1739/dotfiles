@@ -30,17 +30,16 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package undo-tree
-  :disabled t
-  :custom
-  (undo-tree-visualizer-timestamps t)
-  :config
-  (let ((undo-tree-history-directory (locate-user-emacs-file "undo-tree-history")))
-    (unless (file-exists-p undo-tree-history-directory)
-      (make-directory undo-tree-history-directory))
-    (setq undo-tree-history-directory-alist
-          `(("." . ,undo-tree-history-directory))))
-  (global-undo-tree-mode 1))
+;; (use-package undo-tree
+;;   :custom
+;;   (undo-tree-visualizer-timestamps t)
+;;   :config
+;;   (let ((undo-tree-history-directory (locate-user-emacs-file "undo-tree-history")))
+;;     (unless (file-exists-p undo-tree-history-directory)
+;;       (make-directory undo-tree-history-directory))
+;;     (setq undo-tree-history-directory-alist
+;;           `(("." . ,undo-tree-history-directory))))
+;;   (global-undo-tree-mode 1))
 
 (use-package which-key
   :config
@@ -49,8 +48,13 @@
 (use-package indent-guide
   :hook prog-mode)
 
-(use-package dumb-jump
-  :disabled t)
+(use-package dashboard
+  :if (display-graphic-p)
+  :custom
+  (dashboard-center-content t)
+  (dashboard-vertically-center-content t)
+  :config
+  (dashboard-setup-startup-hook))
 
 (use-package ace-window
   :defer t
@@ -202,53 +206,49 @@
   :config
   (marginalia-mode 1))
 
-(use-package exec-path-from-shell
-  :disabled t
-  :if (memq window-system '(mac ns))
-  :custom
-  (exec-path-from-shell-warn-duration-millis 1000)
-  :config
-  (dolist (var '(
-                 "SSH_AUTH_SOCK"
-                 "SSH_AGENT_PID"
-                 "GPG_AGENT_INFO"
-                 "GOPATH"
-                 "LANG"
-                 "LC_CTYPE"
-                 "NIX_SSL_CERT_FILE"
-                 "NIX_PATH"
-                 "TIINGO_API_TOKEN"
-                 "RUBYOPT"))
-    (add-to-list 'exec-path-from-shell-variables var))
-  (exec-path-from-shell-initialize))
+;; (use-package exec-path-from-shell
+;;   :if (memq window-system '(mac ns))
+;;   :custom
+;;   (exec-path-from-shell-warn-duration-millis 1000)
+;;   :config
+;;   (dolist (var '(
+;;                  "SSH_AUTH_SOCK"
+;;                  "SSH_AGENT_PID"
+;;                  "GPG_AGENT_INFO"
+;;                  "GOPATH"
+;;                  "LANG"
+;;                  "LC_CTYPE"
+;;                  "NIX_SSL_CERT_FILE"
+;;                  "NIX_PATH"
+;;                  "TIINGO_API_TOKEN"
+;;                  "RUBYOPT"))
+;;     (add-to-list 'exec-path-from-shell-variables var))
+;;   (exec-path-from-shell-initialize))
 
-(use-package flycheck
-  :disabled t
-  ;; https://www.flycheck.org/en/latest/
-  :defer t
-  :bind (:repeat-map flycheck-error-repeat-map
-                     ("n" . flycheck-next-error)
-                     ("p" . flycheck-previous-error)
-                     ("." . flycheck-display-error-at-point))
+;; (use-package flycheck
+;;   ;; https://www.flycheck.org/en/latest/
+;;   :defer t
+;;   :bind (:repeat-map flycheck-error-repeat-map
+;;                      ("n" . flycheck-next-error)
+;;                      ("p" . flycheck-previous-error)
+;;                      ("." . flycheck-display-error-at-point))
+;;   :init
+;;   (defun flycheck-set-bindings ()
+;;     (bind-keys :map (current-local-map)
+;;                ([remap consult-flymake] . consult-flycheck)
+;;                ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
+;;                ([remap flymake-show-buffer-diagnostics] . flycheck-list-errors)
+;;                ([remap flymake-show-project-diagnostics] . nil)
+;;                ([remap flymake-goto-next-error] . flycheck-next-error)
+;;                ([remap flymake-goto-prev-error] . flycheck-previous-error)))
+;;   :custom
+;;   (flycheck-indication-mode 'right-fringe)
+;;   :hook
+;;   (flycheck-mode . flycheck-set-bindings))
 
-  :init
-  (defun flycheck-set-bindings ()
-    (bind-keys :map (current-local-map)
-               ([remap consult-flymake] . consult-flycheck)
-               ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
-               ([remap flymake-show-buffer-diagnostics] . flycheck-list-errors)
-               ([remap flymake-show-project-diagnostics] . nil)
-               ([remap flymake-goto-next-error] . flycheck-next-error)
-               ([remap flymake-goto-prev-error] . flycheck-previous-error)))
-  :custom
-  (flycheck-indication-mode 'right-fringe)
-  :hook
-  (flycheck-mode . flycheck-set-bindings))
-
-(use-package consult-flycheck
-  :disabled t
-  :defer t
-  :commands (consult-flycheck))
+;; (use-package consult-flycheck
+;;   :defer t
+;;   :commands (consult-flycheck))
 
 (use-package magit
   :commands (magit-status)
@@ -285,11 +285,11 @@
     (diff-hl-margin-mode))
   (global-diff-hl-mode))
 
-(use-package magit-todos
-  :disabled t ;; Too slow for api-app
-  :after magit
-  :config
-  (magit-todos-mode 1))
+;; (use-package magit-todos
+;;   ;; Too slow for api-app
+;;   :after magit
+;;   :config
+;;   (magit-todos-mode 1))
 
 (use-package popper
   :demand t
@@ -484,14 +484,13 @@
 
 (use-package gruvbox-theme)
 
-(use-package timu-rouge-theme
-  :disabled t)
+;; (use-package timu-rouge-theme)
 
-(use-package catppuccin-theme
-  :disabled t
-  :config
-  ;; (catppuccin-reload)
-  (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
+
+;; (use-package catppuccin-theme
+;;   :config
+;;   ;; (catppuccin-reload)
+;;   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
 (use-package ef-themes)
 
@@ -499,18 +498,17 @@
 
 (use-package modus-themes)
 
-(use-package doom-modeline
-  :disabled
-  :custom
-  (doom-modeline-icon nil)
-  (doom-modeline-minor-modes nil)
-  (doom-modeline-indent-info nil)
-  (doom-modeline-buffer-encoding nil)
-  (doom-modeline-vcs-max-length 20)
-  (doom-modeline-display-misc-in-all-mode-lines nil)
-  (doom-modeline-env-version nil)
-  :config
-  (doom-modeline-mode 1))
+;; (use-package doom-modeline
+;;   :custom
+;;   (doom-modeline-icon nil)
+;;   (doom-modeline-minor-modes nil)
+;;   (doom-modeline-indent-info nil)
+;;   (doom-modeline-buffer-encoding nil)
+;;   (doom-modeline-vcs-max-length 20)
+;;   (doom-modeline-display-misc-in-all-mode-lines nil)
+;;   (doom-modeline-env-version nil)
+;;   :config
+;;   (doom-modeline-mode 1))
 
 (use-package meow
   :custom
