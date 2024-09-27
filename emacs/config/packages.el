@@ -45,8 +45,16 @@
   :config
   (which-key-mode))
 
-(use-package indent-guide
-  :hook prog-mode)
+(use-package highlight-indent-guides
+  :hook
+  (prog-mode . highlight-indent-guides-mode)
+  :custom
+  (highlight-indent-guides-method 'bitmap)
+  (highlight-indent-guides-character ?|)
+  (highlight-indent-guides-responsive 'stack)
+  (highlight-indent-guides-auto-even-face-perc 100)
+  (highlight-indent-guides-auto-odd-face-perc 100)
+  (highlight-indent-guides-auto-character-face-perc 100))
 
 (use-package dashboard
   :if (display-graphic-p)
