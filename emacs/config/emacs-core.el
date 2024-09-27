@@ -64,13 +64,13 @@
 (setq completion-category-overrides '((file (styles . (partial-completion)))))
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 (setq hippie-expand-verbose t)
-(setq hippie-expand-try-functions-list '(try-expand-line
+(setq hippie-expand-try-functions-list '(try-expand-dabbrev-visible
+                                         try-expand-line
                                          try-expand-list
-                                         try-expand-dabbrev-visible
                                          try-expand-dabbrev
-                                         try-expand-dabbrev-all-buffers
                                          try-expand-line-all-buffers
                                          try-expand-list-all-buffers
+                                         try-expand-dabbrev-all-buffers
                                          try-complete-file-name-partially
                                          try-complete-file-name))
 (fido-vertical-mode 1)

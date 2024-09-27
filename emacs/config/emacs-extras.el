@@ -194,20 +194,20 @@
 (setq org-tag-faces '(("bug"  . "sienna")
                       ("feature" . "goldenrod")
                       ("ticket" . "khaki")))
-(setq org-capture-templates `(("t" "Task"
+(setq org-capture-templates `(("t" "Work Task"
                                entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Tasks")
                                "* TODO %? %^g\n%t\n%i"
                                :prepend t
                                :empty-lines 1)
-                              ("n" "Note"
+                              ("n" "Work Note"
                                entry (file+olp ,(locate-user-emacs-file "notes/tasks.org") "Notes")
                                "* %? \n%i"
                                :prepend t
                                :empty-lines 1)
-                              ("j" "Journal"
+                              ("j" "Personal Journal"
                                entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
                                "* %?\n%U")
-                              ("p" "Personal"
+                              ("p" "Personal Task"
                                entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
                                "* %? \n%i"
                                :prepend t
