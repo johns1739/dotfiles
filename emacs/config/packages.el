@@ -52,9 +52,9 @@
   (highlight-indent-guides-method 'bitmap)
   (highlight-indent-guides-character ?|)
   (highlight-indent-guides-responsive 'stack)
-  (highlight-indent-guides-auto-even-face-perc 100)
-  (highlight-indent-guides-auto-odd-face-perc 100)
-  (highlight-indent-guides-auto-character-face-perc 100))
+  (highlight-indent-guides-auto-even-face-perc 0)
+  (highlight-indent-guides-auto-odd-face-perc 0)
+  (highlight-indent-guides-auto-character-face-perc 200))
 
 (use-package dashboard
   :if (display-graphic-p)
@@ -200,6 +200,7 @@
 
 (use-package vertico
   :init
+  ;; Ensure builtins are turned off.
   (setq icomplete-vertical-mode nil)
   (setq icomplete-mode nil)
   (setq fido-mode nil)
@@ -207,6 +208,12 @@
   (setq completion-cycle-threshold nil)
   :config
   (vertico-mode 1))
+
+;; ;; Buggy, sometimes data gets clipped
+;; (use-package vertico-posframe
+;;   :if (display-graphic-p)
+;;   :config
+;;   (vertico-posframe-mode 1))
 
 (use-package marginalia
   :init
@@ -346,7 +353,7 @@
   (popper-echo-mode +1))
 
 (use-package vterm
-  :defer t
+  :if (display-graphic-p)
   :bind (:map toggle-map
               ("t" . vterm-dwim))
   :init
@@ -360,6 +367,12 @@
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 10000))
+
+;; aka Zen mode
+(use-package writeroom-mode
+  :if (display-graphic-p)
+  :bind (:map toggle-map
+              ("z" . writeroom-mode)))
 
 (use-package xclip
   :unless (display-graphic-p)
@@ -490,10 +503,11 @@
   :commands (er/expand-region)
   :bind ("M-O" . er/expand-region))
 
-(use-package gruvbox-theme)
+(use-package gruber-darker-theme)
+
+;; (use-package gruvbox-theme)
 
 ;; (use-package timu-rouge-theme)
-
 
 ;; (use-package catppuccin-theme
 ;;   :config
@@ -502,9 +516,9 @@
 
 (use-package ef-themes)
 
-(use-package solarized-theme)
+;; (use-package solarized-theme)
 
-(use-package modus-themes)
+;; (use-package modus-themes)
 
 ;; (use-package doom-modeline
 ;;   :custom
@@ -574,15 +588,15 @@
 
      '("+" . nil)
      '("!" . meow-kmacro-lines)
-     '("@" . meow-start-kmacro-or-insert-counter)
+     '("@" . meow-start-kmacro)
      '("#" . meow-end-or-call-kmacro)
      '("$" . meow-kmacro-matches)
      '("%" . query-replace)
      '("M-%" . meow-query-replace-regexp)
      '("^" . delete-indentation)
      '("&" . async-shell-command)
-     '("(" . nil)
-     '(")" . move-past-close-and-reindent)
+     '("(" . meow-start-kmacro)
+     '(")" . meow-end-or-call-kmacro)
      '("_" . meow-reverse)
 
      '("a" . meow-append)

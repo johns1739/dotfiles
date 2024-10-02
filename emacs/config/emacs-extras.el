@@ -97,7 +97,7 @@
 (keymap-set global-leader-map "c" compilation-map)
 (bind-keys :map compilation-map
            ("!" . project-async-shell-command)
-           ("." . compile-dwim)
+           ("." . compile-defun)
            ("," . compilation-goto-in-progress-buffer)
            ("b" . eval-buffer)
            ("c" . compile-dwim)
