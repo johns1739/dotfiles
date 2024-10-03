@@ -12,6 +12,9 @@
      ("melpa"  . 0))))  ; if all else fails, get it from melpa
 
 (menu-bar-mode -1)
-(tool-bar-mode -1)
+
+(with-eval-after-load 'tool-bar
+  (tool-bar-mode -1))
+
 (with-eval-after-load 'scroll-bar
   (scroll-bar-mode -1))

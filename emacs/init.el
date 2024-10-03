@@ -6,6 +6,7 @@
 
 (defvar use-minimal-emacs (not (display-graphic-p))
   "Load minimal emacs configuration.")
+(setq use-minimal-emacs nil)
 
 (setq gc-cons-percentage 0.2)
 (setq gc-cons-threshold (* 16 1000 1000))

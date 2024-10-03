@@ -46,6 +46,7 @@
   (which-key-mode))
 
 (use-package highlight-indent-guides
+  :if (display-graphic-p)
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :custom
@@ -181,6 +182,7 @@
          )))
 
 (use-package dumb-jump
+  :defer t
   :config
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
@@ -196,7 +198,7 @@
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
-  :requires yasnippet)
+  :after yasnippet)
 
 (use-package vertico
   :init
@@ -281,10 +283,12 @@
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (setq magit-list-refs-sortby "-creatordate"))
 
-(use-package git-link :defer t :bind (:map git-map ("y" . git-link)))
+(use-package git-link
+  :bind (:map git-map
+              ("y" . git-link)))
 
 (use-package diff-hl
-  :demand t
+  :if (display-graphic-p)
   :bind (:map git-map
               ("." . diff-hl-show-hunk)
               ("n" . diff-hl-show-hunk-next)
@@ -308,6 +312,7 @@
 
 (use-package popper
   :demand t
+  :if (display-graphic-p)
   :bind (:map toggle-map
               ("o" . popper-toggle)
               ("O" . popper-toggle-type)
@@ -379,9 +384,11 @@
   :config
   (xclip-mode 1))
 
-(use-package markdown-mode)
+(use-package markdown-mode
+  :mode "\\.md\\'")
 
-(use-package csv-mode)
+(use-package csv-mode
+  :mode "\\.csv\\'")
 
 (use-package python-ts-mode
   :straight nil ;; python-ts-mode is already built-in
@@ -503,7 +510,8 @@
   :commands (er/expand-region)
   :bind ("M-O" . er/expand-region))
 
-(use-package gruber-darker-theme)
+(use-package gruber-darker-theme
+  :if (display-graphic-p))
 
 ;; (use-package gruvbox-theme)
 
@@ -514,7 +522,8 @@
 ;;   ;; (catppuccin-reload)
 ;;   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
 
-(use-package ef-themes)
+(use-package ef-themes
+  :if (display-graphic-p))
 
 ;; (use-package solarized-theme)
 
@@ -573,7 +582,7 @@
      '("0" . meow-digit-argument))
 
     (meow-normal-define-key
-     '("=" . er/expand-region)
+     '("=" . nil)
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)
      '("8" . meow-expand-8)

@@ -1,6 +1,6 @@
 ;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
-(keymap-global-set "M-SPC" global-leader-map)
+(keymap-global-set "C-j" global-leader-map)
 
 
 ;; Go To
@@ -225,7 +225,7 @@
 
 ;; Buffer Maintenance
 (setq-default display-fill-column-indicator-column 100)
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+;; (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 (setq-default display-line-numbers-type t)
 (add-hook 'before-save-hook #'whitespace-cleanup)
 ;; (with-eval-after-load 'ispell
