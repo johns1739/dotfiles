@@ -633,7 +633,7 @@
      (cons "K" diagnostics-map)
 
      '("l" . meow-right)
-     '("L" . recenter)
+     '("L" . duplicate-dwim)
 
      '("m" . meow-join)
      '("M" . nil)

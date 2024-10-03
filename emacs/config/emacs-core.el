@@ -3,6 +3,8 @@
 (keymap-global-set "<remap> <list-buffers>" #'ibuffer)
 (keymap-global-set "M-o" #'other-window)
 (keymap-global-set "M-#" #'dictionary-lookup-definition)
+(keymap-global-set "M-L" #'duplicate-dwim)
+(setq duplicate-line-final-position 1)
 
 
 ;; Go To
