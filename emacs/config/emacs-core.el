@@ -157,3 +157,20 @@
 (setq inhibit-startup-message t)
 (setq use-dialog-box nil)
 (setq-default cursor-type 'bar)
+
+
+;; Error Handling
+;; https://emacspal.com/debugging-emacs-crashes-a-step-by-step-guide/
+(setq debug-on-error t) ; get backtraces
+(setq user-error-exceptions nil) ; treat errs as real errs
+(defun my-error-handler (err)
+  (message "Error: %S" err))
+(setq error-handler 'my-error-handler)
+
+
+;; Mouse
+(unless (display-graphic-p)
+  ;; activate mouse-based scrolling
+  (xterm-mouse-mode 1)
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
