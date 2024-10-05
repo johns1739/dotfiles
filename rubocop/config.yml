@@ -1,10 +1,11 @@
 require:
-    # - rubocop-minitest
+    - rubocop-minitest
     - rubocop-rails
     # - rubocop-factory_bot
     # - rubocop-thread_safety
     # - rubocop-rake
-    # - rubocop-performance
+    - rubocop-performance
+    - rubocop-rspec
 
 AllCops:
     SuggestExtensions: false
@@ -23,16 +24,34 @@ Style/FrozenStringLiteralComment:
     Enabled: No
 
 Style/StringLiterals:
-    EnforcedStyle: single_quotes # default
+    EnforcedStyle: double_quotes
 
 Style/StringLiteralsInInterpolation:
-    EnforcedStyle: single_quotes # default
+    EnforcedStyle: double_quotes
+
+Style/DoubleNegation:
+    Enabled: No
+
+# Style/TrailingCommaInArrayLiteral:
+#     EnforcedStyleForMultiline: comma
+
+# Style/TrailingCommaInHashLiteral:
+#     EnforcedStyleForMultiline: comma
+
+Style/EmptyMethod:
+    EnforcedStyle: expanded
 
 Layout/MultilineOperationIndentation:
     EnforcedStyle: aligned # default
 
 Layout/MultilineMethodCallIndentation:
-    EnforcedStyle: indented_relative_to_receiver
+    EnforcedStyle: indented_relative_to_receiver # default is aligned
+
+Layout/MultilineMethodCallBraceLayout:
+    EnforcedStyle: new_line
+
+Layout/MultilineMethodDefinitionBraceLayout:
+    EnforcedStyle: new_line
 
 Layout/LineLength:
     Max: 100 # default is 120
@@ -47,4 +66,21 @@ Metrics/ClassLength:
     Max: 150 # default is 100
 
 Metrics/AbcSize:
-    Enabled: No # too annoying
+    Enabled: Yes
+    Max: 20
+
+Metrics/ParameterLists:
+    Max: 10
+
+Metrics/BlockLength:
+    Enabled: Yes
+
+RSpec/MultipleMemoizedHelpers:
+    AllowSubject: true
+    Max: 10
+
+RSpec/NamedSubject:
+    EnforcedStyle: named_only
+
+RSpec/NestedGroups:
+    MaxNesting: 4
