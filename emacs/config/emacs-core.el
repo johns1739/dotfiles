@@ -159,15 +159,6 @@
 (setq-default cursor-type 'bar)
 
 
-;; Error Handling
-;; https://emacspal.com/debugging-emacs-crashes-a-step-by-step-guide/
-(setq debug-on-error t) ; get backtraces
-(setq user-error-exceptions nil) ; treat errs as real errs
-(defun my-error-handler (err)
-  (message "Error: %S" err))
-(setq error-handler 'my-error-handler)
-
-
 ;; Mouse
 (unless (display-graphic-p)
   ;; activate mouse-based scrolling

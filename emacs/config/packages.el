@@ -280,7 +280,7 @@
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
   :config
   ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  ;; (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (setq magit-list-refs-sortby "-creatordate"))
 
 (use-package git-link
