@@ -225,7 +225,7 @@
 
 ;; Buffer Maintenance
 (setq-default display-fill-column-indicator-column 100)
-(global-display-fill-column-indicator-mode)
+;; (global-display-fill-column-indicator-mode)
 (setq-default display-line-numbers-type t)
 (add-hook 'before-save-hook #'whitespace-cleanup)
 ;; (with-eval-after-load 'ispell

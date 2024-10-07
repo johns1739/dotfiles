@@ -379,6 +379,11 @@
   :bind (:map toggle-map
               ("z" . writeroom-mode)))
 
+(use-package disable-mouse
+  :unless (display-graphic-p)
+  :config
+ (global-disable-mouse-mode))
+
 (use-package xclip
   :unless (display-graphic-p)
   :config
@@ -432,6 +437,8 @@
          ("\\.exs$" . elixir-ts-mode)
          ("\\.heex$" . heex-ts-mode))
   :init
+  (defun elixir-setup ()
+    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  `((elixir-ts-mode heex-ts-mode) .
@@ -439,7 +446,9 @@
                              (w32-shell-dos-semantics))
                         '("language_server.bat")
                       (eglot-alternatives
-                       '("language_server.sh" "start_lexical.sh")))))))
+                       '("language_server.sh" "start_lexical.sh"))))))
+  :hook
+  (elixir-ts-mode . elixir-setup))
 
 (use-package gleam-ts-mode
   :straight (:host github :repo "gleam-lang/gleam-mode")
