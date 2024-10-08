@@ -360,12 +360,13 @@
 (use-package vterm
   :if (display-graphic-p)
   :bind (:map toggle-map
-              ("t" . vterm-dwim))
+              ("t" . vterm-project)
+              ("T" . vterm))
   :init
-  (defun vterm-dwim ()
+  (defun vterm-project ()
     (interactive)
     (let ((default-directory (or (project-directory) default-directory)))
-      (vterm)))
+      (vterm-other-window)))
   (defun vterm-named ()
     (interactive)
     (vterm (read-string "Session name: ")))
@@ -377,7 +378,8 @@
 (use-package writeroom-mode
   :if (display-graphic-p)
   :bind (:map toggle-map
-              ("z" . writeroom-mode)))
+              ("z" . writeroom-mode)
+              ("Z" . global-writeroom-mode)))
 
 (use-package disable-mouse
   :unless (display-graphic-p)

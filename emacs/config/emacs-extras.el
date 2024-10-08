@@ -3,6 +3,10 @@
 (keymap-global-set "C-j" global-leader-map)
 
 
+;; Project
+(keymap-set global-leader-map "p" project-prefix-map)
+
+
 ;; Go To
 (keymap-set global-leader-map "g" goto-map)
 
@@ -31,6 +35,7 @@
   (interactive)
   (select-window (split-window-right)))
 
+
 ;; Tab Movement
 (defvar-keymap tab-movement-map :doc "Tab movement map")
 (keymap-set goto-map "t" tab-movement-map)
@@ -54,6 +59,7 @@
            ("n" . org-search-view)
            ("N" . org-occur-in-agenda-files)
            ("t" . load-theme))
+(setq xref-search-program 'ripgrep)
 
 
 ;; Completion
@@ -74,13 +80,19 @@
 (defvar-keymap toggle-map :doc "Toggle map")
 (keymap-set global-leader-map "t" toggle-map)
 (bind-keys :map toggle-map
-           ("f" . set-font-size))
-(defun set-font-size ()
-  "Set the font size of Emacs"
-  (interactive)
-  (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
-    (set-face-attribute 'default nil :height (* 10 font-size))
-    (message "Font size set to %s" font-size)))
+           ("i" . display-fill-column-indicator-mode)
+           ("I" . global-display-fill-column-indicator-mode)
+           ("l" . display-line-numbers-mode)
+           ("L" . global-display-line-numbers-mode))
+(when (display-graphic-p)
+  (bind-keys :map toggle-map
+             ("f" . set-font-size))
+  (defun set-font-size ()
+    "Set the font size of Emacs"
+    (interactive)
+    (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
+      (set-face-attribute 'default nil :height (* 10 font-size))
+      (message "Font size set to %s" font-size))))
 
 
 ;; Git
@@ -224,9 +236,6 @@
 
 
 ;; Buffer Maintenance
-(setq-default display-fill-column-indicator-column 100)
-;; (global-display-fill-column-indicator-mode)
-(setq-default display-line-numbers-type t)
 (add-hook 'before-save-hook #'whitespace-cleanup)
 ;; (with-eval-after-load 'ispell
 ;;   (when (executable-find ispell-program-name)
@@ -287,6 +296,8 @@
 (setq-default bidi-paragraph-direction 'left-to-right)
 (setq-default bidi-inhibit-bpa t)
 (setq-default fill-column 80)
+(setq-default display-fill-column-indicator-column 120)
+(setq-default display-line-numbers-type t)
 
 
 ;; Eshell & Shells
@@ -421,13 +432,25 @@
                 nil)))
     (propertize (mode-line-buffer-name) 'face face)))
 
+(defvar mode-line-buffer-name-size 60
+  "Max size of the buffer-name in the mode line.")
+
+(defvar mode-line-buffer-name-squish-method #'squish-path-truncate-left
+  "Squish method to use when mode-line-buffer-name overflows.")
+
 (defun mode-line-buffer-name ()
   (if (buffer-file-name)
-      (squish-path (relative-file-name) 50)
+      (funcall mode-line-buffer-name-squish-method (relative-file-name) mode-line-buffer-name-size)
     (buffer-name)))
 
-(defun squish-path (path max-length)
-  "Squish path to max length."
+(defun squish-path-truncate-left (path max-length)
+  "Squish path by truncating the left to max length."
+  (if (> (length path) max-length)
+      (string-truncate-left path max-length)
+    path))
+
+(defun squish-path-to-initials (path max-length)
+  "Squish path to max length by replacing folder names with initials."
   (if (> (length path) max-length)
       ;; TODO: f-split sometimes not autoloaded ???
       (let* ((parts (file-name-split path))

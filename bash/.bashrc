@@ -1,4 +1,4 @@
-PS1="[\w]\$ "
+PS1="\w \$ "
 
 export EDITOR="emacs"
 export SUDO_EDITOR="$EDITOR"
