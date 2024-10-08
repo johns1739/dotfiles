@@ -496,6 +496,5 @@
                 "%n   %o  L%l%n%[%]  "
                 (:eval (flymake-mode-line-format))
                 " "
-                "%[" (:eval (mode-line-major-mode-format)) "%]"
-                mode-line-end-spaces
-                " %-"))
+                "%[" (:eval (mode-line-major-mode-format)) "%] "
+                mode-line-end-spaces))
