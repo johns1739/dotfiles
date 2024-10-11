@@ -14,7 +14,7 @@
 (menu-bar-mode -1)
 
 (with-eval-after-load 'tool-bar
-  (tool-bar-mode -1))
+  (setq tool-bar-mode nil))
 
 (with-eval-after-load 'scroll-bar
-  (scroll-bar-mode -1))
+  (setq scroll-bar-mode nil))

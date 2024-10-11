@@ -4,7 +4,7 @@ require:
     # - rubocop-factory_bot
     # - rubocop-thread_safety
     # - rubocop-rake
-    - rubocop-performance
+    # - rubocop-performance
     - rubocop-rspec
 
 AllCops:
@@ -83,4 +83,4 @@ RSpec/NamedSubject:
     EnforcedStyle: named_only
 
 RSpec/NestedGroups:
-    MaxNesting: 4
+    MaxNesting: 5

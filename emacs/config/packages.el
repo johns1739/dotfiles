@@ -41,6 +41,23 @@
 ;;           `(("." . ,undo-tree-history-directory))))
 ;;   (global-undo-tree-mode 1))
 
+;; (use-package copilot
+;;   :disabled t
+;;   :if (display-graphic-p)
+;;   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+;;   :bind (:map copilot-completion-map
+;;               ("M-f" . copilot-accept-completion-by-word)
+;;               ("M-e" . copilot-accept-completion-by-line)
+;;               ("M-n" . copilot-next-completion)
+;;               ("M-p" . copilot-previous-completion)
+;;               ("M-<tab>" . copilot-accept-completion))
+;;   :custom
+;;   (copilot-indent-offset-warning-disable t)
+;;   :hook
+;;   (prog-mode . copilot-mode)
+;;   :config
+;;   (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
+
 (use-package which-key
   :config
   (which-key-mode))
@@ -56,14 +73,6 @@
   (highlight-indent-guides-auto-even-face-perc 0)
   (highlight-indent-guides-auto-odd-face-perc 0)
   (highlight-indent-guides-auto-character-face-perc 200))
-
-(use-package dashboard
-  :if (display-graphic-p)
-  :custom
-  (dashboard-center-content t)
-  (dashboard-vertically-center-content t)
-  :config
-  (dashboard-setup-startup-hook))
 
 (use-package ace-window
   :defer t
@@ -113,17 +122,16 @@
          ("j" . consult-register-load)
          ("J" . consult-register-store)
          :map search-map
+         ("SPC" . consult-project-buffer)
          ("." . consult-ripgrep-symbol-at-point)
-         ("c" . consult-compile-error)
-         ("F" . consult-focus-lines)
-         ("g" . consult-git-grep)
-         ("h" . consult-outline)
+         ("o" . consult-outline)
+         ("h" . consult-info)
          ("i" . consult-imenu)
          ;; ("I" . consult-imenu-multi) -- takes too long to be useful.
          ("j" . consult-register)
-         ("k" . consult-flymake)
+         ("k" . consult-keep-lines)
          ("l" . consult-line)
-         ("L" . consult-line-multi)
+         ("L" . consult-focus-lines)
          ("m" . consult-mark)
          ("M" . consult-global-mark)
          ("s" . consult-ripgrep)
@@ -223,24 +231,12 @@
   :config
   (marginalia-mode 1))
 
-;; (use-package exec-path-from-shell
-;;   :if (memq window-system '(mac ns))
-;;   :custom
-;;   (exec-path-from-shell-warn-duration-millis 1000)
-;;   :config
-;;   (dolist (var '(
-;;                  "SSH_AUTH_SOCK"
-;;                  "SSH_AGENT_PID"
-;;                  "GPG_AGENT_INFO"
-;;                  "GOPATH"
-;;                  "LANG"
-;;                  "LC_CTYPE"
-;;                  "NIX_SSL_CERT_FILE"
-;;                  "NIX_PATH"
-;;                  "TIINGO_API_TOKEN"
-;;                  "RUBYOPT"))
-;;     (add-to-list 'exec-path-from-shell-variables var))
-;;   (exec-path-from-shell-initialize))
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :custom
+  (exec-path-from-shell-warn-duration-millis 1000)
+  :config
+  (exec-path-from-shell-initialize))
 
 ;; (use-package flycheck
 ;;   ;; https://www.flycheck.org/en/latest/
@@ -309,6 +305,14 @@
 ;;   :after magit
 ;;   :config
 ;;   (magit-todos-mode 1))
+
+(use-package dashboard
+  :if (display-graphic-p)
+  :custom
+  (dashboard-center-content t)
+  (dashboard-vertically-center-content t)
+  :config
+  (dashboard-setup-startup-hook))
 
 (use-package popper
   :demand t
@@ -384,7 +388,7 @@
 (use-package disable-mouse
   :unless (display-graphic-p)
   :config
- (global-disable-mouse-mode))
+  (global-disable-mouse-mode))
 
 (use-package xclip
   :unless (display-graphic-p)
@@ -409,6 +413,22 @@
 (use-package ruby-ts-mode
   :defer t
   :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 `((ruby-mode ruby-ts-mode)
+                   . ("solargraph" "stdio" :initializationOptions
+                      (;; options
+                       :useBundler t
+                       :diagnostics t
+                       :completion t
+                       :hover t
+                       :autoformat :json-false
+                       :formatting t
+                       :symbols t
+                       :definitions t
+                       :rename t
+                       :references t
+                       :folding t)))))
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   (defun rails-compile ()
     (interactive)
@@ -593,7 +613,7 @@
      '("0" . meow-digit-argument))
 
     (meow-normal-define-key
-     '("=" . nil)
+     '("=" . meow-repeat)
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)
      '("8" . meow-expand-8)
@@ -707,7 +727,7 @@
      '("\\" . cycle-spacing)
      '("|" . repeat-complex-command)
 
-     '("'" . repeat)
+     '("'" . meow-last-buffer)
      '("\"" . nil)
 
      '(";" . meow-comment)
