@@ -4,7 +4,7 @@
 ;; https://karthinks.com/
 ;; https://emacsredux.com/
 
-(defvar use-minimal-emacs (not (display-graphic-p))
+(defvar use-minimal-emacs nil
   "Load minimal emacs configuration.")
 
 (setq use-package-verbose t)
@@ -20,10 +20,9 @@
 
 (load (locate-user-emacs-file "config/emacs-core.el"))
 (setq custom-file (locate-user-emacs-file "custom.el"))
-(message "OKKK")
-(load custom-file)
+(load custom-file 'noerror)
 
-;; emacs-user.el user-defined settings
+;; Custom Settings
 
 ;; (setq xref-search-program 'ripgrep)
 ;; (setq find-program 'fd)

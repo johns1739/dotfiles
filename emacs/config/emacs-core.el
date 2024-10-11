@@ -10,7 +10,7 @@
 ;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-global-set "C-j" global-leader-map)
-
+(keymap-global-set "M-j" global-leader-map)
 
 ;; Go To / Jump
 (keymap-set global-leader-map "g" goto-map)
@@ -84,14 +84,15 @@
 
 
 ;; Search / Find
+(keymap-set global-leader-map "s" search-map)
 (bind-keys :map search-map
            ("." . rgrep)
            ("," . rgrep)
            ("/" . isearch-forward-thing-at-point)
            ("?" . occur)
            ("b" . bookmark-jump)
-           ("d" . dired)
-           ("f" . find-file)
+           ("d" . project-dired)
+           ("f" . project-find-file)
            ("i" . imenu)
            ("s" . rgrep)
            ("r" . recentf-open))
@@ -101,6 +102,7 @@
 
 
 ;; Project
+(keymap-set global-leader-map "p" project-prefix-map)
 (bind-keys :map project-prefix-map
            ("%" . project-query-replace-regexp)
            ("SPC" . project-switch-to-buffer))
@@ -111,7 +113,7 @@
 (keymap-global-set "M-I" #'hippie-expand)
 (defvar-keymap completion-map :doc "Completion map")
 (keymap-set global-leader-map "i" completion-map)
-(setq fido-vertical-mode t)
+(fido-vertical-mode 1)
 (setq completion-at-point-functions '(dabbrev-capf))
 (setq completion-cycle-threshold 3)
 (setq completions-detailed t)
@@ -317,21 +319,21 @@
 
 
 ;; Modes
-(setq auto-save-visited-mode nil) ;; Annoying with whitespace cleanup constantly moving the point
-(setq column-number-mode nil)
-(setq delete-selection-mode nil)
-(setq desktop-save-mode nil) ;; After a while, CPU gets bogged down with all tracked files under LSP
-(setq electric-indent-mode t)
-(setq electric-pair-mode nil)
-(setq global-auto-revert-mode t)
-(setq global-eldoc-mode t)
-(setq global-so-long-mode t)
-(setq line-number-mode t)
-(setq pixel-scroll-precision-mode t)
-(setq repeat-mode nil) ;; Sometimes gets in the way.
-(setq save-place-mode t)
-(setq savehist-mode t)
-(setq window-divider-mode nil)
+(auto-save-visited-mode -1) ;; Annoying with whitespace cleanup constantly moving the point
+(column-number-mode -1)
+(delete-selection-mode -1)
+(desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
+(electric-indent-mode t)
+(electric-pair-mode -1)
+(global-auto-revert-mode t)
+(global-eldoc-mode t)
+(global-so-long-mode t)
+(line-number-mode t)
+(pixel-scroll-precision-mode t)
+(repeat-mode nil) ;; Sometimes gets in the way.
+(save-place-mode t)
+(savehist-mode t)
+(window-divider-mode -1)
 (setq-default indent-tabs-mode nil)
 
 
