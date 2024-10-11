@@ -33,7 +33,7 @@
            ("o" . other-window)
            ("p" . previous-error)
            ("u" . goto-address-at-point))
-(setq eldoc-echo-area-use-multiine-p nil)
+(setq eldoc-echo-area-use-multiline-p nil)
 (setq next-error-recenter '(4))
 (setq next-error-highlight 1.0)
 (setq next-error-highlight-no-select 1.0)
