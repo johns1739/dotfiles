@@ -46,7 +46,11 @@
 (bind-keys :map window-movement-map
            ("SPC" . switch-to-buffer-other-window)
            ("f" . find-file-other-window)
-           ("k" . kill-buffer)
+           ("h" . windmove-left)
+           ("j" . windmove-down)
+           ("k" . windmove-up)
+           ("l" . windmove-right)
+           ("K" . kill-buffer)
            ("o" . other-window)
            ("p" . project-other-window-command)
            ("=" . balance-windows)
@@ -91,14 +95,13 @@
            ("/" . isearch-forward-thing-at-point)
            ("?" . occur)
            ("b" . bookmark-jump)
-           ("d" . project-dired)
+           ("d" . project-find-dir)
            ("f" . project-find-file)
            ("i" . imenu)
-           ("s" . rgrep)
+           ("s" . project-find-regexp)
            ("r" . recentf-open))
 (setq isearch-wrap-pause 'no)
 (setq register-preview-delay 0.5)
-(recentf-mode 1)
 
 
 ;; Project
@@ -319,6 +322,7 @@
 
 
 ;; Modes
+
 (auto-save-visited-mode -1) ;; Annoying with whitespace cleanup constantly moving the point
 (column-number-mode -1)
 (delete-selection-mode -1)
@@ -330,11 +334,12 @@
 (global-so-long-mode t)
 (line-number-mode t)
 (pixel-scroll-precision-mode t)
+(recentf-mode 1)
 (repeat-mode nil) ;; Sometimes gets in the way.
 (save-place-mode t)
 (savehist-mode t)
-(window-divider-mode -1)
 (setq-default indent-tabs-mode nil)
+(window-divider-mode -1)
 
 
 ;; Display Buffer
