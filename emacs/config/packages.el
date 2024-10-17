@@ -67,7 +67,7 @@
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :custom
-  (highlight-indent-guides-method 'bitmap)
+  (highlight-indent-guides-method 'character)
   (highlight-indent-guides-character ?|)
   (highlight-indent-guides-responsive 'stack)
   (highlight-indent-guides-auto-even-face-perc 0)
