@@ -33,7 +33,6 @@
            ("o" . other-window)
            ("p" . previous-error)
            ("u" . goto-address-at-point))
-(setq eldoc-echo-area-use-multiline-p nil)
 (setq next-error-recenter '(4))
 (setq next-error-highlight 1.0)
 (setq next-error-highlight-no-select 1.0)
@@ -356,7 +355,8 @@
                (display-buffer-reuse-window display-buffer-pop-up-window)
                (inhibit-same-window . t)
                (window-height . 10)))
-(setq max-mini-window-height 0.3)
+(setq max-mini-window-height 0.2)
+(setq eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
 
 
 ;; Settings
