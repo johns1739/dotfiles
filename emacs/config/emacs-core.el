@@ -120,8 +120,8 @@
 (setq completion-cycle-threshold 3)
 (setq completions-detailed t)
 (setq tab-always-indent t)
-(setq completion-styles '(basic flex))
-(setq completion-category-overrides '((file (styles . (partial-completion)))))
+(setq completion-styles '(basic partial-completion emacs22 substring flex))
+(setq completion-category-overrides '((file (styles . (basic partial-completion)))))
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 (setq hippie-expand-verbose t)
 (setq hippie-expand-try-functions-list '(try-expand-dabbrev-visible

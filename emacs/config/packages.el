@@ -17,7 +17,8 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic)))
+  (completion-styles '(orderless basic flex))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package embark
   :bind (:map global-leader-map
