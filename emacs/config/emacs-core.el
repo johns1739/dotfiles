@@ -397,7 +397,7 @@
 
 ;; Scrolling
 (setq auto-window-vscroll nil)
-(setq scroll-margin 3)
+(setq scroll-margin 2)
 (setq scroll-conservatively 101)
 (setq scroll-preserve-screen-position t)
 (setq fast-but-imprecise-scrolling t)

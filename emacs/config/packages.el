@@ -514,7 +514,7 @@
 
 (use-package yaml-ts-mode
   :defer t
-  :mode "\\(\\.yaml\\|.yml\\)\\'")
+  :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
 
 (use-package sqlformat
   :commands (sqlformat)
