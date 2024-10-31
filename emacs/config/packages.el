@@ -17,7 +17,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic flex))
+  (completion-styles '(basic partial-completion orderless))
   (completion-category-overrides '((file (styles basic partial-completion)))))
 
 (use-package embark

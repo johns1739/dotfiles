@@ -35,7 +35,7 @@
 ;;   (when (display-graphic-p)
 ;;     (set-face-attribute 'default nil
 ;;                         :family "JetBrainsMono Nerd Font"
-;;                         :height (car toggle-big-font-sizes)
+;;                         :height 140
 ;;                         :weight 'light ;; thin, light, medium, regular
 ;;                         :slant 'normal ;; italic, oblique, normal, roman
 ;;                         :width 'normal)

@@ -373,11 +373,12 @@
 (setq-default bidi-paragraph-direction 'left-to-right)
 (setq-default bidi-inhibit-bpa t)
 (setq-default fill-column 80)
-(setq-default display-fill-column-indicator-column 120)
+(setq-default display-fill-column-indicator-column 100)
 (setq-default display-line-numbers-type t)
 (setq-default tab-width 4)
 (setq eshell-scroll-to-bottom-on-output 'this)
 (setq read-process-output-max (* 1024 1024))
+(put 'narrow-to-region 'disabled nil)
 
 
 ;; Backups & Versioning
