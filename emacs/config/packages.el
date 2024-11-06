@@ -495,10 +495,12 @@
   (js-indent-level 2))
 
 (use-package lisp-mode
-  :defer t
+  :mode
+  (("\\.lisp$" . common-lisp-mode)
+   ("\\.clisp$" . common-lisp-mode))
   :straight nil
   :config
-  (load (expand-file-name "~/.quicklisp/slime-helper.el"))
+  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t=noerror
   (setq inferior-lisp-program "sbcl"))
 
 (use-package erlang
