@@ -17,8 +17,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(basic partial-completion orderless))
-  (completion-category-overrides '((file (styles basic partial-completion)))))
+  (completion-styles '(basic partial-completion substring initials flex orderless)))
 
 (use-package embark
   :bind (:map global-leader-map
@@ -65,15 +64,17 @@
 
 (use-package highlight-indent-guides
   :if (display-graphic-p)
+  :bind (:map toggle-map
+              ("g" . highlight-indent-guides-mode))
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :custom
-  (highlight-indent-guides-method 'character)
+  (highlight-indent-guides-method 'bitmap)
   (highlight-indent-guides-character ?|)
-  (highlight-indent-guides-responsive 'stack)
-  (highlight-indent-guides-auto-even-face-perc 0)
-  (highlight-indent-guides-auto-odd-face-perc 0)
-  (highlight-indent-guides-auto-character-face-perc 200))
+  (highlight-indent-guides-responsive 'top)
+  (highlight-indent-guides-auto-top-even-face-perc 0)
+  (highlight-indent-guides-auto-top-odd-face-perc 0)
+  (highlight-indent-guides-auto-top-character-face-perc 30))
 
 (use-package ace-window
   :defer t
@@ -491,6 +492,13 @@
   :mode "\\.js\\'"
   :custom
   (js-indent-level 2))
+
+(use-package lisp-mode
+  :defer t
+  :straight nil
+  :config
+  (load (expand-file-name "~/.quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "sbcl"))
 
 (use-package erlang
   :straight nil
