@@ -488,8 +488,9 @@
 (use-package elm-mode
   :defer t)
 
-(use-package js
-  :mode "\\.js\\'"
+(use-package js-ts-mode
+  :straight nil
+  :mode ("\\.js$" . js-ts-mode)
   :custom
   (js-indent-level 2))
 
