@@ -48,7 +48,7 @@
       ;; simple-modeline-segment-input-method
       ;; simple-modeline-segment-eol
       ;; simple-modeline-segment-encoding
-      simple-modeline-segment-vc
+      ;; simple-modeline-segment-vc
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
@@ -64,17 +64,6 @@
 (use-package embark-consult
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
-
-;; (use-package undo-tree
-;;   :custom
-;;   (undo-tree-visualizer-timestamps t)
-;;   :config
-;;   (let ((undo-tree-history-directory (locate-user-emacs-file "undo-tree-history")))
-;;     (unless (file-exists-p undo-tree-history-directory)
-;;       (make-directory undo-tree-history-directory))
-;;     (setq undo-tree-history-directory-alist
-;;           `(("." . ,undo-tree-history-directory))))
-;;   (global-undo-tree-mode 1))
 
 ;; (use-package copilot
 ;;   :disabled t
@@ -255,12 +244,6 @@
   (setq completion-cycle-threshold nil)
   :config
   (vertico-mode 1))
-
-;; ;; Buggy, sometimes data gets clipped
-;; (use-package vertico-posframe
-;;   :if (display-graphic-p)
-;;   :config
-;;   (vertico-posframe-mode 1))
 
 (use-package marginalia
   :init
@@ -622,18 +605,6 @@
 
 ;; (use-package modus-themes)
 
-;; (use-package doom-modeline
-;;   :custom
-;;   (doom-modeline-icon nil)
-;;   (doom-modeline-minor-modes nil)
-;;   (doom-modeline-indent-info nil)
-;;   (doom-modeline-buffer-encoding nil)
-;;   (doom-modeline-vcs-max-length 20)
-;;   (doom-modeline-display-misc-in-all-mode-lines nil)
-;;   (doom-modeline-env-version nil)
-;;   :config
-;;   (doom-modeline-mode 1))
-
 (use-package meow
   :custom
   (meow-use-clipboard t)
@@ -642,13 +613,11 @@
   (meow-expand-hint-remove-delay 2)
   :init
   (defun meow-setup ()
-    (setq mode-line-front-space "")
     (setq meow-cursor-type-motion '(hbar . 2))
     (set-face-attribute 'meow-insert-indicator nil :inherit 'bold)
     (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
-    (meow-setup-indicator)
     (meow-motion-overwrite-define-key
      '("Q" . meow-quit)
      '("j" . meow-next)
@@ -762,7 +731,7 @@
      '("T" . nil)
 
      '("u" . meow-undo)
-     '("U" . meow-undo-in-selection)
+     '("U" . undo-redo)
 
      '("v" . meow-page-down)
      '("V" . meow-page-up)

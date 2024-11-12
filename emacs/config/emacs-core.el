@@ -125,15 +125,18 @@
 (setq completion-category-overrides '((file (styles . (basic partial-completion)))))
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 (setq hippie-expand-verbose t)
-(setq hippie-expand-try-functions-list '(try-expand-dabbrev-visible
-                                         try-expand-line
-                                         try-expand-list
-                                         try-expand-dabbrev
-                                         try-expand-line-all-buffers
-                                         try-expand-list-all-buffers
-                                         try-expand-dabbrev-all-buffers
-                                         try-complete-file-name-partially
-                                         try-complete-file-name))
+(setq hippie-expand-try-functions-list
+      '(
+        try-expand-list
+        try-expand-line
+        try-expand-dabbrev-visible
+        try-expand-dabbrev
+        try-expand-list-all-buffers
+        try-expand-line-all-buffers
+        try-expand-dabbrev-all-buffers
+        try-complete-file-name-partially
+        try-complete-file-name
+        ))
 (defadvice hippie-expand (around hippie-expand-case-fold)
   "Try to do case-sensitive matching (not effective with all functions)."
   (let ((case-fold-search nil))
@@ -225,11 +228,11 @@
                                       1)) ;; hyperlink
   (add-to-list 'compilation-error-regexp-alist-alist
                '(rspec-backtrace-target "^ +# \\(./[A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)"
-                    1 ;; file
-                    2 ;; line
-                    nil ;; col
-                    nil ;; type
-                    1)) ;; hyperlink
+                                        1 ;; file
+                                        2 ;; line
+                                        nil ;; col
+                                        nil ;; type
+                                        1)) ;; hyperlink
   (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
   (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
   (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
