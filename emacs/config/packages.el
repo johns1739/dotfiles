@@ -1,15 +1,15 @@
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name
-    "straight/repos/straight.el/bootstrap.el"
-    (or (bound-and-true-p straight-base-dir)
-        user-emacs-directory)))
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
       (bootstrap-version 7))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-    (url-retrieve-synchronously
-     "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-     'silent 'inhibit-cookies)
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -19,12 +19,51 @@
   :custom
   (completion-styles '(basic partial-completion substring initials flex orderless)))
 
+(use-package simple-modeline
+  :hook (after-init . simple-modeline-mode)
+  :init
+  (defun simple-modeline-segment-project-name ()
+    "Display project name in mode line."
+    (if (project-current)
+        (propertize (project-name (project-current)) 'face 'bold)
+      ""))
+  (defun simple-modeline-segment-buffer-name-2 ()
+    "Display buffer name in mode line."
+    (concat " " (mode-line-buffer-name)))
+  (defun mode-line-buffer-name ()
+    (if (buffer-file-name)
+        ;; (squish-path-truncate-left (relative-file-path) 60)
+        (string-truncate-left (relative-file-name) 60)
+      (buffer-name)))
+  :custom
+  (simple-modeline-segments
+   '((
+      ;; TODO: Meow-modeline-indicator
+      ;; mode-line-front-space
+      meow-indicator
+      simple-modeline-segment-modified
+      ;; simple-modeline-segment-project-name
+      ;; simple-modeline-segment-buffer-name
+      simple-modeline-segment-buffer-name-2
+      simple-modeline-segment-position)
+     (
+      ;; simple-modeline-segment-minor-modes
+      ;; simple-modeline-segment-input-method
+      ;; simple-modeline-segment-eol
+      ;; simple-modeline-segment-encoding
+      simple-modeline-segment-vc
+      simple-modeline-segment-misc-info
+      simple-modeline-segment-process
+      simple-modeline-segment-major-mode
+      ;; mode-line-end-spaces
+      ))))
+
 (use-package embark
   :bind (:map global-leader-map
-          ("a" . embark-act)
-          ("A" . embark-act-all)
-          ("e" . embark-collect)
-          ("E" . embark-export)))
+              ("a" . embark-act)
+              ("A" . embark-act-all)
+              ("e" . embark-collect)
+              ("E" . embark-export)))
 
 (use-package embark-consult
   :hook
@@ -66,8 +105,8 @@
   :if (display-graphic-p)
   :bind (:map toggle-map
               ("g" . highlight-indent-guides-mode))
-  :hook
-  (prog-mode . highlight-indent-guides-mode)
+  ;; :hook
+  ;; (prog-mode . highlight-indent-guides-mode)
   :custom
   (highlight-indent-guides-method 'bitmap)
   (highlight-indent-guides-character ?|)
@@ -79,16 +118,16 @@
 (use-package ace-window
   :defer t
   :bind  (([remap other-window] . ace-window)
-      ;; ([remap delete-window] . ace-delete-window)
-      ;; ([remap delete-other-windows] . ace-delete-other-windows)
-      ([remap window-swap-states] . ace-swap-window)
-      ([remap evil-window-next] . ace-window)))
+          ;; ([remap delete-window] . ace-delete-window)
+          ;; ([remap delete-other-windows] . ace-delete-other-windows)
+          ([remap window-swap-states] . ace-swap-window)
+          ([remap evil-window-next] . ace-window)))
 
 (use-package avy
   :defer t
   :bind (:map goto-map
-          ("l" . avy-goto-line)
-          ("g" . avy-goto-char-2)))
+              ("l" . avy-goto-line)
+              ("g" . avy-goto-char-2)))
 
 (use-package consult
   :init
@@ -101,52 +140,52 @@
     (interactive)
     (consult-ripgrep nil (format "%s -- -w" (thing-at-point 'symbol))))
   :bind (([remap Info-search] . consult-info)
-     ([remap bookmark-jump] . consult-bookmark)
-     ([remap goto-line] . consult-goto-line)
-     ([remap imenu] . consult-imenu)
-     ([remap keep-lines] . consult-keep-lines)
-     ([remap isearch-edit-string] . consult-isearch-history)
-     ([remap project-switch-to-buffer] . consult-project-buffer)
-     ([remap repeat-complex-command] . consult-complex-command)
-     ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
-     ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
-     ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-     ([remap switch-to-buffer] . consult-buffer)
-     ([remap yank-pop] . consult-yank-pop)
-     ([remap load-theme] . consult-theme)
-     ([remap recentf-open] . consult-recent-file)
-     ([remap org-search-view] . consult-org-agenda)
-     :map diagnostics-map
-     ("/" . consult-flymake)
-     :map compilation-map
-     ("/" . consult-compile-error)
-     :map goto-map
-     ("j" . consult-register-load)
-     ("J" . consult-register-store)
-     :map search-map
-     ("SPC" . consult-project-buffer)
-     ("." . consult-ripgrep-symbol-at-point)
-     ("o" . consult-outline)
-     ("h" . consult-info)
-     ("i" . consult-imenu)
-     ;; ("I" . consult-imenu-multi) -- takes too long to be useful.
-     ("j" . consult-register)
-     ("k" . consult-keep-lines)
-     ("l" . consult-line)
-     ("L" . consult-focus-lines)
-     ("m" . consult-mark)
-     ("M" . consult-global-mark)
-     ("s" . consult-ripgrep)
-     ("y" . consult-yank-from-kill-ring))
+         ([remap bookmark-jump] . consult-bookmark)
+         ([remap goto-line] . consult-goto-line)
+         ([remap imenu] . consult-imenu)
+         ([remap keep-lines] . consult-keep-lines)
+         ([remap isearch-edit-string] . consult-isearch-history)
+         ([remap project-switch-to-buffer] . consult-project-buffer)
+         ([remap repeat-complex-command] . consult-complex-command)
+         ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
+         ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
+         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+         ([remap switch-to-buffer] . consult-buffer)
+         ([remap yank-pop] . consult-yank-pop)
+         ([remap load-theme] . consult-theme)
+         ([remap recentf-open] . consult-recent-file)
+         ([remap org-search-view] . consult-org-agenda)
+         :map diagnostics-map
+         ("/" . consult-flymake)
+         :map compilation-map
+         ("/" . consult-compile-error)
+         :map goto-map
+         ("j" . consult-register-load)
+         ("J" . consult-register-store)
+         :map search-map
+         ("SPC" . consult-project-buffer)
+         ("." . consult-ripgrep-symbol-at-point)
+         ("o" . consult-outline)
+         ("h" . consult-info)
+         ("i" . consult-imenu)
+         ;; ("I" . consult-imenu-multi) -- takes too long to be useful.
+         ("j" . consult-register)
+         ("k" . consult-keep-lines)
+         ("l" . consult-line)
+         ("L" . consult-focus-lines)
+         ("m" . consult-mark)
+         ("M" . consult-global-mark)
+         ("s" . consult-ripgrep)
+         ("y" . consult-yank-from-kill-ring))
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package corfu
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el")
-           :includes (corfu-echo corfu-history corfu-popupinfo))
+                   :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
-          ("RET" . nil))
+              ("RET" . nil))
   :custom
   (corfu-auto t) ; Enable auto completion
   (corfu-auto-delay 0.5) ; Enable auto completion
@@ -171,25 +210,25 @@
 (use-package cape
   ;; Cape provides Completion At Point Extensions
   :bind (:map completion-map
-          ("." . cape-dabbrev)
-          ("a" . cape-abbrev)
-          ("e" . cape-elisp-block)
-          ("f" . cape-file)
-          ("h" . cape-history)
-          ("k" . cape-keyword)
-          ("l" . cape-line)
-          ("s" . cape-elisp-symbol)
-          ("d" . cape-dict))
+              ("." . cape-dabbrev)
+              ("a" . cape-abbrev)
+              ("e" . cape-elisp-block)
+              ("f" . cape-file)
+              ("h" . cape-history)
+              ("k" . cape-keyword)
+              ("l" . cape-line)
+              ("s" . cape-elisp-symbol)
+              ("d" . cape-dict))
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
-     #'cape-abbrev
-     #'cape-keyword
-     #'cape-file
-     #'cape-dict
-     #'cape-elisp-symbol
-     ;; #'cape-line ;; Kinda buggy
-     )))
+         #'cape-abbrev
+         #'cape-keyword
+         #'cape-file
+         #'cape-dict
+         #'cape-elisp-symbol
+         ;; #'cape-line ;; Kinda buggy
+         )))
 
 (use-package dumb-jump
   :defer t
@@ -240,39 +279,40 @@
   :config
   (exec-path-from-shell-initialize))
 
-;; (use-package flycheck
-;;   ;; https://www.flycheck.org/en/latest/
-;;   :defer t
-;;   :bind (:repeat-map flycheck-error-repeat-map
-;;                      ("n" . flycheck-next-error)
-;;                      ("p" . flycheck-previous-error)
-;;                      ("." . flycheck-display-error-at-point))
-;;   :init
-;;   (defun flycheck-set-bindings ()
-;;     (bind-keys :map (current-local-map)
-;;                ([remap consult-flymake] . consult-flycheck)
-;;                ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
-;;                ([remap flymake-show-buffer-diagnostics] . flycheck-list-errors)
-;;                ([remap flymake-show-project-diagnostics] . nil)
-;;                ([remap flymake-goto-next-error] . flycheck-next-error)
-;;                ([remap flymake-goto-prev-error] . flycheck-previous-error)))
-;;   :custom
-;;   (flycheck-indication-mode 'right-fringe)
-;;   :hook
-;;   (flycheck-mode . flycheck-set-bindings))
+(use-package flycheck
+  ;; https://www.flycheck.org/en/latest/
+  :defer t
+  :bind (:repeat-map flycheck-error-repeat-map
+                     ("n" . flycheck-next-error)
+                     ("p" . flycheck-previous-error)
+                     ("." . flycheck-display-error-at-point))
+  :init
+  (defun flycheck-set-bindings ()
+    (bind-keys :map (current-local-map)
+               ([remap consult-flymake] . consult-flycheck)
+               ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
+               ([remap flymake-show-buffer-diagnostics] . flycheck-list-errors)
+               ([remap flymake-show-project-diagnostics] . nil)
+               ([remap flymake-goto-next-error] . flycheck-next-error)
+               ([remap flymake-goto-prev-error] . flycheck-previous-error)
+               ([remap consult-flymake] . consult-flycheck)))
+  :custom
+  (flycheck-indication-mode 'right-fringe)
+  :hook
+  (flycheck-mode . flycheck-set-bindings))
 
-;; (use-package consult-flycheck
-;;   :defer t
-;;   :commands (consult-flycheck))
+(use-package consult-flycheck
+  :defer t
+  :commands (consult-flycheck))
 
 (use-package magit
   :commands (magit-status)
   :bind (:map git-map
-          ("," . magit-status-here)
-          (";" . magit-status)
-          ("f" . magit-file-dispatch)
-          ("l" . magit-log-buffer-file)
-          ("m" . magit-blame-addition))
+              ("," . magit-status-here)
+              (";" . magit-status)
+              ("f" . magit-file-dispatch)
+              ("l" . magit-log-buffer-file)
+              ("m" . magit-blame-addition))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
@@ -283,16 +323,16 @@
 
 (use-package git-link
   :bind (:map git-map
-          ("y" . git-link)))
+              ("y" . git-link)))
 
 (use-package diff-hl
   :if (display-graphic-p)
   :bind (:map git-map
-          ("." . diff-hl-show-hunk)
-          ("n" . diff-hl-show-hunk-next)
-          ("p" . diff-hl-show-hunk-previous)
-          ("S" . diff-hl-stage-dwim)
-          ("K" . diff-hl-revert-hunk))
+              ("." . diff-hl-show-hunk)
+              ("n" . diff-hl-show-hunk-next)
+              ("p" . diff-hl-show-hunk-previous)
+              ("S" . diff-hl-stage-dwim)
+              ("K" . diff-hl-revert-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -320,45 +360,45 @@
   :demand t
   :if (display-graphic-p)
   :bind (:map toggle-map
-          ("o" . popper-toggle)
-          ("O" . popper-toggle-type)
-          ("n" . popper-cycle)
-          ("p" . popper-cycle-backwards)
-          ("Q" . popper-kill-latest-popup)
-          :repeat-map toggle-cycle-repeat-map
-          ("n" . popper-cycle)
-          ("p" . popper-cycle-backwards)
-          ("Q" . popper-kill-latest-popup))
+              ("o" . popper-toggle)
+              ("O" . popper-toggle-type)
+              ("n" . popper-cycle)
+              ("p" . popper-cycle-backwards)
+              ("Q" . popper-kill-latest-popup)
+              :repeat-map toggle-cycle-repeat-map
+              ("n" . popper-cycle)
+              ("p" . popper-cycle-backwards)
+              ("Q" . popper-kill-latest-popup))
   :init
   (setq popper-reference-buffers
-    '(("Output\\*$" . hide)
-      (completion-list-mode . hide)
-      occur-mode
-      "\\*Messages\\*"))
+        '(("Output\\*$" . hide)
+          (completion-list-mode . hide)
+          occur-mode
+          "\\*Messages\\*"))
   (setq popper-reference-buffers
-    '("\\*Messages\\*"
-      "\\*Warnings\\*"
-      "Output\\*$"
-      "errors\\*$"
-      "\\*Async Shell Command\\*"
-      special-mode
-      help-mode
-      compilation-mode
-      comint-mode))
+        '("\\*Messages\\*"
+          "\\*Warnings\\*"
+          "Output\\*$"
+          "errors\\*$"
+          "\\*Async Shell Command\\*"
+          special-mode
+          help-mode
+          compilation-mode
+          comint-mode))
   ;; Match eshell, shell, term and/or vterm buffers
   (setq popper-reference-buffers
-    (append popper-reference-buffers
-        '("^\\*eshell.*\\*$" eshell-mode ;eshell as a popup
-          "^\\*shell.*\\*$"  shell-mode  ;shell as a popup
-          "^\\*term.*\\*$"   term-mode   ;term as a popup
-          "^\\*vterm.*\\*$"  vterm-mode  ;vterm as a popup
-          )))
+        (append popper-reference-buffers
+                '("^\\*eshell.*\\*$" eshell-mode ;eshell as a popup
+                  "^\\*shell.*\\*$"  shell-mode  ;shell as a popup
+                  "^\\*term.*\\*$"   term-mode   ;term as a popup
+                  "^\\*vterm.*\\*$"  vterm-mode  ;vterm as a popup
+                  )))
   (setq popper-window-height
-    (lambda (win)
-      (fit-window-to-buffer
-       win
-       (floor (frame-height) 3)
-       12)))
+        (lambda (win)
+          (fit-window-to-buffer
+           win
+           (floor (frame-height) 3)
+           12)))
   :config
   (popper-mode +1)
   (popper-echo-mode +1))
@@ -366,8 +406,8 @@
 (use-package vterm
   :if (display-graphic-p)
   :bind (:map toggle-map
-          ("t" . vterm-project)
-          ("T" . vterm))
+              ("t" . vterm-project)
+              ("T" . vterm))
   :init
   (defun vterm-project ()
     (interactive)
@@ -384,8 +424,8 @@
 (use-package writeroom-mode
   :if (display-graphic-p)
   :bind (:map toggle-map
-          ("z" . writeroom-mode)
-          ("Z" . global-writeroom-mode)))
+              ("z" . writeroom-mode)
+              ("Z" . global-writeroom-mode)))
 
 (use-package disable-mouse
   :unless (display-graphic-p)
@@ -417,31 +457,31 @@
   :init
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-         `((ruby-mode ruby-ts-mode)
-           . ("solargraph" "stdio" :initializationOptions
-              (;; options
-               :useBundler t
-               :diagnostics t
-               :completion t
-               :hover t
-               :autoformat :json-false
-               :formatting t
-               :symbols t
-               :definitions t
-               :rename t
-               :references t
-               :folding t)))))
+                 `((ruby-mode ruby-ts-mode)
+                   . ("solargraph" "stdio" :initializationOptions
+                      (;; options
+                       :useBundler t
+                       :diagnostics t
+                       :completion t
+                       :hover t
+                       :autoformat :json-false
+                       :formatting t
+                       :symbols t
+                       :definitions t
+                       :rename t
+                       :references t
+                       :folding t)))))
   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
   (defun rails-compile ()
     (interactive)
     (setq compile-command
-      (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
-         (let ((linum (number-to-string (line-number-at-pos)))
-               (file-name (relative-file-name)))
-           (if (< (line-number-at-pos) 5)
-               (string-join (list "rails t " file-name))
-             (string-join (list "rails t " (s-concat file-name ":" linum))))))
-        (t compile-command)))
+          (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
+                 (let ((linum (number-to-string (line-number-at-pos)))
+                       (file-name (relative-file-name)))
+                   (if (< (line-number-at-pos) 5)
+                       (string-join (list "rails t " file-name))
+                     (string-join (list "rails t " (s-concat file-name ":" linum))))))
+                (t compile-command)))
     (call-interactively #'compile-dwim))
   (defun rails-comint ()
     (interactive)
@@ -451,26 +491,26 @@
     (setq compile-command "rails t")
     (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
     (bind-keys :map (current-local-map)
-           ([remap compile-dwim] . rails-compile)
-           ([remap comint] . rails-comint)))
+               ([remap compile-dwim] . rails-compile)
+               ([remap comint] . rails-comint)))
   :hook
   (ruby-base-mode . ruby-setup))
 
 (use-package elixir-ts-mode
   :mode (("\\.ex$" . elixir-ts-mode)
-     ("\\.exs$" . elixir-ts-mode)
-     ("\\.heex$" . heex-ts-mode))
+         ("\\.exs$" . elixir-ts-mode)
+         ("\\.heex$" . heex-ts-mode))
   :init
   (defun elixir-setup ()
     (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-         `((elixir-ts-mode heex-ts-mode) .
-           ,(if (and (fboundp 'w32-shell-dos-semantics)
-                 (w32-shell-dos-semantics))
-            '("language_server.bat")
-              (eglot-alternatives
-               '("language_server.sh" "start_lexical.sh"))))))
+                 `((elixir-ts-mode heex-ts-mode) .
+                   ,(if (and (fboundp 'w32-shell-dos-semantics)
+                             (w32-shell-dos-semantics))
+                        '("language_server.bat")
+                      (eglot-alternatives
+                       '("language_server.sh" "start_lexical.sh"))))))
   :hook
   (elixir-ts-mode . elixir-setup))
 
@@ -480,7 +520,7 @@
   :init
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-         '(gleam-ts-mode "gleam" "lsp"))))
+                 '(gleam-ts-mode "gleam" "lsp"))))
 
 (use-package go-ts-mode
   :mode "\\.go\\'")
@@ -488,9 +528,23 @@
 (use-package elm-mode
   :defer t)
 
+(use-package typescript-ts-mode
+  :straight nil
+  :mode "\\.ts$"
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
+
 (use-package js-ts-mode
   :straight nil
-  :mode ("\\.js$" . js-ts-mode)
+  :mode
+  (("\\.js$" . js-ts-mode)
+   ("\\.json$" . js-ts-mode))
+  :init
+  (defun js-setup ()
+    (setq outline-regexp " *\\(\".+\"\\) *:"))
+  :hook
+  (js-ts-mode . js-setup)
   :custom
   (js-indent-level 2))
 
@@ -538,16 +592,16 @@
   :init
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-         '(janet-mode "janet-lsp"))))
+                 '(janet-mode "janet-lsp"))))
 
 (use-package geiser-guile
   :commands (geiser-mode))
 
 (use-package multiple-cursors
   :bind (("M-n" . mc/mark-next-like-this)
-     ("M-p" . mc/mark-previous-like-this)
-     :map mc/keymap
-     ("<return>" . nil)))
+         ("M-p" . mc/mark-previous-like-this)
+         :map mc/keymap
+         ("<return>" . nil)))
 
 (use-package expand-region
   :commands (er/expand-region)

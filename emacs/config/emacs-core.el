@@ -148,8 +148,8 @@
            ("c" . load-theme)
            ("i" . display-fill-column-indicator-mode)
            ("I" . global-display-fill-column-indicator-mode)
-           ("n" . display-line-numbers-mode)
-           ("N" . global-display-line-numbers-mode))
+           ("l" . display-line-numbers-mode)
+           ("L" . global-display-line-numbers-mode))
 (when (display-graphic-p)
   (bind-keys :map toggle-map
              ("f" . set-font-size))
@@ -531,92 +531,3 @@
           (heex "https://github.com/phoenixframework/tree-sitter-heex")
           (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
           (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
-
-
-;; Mode-Line
-(setq-default mode-line-format
-              '("%e"
-                mode-line-front-space
-                (:eval (mode-line-project-name-format))
-                (:eval (mode-line-modified-format))
-                (:eval (mode-line-buffer-name-format))
-                "%n   %o  L%l%n%[%]  "
-                (:eval (flymake-mode-line-format))
-                " "
-                "%[" (:eval (mode-line-major-mode-format)) "%] "
-                mode-line-end-spaces))
-
-(defun flymake-mode-line-format ()
-  "Display flymake diagnostics in the mode line."
-  (if (bound-and-true-p flymake-mode)
-      '(" " flymake-mode-line-exception flymake-mode-line-counters)))
-
-(defun mode-line-project-name-format ()
-  "Display project name in mode line."
-  (if (project-current)
-      (propertize (project-name (project-current)) 'face 'bold)
-    ""))
-
-(defun mode-line-buffer-name-format ()
-  "Display buffer name in mode line."
-  (let ((face (if (or (not (buffer-file-name))
-                      (buffer-modified-p)
-                      (not (verify-visited-file-modtime)))
-                  'italic
-                nil)))
-    (propertize (mode-line-buffer-name) 'face face)))
-
-(defvar mode-line-buffer-name-size 60
-  "Max size of the buffer-name in the mode line.")
-
-(defvar mode-line-buffer-name-squish-method #'squish-path-truncate-left
-  "Squish method to use when mode-line-buffer-name overflows.")
-
-(defun mode-line-buffer-name ()
-  (if (buffer-file-name)
-      (funcall mode-line-buffer-name-squish-method (relative-file-name) mode-line-buffer-name-size)
-    (buffer-name)))
-
-(defun squish-path-truncate-left (path max-length)
-  "Squish path by truncating the left to max length."
-  (if (> (length path) max-length)
-      (string-truncate-left path max-length)
-    path))
-
-(defun squish-path-to-initials (path max-length)
-  "Squish path to max length by replacing folder names with initials."
-  (if (> (length path) max-length)
-      ;; TODO: f-split sometimes not autoloaded ???
-      (let* ((parts (file-name-split path))
-             (name (car (last parts)))
-             (overflow (- (length path) max-length))
-             (squished-parts
-              (mapcar (lambda (part)
-                        (if (<= overflow 0)
-                            part
-                          (progn
-                            (setq overflow (- overflow (- (length part) 1)))
-                            (substring part 0 1))))
-                      (butlast parts)))
-             (new-path (string-join (append squished-parts (list name)) "/")))
-        (if (> (length new-path) max-length)
-            name
-          new-path))
-    path))
-
-(defun mode-line-modified-format ()
-  "Display modified status in mode line."
-  (if (and (buffer-file-name) (buffer-modified-p))
-      " * "
-    " "))
-
-(defun mode-line-major-mode-format ()
-  "Display major mode in mode line."
-  (string-join
-   (string-split
-    (capitalize
-     (string-remove-suffix
-      "-ts"
-      (string-remove-suffix "-mode" (symbol-name major-mode))))
-    "-")
-   ""))
