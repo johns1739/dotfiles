@@ -1,4 +1,5 @@
 (defvar bootstrap-version)
+
 (let ((bootstrap-file
        (expand-file-name
         "straight/repos/straight.el/bootstrap.el"
@@ -17,7 +18,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(basic partial-completion substring initials flex orderless)))
+  (completion-styles '(basic partial-completion substring orderless initials flex)))
 
 (use-package simple-modeline
   :hook (after-init . simple-modeline-mode)
@@ -25,21 +26,17 @@
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
     (if (project-current)
-        (propertize (project-name (project-current)) 'face 'bold)
-      ""))
+        (propertize (project-name (project-current)) 'face 'bold)))
   (defun simple-modeline-segment-buffer-name-2 ()
-    "Display buffer name in mode line."
-    (concat " " (mode-line-buffer-name)))
+    "Display buffer's relative-name in mode line."
+    (propertize (concat "  " (mode-line-buffer-name)) 'face 'mode-line-buffer-id))
   (defun mode-line-buffer-name ()
     (if (buffer-file-name)
-        ;; (squish-path-truncate-left (relative-file-path) 60)
         (string-truncate-left (relative-file-name) 60)
       (buffer-name)))
   :custom
   (simple-modeline-segments
    '((
-      ;; TODO: Meow-modeline-indicator
-      ;; mode-line-front-space
       meow-indicator
       simple-modeline-segment-modified
       ;; simple-modeline-segment-project-name
@@ -55,7 +52,6 @@
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
-      ;; mode-line-end-spaces
       ))))
 
 (use-package embark
@@ -548,13 +544,13 @@
   :custom
   (js-indent-level 2))
 
-(use-package lisp-mode
+(use-package common-lisp-mode
   :mode
   (("\\.lisp$" . common-lisp-mode)
    ("\\.clisp$" . common-lisp-mode))
   :straight nil
   :config
-  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t=noerror
+  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
   (setq inferior-lisp-program "sbcl"))
 
 (use-package erlang
