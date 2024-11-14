@@ -589,21 +589,8 @@
 (use-package gruber-darker-theme
   :if (display-graphic-p))
 
-;; (use-package gruvbox-theme)
-
-;; (use-package timu-rouge-theme)
-
-;; (use-package catppuccin-theme
-;;   :config
-;;   ;; (catppuccin-reload)
-;;   (setq catppuccin-flavor 'mocha)) ;; 'frappe, 'latte, 'macchiato, or 'mocha
-
 (use-package ef-themes
   :if (display-graphic-p))
-
-;; (use-package solarized-theme)
-
-;; (use-package modus-themes)
 
 (use-package meow
   :custom

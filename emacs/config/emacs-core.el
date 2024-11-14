@@ -497,6 +497,8 @@
 
 
 ;; Eglot
+;; For html, css, json, eslint servers:
+;; npm i -g vscode-langservers-extracted
 (defun eglot-set-bindings ()
   "Inject eglot bindings."
   (bind-keys :map (current-local-map)

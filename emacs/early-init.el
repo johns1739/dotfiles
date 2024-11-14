@@ -1,4 +1,5 @@
 (setq package-enable-at-startup nil)
+
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
