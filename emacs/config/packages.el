@@ -14,105 +14,51 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
 (setq straight-use-package-by-default t)
+(setq use-package-always-defer t)
 
-(use-package orderless
-  :custom
-  (completion-styles '(basic partial-completion substring orderless initials flex)))
 
-(use-package simple-modeline
-  :hook (after-init . simple-modeline-mode)
-  :init
-  (defun simple-modeline-segment-project-name ()
-    "Display project name in mode line."
-    (if (project-current)
-        (propertize (project-name (project-current)) 'face 'bold)))
-  (defun simple-modeline-segment-buffer-name-2 ()
-    "Display buffer's relative-name in mode line."
-    (propertize (concat "  " (mode-line-buffer-name)) 'face 'mode-line-buffer-id))
-  (defun mode-line-buffer-name ()
-    (if (buffer-file-name)
-        (string-truncate-left (relative-file-name) 60)
-      (buffer-name)))
-  :custom
-  (simple-modeline-segments
-   '((
-      meow-indicator
-      simple-modeline-segment-modified
-      ;; simple-modeline-segment-project-name
-      ;; simple-modeline-segment-buffer-name
-      simple-modeline-segment-buffer-name-2
-      simple-modeline-segment-position)
-     (
-      ;; simple-modeline-segment-minor-modes
-      ;; simple-modeline-segment-input-method
-      ;; simple-modeline-segment-eol
-      ;; simple-modeline-segment-encoding
-      ;; simple-modeline-segment-vc
-      simple-modeline-segment-misc-info
-      simple-modeline-segment-process
-      simple-modeline-segment-major-mode
-      ))))
+;;;; Packages
 
-(use-package embark
-  :bind (:map global-leader-map
-              ("a" . embark-act)
-              ("A" . embark-act-all)
-              ("e" . embark-collect)
-              ("E" . embark-export)))
-
-(use-package embark-consult
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
-
-;; (use-package copilot
-;;   :disabled t
-;;   :if (display-graphic-p)
-;;   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-;;   :bind (:map copilot-completion-map
-;;               ("M-f" . copilot-accept-completion-by-word)
-;;               ("M-e" . copilot-accept-completion-by-line)
-;;               ("M-n" . copilot-next-completion)
-;;               ("M-p" . copilot-previous-completion)
-;;               ("M-<tab>" . copilot-accept-completion))
-;;   :custom
-;;   (copilot-indent-offset-warning-disable t)
-;;   :hook
-;;   (prog-mode . copilot-mode)
-;;   :config
-;;   (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
-
-(use-package which-key
-  :config
-  (which-key-mode))
-
-(use-package highlight-indent-guides
-  :if (display-graphic-p)
-  :bind (:map toggle-map
-              ("g" . highlight-indent-guides-mode))
-  ;; :hook
-  ;; (prog-mode . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'bitmap)
-  (highlight-indent-guides-character ?|)
-  (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-auto-top-even-face-perc 0)
-  (highlight-indent-guides-auto-top-odd-face-perc 0)
-  (highlight-indent-guides-auto-top-character-face-perc 30))
 
 (use-package ace-window
-  :defer t
   :bind  (([remap other-window] . ace-window)
           ;; ([remap delete-window] . ace-delete-window)
           ;; ([remap delete-other-windows] . ace-delete-other-windows)
-          ([remap window-swap-states] . ace-swap-window)
-          ([remap evil-window-next] . ace-window)))
+          ([remap window-swap-states] . ace-swap-window)))
 
 (use-package avy
-  :defer t
   :bind (:map goto-map
               ("l" . avy-goto-line)
               ("g" . avy-goto-char-2)))
+
+(use-package beacon
+  :defer 3
+  :config
+  (beacon-mode 1))
+
+(use-package cape
+  ;; Cape provides Completion At Point Extensions
+  :custom
+  (completion-at-point-functions
+   (list #'cape-dabbrev
+         #'cape-abbrev
+         #'cape-keyword
+         #'cape-file
+         #'cape-dict
+         #'cape-elisp-symbol
+         ;; #'cape-line ;; Kinda buggy
+         )))
+
+(use-package common-lisp-mode
+  :straight nil
+  :mode
+  (("\\.lisp$" . common-lisp-mode)
+   ("\\.clisp$" . common-lisp-mode))
+  :config
+  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
+  (setq inferior-lisp-program "sbcl"))
 
 (use-package consult
   :init
@@ -165,7 +111,11 @@
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
 
+(use-package consult-flycheck
+  :commands (consult-flycheck))
+
 (use-package corfu
+  :defer 3
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
@@ -187,81 +137,96 @@
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
+  :defer 3
   :unless (display-graphic-p)
-  :requires corfu
+  :after corfu
   :config
   (corfu-terminal-mode 1))
 
-(use-package cape
-  ;; Cape provides Completion At Point Extensions
-  :bind (:map completion-map
-              ("." . cape-dabbrev)
-              ("a" . cape-abbrev)
-              ("e" . cape-elisp-block)
-              ("f" . cape-file)
-              ("h" . cape-history)
-              ("k" . cape-keyword)
-              ("l" . cape-line)
-              ("s" . cape-elisp-symbol)
-              ("d" . cape-dict))
+(use-package csv-mode
+  :mode "\\.csv\\'")
+
+(use-package dashboard
+  :demand t
+  :if (display-graphic-p)
   :custom
-  (completion-at-point-functions
-   (list #'cape-dabbrev
-         #'cape-abbrev
-         #'cape-keyword
-         #'cape-file
-         #'cape-dict
-         #'cape-elisp-symbol
-         ;; #'cape-line ;; Kinda buggy
-         )))
+  (dashboard-center-content t)
+  (dashboard-vertically-center-content t)
+  :config
+  (dashboard-setup-startup-hook))
+
+(use-package diff-hl
+  :defer 3
+  :if (display-graphic-p)
+  :bind (:map git-map
+              ("." . diff-hl-show-hunk)
+              ("n" . diff-hl-show-hunk-next)
+              ("p" . diff-hl-show-hunk-previous)
+              ("S" . diff-hl-stage-dwim)
+              ("K" . diff-hl-revert-hunk))
+  :hook
+  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh)
+  :config
+  ;; Terminal does not have a fringe, so use margin instead.
+  (unless (display-graphic-p)
+    (diff-hl-margin-mode))
+  (global-diff-hl-mode))
 
 (use-package dumb-jump
-  :defer t
-  :config
+  :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-(use-package beacon
-  :config
-  (beacon-mode 1))
+(use-package ef-themes
+  :if (display-graphic-p))
 
-(use-package yasnippet
-  ;; https://joaotavora.github.io/yasnippet/index.html
-  :custom
-  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
-  :config
-  (yas-global-mode 1))
-
-(use-package yasnippet-snippets
-  :after yasnippet)
-
-(use-package vertico
+(use-package elixir-ts-mode
+  :mode (("\\.ex$" . elixir-ts-mode)
+         ("\\.exs$" . elixir-ts-mode)
+         ("\\.heex$" . heex-ts-mode))
   :init
-  ;; Ensure builtins are turned off.
-  (icomplete-vertical-mode -1)
-  (icomplete-mode -1)
-  (fido-mode -1)
-  (fido-vertical-mode -1)
-  (setq completion-cycle-threshold nil)
-  :config
-  (vertico-mode 1))
+  (defun elixir-setup ()
+    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 `((elixir-ts-mode heex-ts-mode) .
+                   ,(if (and (fboundp 'w32-shell-dos-semantics)
+                             (w32-shell-dos-semantics))
+                        '("language_server.bat")
+                      (eglot-alternatives
+                       '("language_server.sh" "start_lexical.sh"))))))
+  :hook
+  (elixir-ts-mode . elixir-setup))
 
-(use-package marginalia
-  :init
-  (setq completions-detailed nil)
-  :config
-  (marginalia-mode 1))
+(use-package elm-mode)
+
+(use-package embark
+  :bind (:map global-leader-map
+              ("a" . embark-act)
+              ("A" . embark-act-all)
+              ("e" . embark-collect)
+              ("E" . embark-export)))
+
+(use-package embark-consult
+  :after embark
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package exec-path-from-shell
+  :demand t
   :if (memq window-system '(mac ns))
   :custom
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
   (exec-path-from-shell-initialize))
 
+(use-package expand-region
+  :commands (er/expand-region)
+  :bind ("M-O" . er/expand-region))
+
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
-  :defer t
-  :bind (:repeat-map flycheck-error-repeat-map
+   :bind (:repeat-map flycheck-error-repeat-map
                      ("n" . flycheck-next-error)
                      ("p" . flycheck-previous-error)
                      ("." . flycheck-display-error-at-point))
@@ -280,9 +245,57 @@
   :hook
   (flycheck-mode . flycheck-set-bindings))
 
-(use-package consult-flycheck
-  :defer t
-  :commands (consult-flycheck))
+(use-package geiser-guile
+  :commands (geiser-mode))
+
+(use-package git-link
+  :bind (:map git-map
+              ("y" . git-link)))
+
+(use-package gleam-ts-mode
+  :straight (:host github :repo "gleam-lang/gleam-mode")
+  :mode (rx ".gleam" eos)
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(gleam-ts-mode "gleam" "lsp"))))
+
+(use-package go-ts-mode
+  :mode "\\.go\\'")
+
+(use-package gruber-darker-theme
+  :if (display-graphic-p))
+
+(use-package highlight-indent-guides
+  :if (display-graphic-p)
+  :bind (:map toggle-map
+              ("g" . highlight-indent-guides-mode))
+  :custom
+  (highlight-indent-guides-method 'bitmap)
+  (highlight-indent-guides-character ?|)
+  (highlight-indent-guides-responsive 'top)
+  (highlight-indent-guides-auto-top-even-face-perc 0)
+  (highlight-indent-guides-auto-top-odd-face-perc 0)
+  (highlight-indent-guides-auto-top-character-face-perc 30))
+
+(use-package janet-mode
+  :mode "\\.janet$"
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(janet-mode "janet-lsp"))))
+
+(use-package js
+  :mode
+  (("\\.js$" . js-ts-mode)
+   ("\\.json$" . js-ts-mode))
+  :init
+  (defun js-setup ()
+    (setq outline-regexp " *\\(\".+\"\\) *:"))
+  :hook
+  (js-ts-mode . js-setup)
+  :custom
+  (js-indent-level 2))
 
 (use-package magit
   :commands (magit-status)
@@ -300,43 +313,171 @@
   ;; (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (setq magit-list-refs-sortby "-creatordate"))
 
-(use-package git-link
-  :bind (:map git-map
-              ("y" . git-link)))
-
-(use-package diff-hl
-  :if (display-graphic-p)
-  :bind (:map git-map
-              ("." . diff-hl-show-hunk)
-              ("n" . diff-hl-show-hunk-next)
-              ("p" . diff-hl-show-hunk-previous)
-              ("S" . diff-hl-stage-dwim)
-              ("K" . diff-hl-revert-hunk))
-  :hook
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh)
+(use-package marginalia
+  :defer 3
+  :init
+  (setq completions-detailed nil)
   :config
-  ;; Terminal does not have a fringe, so use margin instead.
-  (unless (display-graphic-p)
-    (diff-hl-margin-mode))
-  (global-diff-hl-mode))
+  (marginalia-mode 1))
 
-;; (use-package magit-todos
-;;   ;; Too slow for api-app
-;;   :after magit
-;;   :config
-;;   (magit-todos-mode 1))
+(use-package markdown-mode
+  :mode "\\.md\\'")
 
-(use-package dashboard
-  :if (display-graphic-p)
+(use-package meow
+  :demand t
   :custom
-  (dashboard-center-content t)
-  (dashboard-vertically-center-content t)
+  (meow-use-clipboard t)
+  (meow-visit-collect-min-length 1)
+  (meow-keypad--self-insert-undefined nil)
+  (meow-expand-hint-remove-delay 2)
+  :init
+  (defun meow-setup ()
+    (setq meow-cursor-type-motion '(hbar . 2))
+    (set-face-attribute 'meow-insert-indicator nil :inherit 'bold)
+    (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
+    (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
+    (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
+    (meow-motion-overwrite-define-key
+     '("Q" . meow-quit)
+     '("j" . meow-next)
+     '("k" . meow-prev)
+     '("o" . other-window)
+     '("<escape>" . ignore))
+    (meow-leader-define-key
+     '("Q" . "H-Q")
+     '("j" . "H-j")
+     '("k" . "H-k")
+     '("o" . "H-o")
+     ;; Use SPC (0-9) for digit arguments.
+     '("1" . meow-digit-argument)
+     '("2" . meow-digit-argument)
+     '("3" . meow-digit-argument)
+     '("4" . meow-digit-argument)
+     '("5" . meow-digit-argument)
+     '("6" . meow-digit-argument)
+     '("7" . meow-digit-argument)
+     '("8" . meow-digit-argument)
+     '("9" . meow-digit-argument)
+     '("0" . meow-digit-argument))
+    (meow-normal-define-key
+     '("=" . meow-repeat)
+     '("0" . meow-expand-0)
+     '("9" . meow-expand-9)
+     '("8" . meow-expand-8)
+     '("7" . meow-expand-7)
+     '("6" . meow-expand-6)
+     '("5" . meow-expand-5)
+     '("4" . meow-expand-4)
+     '("3" . meow-expand-3)
+     '("2" . meow-expand-2)
+     '("1" . meow-expand-1)
+     '("-" . negative-argument)
+     '("+" . nil)
+     '("!" . meow-kmacro-lines)
+     '("@" . meow-start-kmacro)
+     '("#" . meow-end-or-call-kmacro)
+     '("$" . meow-kmacro-matches)
+     '("%" . query-replace)
+     '("M-%" . meow-query-replace-regexp)
+     '("^" . delete-indentation)
+     '("&" . async-shell-command)
+     '("(" . meow-start-kmacro)
+     '(")" . meow-end-or-call-kmacro)
+     '("_" . meow-reverse)
+     '("a" . meow-append)
+     '("A" . meow-open-below)
+     '("b" . meow-back-word)
+     '("B" . meow-back-symbol)
+     '("c" . meow-change)
+     (cons "C" compilation-map)
+     '("d" . meow-delete)
+     '("D" . meow-kill)
+     '("e" . meow-next-word)
+     '("E" . meow-next-symbol)
+     '("f" . meow-find)
+     '("F" . nil)
+     (cons "g" goto-map)
+     '("G" . meow-grab)
+     '("h" . meow-left)
+     '("H" . mark-paragraph)
+     '("i" . meow-insert)
+     '("I" . meow-open-above)
+     '("j" . meow-next)
+     (cons "J" git-map)
+     '("k" . meow-prev)
+     (cons "K" diagnostics-map)
+     '("l" . meow-right)
+     '("L" . duplicate-dwim)
+     '("m" . meow-join)
+     '("M" . nil)
+     '("n" . meow-search)
+     (cons "N" notes-map)
+     '("o" . other-window)
+     (cons "O" toggle-map)
+     '("p" . meow-yank)
+     (cons "P" project-prefix-map)
+     '("q" . nil) ;; Keep q unbound for other apps to bind.
+     '("Q" . meow-quit)
+     '("r" . meow-replace)
+     '("R" . meow-swap-grab)
+     (cons "s" search-map)
+     '("S" . save-buffer)
+     '("t" . meow-till)
+     '("T" . nil)
+     '("u" . meow-undo)
+     '("U" . undo-redo)
+     '("v" . meow-page-down)
+     '("V" . meow-page-up)
+     '("w" . meow-mark-word)
+     '("W" . meow-mark-symbol)
+     '("x" . meow-line)
+     '("X" . meow-kill-whole-line)
+     '("y" . meow-save)
+     '("Y" . meow-save-append)
+     '("z" . meow-pop-selection)
+     '("Z" . meow-sync-grab)
+     ;; Keep these unbound for other apps to bind.
+     '("<tab>" . nil)
+     '("<down>" . nil)
+     '("<up>" . nil)
+     '("<right>" . nil)
+     '("<left>" . nil)
+     '("\\" . cycle-spacing)
+     '("|" . repeat-complex-command)
+     '("'" . meow-last-buffer)
+     '("\"" . nil)
+     '(";" . meow-comment)
+     '(":" . goto-line)
+     '("/" . meow-visit)
+     '("?" . isearch-forward-thing-at-point)
+     '("," . meow-inner-of-thing)
+     '("<" . beginning-of-buffer)
+     '("." . meow-bounds-of-thing)
+     '(">" . end-of-buffer)
+     '("[" . meow-beginning-of-thing)
+     '("{" . nil)
+     '("]" . meow-end-of-thing)
+     '("}" . nil)
+     '("`" . nil)
+     '("~" . nil)
+     '("<backtab>" . indent-buffer)
+     '("<escape>" . meow-cancel-selection)))
   :config
-  (dashboard-setup-startup-hook))
+  (meow-setup)
+  (meow-global-mode 1))
+
+(use-package multiple-cursors
+  :bind (("M-n" . mc/mark-next-like-this)
+         ("M-p" . mc/mark-previous-like-this)
+         :map mc/keymap
+         ("<return>" . nil)))
+
+(use-package orderless
+  :custom
+  (completion-styles '(basic partial-completion substring orderless initials flex)))
 
 (use-package popper
-  :demand t
+  :defer 3
   :if (display-graphic-p)
   :bind (:map toggle-map
               ("o" . popper-toggle)
@@ -382,48 +523,7 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
-(use-package vterm
-  :if (display-graphic-p)
-  :bind (:map toggle-map
-              ("t" . vterm-project)
-              ("T" . vterm))
-  :init
-  (defun vterm-project ()
-    (interactive)
-    (let ((default-directory (or (project-directory) default-directory)))
-      (vterm-other-window)))
-  (defun vterm-named ()
-    (interactive)
-    (vterm (read-string "Session name: ")))
-  :custom
-  (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 10000))
-
-;; aka Zen mode
-(use-package writeroom-mode
-  :if (display-graphic-p)
-  :bind (:map toggle-map
-              ("z" . writeroom-mode)
-              ("Z" . global-writeroom-mode)))
-
-(use-package disable-mouse
-  :unless (display-graphic-p)
-  :config
-  (global-disable-mouse-mode))
-
-(use-package xclip
-  :unless (display-graphic-p)
-  :config
-  (xclip-mode 1))
-
-(use-package markdown-mode
-  :mode "\\.md\\'")
-
-(use-package csv-mode
-  :mode "\\.csv\\'")
-
-(use-package python-ts-mode
-  :straight nil ;; python-ts-mode is already built-in
+(use-package python
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (defun pytyhon-setup ()
@@ -432,7 +532,6 @@
   (python-ts-mode . pytyhon-setup))
 
 (use-package ruby-ts-mode
-  :defer t
   :init
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
@@ -475,91 +574,43 @@
   :hook
   (ruby-base-mode . ruby-setup))
 
-(use-package elixir-ts-mode
-  :mode (("\\.ex$" . elixir-ts-mode)
-         ("\\.exs$" . elixir-ts-mode)
-         ("\\.heex$" . heex-ts-mode))
+(use-package simple-modeline
+  :demand t
+  :hook (after-init . simple-modeline-mode)
   :init
-  (defun elixir-setup ()
-    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((elixir-ts-mode heex-ts-mode) .
-                   ,(if (and (fboundp 'w32-shell-dos-semantics)
-                             (w32-shell-dos-semantics))
-                        '("language_server.bat")
-                      (eglot-alternatives
-                       '("language_server.sh" "start_lexical.sh"))))))
-  :hook
-  (elixir-ts-mode . elixir-setup))
-
-(use-package gleam-ts-mode
-  :straight (:host github :repo "gleam-lang/gleam-mode")
-  :mode (rx ".gleam" eos)
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(gleam-ts-mode "gleam" "lsp"))))
-
-(use-package go-ts-mode
-  :mode "\\.go\\'")
-
-(use-package elm-mode
-  :defer t)
-
-(use-package typescript-ts-mode
-  :straight nil
-  :mode "\\.ts$"
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
-
-(use-package js-ts-mode
-  :straight nil
-  :mode
-  (("\\.js$" . js-ts-mode)
-   ("\\.json$" . js-ts-mode))
-  :init
-  (defun js-setup ()
-    (setq outline-regexp " *\\(\".+\"\\) *:"))
-  :hook
-  (js-ts-mode . js-setup)
+  (defun simple-modeline-segment-project-name ()
+    "Display project name in mode line."
+    (if (project-current)
+        (propertize (project-name (project-current)) 'face 'bold)))
+  (defun simple-modeline-segment-buffer-name-2 ()
+    "Display buffer's relative-name in mode line."
+    (propertize (concat "  " (mode-line-buffer-name)) 'face 'mode-line-buffer-id))
+  (defun simple-modeline-segment-end-spaces ()
+    (propertize "  "))
+  (defun mode-line-buffer-name ()
+    (if (buffer-file-name)
+        (string-truncate-left (relative-file-name) 60)
+      (buffer-name)))
   :custom
-  (js-indent-level 2))
-
-(use-package common-lisp-mode
-  :mode
-  (("\\.lisp$" . common-lisp-mode)
-   ("\\.clisp$" . common-lisp-mode))
-  :straight nil
-  :config
-  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
-  (setq inferior-lisp-program "sbcl"))
-
-(use-package erlang
-  :straight nil
-  :load-path "/opt/homebrew/lib/erlang/lib/tools-3.6/emacs/"
-  :init
-  (setq erlang-root-dir "/opt/homebrew/lib/erlang")
-  (add-to-list 'exec-path "/opt/homebrew/lib/erlang/bin")
-  :mode
-  (("\\.erl?$" . erlang-mode)
-   ("rebar\\.config$" . erlang-mode)
-   ("relx\\.config$" . erlang-mode)
-   ("sys\\.config\\.src$" . erlang-mode)
-   ("sys\\.config$" . erlang-mode)
-   ("\\.config\\.src?$" . erlang-mode)
-   ("\\.config\\.script?$" . erlang-mode)
-   ("\\.hrl?$" . erlang-mode)
-   ("\\.app?$" . erlang-mode)
-   ("\\.app.src?$" . erlang-mode)
-   ("\\Emakefile" . erlang-mode))
-  :config
-  (require 'erlang-start))
-
-(use-package yaml-ts-mode
-  :defer t
-  :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
+  (simple-modeline-segments
+   '((
+      meow-indicator
+      simple-modeline-segment-modified
+      ;; simple-modeline-segment-project-name
+      ;; simple-modeline-segment-buffer-name
+      simple-modeline-segment-buffer-name-2
+      simple-modeline-segment-position)
+     (
+      ;; simple-modeline-segment-minor-modes
+      ;; simple-modeline-segment-input-method
+      ;; simple-modeline-segment-eol
+      ;; simple-modeline-segment-encoding
+      ;; simple-modeline-segment-vc
+      simple-modeline-segment-misc-info
+      simple-modeline-segment-process
+      simple-modeline-segment-major-mode
+      simple-modeline-segment-end-spaces
+      ))))
 
 (use-package sqlformat
   :commands (sqlformat)
@@ -567,211 +618,68 @@
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
 
-(use-package janet-mode
+(use-package typescript-ts-mode
+  :mode "\\.ts$"
   :init
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(janet-mode "janet-lsp"))))
+    (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
-(use-package geiser-guile
-  :commands (geiser-mode))
-
-(use-package multiple-cursors
-  :bind (("M-n" . mc/mark-next-like-this)
-         ("M-p" . mc/mark-previous-like-this)
-         :map mc/keymap
-         ("<return>" . nil)))
-
-(use-package expand-region
-  :commands (er/expand-region)
-  :bind ("M-O" . er/expand-region))
-
-(use-package gruber-darker-theme
-  :if (display-graphic-p))
-
-(use-package ef-themes
-  :if (display-graphic-p))
-
-(use-package meow
-  :custom
-  (meow-use-clipboard t)
-  (meow-visit-collect-min-length 1)
-  (meow-keypad--self-insert-undefined nil)
-  (meow-expand-hint-remove-delay 2)
+(use-package vertico
+  :demand t
   :init
-  (defun meow-setup ()
-    (setq meow-cursor-type-motion '(hbar . 2))
-    (set-face-attribute 'meow-insert-indicator nil :inherit 'bold)
-    (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
-    (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
-    (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
-    (meow-motion-overwrite-define-key
-     '("Q" . meow-quit)
-     '("j" . meow-next)
-     '("k" . meow-prev)
-     '("o" . other-window)
-     '("<escape>" . ignore))
-
-    (meow-leader-define-key
-     '("Q" . "H-Q")
-     '("j" . "H-j")
-     '("k" . "H-k")
-     '("o" . "H-o")
-
-     ;; Use SPC (0-9) for digit arguments.
-     '("1" . meow-digit-argument)
-     '("2" . meow-digit-argument)
-     '("3" . meow-digit-argument)
-     '("4" . meow-digit-argument)
-     '("5" . meow-digit-argument)
-     '("6" . meow-digit-argument)
-     '("7" . meow-digit-argument)
-     '("8" . meow-digit-argument)
-     '("9" . meow-digit-argument)
-     '("0" . meow-digit-argument))
-
-    (meow-normal-define-key
-     '("=" . meow-repeat)
-     '("0" . meow-expand-0)
-     '("9" . meow-expand-9)
-     '("8" . meow-expand-8)
-     '("7" . meow-expand-7)
-     '("6" . meow-expand-6)
-     '("5" . meow-expand-5)
-     '("4" . meow-expand-4)
-     '("3" . meow-expand-3)
-     '("2" . meow-expand-2)
-     '("1" . meow-expand-1)
-     '("-" . negative-argument)
-
-     '("+" . nil)
-     '("!" . meow-kmacro-lines)
-     '("@" . meow-start-kmacro)
-     '("#" . meow-end-or-call-kmacro)
-     '("$" . meow-kmacro-matches)
-     '("%" . query-replace)
-     '("M-%" . meow-query-replace-regexp)
-     '("^" . delete-indentation)
-     '("&" . async-shell-command)
-     '("(" . meow-start-kmacro)
-     '(")" . meow-end-or-call-kmacro)
-     '("_" . meow-reverse)
-
-     '("a" . meow-append)
-     '("A" . meow-open-below)
-
-     '("b" . meow-back-word)
-     '("B" . meow-back-symbol)
-
-     '("c" . meow-change)
-     (cons "C" compilation-map)
-
-     '("d" . meow-delete)
-     '("D" . meow-kill)
-
-     '("e" . meow-next-word)
-     '("E" . meow-next-symbol)
-
-     '("f" . meow-find)
-     '("F" . nil)
-
-     (cons "g" goto-map)
-     '("G" . meow-grab)
-
-     '("h" . meow-left)
-     '("H" . mark-paragraph)
-
-     '("i" . meow-insert)
-     '("I" . meow-open-above)
-
-     '("j" . meow-next)
-     (cons "J" git-map)
-
-     '("k" . meow-prev)
-     (cons "K" diagnostics-map)
-
-     '("l" . meow-right)
-     '("L" . duplicate-dwim)
-
-     '("m" . meow-join)
-     '("M" . nil)
-
-     '("n" . meow-search)
-     (cons "N" notes-map)
-
-     '("o" . other-window)
-     (cons "O" toggle-map)
-
-     '("p" . meow-yank)
-     (cons "P" project-prefix-map)
-
-     '("q" . nil) ;; Keep q unbound for other apps to bind.
-     '("Q" . meow-quit)
-
-     '("r" . meow-replace)
-     '("R" . meow-swap-grab)
-
-     (cons "s" search-map)
-     '("S" . save-buffer)
-
-     '("t" . meow-till)
-     '("T" . nil)
-
-     '("u" . meow-undo)
-     '("U" . undo-redo)
-
-     '("v" . meow-page-down)
-     '("V" . meow-page-up)
-
-     '("w" . meow-mark-word)
-     '("W" . meow-mark-symbol)
-
-     '("x" . meow-line)
-     '("X" . meow-kill-whole-line)
-
-     '("y" . meow-save)
-     '("Y" . meow-save-append)
-
-     '("z" . meow-pop-selection)
-     '("Z" . meow-sync-grab)
-
-     ;; Keep these unbound for other apps to bind.
-     '("<tab>" . nil)
-     '("<down>" . nil)
-     '("<up>" . nil)
-     '("<right>" . nil)
-     '("<left>" . nil)
-
-     '("\\" . cycle-spacing)
-     '("|" . repeat-complex-command)
-
-     '("'" . meow-last-buffer)
-     '("\"" . nil)
-
-     '(";" . meow-comment)
-     '(":" . goto-line)
-
-     '("/" . meow-visit)
-     '("?" . isearch-forward-thing-at-point)
-
-     '("," . meow-inner-of-thing)
-     '("<" . beginning-of-buffer)
-
-     '("." . meow-bounds-of-thing)
-     '(">" . end-of-buffer)
-
-     '("[" . meow-beginning-of-thing)
-     '("{" . nil)
-
-     '("]" . meow-end-of-thing)
-     '("}" . nil)
-
-     '("`" . nil)
-     '("~" . nil)
-
-     '("<backtab>" . indent-buffer)
-     '("<escape>" . meow-cancel-selection)))
-
+  ;; Ensure builtins are turned off.
+  (icomplete-vertical-mode -1)
+  (icomplete-mode -1)
+  (fido-mode -1)
+  (fido-vertical-mode -1)
+  (setq completion-cycle-threshold nil)
   :config
-  (meow-setup)
-  (meow-global-mode 1))
+  (vertico-mode 1))
+
+(use-package vterm
+  :if (display-graphic-p)
+  :bind (:map toggle-map
+              ("t" . vterm-project)
+              ("T" . vterm))
+  :init
+  (defun vterm-project ()
+    (interactive)
+    (let ((default-directory (or (project-directory) default-directory)))
+      (vterm-other-window)))
+  (defun vterm-named ()
+    (interactive)
+    (vterm (read-string "Session name: ")))
+  :custom
+  (vterm-copy-mode-remove-fake-newlines t)
+  (vterm-max-scrollback 10000))
+
+(use-package which-key
+  :defer 3
+  :config
+  (which-key-mode))
+
+(use-package writeroom-mode
+  :if (display-graphic-p)
+  :bind (:map toggle-map
+              ("z" . writeroom-mode)
+              ("Z" . global-writeroom-mode)))
+
+(use-package xclip
+  :defer 3
+  :unless (display-graphic-p)
+  :config
+  (xclip-mode 1))
+
+(use-package yaml-ts-mode
+  :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
+
+(use-package yasnippet
+  :defer 3
+  ;; https://joaotavora.github.io/yasnippet/index.html
+  :custom
+  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :after yasnippet)

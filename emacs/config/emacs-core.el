@@ -97,6 +97,7 @@
            ("d" . project-find-dir)
            ("f" . project-find-file)
            ("i" . imenu)
+           ("l" . occur)
            ("s" . project-find-regexp)
            ("r" . recentf-open))
 (setq isearch-wrap-pause 'no)
