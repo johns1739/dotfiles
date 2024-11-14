@@ -34,7 +34,7 @@
               ("g" . avy-goto-char-2)))
 
 (use-package beacon
-  :defer 3
+  :defer 5
   :config
   (beacon-mode 1))
 
@@ -115,7 +115,7 @@
   :commands (consult-flycheck))
 
 (use-package corfu
-  :defer 3
+  :defer 5
   ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
@@ -137,7 +137,7 @@
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
-  :defer 3
+  :defer 5
   :unless (display-graphic-p)
   :after corfu
   :config
@@ -156,7 +156,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package diff-hl
-  :defer 3
+  :defer 5
   :if (display-graphic-p)
   :bind (:map git-map
               ("." . diff-hl-show-hunk)
@@ -314,7 +314,7 @@
   (setq magit-list-refs-sortby "-creatordate"))
 
 (use-package marginalia
-  :defer 3
+  :defer 5
   :init
   (setq completions-detailed nil)
   :config
@@ -477,7 +477,7 @@
   (completion-styles '(basic partial-completion substring orderless initials flex)))
 
 (use-package popper
-  :defer 3
+  :defer 5
   :if (display-graphic-p)
   :bind (:map toggle-map
               ("o" . popper-toggle)
@@ -654,7 +654,7 @@
   (vterm-max-scrollback 10000))
 
 (use-package which-key
-  :defer 3
+  :defer 5
   :config
   (which-key-mode))
 
@@ -665,7 +665,7 @@
               ("Z" . global-writeroom-mode)))
 
 (use-package xclip
-  :defer 3
+  :defer 5
   :unless (display-graphic-p)
   :config
   (xclip-mode 1))
@@ -674,7 +674,7 @@
   :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
 
 (use-package yasnippet
-  :defer 3
+  :defer 5
   ;; https://joaotavora.github.io/yasnippet/index.html
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
