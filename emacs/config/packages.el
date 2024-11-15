@@ -226,7 +226,7 @@
 
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
-   :bind (:repeat-map flycheck-error-repeat-map
+  :bind (:repeat-map flycheck-error-repeat-map
                      ("n" . flycheck-next-error)
                      ("p" . flycheck-previous-error)
                      ("." . flycheck-display-error-at-point))
@@ -265,6 +265,14 @@
 
 (use-package gruber-darker-theme
   :if (display-graphic-p))
+
+(use-package helpful
+  :bind (:map help-map
+              ("f" . helpful-callable)
+              ("v" . helpful-variable)
+              ("k" . helpful-key)
+              ("o" . helpful-symbol)
+              ("." . helpful-at-point)))
 
 (use-package highlight-indent-guides
   :if (display-graphic-p)
@@ -474,7 +482,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(basic partial-completion substring orderless initials flex)))
+  (completion-styles '(substring partial-completion initials orderless basic)))
 
 (use-package popper
   :defer 5
@@ -651,7 +659,7 @@
     (vterm (read-string "Session name: ")))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 10000))
+  (vterm-max-scrollback 100000))
 
 (use-package which-key
   :defer 5

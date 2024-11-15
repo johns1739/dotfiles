@@ -122,7 +122,7 @@
 (setq completions-detailed t)
 (setq tab-always-indent t)
 (setq completion-category-defaults nil)
-(setq completion-styles '(basic partial-completion substring initials flex))
+(setq completion-styles '(substring partial-completion initials flex))
 (setq completion-category-overrides '((file (styles . (basic partial-completion)))))
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 (setq hippie-expand-verbose t)
@@ -149,11 +149,12 @@
 (defvar-keymap toggle-map :doc "Toggle map")
 (keymap-set global-leader-map "t" toggle-map)
 (bind-keys :map toggle-map
-           ("c" . load-theme)
+           ("c" . column-number-mode)
            ("i" . display-fill-column-indicator-mode)
            ("I" . global-display-fill-column-indicator-mode)
            ("l" . display-line-numbers-mode)
-           ("L" . global-display-line-numbers-mode))
+           ("L" . global-display-line-numbers-mode)
+           ("m" . load-theme))
 (when (display-graphic-p)
   (bind-keys :map toggle-map
              ("f" . set-font-size))
@@ -280,28 +281,28 @@
         alpha-up))
 (setq org-tag-faces '(("bug"  . "sienna")
                       ("feature" . "goldenrod")
-                      ("ticket" . "khaki")))
-(setq org-capture-templates `(("t" "Work Task"
+                      ("chore" . "khaki")))
+(setq org-capture-templates `(("t" "Work TODO"
                                entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Tasks")
                                "* TODO %? %^g\n%t\n%i"
                                :prepend t
                                :empty-lines 1)
-                              ("n" "Work Note"
+                              ("T" "Work Note"
                                entry (file+olp ,(locate-user-emacs-file "notes/tasks.org") "Notes")
                                "* %? \n%i"
                                :prepend t
                                :empty-lines 1)
-                              ("j" "Personal Journal"
+                              ("J" "Perdsonal Journal"
                                entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
                                "* %?\n%U")
-                              ("p" "Personal Task"
+                              ("j" "Personal TODO"
                                entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
                                "* %? \n%i"
                                :prepend t
                                :empty-lines 1)))
 (setq org-todo-keyword-faces '(("TODO" . "goldenrod")
-                               ("BUILDING" . "khaki")
-                               ("PULLREQUEST" . "forest green")
+                               ("BUILDING" . "dark khaki")
+                               ("REVIEW" . "forest green")
                                ("DONE" . "dark olive green")
                                ("CANCELED" . "sienna")))
 (with-eval-after-load 'org
@@ -378,6 +379,7 @@
 (setq-default bidi-paragraph-direction 'left-to-right)
 (setq-default bidi-inhibit-bpa t)
 (setq-default fill-column 80)
+(setq imenu-max-item-length 80)
 (setq-default display-fill-column-indicator-column 100)
 (setq-default display-line-numbers-type t)
 (setq-default tab-width 4)
