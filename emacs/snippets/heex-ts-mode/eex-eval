@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: eex-eval
+# key: %
+# --
+<% $1 %>

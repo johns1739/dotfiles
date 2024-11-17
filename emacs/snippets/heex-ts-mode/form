@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: form
+# key: .form
+# --
+<.form for={@${1:form}}${2: phx-}>
+  $3
+</.form>
