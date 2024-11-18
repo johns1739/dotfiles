@@ -21,7 +21,6 @@
 
 ;;;; Packages
 
-
 (use-package ace-window
   :bind  (([remap other-window] . ace-window)
           ;; ([remap delete-window] . ace-delete-window)
@@ -154,6 +153,10 @@
   (dashboard-vertically-center-content t)
   :config
   (dashboard-setup-startup-hook))
+
+(use-package deadgrep
+  :bind (:map search-map
+              ([remap rgrep] . deadgrep)))
 
 (use-package diff-hl
   :defer 5

@@ -97,6 +97,8 @@
            ("d" . project-find-dir)
            ("f" . project-find-file)
            ("i" . imenu)
+           ("k" . keep-lines)
+           ("K" . delete-matching-lines)
            ("l" . occur)
            ("s" . project-find-regexp)
            ("r" . recentf-open))
