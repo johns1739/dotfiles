@@ -176,7 +176,7 @@
               ("r" . denote-rename-file-using-front-matter)
               ("R" . denote-rename-file-using))
   :custom
-  (denote-directory (f-join notes-directory "denotes"))
+  (denote-directory (expand-file-name "denotes" notes-directory))
   (denote-known-keywords '("bug" "chore" "docs" "feat" "fix" "test" "script"))
   (denote-date-prompt-use-org-read-date t)
   :config
