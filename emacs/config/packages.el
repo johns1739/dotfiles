@@ -110,6 +110,16 @@
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
 
+(use-package consult-denote
+  :after denote
+  :bind (:map notes-map
+              ("SPC" . consult-denote-find)
+              ("s" . consult-denote-grep))
+  :custom
+  (consult-denote-grep-command 'consult-ripgrep)
+  :config
+  (consult-denote-mode))
+
 (use-package consult-flycheck
   :commands (consult-flycheck))
 
@@ -155,8 +165,22 @@
   (dashboard-setup-startup-hook))
 
 (use-package deadgrep
-  :bind (:map search-map
-              ([remap rgrep] . deadgrep)))
+  :bind (([remap rgrep] . deadgrep)))
+
+(use-package denote
+  :defer 2
+  :bind (:map notes-map
+              ("d" . denote)
+              ("l" . denote-link-or-create)
+              ("L" . denote-link-insert-links-matching-regexp)
+              ("r" . denote-rename-file-using-front-matter)
+              ("R" . denote-rename-file-using))
+  :custom
+  (denote-directory (f-join notes-directory "denotes"))
+  (denote-known-keywords '("bug" "chore" "docs" "feat" "fix" "test" "script"))
+  (denote-date-prompt-use-org-read-date t)
+  :config
+  (denote-rename-buffer-mode))
 
 (use-package diff-hl
   :defer 5
@@ -285,9 +309,7 @@
   (highlight-indent-guides-method 'bitmap)
   (highlight-indent-guides-character ?|)
   (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-auto-top-even-face-perc 0)
-  (highlight-indent-guides-auto-top-odd-face-perc 0)
-  (highlight-indent-guides-auto-top-character-face-perc 30))
+  (highlight-indent-guides-auto-top-character-face-perc 50))
 
 (use-package janet-mode
   :mode "\\.janet$"
@@ -477,6 +499,9 @@
   (meow-setup)
   (meow-global-mode 1))
 
+(use-package modus-themes
+  :if (display-graphic-p))
+
 (use-package multiple-cursors
   :bind (("M-n" . mc/mark-next-like-this)
          ("M-p" . mc/mark-previous-like-this)
@@ -651,7 +676,7 @@
   :if (display-graphic-p)
   :bind (:map toggle-map
               ("t" . vterm-project)
-              ("T" . vterm))
+              ("T" . vterm-named))
   :init
   (defun vterm-project ()
     (interactive)

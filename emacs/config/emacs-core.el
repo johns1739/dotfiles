@@ -6,7 +6,6 @@
 (keymap-global-set "M-L" #'duplicate-dwim)
 (setq duplicate-line-final-position 1)
 
-
 ;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-global-set "C-j" global-leader-map)
@@ -30,7 +29,6 @@
            ("j" . jump-to-register)
            ("J" . point-to-register)
            ("n" . next-error)
-           ("o" . other-window)
            ("p" . previous-error)
            ("u" . goto-address-at-point))
 (setq next-error-recenter '(4))
@@ -44,20 +42,15 @@
 (keymap-set goto-map "w" window-movement-map)
 (bind-keys :map window-movement-map
            ("SPC" . switch-to-buffer-other-window)
-           ("f" . find-file-other-window)
+           ("0" . delete-window)
+           ("1" . delete-other-windows)
+           ("2" . split-window-below-and-jump)
+           ("3" . split-window-right-and-jump)
            ("h" . windmove-left)
            ("j" . windmove-down)
            ("k" . windmove-up)
            ("l" . windmove-right)
-           ("K" . kill-buffer)
-           ("o" . other-window)
-           ("p" . project-other-window-command)
-           ("=" . balance-windows)
-           ("." . xref-find-definitions-other-window)
-           ("0" . delete-window)
-           ("1" . delete-other-windows)
-           ("2" . split-window-below-and-jump)
-           ("3" . split-window-right-and-jump))
+           ("." . xref-find-definitions-other-window))
 (defun split-window-below-and-jump ()
   "Split window below and jump to it."
   (interactive)
@@ -94,6 +87,7 @@
            ("/" . isearch-forward-thing-at-point)
            ("?" . occur)
            ("b" . bookmark-jump)
+           ("B" . bookmark-set)
            ("d" . project-find-dir)
            ("f" . project-find-file)
            ("i" . imenu)
@@ -249,59 +243,56 @@
 (keymap-set global-leader-map "n" notes-map)
 (bind-keys :map notes-map
            (";" . org-agenda)
-           ("." . org-capture-string)
+           ("." . org-capture)
            ("/" . org-search-view)
            ("?" . org-occur-in-agenda-files)
-           ("," . org-capture-goto-last-stored)
-           ("c" . org-capture)
-           ("j" . org-capture-goto-target)
-           ("l" . org-store-link)
-           ("y" . copy-relative-file-name)
-           ("Y" . copy-absolute-file-name))
+           ("," . org-capture-goto-last-stored))
 (defvar notes-directory (locate-user-emacs-file "notes"))
 (unless (file-exists-p notes-directory)
   (make-directory notes-directory))
 (setq org-directory notes-directory)
-(setq org-agenda-files `(,org-directory))
-(setq org-return-follows-link nil)
-(setq org-hide-emphasis-markers t)
-(setq org-special-ctrl-a/e t)
-(setq org-agenda-todo-ignore-deadlines 'far)
-(setq org-agenda-sorting-strategy
-      '(priority-down
-        time-up
-        habit-up
-        deadline-up
-        scheduled-up
-        category-keep
-        todo-state-down
-        effort-down
-        tag-up
-        timestamp-up
-        ts-up
-        tsia-up
-        alpha-up))
+(setq org-agenda-files `(,org-directory)
+      org-agenda-todo-ignore-deadlines 'far
+      org-cycle-hide-block-startup t
+      org-hide-drawer-startup t
+      org-hide-emphasis-markers t
+      org-hide-leading-stars t
+      org-log-done 'time
+      org-log-into-drawer t
+      org-return-follows-link nil
+      org-special-ctrl-a/e t
+      org-startup-folded 'overview
+      org-startup-indented t)
+(setq org-agenda-sorting-strategy '(priority-down
+                                    time-up
+                                    habit-up
+                                    deadline-up
+                                    scheduled-up
+                                    category-keep
+                                    todo-state-down
+                                    effort-down
+                                    tag-up
+                                    timestamp-up
+                                    ts-up
+                                    tsia-up
+                                    alpha-up))
 (setq org-tag-faces '(("bug"  . "sienna")
                       ("feature" . "goldenrod")
                       ("chore" . "khaki")))
-(setq org-capture-templates `(("t" "Work TODO"
-                               entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Tasks")
-                               "* TODO %? %^g\n%t\n%i"
-                               :prepend t
-                               :empty-lines 1)
-                              ("T" "Work Note"
-                               entry (file+olp ,(locate-user-emacs-file "notes/tasks.org") "Notes")
-                               "* %? \n%i"
-                               :prepend t
-                               :empty-lines 1)
-                              ("J" "Perdsonal Journal"
-                               entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
-                               "* %?\n%U")
-                              ("j" "Personal TODO"
-                               entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
-                               "* %? \n%i"
-                               :prepend t
-                               :empty-lines 1)))
+(setq org-capture-templates
+      `(("t" "Ticket"
+         entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Tasks")
+         "* TODO %? %^g\n%t\n%i"
+         :prepend t
+         :empty-lines 1)
+        ("j" "Journal"
+         entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
+         "* %?\n%U")
+        ("p" "Personal Task"
+         entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
+         "* %? \n%i"
+         :prepend t
+         :empty-lines 1)))
 (setq org-todo-keyword-faces '(("TODO" . "goldenrod")
                                ("BUILDING" . "dark khaki")
                                ("REVIEW" . "forest green")
