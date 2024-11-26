@@ -1,6 +1,6 @@
 ;; Global Keybindings
-(keymap-global-set "<remap> <delete-horizontal-space>" #'cycle-spacing)
-(keymap-global-set "<remap> <list-buffers>" #'ibuffer)
+(keymap-global-set "M-\\" #'cycle-spacing)
+(keymap-global-set "C-x C-b" #'ibuffer)
 (keymap-global-set "M-o" #'other-window)
 (keymap-global-set "M-#" #'dictionary-lookup-definition)
 (keymap-global-set "M-L" #'duplicate-dwim)
@@ -8,26 +8,30 @@
 
 ;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
-(keymap-global-set "C-j" global-leader-map)
 (keymap-global-set "M-j" global-leader-map)
 
 ;; Go To / Jump
 (keymap-set global-leader-map "g" goto-map)
 (bind-keys :map goto-map
            ("SPC" . switch-to-buffer)
+           ("0" . delete-window)
+           ("1" . delete-other-windows)
+           ("2" . split-window-below-and-jump)
+           ("3" . split-window-right-and-jump)
            ("." . xref-find-definitions)
            ("," . xref-go-back)
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
-           (":" . goto-line)
            (";" . scratch-buffer)
            ("'" . mode-line-other-buffer)
            ("%" . xref-find-references-and-replace)
-           ("d" . dired-at-point)
            ("f" . find-file-at-point)
            ("h" . eldoc)
            ("j" . jump-to-register)
            ("J" . point-to-register)
+           ("l" . goto-line)
+           ("m" . bookmark-jump)
+           ("M" . bookmark-set)
            ("n" . next-error)
            ("p" . previous-error)
            ("u" . goto-address-at-point))
@@ -65,15 +69,14 @@
 (defvar-keymap tab-movement-map :doc "Tab movement map")
 (keymap-set goto-map "t" tab-movement-map)
 (bind-keys :map tab-movement-map
-           (";" . tab-list)
-           ("." . toggle-frame-tab-bar)
-           ("," . tab-recent)
-           ("/" . tab-switch)
            ("SPC" . switch-to-buffer-other-tab)
            ("0" . tab-close)
            ("1" . tab-close-other)
            ("2" . tab-new)
-           ("f" . find-file-other-tab)
+           (";" . tab-list)
+           ("," . tab-recent)
+           ("/" . tab-switch)
+           ("o" . toggle-frame-tab-bar)
            ("p" . tab-previous)
            ("n" . tab-next)
            ("u" . tab-undo))
@@ -82,20 +85,21 @@
 ;; Search / Find
 (keymap-set global-leader-map "s" search-map)
 (bind-keys :map search-map
-           ("." . rgrep)
            ("," . rgrep)
            ("/" . isearch-forward-thing-at-point)
-           ("?" . occur)
-           ("b" . bookmark-jump)
-           ("B" . bookmark-set)
            ("d" . project-find-dir)
            ("f" . project-find-file)
+           ("h" . Info-search)
            ("i" . imenu)
+           ("j" . list-registers)
+           ("l" . occur)
+           ("o" . outline-show-only-headings)
+           ("O" . outline-show-all)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
-           ("l" . occur)
            ("s" . project-find-regexp)
-           ("r" . recentf-open))
+           ("r" . recentf-open)
+           ("y" . yank-from-kill-ring))
 (setq isearch-wrap-pause 'no)
 (setq register-preview-delay 0.5)
 
@@ -110,9 +114,7 @@
 ;; Completion
 (keymap-global-set "M-i" #'completion-at-point)
 (keymap-global-set "M-I" #'hippie-expand)
-(defvar-keymap completion-map :doc "Completion map")
-(keymap-set global-leader-map "i" completion-map)
-(fido-vertical-mode 1)
+(if use-minimal-emacs (fido-vertical-mode 1))
 (setq completion-at-point-functions '(dabbrev-capf))
 (setq completion-cycle-threshold 3)
 (setq completions-detailed t)
@@ -123,8 +125,7 @@
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 (setq hippie-expand-verbose t)
 (setq hippie-expand-try-functions-list
-      '(
-        try-expand-list
+      '(try-expand-list
         try-expand-line
         try-expand-dabbrev-visible
         try-expand-dabbrev
@@ -132,8 +133,7 @@
         try-expand-line-all-buffers
         try-expand-dabbrev-all-buffers
         try-complete-file-name-partially
-        try-complete-file-name
-        ))
+        try-complete-file-name))
 (defadvice hippie-expand (around hippie-expand-case-fold)
   "Try to do case-sensitive matching (not effective with all functions)."
   (let ((case-fold-search nil))
@@ -146,20 +146,19 @@
 (keymap-set global-leader-map "t" toggle-map)
 (bind-keys :map toggle-map
            ("c" . column-number-mode)
+           ("f" . set-font-size)
            ("i" . display-fill-column-indicator-mode)
            ("I" . global-display-fill-column-indicator-mode)
            ("l" . display-line-numbers-mode)
            ("L" . global-display-line-numbers-mode)
-           ("m" . load-theme))
-(when (display-graphic-p)
-  (bind-keys :map toggle-map
-             ("f" . set-font-size))
-  (defun set-font-size ()
-    "Set the font size of Emacs"
-    (interactive)
-    (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
-      (set-face-attribute 'default nil :height (* 10 font-size))
-      (message "Font size set to %s" font-size))))
+           ("m" . load-theme)
+           ("t" . eshell))
+(defun set-font-size ()
+  "Set the font size of Emacs"
+  (interactive)
+  (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
+    (set-face-attribute 'default nil :height (* 10 font-size))
+    (message "Font size set to %s" font-size)))
 
 
 ;; Diagnostics
@@ -181,14 +180,15 @@
 (defvar-keymap compilation-map :doc "Compilation map")
 (keymap-set global-leader-map "c" compilation-map)
 (bind-keys :map compilation-map
-           ("." . compile-defun)
-           ("," . eval-last-sexp)
-           ("b" . eval-buffer)
-           ("c" . compile-dwim)
+           ("." . compile-dwim)
+           ("," . comint)
            ("g" . recompile)
-           ("i" . comint)
-           ("p" . proced)
-           ("r" . eval-region))
+           ("P" . proced))
+(defun compile-dwim ()
+  (interactive)
+  (if (project-current)
+      (call-interactively #'project-compile)
+    (call-interactively #'compile)))
 (setq-default proced-auto-update-flag t)
 (setq next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
 (setq proced-auto-update-interval 1)
@@ -244,9 +244,9 @@
 (bind-keys :map notes-map
            (";" . org-agenda)
            ("." . org-capture)
+           ("L" . org-store-link)
            ("/" . org-search-view)
-           ("?" . org-occur-in-agenda-files)
-           ("," . org-capture-goto-last-stored))
+           ("?" . org-occur-in-agenda-files))
 (defvar notes-directory (locate-user-emacs-file "notes"))
 (unless (file-exists-p notes-directory)
   (make-directory notes-directory))
@@ -263,22 +263,24 @@
       org-special-ctrl-a/e t
       org-startup-folded 'overview
       org-startup-indented t)
-(setq org-agenda-sorting-strategy '(priority-down
-                                    time-up
-                                    habit-up
-                                    deadline-up
-                                    scheduled-up
-                                    category-keep
-                                    todo-state-down
-                                    effort-down
-                                    tag-up
-                                    timestamp-up
-                                    ts-up
-                                    tsia-up
-                                    alpha-up))
-(setq org-tag-faces '(("bug"  . "sienna")
-                      ("feature" . "goldenrod")
-                      ("chore" . "khaki")))
+(setq org-agenda-sorting-strategy
+      '(priority-down
+        time-up
+        habit-up
+        deadline-up
+        scheduled-up
+        category-keep
+        todo-state-down
+        effort-down
+        tag-up
+        timestamp-up
+        ts-up
+        tsia-up
+        alpha-up))
+(setq org-tag-faces
+      '(("bug"  . "sienna")
+        ("feature" . "goldenrod")
+        ("chore" . "khaki")))
 (setq org-capture-templates
       `(("t" "Ticket"
          entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Tasks")
@@ -320,7 +322,6 @@
 
 
 ;; Modes
-
 (auto-save-visited-mode -1) ;; Annoying with whitespace cleanup constantly moving the point
 (column-number-mode -1)
 (delete-selection-mode -1)
@@ -332,7 +333,6 @@
 (global-so-long-mode t)
 (line-number-mode t)
 (pixel-scroll-precision-mode t)
-(recentf-mode 1)
 (repeat-mode nil) ;; Sometimes gets in the way.
 (save-place-mode t)
 (savehist-mode t)
@@ -364,8 +364,6 @@
 (setq history-length 1000)
 (setq ibuffer-old-time 24)
 (setq kill-do-not-save-duplicates t)
-(setq recentf-auto-cleanup 300)
-(setq recentf-max-saved-items 50)
 (setq require-final-newline t)
 (setq show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
 (setq dictionary-server "dict.org")
@@ -379,6 +377,12 @@
 (setq eshell-scroll-to-bottom-on-output 'this)
 (setq read-process-output-max (* 1024 1024))
 (put 'narrow-to-region 'disabled nil)
+
+
+;; Recent
+(setq recentf-auto-cleanup 300)
+(setq recentf-max-saved-items 100)
+(recentf-mode 1)
 
 
 ;; Backups & Versioning
@@ -445,12 +449,6 @@
   (let ((project (project-current)))
     (if project
         (project-root project))))
-
-(defun compile-dwim ()
-  (interactive)
-  (if (project-current)
-      (call-interactively #'project-compile)
-    (call-interactively #'compile)))
 
 (defun indent-buffer ()
   (interactive)

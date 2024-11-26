@@ -22,15 +22,10 @@
 ;;;; Packages
 
 (use-package ace-window
-  :bind  (([remap other-window] . ace-window)
-          ;; ([remap delete-window] . ace-delete-window)
-          ;; ([remap delete-other-windows] . ace-delete-other-windows)
-          ([remap window-swap-states] . ace-swap-window)))
+  :bind  (([remap other-window] . ace-window)))
 
 (use-package avy
-  :bind (:map goto-map
-              ("l" . avy-goto-line)
-              ("g" . avy-goto-char-2)))
+  :bind (:map goto-map ("g" . avy-goto-char)))
 
 (use-package beacon
   :defer 5
@@ -85,30 +80,24 @@
          ([remap load-theme] . consult-theme)
          ([remap recentf-open] . consult-recent-file)
          ([remap org-search-view] . consult-org-agenda)
-         :map diagnostics-map
-         ("/" . consult-flymake)
-         :map compilation-map
-         ("/" . consult-compile-error)
-         :map goto-map
-         ("j" . consult-register-load)
-         ("J" . consult-register-store)
-         :map search-map
-         ("SPC" . consult-project-buffer)
-         ("." . consult-ripgrep-symbol-at-point)
-         ("o" . consult-outline)
-         ("h" . consult-info)
-         ("i" . consult-imenu)
-         ;; ("I" . consult-imenu-multi) -- takes too long to be useful.
-         ("j" . consult-register)
-         ("k" . consult-keep-lines)
-         ("l" . consult-line)
-         ("L" . consult-focus-lines)
-         ("m" . consult-mark)
-         ("M" . consult-global-mark)
-         ("s" . consult-ripgrep)
-         ("y" . consult-yank-from-kill-ring))
-  :hook
-  (completion-list-mode . consult-preview-at-point-mode))
+         ([remap flymake-show-buffer-diagnostics] . consult-flymake)
+         ([remap list-registers] . consult-registers)
+         ([remap keep-lines] . consult-keep-lines)
+         ([remap occur] . consult-line)
+         ([remap outline-show-only-headings] . consult-outline)
+         ([remap project-find-regexp] . consult-ripgrep)
+         ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
+  :map compilation-map
+  (";" . consult-compile-error)
+  :map goto-map
+  ("j" . consult-register-load)
+  ("J" . consult-register-store)
+  :map search-map
+  ("SPC" . consult-project-buffer)
+  ("." . consult-ripgrep-symbol-at-point)
+  ("L" . consult-focus-lines))
+:hook
+(completion-list-mode . consult-preview-at-point-mode))
 
 (use-package consult-denote
   :after denote
@@ -177,7 +166,7 @@
               ("R" . denote-rename-file-using))
   :custom
   (denote-directory (expand-file-name "denotes" notes-directory))
-  (denote-known-keywords '("bug" "chore" "docs" "feat" "fix" "test" "script"))
+  (denote-known-keywords '("task" "doc" "snippet"))
   (denote-date-prompt-use-org-read-date t)
   :config
   (denote-rename-buffer-mode))
@@ -186,7 +175,7 @@
   :defer 5
   :if (display-graphic-p)
   :bind (:map git-map
-              ("." . diff-hl-show-hunk)
+              ("," . diff-hl-show-hunk)
               ("n" . diff-hl-show-hunk-next)
               ("p" . diff-hl-show-hunk-previous)
               ("S" . diff-hl-stage-dwim)
@@ -232,10 +221,12 @@
               ("a" . embark-act)
               ("A" . embark-act-all)
               ("e" . embark-collect)
-              ("E" . embark-export)))
+              ("E" . embark-export)
+              :map help-map
+              ("B" . embark-bindings)))
 
 (use-package embark-consult
-  :after embark
+  :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -298,6 +289,7 @@
               ("f" . helpful-callable)
               ("v" . helpful-variable)
               ("k" . helpful-key)
+              ("c" . helpful-command)
               ("o" . helpful-symbol)
               ("." . helpful-at-point)))
 
@@ -333,7 +325,7 @@
 (use-package magit
   :commands (magit-status)
   :bind (:map git-map
-              ("," . magit-status-here)
+              ("." . magit-status-here)
               (";" . magit-status)
               ("f" . magit-file-dispatch)
               ("l" . magit-log-buffer-file)
@@ -504,7 +496,9 @@
 
 (use-package multiple-cursors
   :bind (("M-n" . mc/mark-next-like-this)
+         ("M-N" . mc/unmark-previous-like-this)
          ("M-p" . mc/mark-previous-like-this)
+         ("M-P" . mc/unmark-next-like-this)
          :map mc/keymap
          ("<return>" . nil)))
 
@@ -687,7 +681,10 @@
     (vterm (read-string "Session name: ")))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000))
+  (vterm-max-scrollback 100000)
+  :config
+  (with-eval-after-load 'vterm
+    (keymap-set vterm-mode-map "M-j" global-leader-map)))
 
 (use-package which-key
   :defer 5
