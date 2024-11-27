@@ -160,6 +160,8 @@
   :defer 2
   :bind (:map notes-map
               ("d" . denote)
+              ("f" . denote-find-link)
+              ("F" . denote-find-backlink)
               ("l" . denote-link-or-create)
               ("L" . denote-link-insert-links-matching-regexp)
               ("r" . denote-rename-file-using-front-matter)

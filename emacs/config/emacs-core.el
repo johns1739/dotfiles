@@ -152,7 +152,8 @@
            ("l" . display-line-numbers-mode)
            ("L" . global-display-line-numbers-mode)
            ("m" . load-theme)
-           ("t" . eshell))
+           ("t" . eshell)
+           ("s" . global-prettify-symbols-mode))
 (defun set-font-size ()
   "Set the font size of Emacs"
   (interactive)
@@ -339,6 +340,20 @@
 (setq-default indent-tabs-mode nil)
 (window-divider-mode -1)
 
+(setq-default prettify-symbols-alist
+              '(("lambda" . "λ")
+                ("|>" . "▷")
+                ("<|" . "◁")
+                ("->>" . "↠")
+                ("->" . "→")
+                ("<-" . "←")
+                ("&&" . "∧")
+                ("||" . "∨")
+                ("!=" . "≠")
+                ("=>" . "⇒")
+                ("<=" . "≤")
+                (">=" . "≥")))
+(add-hook 'prog-mode-hook #'prettify-symbols-mode)
 
 ;; Display Buffer
 (add-to-list 'display-buffer-alist
