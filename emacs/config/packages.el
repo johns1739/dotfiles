@@ -25,7 +25,7 @@
   :bind  (([remap other-window] . ace-window)))
 
 (use-package avy
-  :bind (:map goto-map ("g" . avy-goto-char)))
+  :bind (:map goto-map ("g" . avy-goto-char-2)))
 
 (use-package beacon
   :defer 5
@@ -324,6 +324,20 @@
   :custom
   (js-indent-level 2))
 
+(use-package lsp-mode
+  :commands (lsp lsp-deferred)
+  :custom
+  (lsp-keymap-prefix "s-l")
+  (lsp-idle-delay 0.500)
+  (lsp-headerline-breadcrumb-enable nil)
+  :init
+  (defun lsp-set-bindings ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-buffer] . lsp-format-buffer)))
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  (lsp-mode . lsp-set-bindings))
+
 (use-package magit
   :commands (magit-status)
   :bind (:map git-map
@@ -335,10 +349,11 @@
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
-  :config
-  ;; (setq magit-display-buffer-function #'magit-display-buffer-traditional)
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
-  (setq magit-list-refs-sortby "-creatordate"))
+  :custom
+  ;; (magit-display-buffer-function #'magit-display-buffer-traditional)
+  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
+  (magit-bury-buffer-function 'magit-restore-window-configuration)
+  (magit-list-refs-sortby "-creatordate"))
 
 (use-package marginalia
   :defer 5
@@ -397,6 +412,7 @@
      '("2" . meow-expand-2)
      '("1" . meow-expand-1)
      '("-" . negative-argument)
+     '("_" . nil)
      '("+" . nil)
      '("!" . nil)
      '("@" . nil)
@@ -405,9 +421,8 @@
      '("%" . nil)
      '("^" . nil)
      '("&" . nil)
-     '("(" . nil)
-     '(")" . nil)
-     '("_" . meow-reverse)
+     '("(" . meow-beginning-of-thing)
+     '(")" . meow-end-of-thing)
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("b" . meow-back-word)
@@ -437,7 +452,7 @@
      '("n" . meow-search)
      (cons "N" notes-map)
      '("o" . other-window)
-     (cons "O" toggle-map)
+     '("O" . nil)
      '("p" . meow-yank)
      (cons "P" project-prefix-map)
      '("q" . nil) ;; Keep q unbound for other apps to bind.
@@ -447,9 +462,9 @@
      (cons "s" search-map)
      '("S" . save-buffer)
      '("t" . meow-till)
-     '("T" . nil)
+     (cons "T" toggle-map)
      '("u" . meow-undo)
-     '("U" . nil)
+     '("U" . meow-undo-in-selection)
      '("v" . meow-page-down)
      '("V" . meow-page-up)
      '("w" . meow-mark-word)
@@ -460,14 +475,8 @@
      '("Y" . meow-save-append)
      '("z" . meow-pop-selection)
      '("Z" . meow-sync-grab)
-     ;; Keep these unbound for other apps to bind.
-     '("<tab>" . nil)
-     '("<down>" . nil)
-     '("<up>" . nil)
-     '("<right>" . nil)
-     '("<left>" . nil)
      '("\\" . nil)
-     '("|" . repeat-complex-command)
+     '("|" . nil)
      '("'" . meow-last-buffer)
      '(";" . meow-comment)
      '(":" . goto-line)
@@ -483,8 +492,15 @@
      '("}" . nil)
      '("`" . nil)
      '("~" . nil)
+     '("<backspace>" . meow-backward-delete)
      '("<backtab>" . indent-buffer)
-     '("<escape>" . meow-cancel-selection)))
+     '("<escape>" . meow-cancel-selection)
+     ;; Keep these unbound for other apps to bind.
+     '("<tab>" . nil)
+     '("<down>" . nil)
+     '("<up>" . nil)
+     '("<right>" . nil)
+     '("<left>" . nil)))
   :config
   (meow-setup)
   (meow-global-mode 1))
@@ -587,6 +603,14 @@
                    (if (< (line-number-at-pos) 5)
                        (string-join (list "rails t " file-name))
                      (string-join (list "rails t " (s-concat file-name ":" linum))))))
+                ((string-match-p "engines/flexwork/.+_spec.rb" (buffer-file-name))
+                 (let ((linum (number-to-string (line-number-at-pos)))
+                       (file-name (file-relative-name (buffer-file-name)
+                                                      (concat (current-directory) "engines/flexwork")))
+                       (prefix-command "cd engines/flexwork/ && bundle exec rspec "))
+                   (if (< (line-number-at-pos) 5)
+                       (string-join (list prefix-command file-name))
+                     (string-join (list prefix-command (s-concat file-name ":" linum))))))
                 (t compile-command)))
     (call-interactively #'compile-dwim))
   (defun rails-comint ()

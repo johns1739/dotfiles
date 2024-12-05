@@ -14,10 +14,6 @@
 (keymap-set global-leader-map "g" goto-map)
 (bind-keys :map goto-map
            ("SPC" . switch-to-buffer)
-           ("0" . delete-window)
-           ("1" . delete-other-windows)
-           ("2" . split-window-below-and-jump)
-           ("3" . split-window-right-and-jump)
            ("." . xref-find-definitions)
            ("," . xref-go-back)
            ("?" . xref-find-references)
@@ -46,6 +42,7 @@
 (keymap-set goto-map "w" window-movement-map)
 (bind-keys :map window-movement-map
            ("SPC" . switch-to-buffer-other-window)
+           ("=" . balance-windows)
            ("0" . delete-window)
            ("1" . delete-other-windows)
            ("2" . split-window-below-and-jump)
