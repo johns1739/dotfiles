@@ -6,6 +6,9 @@
 (keymap-global-set "M-L" #'duplicate-dwim)
 (setq duplicate-line-final-position 1)
 
+(bind-keys :map help-map
+           ("h" . nil)) ;; Unset view-hello-file, prevent accidental calls
+
 ;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-global-set "M-j" global-leader-map)

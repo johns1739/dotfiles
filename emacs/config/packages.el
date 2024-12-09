@@ -401,6 +401,7 @@
      '("9" . meow-digit-argument)
      '("0" . meow-digit-argument))
     (meow-normal-define-key
+     (cons "SPC" global-leader-map)
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)
      '("8" . meow-expand-8)
@@ -412,7 +413,7 @@
      '("2" . meow-expand-2)
      '("1" . meow-expand-1)
      '("-" . negative-argument)
-     '("_" . nil)
+     '("_" . meow-reverse)
      '("+" . nil)
      '("!" . nil)
      '("@" . nil)
