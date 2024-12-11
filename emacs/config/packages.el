@@ -81,17 +81,16 @@
          ([remap recentf-open] . consult-recent-file)
          ([remap org-search-view] . consult-org-agenda)
          ([remap flymake-show-buffer-diagnostics] . consult-flymake)
-         ([remap list-registers] . consult-registers)
+         ([remap list-registers] . consult-register)
+         ([remap jump-to-register] . consult-register-load)
+         ([remap point-to-register] . consult-register-store)
          ([remap keep-lines] . consult-keep-lines)
          ([remap occur] . consult-line)
          ([remap outline-show-only-headings] . consult-outline)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          :map compilation-map
-         (";" . consult-compile-error)
-         :map goto-map
-         ("j" . consult-register-load)
-         ("J" . consult-register-store)
+         ("SPC" . consult-compile-error)
          :map search-map
          ("SPC" . consult-project-buffer)
          ("." . consult-ripgrep-symbol-at-point)
@@ -102,7 +101,7 @@
 (use-package consult-denote
   :after denote
   :bind (:map notes-map
-              ("SPC" . consult-denote-find)
+              ("f" . consult-denote-find)
               ("s" . consult-denote-grep))
   :custom
   (consult-denote-grep-command 'consult-ripgrep)
@@ -114,14 +113,13 @@
 
 (use-package corfu
   :defer 5
-  ;; Corfu enhances in-buffer completion with a small completion popup.
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
               ("RET" . nil))
   :custom
   (corfu-auto t) ; Enable auto completion
-  (corfu-auto-delay 0.5) ; Enable auto completion
+  (corfu-auto-delay 0.2) ; Enable auto completion
   (corfu-auto-prefix 2) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-echo-delay 0.3)
@@ -159,13 +157,13 @@
 (use-package denote
   :defer 2
   :bind (:map notes-map
-              ("d" . denote)
-              ("f" . denote-find-link)
-              ("F" . denote-find-backlink)
+              ("n" . denote)
+              ("k" . denote-find-link)
+              ("K" . denote-find-backlink)
               ("l" . denote-link-or-create)
               ("L" . denote-link-insert-links-matching-regexp)
               ("r" . denote-rename-file-using-front-matter)
-              ("R" . denote-rename-file-using))
+              ("R" . denote-rename-file))
   :custom
   (denote-directory (expand-file-name "denotes" notes-directory))
   (denote-known-keywords '("task" "doc" "snippet"))
@@ -174,10 +172,10 @@
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
-  :defer 5
+  :defer 10
   :if (display-graphic-p)
   :bind (:map git-map
-              ("," . diff-hl-show-hunk)
+              ("o" . diff-hl-show-hunk)
               ("n" . diff-hl-show-hunk-next)
               ("p" . diff-hl-show-hunk-previous)
               ("S" . diff-hl-stage-dwim)
@@ -219,7 +217,7 @@
 (use-package elm-mode)
 
 (use-package embark
-  :bind (:map global-leader-map
+  :bind (:map compilation-map
               ("a" . embark-act)
               ("A" . embark-act-all)
               ("e" . embark-collect)
@@ -288,11 +286,11 @@
 
 (use-package helpful
   :bind (:map help-map
-              ("f" . helpful-callable)
-              ("v" . helpful-variable)
-              ("k" . helpful-key)
-              ("c" . helpful-command)
-              ("o" . helpful-symbol)
+              ([remap describe-function] . helpful-callable)
+              ([remap describe-command] . helpful-command)
+              ([remap describe-variable] . helpful-variable)
+              ([remap describe-symbol] . helpful-symbol)
+              ([remap describe-key] . helpful-key)
               ("." . helpful-at-point)))
 
 (use-package highlight-indent-guides
@@ -388,20 +386,11 @@
      '("Q" . "H-Q")
      '("j" . "H-j")
      '("k" . "H-k")
-     '("o" . "H-o")
-     ;; Use SPC (0-9) for digit arguments.
-     '("1" . meow-digit-argument)
-     '("2" . meow-digit-argument)
-     '("3" . meow-digit-argument)
-     '("4" . meow-digit-argument)
-     '("5" . meow-digit-argument)
-     '("6" . meow-digit-argument)
-     '("7" . meow-digit-argument)
-     '("8" . meow-digit-argument)
-     '("9" . meow-digit-argument)
-     '("0" . meow-digit-argument))
+     '("o" . "H-o"))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
+     '("M-DEL" . meow-backward-kill-word)
+     '("M-d" . meow-kill-word)
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)
      '("8" . meow-expand-8)
@@ -414,48 +403,39 @@
      '("1" . meow-expand-1)
      '("-" . negative-argument)
      '("_" . meow-reverse)
-     '("+" . nil)
-     '("!" . nil)
-     '("@" . nil)
-     '("#" . nil)
-     '("$" . nil)
-     '("%" . nil)
-     '("^" . nil)
-     '("&" . nil)
-     '("(" . meow-beginning-of-thing)
-     '(")" . meow-end-of-thing)
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("b" . meow-back-word)
      '("B" . meow-back-symbol)
      '("c" . meow-change)
-     (cons "C" compilation-map)
+     '("C" . meow-sync-grab)
      '("d" . meow-delete)
      '("D" . meow-kill)
      '("e" . meow-next-word)
      '("E" . meow-next-symbol)
      '("f" . meow-find)
-     '("F" . nil)
      (cons "g" goto-map)
      '("G" . meow-grab)
      '("h" . meow-left)
-     '("H" . mark-paragraph)
+     '("H" . meow-left-expand)
      '("i" . meow-insert)
      '("I" . meow-open-above)
      '("j" . meow-next)
-     (cons "J" git-map)
+     '("J" . meow-next-expand)
      '("k" . meow-prev)
-     (cons "K" diagnostics-map)
+     '("K" . meow-prev-expand)
      '("l" . meow-right)
-     '("L" . nil)
+     '("L" . meow-right-expand)
      '("m" . meow-join)
-     '("M" . nil)
+     '("M" . meow-pop-to-mark)
      '("n" . meow-search)
-     (cons "N" notes-map)
+     '("N" . meow-unpop-to-mark)
+     ;; '("o" . meow-block)
+     ;; '("O" . meow-to-block)
      '("o" . other-window)
-     '("O" . nil)
+     '("O" . er/expand-region)
      '("p" . meow-yank)
-     (cons "P" project-prefix-map)
+     '("P" . meow-yank-pop)
      '("q" . nil) ;; Keep q unbound for other apps to bind.
      '("Q" . meow-quit)
      '("r" . meow-replace)
@@ -463,7 +443,6 @@
      (cons "s" search-map)
      '("S" . save-buffer)
      '("t" . meow-till)
-     (cons "T" toggle-map)
      '("u" . meow-undo)
      '("U" . meow-undo-in-selection)
      '("v" . meow-page-down)
@@ -475,33 +454,16 @@
      '("y" . meow-save)
      '("Y" . meow-save-append)
      '("z" . meow-pop-selection)
-     '("Z" . meow-sync-grab)
-     '("\\" . nil)
-     '("|" . nil)
      '("'" . meow-last-buffer)
      '(";" . meow-comment)
      '(":" . goto-line)
      '("/" . meow-visit)
-     '("?" . nil)
      '("," . meow-inner-of-thing)
-     '("<" . beginning-of-buffer)
+     '("<" . meow-beginning-of-thing)
      '("." . meow-bounds-of-thing)
-     '(">" . end-of-buffer)
-     '("[" . nil)
-     '("{" . nil)
-     '("]" . nil)
-     '("}" . nil)
-     '("`" . nil)
-     '("~" . nil)
+     '(">" . meow-end-of-thing)
      '("<backspace>" . meow-backward-delete)
-     '("<backtab>" . indent-buffer)
-     '("<escape>" . meow-cancel-selection)
-     ;; Keep these unbound for other apps to bind.
-     '("<tab>" . nil)
-     '("<down>" . nil)
-     '("<up>" . nil)
-     '("<right>" . nil)
-     '("<left>" . nil)))
+     '("<escape>" . meow-cancel-selection)))
   :config
   (meow-setup)
   (meow-global-mode 1))
@@ -529,11 +491,11 @@
               ("O" . popper-toggle-type)
               ("n" . popper-cycle)
               ("p" . popper-cycle-backwards)
-              ("Q" . popper-kill-latest-popup)
+              ("q" . popper-kill-latest-popup)
               :repeat-map toggle-cycle-repeat-map
               ("n" . popper-cycle)
               ("p" . popper-cycle-backwards)
-              ("Q" . popper-kill-latest-popup))
+              ("q" . popper-kill-latest-popup))
   :init
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)
@@ -704,24 +666,15 @@
     (vterm (read-string "Session name: ")))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000)
-  :config
-  (with-eval-after-load 'vterm
-    (keymap-set vterm-mode-map "M-j" global-leader-map)))
+  (vterm-max-scrollback 100000))
 
 (use-package which-key
   :defer 5
   :config
   (which-key-mode))
 
-(use-package writeroom-mode
-  :if (display-graphic-p)
-  :bind (:map toggle-map
-              ("z" . writeroom-mode)
-              ("Z" . global-writeroom-mode)))
-
 (use-package xclip
-  :defer 5
+  :defer 2
   :unless (display-graphic-p)
   :config
   (xclip-mode 1))

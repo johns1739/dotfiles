@@ -1,27 +1,46 @@
-;; Global Keybindings
-(keymap-global-set "M-\\" #'cycle-spacing)
-(keymap-global-set "C-x C-b" #'ibuffer)
-(keymap-global-set "M-o" #'other-window)
-(keymap-global-set "M-#" #'dictionary-lookup-definition)
-(keymap-global-set "M-L" #'duplicate-dwim)
-(setq duplicate-line-final-position 1)
-
-(bind-keys :map help-map
-           ("h" . nil)) ;; Unset view-hello-file, prevent accidental calls
-
-;; Global Leader Keybindings
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
-(keymap-global-set "M-j" global-leader-map)
+(defvar-keymap notes-map :doc "Notes map")
+(defvar-keymap diagnostics-map :doc "Diagnostics map")
+(defvar-keymap compilation-map :doc "Compilation map")
+(defvar-keymap toggle-map :doc "Toggle map")
+(defvar-keymap window-movement-map :doc "Window movement map")
+(defvar-keymap tab-movement-map :doc "Tab movement map")
+(defvar-keymap git-map :doc "Git map")
 
-;; Go To / Jump
+(keymap-global-set "M-SPC" global-leader-map)
 (keymap-set global-leader-map "g" goto-map)
-(bind-keys :map goto-map
+(keymap-set global-leader-map "s" search-map)
+(keymap-set global-leader-map "w" window-movement-map)
+(keymap-set global-leader-map "t" tab-movement-map)
+(keymap-set global-leader-map "o" toggle-map)
+(keymap-set global-leader-map "d" diagnostics-map)
+(keymap-set global-leader-map "x" compilation-map)
+(keymap-set global-leader-map ";" notes-map)
+(keymap-set global-leader-map "j" git-map)
+(keymap-set global-leader-map "p" project-prefix-map)
+
+(bind-keys :map global-map
+           ("M-i" . completion-at-point)
+           ("M-I" . hippie-expand)
+           ("M-\\" . cycle-spacing)
+           ("C-x C-b" . ibuffer)
+           ("M-o" . other-window)
+           ("M-#" . dictionary-lookup-definition)
+           ("M-L" . duplicate-dwim)
+           :map global-leader-map
+           ("SPC" . switch-to-buffer)
+           ("TAB" . indent-buffer)
+           ("0" . delete-window)
+           ("1" . delete-other-windows)
+           ("2" . split-window-below-and-jump)
+           ("3" . split-window-right-and-jump)
+           :map goto-map
            ("SPC" . switch-to-buffer)
            ("." . xref-find-definitions)
            ("," . xref-go-back)
+           (";" . scratch-buffer)
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
-           (";" . scratch-buffer)
            ("'" . mode-line-other-buffer)
            ("%" . xref-find-references-and-replace)
            ("f" . find-file-at-point)
@@ -33,17 +52,45 @@
            ("M" . bookmark-set)
            ("n" . next-error)
            ("p" . previous-error)
-           ("u" . goto-address-at-point))
-(setq next-error-recenter '(4))
-(setq next-error-highlight 1.0)
-(setq next-error-highlight-no-select 1.0)
-(setq next-error-message-highlight t)
-
-
-;; Window Movement / Buffer management
-(defvar-keymap window-movement-map :doc "Window movement map")
-(keymap-set goto-map "w" window-movement-map)
-(bind-keys :map window-movement-map
+           ("u" . goto-address-at-point)
+           :map search-map
+           ("," . rgrep)
+           ("/" . isearch-forward-thing-at-point)
+           ("d" . project-find-dir)
+           ("f" . project-find-file)
+           ("j" . list-registers)
+           ("l" . occur)
+           ("o" . outline-show-only-headings)
+           ("O" . outline-show-all)
+           ("k" . keep-lines)
+           ("K" . delete-matching-lines)
+           ("s" . project-find-regexp)
+           ("r" . recentf-open)
+           ("y" . yank-from-kill-ring)
+           :map notes-map
+           (";" . org-agenda)
+           ("." . org-capture)
+           ("," . org-store-link)
+           ("/" . org-search-view)
+           ("?" . org-occur-in-agenda-files)
+           :map compilation-map
+           ("." . compile-dwim)
+           ("," . comint)
+           ("g" . recompile)
+           ("B" . eval-buffer)
+           :map toggle-map
+           ("SPC" . load-theme)
+           ("f" . set-font-size)
+           ("i" . display-fill-column-indicator-mode)
+           ("I" . global-display-fill-column-indicator-mode)
+           ("l" . display-line-numbers-mode)
+           ("L" . global-display-line-numbers-mode)
+           :map diagnostics-map
+           (";" . flymake-show-buffer-diagnostics)
+           (":" . flymake-show-project-diagnostics)
+           ("n" . flymake-goto-next-error)
+           ("p" . flymake-goto-prev-error)
+           :map window-movement-map
            ("SPC" . switch-to-buffer-other-window)
            ("=" . balance-windows)
            ("0" . delete-window)
@@ -54,21 +101,8 @@
            ("j" . windmove-down)
            ("k" . windmove-up)
            ("l" . windmove-right)
-           ("." . xref-find-definitions-other-window))
-(defun split-window-below-and-jump ()
-  "Split window below and jump to it."
-  (interactive)
-  (select-window (split-window-below)))
-(defun split-window-right-and-jump ()
-  "Split window right and jump to it."
-  (interactive)
-  (select-window (split-window-right)))
-
-
-;; Tab Movement
-(defvar-keymap tab-movement-map :doc "Tab movement map")
-(keymap-set goto-map "t" tab-movement-map)
-(bind-keys :map tab-movement-map
+           ("." . xref-find-definitions-other-window)
+           :map tab-movement-map
            ("SPC" . switch-to-buffer-other-tab)
            ("0" . tab-close)
            ("1" . tab-close-other)
@@ -79,41 +113,27 @@
            ("o" . toggle-frame-tab-bar)
            ("p" . tab-previous)
            ("n" . tab-next)
-           ("u" . tab-undo))
+           ("u" . tab-undo)
+           :map project-prefix-map
+           ("SPC" . project-switch-to-buffer)
+           ("%" . project-query-replace-regexp)
+           :map help-map
+           ("h" . nil))
 
-
-;; Search / Find
-(keymap-set global-leader-map "s" search-map)
-(bind-keys :map search-map
-           ("," . rgrep)
-           ("/" . isearch-forward-thing-at-point)
-           ("d" . project-find-dir)
-           ("f" . project-find-file)
-           ("h" . Info-search)
-           ("i" . imenu)
-           ("j" . list-registers)
-           ("l" . occur)
-           ("o" . outline-show-only-headings)
-           ("O" . outline-show-all)
-           ("k" . keep-lines)
-           ("K" . delete-matching-lines)
-           ("s" . project-find-regexp)
-           ("r" . recentf-open)
-           ("y" . yank-from-kill-ring))
+;; Search
 (setq isearch-wrap-pause 'no)
 (setq register-preview-delay 0.5)
 
+;; Duplicating line
+(setq duplicate-line-final-position 1)
 
-;; Project
-(keymap-set global-leader-map "p" project-prefix-map)
-(bind-keys :map project-prefix-map
-           ("%" . project-query-replace-regexp)
-           ("SPC" . project-switch-to-buffer))
-
+;; Navigating errors
+(setq next-error-recenter '(4))
+(setq next-error-highlight 1.0)
+(setq next-error-highlight-no-select 1.0)
+(setq next-error-message-highlight t)
 
 ;; Completion
-(keymap-global-set "M-i" #'completion-at-point)
-(keymap-global-set "M-I" #'hippie-expand)
 (if use-minimal-emacs (fido-vertical-mode 1))
 (setq completion-at-point-functions '(dabbrev-capf))
 (setq completion-cycle-threshold 3)
@@ -140,50 +160,10 @@
     ad-do-it))
 (ad-activate 'hippie-expand)
 
-
-;; Toggle
-(defvar-keymap toggle-map :doc "Toggle map")
-(keymap-set global-leader-map "t" toggle-map)
-(bind-keys :map toggle-map
-           ("c" . column-number-mode)
-           ("f" . set-font-size)
-           ("i" . display-fill-column-indicator-mode)
-           ("I" . global-display-fill-column-indicator-mode)
-           ("l" . display-line-numbers-mode)
-           ("L" . global-display-line-numbers-mode)
-           ("m" . load-theme)
-           ("t" . eshell))
-(defun set-font-size ()
-  "Set the font size of Emacs"
-  (interactive)
-  (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
-    (set-face-attribute 'default nil :height (* 10 font-size))
-    (message "Font size set to %s" font-size)))
-
-
 ;; Diagnostics
-(defvar-keymap diagnostics-map :doc "Diagnostics map")
-(keymap-set global-leader-map "k" diagnostics-map)
-(bind-keys :map diagnostics-map
-           (";" . flymake-show-buffer-diagnostics)
-           ("P" . flymake-show-project-diagnostics)
-           ("n" . flymake-goto-next-error)
-           ("p" . flymake-goto-prev-error)
-           :repeat-map diagnostics-repeat-map
-           (";" . flymake-show-buffer-diagnostics)
-           ("n" . flymake-goto-next-error)
-           ("p" . flymake-goto-prev-error))
 (setq flymake-fringe-indicator-position 'right-fringe)
 
-
 ;; Compilation
-(defvar-keymap compilation-map :doc "Compilation map")
-(keymap-set global-leader-map "c" compilation-map)
-(bind-keys :map compilation-map
-           ("." . compile-dwim)
-           ("," . comint)
-           ("g" . recompile)
-           ("P" . proced))
 (defun compile-dwim ()
   (interactive)
   (if (project-current)
@@ -239,14 +219,6 @@
 
 
 ;; Notes
-(defvar-keymap notes-map :doc "Notes map")
-(keymap-set global-leader-map "n" notes-map)
-(bind-keys :map notes-map
-           (";" . org-agenda)
-           ("." . org-capture)
-           ("L" . org-store-link)
-           ("/" . org-search-view)
-           ("?" . org-occur-in-agenda-files))
 (defvar notes-directory (locate-user-emacs-file "notes"))
 (unless (file-exists-p notes-directory)
   (make-directory notes-directory))
@@ -305,10 +277,6 @@
                                '((emacs-lisp . t)
                                  (shell . t))))
 
-
-;; Git
-(defvar-keymap git-map :doc "Git map")
-(keymap-set global-leader-map "j" git-map)
 
 
 ;; Hooks
@@ -443,6 +411,24 @@
 
 
 ;; Commands & Functions
+
+(defun set-font-size ()
+  "Set the font size of Emacs"
+  (interactive)
+  (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
+    (set-face-attribute 'default nil :height (* 10 font-size))
+    (message "Font size set to %s" font-size)))
+
+(defun split-window-below-and-jump ()
+  "Split window below and jump to it."
+  (interactive)
+  (select-window (split-window-below)))
+
+(defun split-window-right-and-jump ()
+  "Split window right and jump to it."
+  (interactive)
+  (select-window (split-window-right)))
+
 (defun project-directory ()
   "Current project directory."
   (let ((project (project-current)))
