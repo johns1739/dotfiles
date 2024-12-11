@@ -254,14 +254,14 @@
         ("feature" . "goldenrod")
         ("chore" . "khaki")))
 (setq org-capture-templates
-      `(("t" "Ticket"
-         entry (file+headline ,(locate-user-emacs-file "notes/tasks.org") "Tasks")
+      `(("t" "Private Task"
+         entry (file+headline ,(locate-user-emacs-file "notes/private.org") "Tasks")
          "* TODO %? %^g\n%t\n%i"
          :prepend t
          :empty-lines 1)
-        ("j" "Journal"
-         entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
-         "* %?\n%U")
+        ;; ("j" "Journal"
+        ;;  entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
+        ;;  "* %?\n%U")
         ("p" "Personal Task"
          entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
          "* %? \n%i"
