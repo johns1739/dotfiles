@@ -16,7 +16,7 @@
 (keymap-set global-leader-map "o" toggle-map)
 (keymap-set global-leader-map "d" diagnostics-map)
 (keymap-set global-leader-map "x" compilation-map)
-(keymap-set global-leader-map ";" notes-map)
+(keymap-set global-leader-map "n" notes-map)
 (keymap-set global-leader-map "j" git-map)
 (keymap-set global-leader-map "p" project-prefix-map)
 
