@@ -8,6 +8,7 @@
 (defvar-keymap git-map :doc "Git map")
 
 (keymap-global-set "M-SPC" global-leader-map)
+(keymap-global-set "M-j" global-leader-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
 (keymap-set global-leader-map "w" window-movement-map)
