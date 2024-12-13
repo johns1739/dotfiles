@@ -80,7 +80,6 @@
          ([remap load-theme] . consult-theme)
          ([remap recentf-open] . consult-recent-file)
          ([remap org-search-view] . consult-org-agenda)
-         ([remap flymake-show-buffer-diagnostics] . consult-flymake)
          ([remap list-registers] . consult-register)
          ([remap jump-to-register] . consult-register-load)
          ([remap point-to-register] . consult-register-store)
@@ -89,6 +88,8 @@
          ([remap outline-show-only-headings] . consult-outline)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
+         :map diagnostics-map
+         ("SPC" . consult-flymake)
          :map compilation-map
          ("SPC" . consult-compile-error)
          :map search-map
