@@ -166,7 +166,6 @@
               ("r" . denote-rename-file-using-front-matter)
               ("R" . denote-rename-file))
   :custom
-  (denote-directory (expand-file-name "denotes" notes-directory))
   (denote-known-keywords '("task" "doc" "snippet"))
   (denote-date-prompt-use-org-read-date t)
   :config

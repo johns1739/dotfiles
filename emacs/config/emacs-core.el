@@ -220,10 +220,7 @@
 
 
 ;; Notes
-(defvar notes-directory (locate-user-emacs-file "notes"))
-(unless (file-exists-p notes-directory)
-  (make-directory notes-directory))
-(setq org-directory notes-directory)
+(setq org-directory "~/.notes")
 (setq org-agenda-files `(,org-directory)
       org-agenda-todo-ignore-deadlines 'far
       org-cycle-hide-block-startup t
@@ -371,7 +368,8 @@
 ;; Scrolling
 (setq auto-window-vscroll nil)
 (setq scroll-margin 2)
-(setq scroll-conservatively 101)
+;; (setq scroll-conservatively most-positive-fixnum)
+(setq scroll-conservatively 0)
 (setq scroll-preserve-screen-position t)
 (setq fast-but-imprecise-scrolling t)
 
