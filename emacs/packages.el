@@ -25,7 +25,7 @@
   :bind  (([remap other-window] . ace-window)))
 
 (use-package avy
-  :bind (:map goto-map ("g" . avy-goto-char-2)))
+  :bind (:map goto-map ("g" . avy-goto-char-timer)))
 
 (use-package beacon
   :defer 5
@@ -172,7 +172,7 @@
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
-  :defer 10
+  :defer 5
   :if (display-graphic-p)
   :bind (:map git-map
               ("o" . diff-hl-show-hunk)
@@ -192,6 +192,21 @@
 (use-package dumb-jump
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
+(use-package eat
+  :if (display-graphic-p)
+  :commands (eat eat-other-window)
+  :straight (eat :type git
+                 :host codeberg
+                 :repo "akib/emacs-eat"
+                 :files ("*.el" ("term" "term/*.el") "*.texi"
+                         "*.ti" ("terminfo/e" "terminfo/e/*")
+                         ("terminfo/65" "terminfo/65/*")
+                         ("integration" "integration/*")
+                         (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind (:map toggle-map
+              ("t" . eat-project)
+              ("T" . eat)))
 
 (use-package ef-themes
   :if (display-graphic-p))
@@ -309,6 +324,11 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(janet-mode "janet-lsp"))))
+
+(use-package jinx
+  :defer 5
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)))
 
 (use-package js
   :mode
@@ -515,10 +535,11 @@
   ;; Match eshell, shell, term and/or vterm buffers
   (setq popper-reference-buffers
         (append popper-reference-buffers
-                '("^\\*eshell.*\\*$" eshell-mode ;eshell as a popup
-                  "^\\*shell.*\\*$"  shell-mode  ;shell as a popup
-                  "^\\*term.*\\*$"   term-mode   ;term as a popup
-                  "^\\*vterm.*\\*$"  vterm-mode  ;vterm as a popup
+                '("^\\*eshell.*\\*$" eshell-mode
+                  "^\\*shell.*\\*$"  shell-mode
+                  "^\\*term.*\\*$"   term-mode
+                  "^\\*vterm.*\\*$"  vterm-mode
+                  "^\\*eat.*\\*$"  eat-mode
                   )))
   (setq popper-window-height
         (lambda (win)
@@ -651,22 +672,22 @@
   :config
   (vertico-mode 1))
 
-(use-package vterm
-  :if (display-graphic-p)
-  :bind (:map toggle-map
-              ("t" . vterm-project)
-              ("T" . vterm-named))
-  :init
-  (defun vterm-project ()
-    (interactive)
-    (let ((default-directory (or (project-directory) default-directory)))
-      (vterm-other-window)))
-  (defun vterm-named ()
-    (interactive)
-    (vterm (read-string "Session name: ")))
-  :custom
-  (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000))
+;; (use-package vterm
+;;   :if (display-graphic-p)
+;;   :bind (:map toggle-map
+;;               ("t" . vterm-project)
+;;               ("T" . vterm-named))
+;;   :init
+;;   (defun vterm-project ()
+;;     (interactive)
+;;     (let ((default-directory (or (project-directory) default-directory)))
+;;       (vterm-other-window)))
+;;   (defun vterm-named ()
+;;     (interactive)
+;;     (vterm (read-string "Session name: ")))
+;;   :custom
+;;   (vterm-copy-mode-remove-fake-newlines t)
+;;   (vterm-max-scrollback 100000))
 
 (use-package which-key
   :defer 5

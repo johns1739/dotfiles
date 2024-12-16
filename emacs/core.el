@@ -1,3 +1,5 @@
+;;-*- lexical-binding: t; -*-
+
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
 (defvar-keymap notes-map :doc "Notes map")
 (defvar-keymap diagnostics-map :doc "Diagnostics map")
@@ -69,7 +71,8 @@
            ("r" . recentf-open)
            ("y" . yank-from-kill-ring)
            :map notes-map
-           (";" . org-agenda)
+           (";" . org-todo-list)
+           (":" . org-agenda)
            ("." . org-capture)
            ("," . org-store-link)
            ("/" . org-search-view)
@@ -86,6 +89,7 @@
            ("I" . global-display-fill-column-indicator-mode)
            ("l" . display-line-numbers-mode)
            ("L" . global-display-line-numbers-mode)
+           ("w" . whitespace-cleanup)
            :map diagnostics-map
            (";" . flymake-show-buffer-diagnostics)
            (":" . flymake-show-project-diagnostics)
@@ -135,7 +139,7 @@
 (setq next-error-message-highlight t)
 
 ;; Completion
-(if use-minimal-emacs (fido-vertical-mode 1))
+(fido-vertical-mode 1)
 (setq completion-at-point-functions '(dabbrev-capf))
 (setq completion-cycle-threshold 3)
 (setq completions-detailed t)
@@ -253,15 +257,12 @@
         ("chore" . "khaki")))
 (setq org-capture-templates
       `(("t" "Private Task"
-         entry (file+headline ,(locate-user-emacs-file "notes/private.org") "Tasks")
+         entry (file+headline "private.org" "Tasks")
          "* TODO %? %^g\n%t\n%i"
          :prepend t
          :empty-lines 1)
-        ;; ("j" "Journal"
-        ;;  entry (file+olp+datetree ,(locate-user-emacs-file "notes/personal.org") "Journal")
-        ;;  "* %?\n%U")
         ("p" "Personal Task"
-         entry (file+olp,(locate-user-emacs-file "notes/personal.org") "Tasks")
+         entry (file+olp "personal.org" "Tasks")
          "* %? \n%i"
          :prepend t
          :empty-lines 1)))
@@ -274,17 +275,6 @@
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((emacs-lisp . t)
                                  (shell . t))))
-
-
-
-;; Hooks
-(add-hook 'before-save-hook #'whitespace-cleanup)
-;; (with-eval-after-load 'ispell
-;;   (when (executable-find ispell-program-name)
-;;     (add-hook 'text-mode-hook #'flyspell-mode)
-;;     (add-hook 'prog-mode-hook #'flyspell-prog-mode)))
-;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-;; (add-hook 'prog-mode-hook #'hl-line-mode)
 
 
 ;; Modes
@@ -302,7 +292,7 @@
 (repeat-mode nil) ;; Sometimes gets in the way.
 (save-place-mode t)
 (savehist-mode t)
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
 (window-divider-mode -1)
 
 ;; Display Buffer
@@ -355,6 +345,7 @@
 (setq make-backup-files t)
 (setq backup-by-copying t)
 (setq delete-old-versions t)
+(setq delete-by-moving-to-trash t)
 (setq kept-new-versions 6)
 (setq kept-old-versions 2)
 (setq version-control t)
@@ -381,22 +372,24 @@
 (setq dired-auto-revert-buffer t)
 
 
-;; Emacs Bells & Whistles
-(setq-default frame-title-format '("%f"))
-(setq ring-bell-function 'ignore)
-(setq use-short-answers t)
-(setq confirm-kill-emacs 'y-or-n-p)
-(setq inhibit-startup-message t)
-(setq use-dialog-box nil)
-(setq-default cursor-type 'bar)
-
-
 ;; Mouse
 (unless (display-graphic-p)
   ;; activate mouse-based scrolling
   (xterm-mouse-mode 1)
   (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
   (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+
+
+;; Emacs bells and whistles
+(setopt inhibit-startup-message t)
+(setopt initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
+(setopt display-time-default-load-average nil)
+(setq-default frame-title-format '("%f"))
+(setq ring-bell-function 'ignore)
+(setq use-short-answers t)
+(setq confirm-kill-emacs 'y-or-n-p)
+(setq use-dialog-box nil)
+(setq-default cursor-type 'bar)
 
 
 ;; FFAP find-file-at-point
