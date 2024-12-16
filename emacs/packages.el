@@ -25,7 +25,7 @@
   :bind  (([remap other-window] . ace-window)))
 
 (use-package avy
-  :bind (:map goto-map ("g" . avy-goto-char-timer)))
+  :bind (:map goto-map ("g" . avy-goto-char-2)))
 
 (use-package beacon
   :defer 5
