@@ -22,8 +22,6 @@
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("stable" . "https://stable.melpa.org/packages/"))
   (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-  ;; Configure ELPA priorities
-  ;; Prefer GNU sources and stable versions before development versions from MELPA.
   (customize-set-variable
    'package-archive-priorities
    '(("gnu"    . 99)   ; prefer GNU packages
@@ -32,7 +30,7 @@
      ("melpa"  . 0))))  ; if all else fails, get it from melpa
 
 ;; Remove GUI elements
-(menu-bar-mode -1)
+;; (menu-bar-mode -1)
 (with-eval-after-load 'tool-bar
   (tool-bar-mode -1))
 (with-eval-after-load 'scroll-bar
