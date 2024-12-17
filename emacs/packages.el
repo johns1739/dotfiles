@@ -15,6 +15,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; use package settings
 (setq straight-use-package-by-default t)
 (setq use-package-always-defer t)
 
@@ -25,7 +26,16 @@
   :bind  (([remap other-window] . ace-window)))
 
 (use-package avy
-  :bind (:map goto-map ("g" . avy-goto-char-2)))
+  :bind (:map goto-map
+              ("l" . avy-goto-line)
+              ("g" . avy-goto-char-2)
+              ("a g" . avy-goto-char-timer)
+              ("a k" . avy-kill-whole-line)
+              ("a K" . avy-kill-region)
+              ("a m" . avy-move-line)
+              ("a M" . avy-move-region)
+              ("a y" . avy-copy-whole-line)
+              ("a Y" . avy-copy-region)))
 
 (use-package beacon
   :defer 5
@@ -45,14 +55,14 @@
          ;; #'cape-line ;; Kinda buggy
          )))
 
-(use-package common-lisp-mode
-  :straight nil
-  :mode
-  (("\\.lisp$" . common-lisp-mode)
-   ("\\.clisp$" . common-lisp-mode))
-  :config
-  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
-  (setq inferior-lisp-program "sbcl"))
+;; (use-package common-lisp-mode
+;;   :straight nil
+;;   :mode
+;;   (("\\.lisp$" . common-lisp-mode)
+;;    ("\\.clisp$" . common-lisp-mode))
+;;   :config
+;;   (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
+;;   (setq inferior-lisp-program "sbcl"))
 
 (use-package consult
   :init
@@ -88,13 +98,11 @@
          ([remap outline-show-only-headings] . consult-outline)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-         :map diagnostics-map
-         ("SPC" . consult-flymake)
+         ([remap flymake-show-buffer-diagnostics] . consult-flymake)
          :map compilation-map
          ("SPC" . consult-compile-error)
          :map search-map
-         ("SPC" . consult-project-buffer)
-         ("." . consult-ripgrep-symbol-at-point)
+         ("," . consult-ripgrep-symbol-at-point)
          ("L" . consult-focus-lines))
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
@@ -110,6 +118,7 @@
   (consult-denote-mode))
 
 (use-package consult-flycheck
+  :after flycheck
   :commands (consult-flycheck))
 
 (use-package corfu
@@ -119,7 +128,7 @@
   :bind (:map corfu-map
               ("RET" . nil))
   :custom
-  (corfu-auto t) ; Enable auto completion
+  (corfu-auto nil) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
   (corfu-auto-prefix 2) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
@@ -211,25 +220,25 @@
 (use-package ef-themes
   :if (display-graphic-p))
 
-(use-package elixir-ts-mode
-  :mode (("\\.ex$" . elixir-ts-mode)
-         ("\\.exs$" . elixir-ts-mode)
-         ("\\.heex$" . heex-ts-mode))
-  :init
-  (defun elixir-setup ()
-    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((elixir-ts-mode heex-ts-mode) .
-                   ,(if (and (fboundp 'w32-shell-dos-semantics)
-                             (w32-shell-dos-semantics))
-                        '("language_server.bat")
-                      (eglot-alternatives
-                       '("language_server.sh" "start_lexical.sh"))))))
-  :hook
-  (elixir-ts-mode . elixir-setup))
+;; (use-package elixir-ts-mode
+;;   :mode (("\\.ex$" . elixir-ts-mode)
+;;          ("\\.exs$" . elixir-ts-mode)
+;;          ("\\.heex$" . heex-ts-mode))
+;;   :init
+;;   (defun elixir-setup ()
+;;     (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs
+;;                  `((elixir-ts-mode heex-ts-mode) .
+;;                    ,(if (and (fboundp 'w32-shell-dos-semantics)
+;;                              (w32-shell-dos-semantics))
+;;                         '("language_server.bat")
+;;                       (eglot-alternatives
+;;                        '("language_server.sh" "start_lexical.sh"))))))
+;;   :hook
+;;   (elixir-ts-mode . elixir-setup))
 
-(use-package elm-mode)
+;; (use-package elm-mode)
 
 (use-package embark
   :bind (:map compilation-map
@@ -253,9 +262,9 @@
   :config
   (exec-path-from-shell-initialize))
 
-(use-package expand-region
-  :commands (er/expand-region)
-  :bind ("M-O" . er/expand-region))
+;; (use-package expand-region
+;;   :commands (er/expand-region)
+;;   :bind ("M-O" . er/expand-region))
 
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
@@ -278,23 +287,23 @@
   :hook
   (flycheck-mode . flycheck-set-bindings))
 
-(use-package geiser-guile
-  :commands (geiser-mode))
+;; (use-package geiser-guile
+;;   :commands (geiser-mode))
 
 (use-package git-link
   :bind (:map git-map
               ("y" . git-link)))
 
-(use-package gleam-ts-mode
-  :straight (:host github :repo "gleam-lang/gleam-mode")
-  :mode (rx ".gleam" eos)
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(gleam-ts-mode "gleam" "lsp"))))
+;; (use-package gleam-ts-mode
+;;   :straight (:host github :repo "gleam-lang/gleam-mode")
+;;   :mode (rx ".gleam" eos)
+;;   :init
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs
+;;                  '(gleam-ts-mode "gleam" "lsp"))))
 
-(use-package go-ts-mode
-  :mode "\\.go\\'")
+;; (use-package go-ts-mode
+;;   :mode "\\.go\\'")
 
 (use-package gruber-darker-theme
   :if (display-graphic-p))
@@ -318,29 +327,29 @@
   (highlight-indent-guides-responsive 'top)
   (highlight-indent-guides-auto-top-character-face-perc 50))
 
-(use-package janet-mode
-  :mode "\\.janet$"
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(janet-mode "janet-lsp"))))
+;; (use-package janet-mode
+;;   :mode "\\.janet$"
+;;   :init
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs
+;;                  '(janet-mode "janet-lsp"))))
 
 (use-package jinx
   :defer 5
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
-(use-package js
-  :mode
-  (("\\.js$" . js-ts-mode)
-   ("\\.json$" . js-ts-mode))
-  :init
-  (defun js-setup ()
-    (setq outline-regexp " *\\(\".+\"\\) *:"))
-  :hook
-  (js-ts-mode . js-setup)
-  :custom
-  (js-indent-level 2))
+;; (use-package js
+;;   :mode
+;;   (("\\.js$" . js-ts-mode)
+;;    ("\\.json$" . js-ts-mode))
+;;   :init
+;;   (defun js-setup ()
+;;     (setq outline-regexp " *\\(\".+\"\\) *:"))
+;;   :hook
+;;   (js-ts-mode . js-setup)
+;;   :custom
+;;   (js-indent-level 2))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -359,8 +368,8 @@
 (use-package magit
   :commands (magit-status)
   :bind (:map git-map
+              ("SPC" . magit-status)
               ("." . magit-status-here)
-              (";" . magit-status)
               ("f" . magit-file-dispatch)
               ("l" . magit-log-buffer-file)
               ("m" . magit-blame-addition))
@@ -368,7 +377,6 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
   :custom
-  ;; (magit-display-buffer-function #'magit-display-buffer-traditional)
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate"))
@@ -504,7 +512,7 @@
   (completion-styles '(substring partial-completion initials orderless basic)))
 
 (use-package popper
-  :defer 5
+  :defer 2
   :if (display-graphic-p)
   :bind (:map toggle-map
               ("o" . popper-toggle)
@@ -551,13 +559,13 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
-(use-package python
-  :init
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  (defun pytyhon-setup ()
-    (setq-local tab-width 4))
-  :hook
-  (python-ts-mode . pytyhon-setup))
+;; (use-package python
+;;   :init
+;;   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+;;   (defun pytyhon-setup ()
+;;     (setq-local tab-width 4))
+;;   :hook
+;;   (python-ts-mode . pytyhon-setup))
 
 (use-package ruby-ts-mode
   :init
@@ -648,27 +656,20 @@
       simple-modeline-segment-end-spaces
       ))))
 
-(use-package sqlformat
-  :commands (sqlformat)
-  :config
-  (setq sqlformat-command 'pgformatter)
-  (setq sqlformat-args '("-s2" "-g")))
+;; (use-package sqlformat
+;;   :commands (sqlformat)
+;;   :config
+;;   (setq sqlformat-command 'pgformatter)
+;;   (setq sqlformat-args '("-s2" "-g")))
 
-(use-package typescript-ts-mode
-  :mode "\\.ts$"
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
+;; (use-package typescript-ts-mode
+;;   :mode "\\.ts$"
+;;   :init
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
 (use-package vertico
   :demand t
-  :init
-  ;; Ensure builtins are turned off.
-  (icomplete-vertical-mode -1)
-  (icomplete-mode -1)
-  (fido-mode -1)
-  (fido-vertical-mode -1)
-  (setq completion-cycle-threshold nil)
   :config
   (vertico-mode 1))
 
