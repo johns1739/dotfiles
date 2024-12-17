@@ -1,10 +1,5 @@
 ;;-*- lexical-binding: t; -*-
 
-;; Documentation
-;; https://karthinks.com/
-;; https://emacsredux.com/
-;; https://codeberg.org/ashton314/emacs-bedrock/src/branch/main/init.el
-
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
 (keymap-global-set "M-SPC" global-leader-map)
@@ -218,7 +213,7 @@
 (setq-default proced-auto-update-flag t)
 (setq read-process-output-max (* 1024 1024))
 
-;; compilation
+;; compilation settings
 (setq compilation-window-height 20)
 (setq compilation-context-lines 10)
 (setq compilation-always-kill t)
@@ -246,7 +241,7 @@
   (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
   (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
-;; Org
+;; org settings
 (setq org-directory "~/.notes")
 (setq org-agenda-files `(,org-directory)
       org-agenda-todo-ignore-deadlines 'far
@@ -323,9 +318,10 @@
 (setq max-mini-window-height 0.2)
 (setq auto-window-vscroll nil)
 
-;; Revert settings
+;; revert settings
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-avoid-polling t)
 
 ;; buffer settings
 (add-to-list 'display-buffer-alist

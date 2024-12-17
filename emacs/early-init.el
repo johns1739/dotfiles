@@ -1,4 +1,4 @@
-;; Timer Report
+;; timer report
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message
@@ -17,7 +17,7 @@
 (setq native-comp-async-report-warnings-errors 'silent)
 (setq inhibit-startup-echo-area-message (user-login-name))
 
-;; Package Configuration
+;; package configuration
 (setq package-enable-at-startup nil)
 (with-eval-after-load 'package
   (add-to-list 'package-archives '("stable" . "https://stable.melpa.org/packages/"))
@@ -29,9 +29,15 @@
      ("stable" . 70)   ; prefer "released" versions from melpa
      ("melpa"  . 0))))  ; if all else fails, get it from melpa
 
-;; Remove GUI elements
+;; remove gui elements
 ;; (menu-bar-mode -1)
 (with-eval-after-load 'tool-bar
   (tool-bar-mode -1))
 (with-eval-after-load 'scroll-bar
   (scroll-bar-mode -1))
+
+;; prevent color flickering
+(setq default-frame-alist '((background-color . "#000000")
+                            (foreground-color . "#ffffff")
+                            (ns-appearance . dark)
+                            (ns-transparent-titlebar . t)))
