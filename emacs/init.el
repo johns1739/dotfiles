@@ -8,5 +8,7 @@
 
 (load (locate-user-emacs-file "core.el") 'noerror)
 
-(setq custom-file (locate-user-emacs-file "custom.el"))
-(load custom-file 'noerror)
+(setq custom-file (concat user-emacs-directory "custom.el"))
+(when (file-exists-p custom-file)
+  (load custom-file))
+
