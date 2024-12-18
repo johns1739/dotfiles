@@ -30,7 +30,7 @@
      ("melpa"  . 0))))  ; if all else fails, get it from melpa
 
 ;; remove gui elements
-;; (menu-bar-mode -1)
+(menu-bar-mode -1)
 (with-eval-after-load 'tool-bar
   (tool-bar-mode -1))
 (with-eval-after-load 'scroll-bar

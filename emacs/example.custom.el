@@ -13,20 +13,19 @@
  )
 
 (load (locate-user-emacs-file "packages.el"))
-(load-theme 'ef-dream t)
+;; (load-theme 'ef-dream t)
 
 (setq xref-search-program 'ripgrep)
-
 (setq find-program 'fd)
 
-(add-hook 'ruby-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
+;; (add-hook 'ruby-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
 
-(when (display-graphic-p)
-  (set-face-attribute 'default nil
-                      :family "JetBrainsMono Nerd Font"
-                      :height 140
-                      :weight 'light ;; thin, light, medium, regular
-                      :slant 'normal ;; italic, oblique, normal, roman
-                      :width 'normal)
-  (add-to-list 'default-frame-alist '(height . 50))
-  (add-to-list 'default-frame-alist '(width . 112)))
+;; (when (display-graphic-p)
+;;   (set-face-attribute 'default nil
+;;                       :family "JetBrainsMono Nerd Font"
+;;                       :height 140
+;;                       :weight 'light ;; thin, light, medium, regular
+;;                       :slant 'normal ;; italic, oblique, normal, roman
+;;                       :width 'normal)
+;;   (add-to-list 'default-frame-alist '(height . 50))
+;;   (add-to-list 'default-frame-alist '(width . 112)))
