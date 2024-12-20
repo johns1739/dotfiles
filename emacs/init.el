@@ -242,9 +242,7 @@
   (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
 ;; org settings
-(setq org-directory "~/.notes")
-(setq org-agenda-files `(,org-directory)
-      org-agenda-todo-ignore-deadlines 'far
+(setq org-agenda-todo-ignore-deadlines 'far
       org-cycle-hide-block-startup t
       org-hide-drawer-startup t
       org-hide-emphasis-markers t
@@ -268,6 +266,9 @@
       '(("TODO" . "goldenrod") ("ACTIVE" . "dark khaki")
         ("DONE" . "dark olive green") ("CANCELED" . "sienna")))
 (with-eval-after-load 'org
+  (unless (file-exists-p org-directory)
+    (make-directory org-directory))
+  (setq org-agenda-files `(,org-directory))
   (org-babel-do-load-languages
    'org-babel-load-languages '((emacs-lisp . t) (shell . t))))
 

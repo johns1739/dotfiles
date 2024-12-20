@@ -12,11 +12,12 @@
  ;; If there is more than one, they won't work right.
  )
 
-(load (locate-user-emacs-file "packages.el"))
+;; (load (locate-user-emacs-file "packages.el"))
 ;; (load-theme 'ef-dream t)
 
-(setq xref-search-program 'ripgrep)
-(setq find-program 'fd)
+;; Install third party commands
+;; (setq xref-search-program 'ripgrep)
+;; (setq find-program 'fd)
 
 ;; (add-hook 'ruby-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
 

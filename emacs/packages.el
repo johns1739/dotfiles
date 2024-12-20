@@ -30,11 +30,11 @@
               ("l" . avy-goto-line)
               ("g" . avy-goto-char-2)
               ("a g" . avy-goto-char-timer)
-              ("a k" . avy-kill-whole-line)
+              ("a k" . avy-kill-line)
               ("a K" . avy-kill-region)
               ("a m" . avy-move-line)
               ("a M" . avy-move-region)
-              ("a y" . avy-copy-whole-line)
+              ("a y" . avy-copy-line)
               ("a Y" . avy-copy-region)))
 
 (use-package beacon
@@ -227,6 +227,8 @@
 ;;   :init
 ;;   (defun elixir-setup ()
 ;;     (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
+;;   (with-eval-after-load 'lsp
+;;     (setq lsp-elixir-suggest-specs nil))
 ;;   (with-eval-after-load 'eglot
 ;;     (add-to-list 'eglot-server-programs
 ;;                  `((elixir-ts-mode heex-ts-mode) .
