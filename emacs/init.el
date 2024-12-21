@@ -50,7 +50,6 @@
 
            :map global-leader-map
            ("SPC" . switch-to-buffer)
-           ("S-SPC" . ibuffer)
            ("TAB" . indent-buffer)
            ("0" . delete-window)
            ("1" . delete-other-windows)
@@ -59,7 +58,6 @@
 
            :map goto-map
            ("SPC" . switch-to-buffer)
-           ("S-SPC" . ibuffer)
            ("." . xref-find-definitions)
            ("," . xref-go-back)
            (";" . scratch-buffer)
@@ -96,8 +94,8 @@
            ("r" . recentf-open)
 
            :map notes-map
-           ("SPC" . org-todo-list)
-           ("S-SPC" . org-agenda)
+           (";" . org-todo-list)
+           (":" . org-agenda)
            ("." . org-capture)
            ("," . org-store-link)
            ("/" . org-search-view)
@@ -118,8 +116,8 @@
            ("L" . global-display-line-numbers-mode)
 
            :map diagnostics-map
-           ("SPC" . flymake-show-buffer-diagnostics)
-           ("S-SPC" . flymake-show-project-diagnostics)
+           (";" . flymake-show-buffer-diagnostics)
+           (":" . flymake-show-project-diagnostics)
            ("n" . flymake-goto-next-error)
            ("p" . flymake-goto-prev-error)
 

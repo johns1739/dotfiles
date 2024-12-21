@@ -20,6 +20,7 @@
 ;; (setq find-program 'fd)
 
 ;; (add-hook 'ruby-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
+;; (add-hook 'elixir-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
 
 ;; (when (display-graphic-p)
 ;;   (set-face-attribute 'default nil

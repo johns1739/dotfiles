@@ -98,7 +98,8 @@
          ([remap outline-show-only-headings] . consult-outline)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-         ([remap flymake-show-buffer-diagnostics] . consult-flymake)
+         :map diagnostics-map
+         ("SPC" . consult-flymake)
          :map compilation-map
          ("SPC" . consult-compile-error)
          :map search-map
@@ -282,8 +283,7 @@
                ([remap flymake-show-buffer-diagnostics] . flycheck-list-errors)
                ([remap flymake-show-project-diagnostics] . nil)
                ([remap flymake-goto-next-error] . flycheck-next-error)
-               ([remap flymake-goto-prev-error] . flycheck-previous-error)
-               ([remap consult-flymake] . consult-flycheck)))
+               ([remap flymake-goto-prev-error] . flycheck-previous-error)))
   :custom
   (flycheck-indication-mode 'right-fringe)
   :hook
@@ -370,8 +370,8 @@
 (use-package magit
   :commands (magit-status)
   :bind (:map git-map
-              ("SPC" . magit-status)
-              ("." . magit-status-here)
+              (";" . magit-status)
+              (":" . magit-status-here)
               ("f" . magit-file-dispatch)
               ("l" . magit-log-buffer-file)
               ("m" . magit-blame-addition))
