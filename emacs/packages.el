@@ -23,7 +23,12 @@
 ;;;; Packages
 
 (use-package ace-window
-  :bind  (([remap other-window] . ace-window)))
+  :bind  (([remap other-window] . ace-window)
+          :map window-map
+          ("o" . ace-window)
+          ("O" . ace-swap-window)
+          ("0" . ace-delete-window)
+          ("1" . ace-delete-other-windows)))
 
 (use-package avy
   :bind (:map goto-map
@@ -168,6 +173,7 @@
 (use-package denote
   :defer 2
   :bind (:map notes-map
+              ("SPC" . denote-open-or-create)
               ("n" . denote)
               ("k" . denote-find-link)
               ("K" . denote-find-backlink)
@@ -185,11 +191,9 @@
   :defer 5
   :if (display-graphic-p)
   :bind (:map git-map
-              ("o" . diff-hl-show-hunk)
+              ("." . diff-hl-show-hunk)
               ("n" . diff-hl-show-hunk-next)
-              ("p" . diff-hl-show-hunk-previous)
-              ("S" . diff-hl-stage-dwim)
-              ("K" . diff-hl-revert-hunk))
+              ("p" . diff-hl-show-hunk-previous))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -278,8 +282,8 @@
   (defun flycheck-set-bindings ()
     (bind-keys :map (current-local-map)
                ([remap consult-flymake] . consult-flycheck)
+               ([remap flymake-show-buffer-diagnostics] . consult-flycheck)
                ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
-               ([remap flymake-show-buffer-diagnostics] . flycheck-list-errors)
                ([remap flymake-show-project-diagnostics] . nil)
                ([remap flymake-goto-next-error] . flycheck-next-error)
                ([remap flymake-goto-prev-error] . flycheck-previous-error)))
@@ -337,6 +341,8 @@
 
 (use-package jinx
   :defer 5
+  :hook
+  (text-mode . jinx-mode)
   :bind (("M-$" . jinx-correct)
          ("C-M-$" . jinx-languages)))
 
@@ -567,56 +573,56 @@
 ;;   :hook
 ;;   (python-ts-mode . pytyhon-setup))
 
-(use-package ruby-ts-mode
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((ruby-mode ruby-ts-mode)
-                   . ("solargraph" "stdio" :initializationOptions
-                      (;; options
-                       :useBundler t
-                       :diagnostics t
-                       :completion t
-                       :hover t
-                       :autoformat :json-false
-                       :formatting t
-                       :symbols t
-                       :definitions t
-                       :rename t
-                       :references t
-                       :folding t)))))
-  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-  (defun rails-compile ()
-    (interactive)
-    (setq compile-command
-          (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
-                 (let ((linum (number-to-string (line-number-at-pos)))
-                       (file-name (relative-file-name)))
-                   (if (< (line-number-at-pos) 5)
-                       (string-join (list "rails t " file-name))
-                     (string-join (list "rails t " (s-concat file-name ":" linum))))))
-                ((string-match-p "engines/flexwork/.+_spec.rb" (buffer-file-name))
-                 (let ((linum (number-to-string (line-number-at-pos)))
-                       (file-name (file-relative-name (buffer-file-name)
-                                                      (concat (current-directory) "engines/flexwork")))
-                       (prefix-command "cd engines/flexwork/ && bundle exec rspec "))
-                   (if (< (line-number-at-pos) 5)
-                       (string-join (list prefix-command file-name))
-                     (string-join (list prefix-command (s-concat file-name ":" linum))))))
-                (t compile-command)))
-    (call-interactively #'compile-dwim))
-  (defun rails-comint ()
-    (interactive)
-    (universal-argument)
-    (command-execute #'rails-compile))
-  (defun ruby-setup ()
-    (setq compile-command "rails t")
-    (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
-    (bind-keys :map (current-local-map)
-               ([remap compile-dwim] . rails-compile)
-               ([remap comint] . rails-comint)))
-  :hook
-  (ruby-base-mode . ruby-setup))
+;; (use-package ruby-ts-mode
+;;   :init
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs
+;;                  `((ruby-mode ruby-ts-mode)
+;;                    . ("solargraph" "stdio" :initializationOptions
+;;                       (;; options
+;;                        :useBundler t
+;;                        :diagnostics t
+;;                        :completion t
+;;                        :hover t
+;;                        :autoformat :json-false
+;;                        :formatting t
+;;                        :symbols t
+;;                        :definitions t
+;;                        :rename t
+;;                        :references t
+;;                        :folding t)))))
+;;   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
+;;   (defun rails-compile ()
+;;     (interactive)
+;;     (setq compile-command
+;;           (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
+;;                  (let ((linum (number-to-string (line-number-at-pos)))
+;;                        (file-name (relative-file-name)))
+;;                    (if (< (line-number-at-pos) 5)
+;;                        (string-join (list "rails t " file-name))
+;;                      (string-join (list "rails t " (s-concat file-name ":" linum))))))
+;;                 ((string-match-p "engines/flexwork/.+_spec.rb" (buffer-file-name))
+;;                  (let ((linum (number-to-string (line-number-at-pos)))
+;;                        (file-name (file-relative-name (buffer-file-name)
+;;                                                       (concat (current-directory) "engines/flexwork")))
+;;                        (prefix-command "cd engines/flexwork/ && bundle exec rspec "))
+;;                    (if (< (line-number-at-pos) 5)
+;;                        (string-join (list prefix-command file-name))
+;;                      (string-join (list prefix-command (s-concat file-name ":" linum))))))
+;;                 (t compile-command)))
+;;     (call-interactively #'compile-dwim))
+;;   (defun rails-comint ()
+;;     (interactive)
+;;     (universal-argument)
+;;     (command-execute #'rails-compile))
+;;   (defun ruby-setup ()
+;;     (setq compile-command "rails t")
+;;     (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
+;;     (bind-keys :map (current-local-map)
+;;                ([remap compile-dwim] . rails-compile)
+;;                ([remap comint] . rails-comint)))
+;;   :hook
+;;   (ruby-base-mode . ruby-setup))
 
 (use-package simple-modeline
   :demand t

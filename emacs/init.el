@@ -21,9 +21,9 @@
   :doc "Toggle map")
 (keymap-set global-leader-map "o" toggle-map)
 
-(defvar-keymap window-movement-map
+(defvar-keymap window-map
   :doc "Window movement map")
-(keymap-set global-leader-map "w" window-movement-map)
+(keymap-set global-leader-map "w" window-map)
 
 (defvar-keymap tab-movement-map
   :doc "Tab movement map")
@@ -103,8 +103,8 @@
            ("?" . org-occur-in-agenda-files)
 
            :map compilation-map
-           ("SPC" . compile-dwim)
-           ("S-SPC" . comint)
+           ("." . compile-dwim)
+           ("," . comint)
            ("g" . recompile)
            ("B" . eval-buffer)
 
@@ -122,7 +122,7 @@
            ("n" . flymake-goto-next-error)
            ("p" . flymake-goto-prev-error)
 
-           :map window-movement-map
+           :map window-map
            ("SPC" . switch-to-buffer-other-window)
            ("=" . balance-windows)
            ("0" . delete-window)
@@ -256,11 +256,10 @@
       '(priority-down time-up habit-up deadline-up scheduled-up category-keep
                       todo-state-down effort-down tag-up timestamp-up ts-up tsia-up alpha-up))
 (setq org-tag-faces '(("bug"  . "sienna") ("feature" . "goldenrod") ("chore" . "khaki")))
-(setq org-capture-templates `(("t" "Task" entry (file+olp "tasks.org" "Tasks")
-                               "* %? \n%i" :prepend t :empty-lines 1)))
 (setq org-todo-keyword-faces
       '(("TODO" . "goldenrod") ("ACTIVE" . "dark khaki")
         ("DONE" . "dark olive green") ("CANCELED" . "sienna")))
+(setq org-capture-templates `(("t" "Task" entry (file+headline "" "Tasks") "* %? \n%i" :prepend t :empty-lines 1)))
 (with-eval-after-load 'org
   (unless (file-exists-p org-directory)
     (make-directory org-directory))
