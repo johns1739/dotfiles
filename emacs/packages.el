@@ -204,7 +204,6 @@
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 (use-package eat
-  :if (display-graphic-p)
   :commands (eat eat-other-window)
   :straight (eat :type git
                  :host codeberg
