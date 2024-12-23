@@ -84,6 +84,7 @@
            ("/" . isearch-forward)
            ("d" . project-find-dir)
            ("f" . project-find-file)
+           ("i" . imenu)
            ("j" . list-registers)
            ("l" . occur)
            ("o" . outline-show-only-headings)

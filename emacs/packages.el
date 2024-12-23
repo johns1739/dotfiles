@@ -514,7 +514,6 @@
 
 (use-package popper
   :defer 2
-  :if (display-graphic-p)
   :bind (:map toggle-map
               ("o" . popper-toggle)
               ("O" . popper-toggle-type)
