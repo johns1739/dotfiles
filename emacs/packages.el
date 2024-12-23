@@ -225,11 +225,11 @@
 ;;   :mode (("\\.ex$" . elixir-ts-mode)
 ;;          ("\\.exs$" . elixir-ts-mode)
 ;;          ("\\.heex$" . heex-ts-mode))
+;;   :custom
+;;   (lsp-elixir-suggest-specs nil)
 ;;   :init
 ;;   (defun elixir-setup ()
 ;;     (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
-;;   (with-eval-after-load 'lsp
-;;     (setq lsp-elixir-suggest-specs nil))
 ;;   (with-eval-after-load 'eglot
 ;;     (add-to-list 'eglot-server-programs
 ;;                  `((elixir-ts-mode heex-ts-mode) .

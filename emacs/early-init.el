@@ -35,9 +35,3 @@
   (tool-bar-mode -1))
 (with-eval-after-load 'scroll-bar
   (scroll-bar-mode -1))
-
-;; prevent color flickering
-(setq default-frame-alist '((background-color . "#000000")
-                            (foreground-color . "#ffffff")
-                            (ns-appearance . dark)
-                            (ns-transparent-titlebar . t)))
