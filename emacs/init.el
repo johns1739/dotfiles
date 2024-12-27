@@ -256,11 +256,8 @@
       '(priority-down time-up habit-up deadline-up scheduled-up category-keep
                       todo-state-down effort-down tag-up timestamp-up ts-up tsia-up alpha-up))
 (setq org-tag-faces '(("bug"  . "sienna") ("feature" . "goldenrod") ("chore" . "khaki")))
-(setq org-capture-templates
-      `(("t" "Private Task" entry (file+headline "private.org" "Tasks")
-         "* TODO %? %^g\n%t\n%i" :prepend t :empty-lines 1)
-        ("p" "Personal Task" entry (file+olp "personal.org" "Tasks")
-         "* %? \n%i" :prepend t :empty-lines 1)))
+(setq org-capture-templates `(("t" "Task" entry (file+olp "tasks.org" "Tasks")
+                               "* %? \n%i" :prepend t :empty-lines 1)))
 (setq org-todo-keyword-faces
       '(("TODO" . "goldenrod") ("ACTIVE" . "dark khaki")
         ("DONE" . "dark olive green") ("CANCELED" . "sienna")))
