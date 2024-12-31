@@ -19,6 +19,9 @@
 ;; (setq xref-search-program 'ripgrep)
 ;; (setq find-program 'fd)
 
+;; org custom settings
+(setq org-directory "~/.notes")
+
 ;; (add-hook 'ruby-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
 ;; (add-hook 'elixir-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
 

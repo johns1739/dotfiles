@@ -51,6 +51,7 @@
            :map global-leader-map
            ("SPC" . switch-to-buffer)
            ("TAB" . indent-buffer)
+           ("=" . balance-windows)
            ("0" . delete-window)
            ("1" . delete-other-windows)
            ("2" . split-window-below-and-jump)

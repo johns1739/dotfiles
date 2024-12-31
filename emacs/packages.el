@@ -35,7 +35,7 @@
               ("l" . avy-goto-line)
               ("g" . avy-goto-char-2)
               ("a g" . avy-goto-char-timer)
-              ("a k" . avy-kill-line)
+              ("a k" . avy-kill-whole-line)
               ("a K" . avy-kill-region)
               ("a m" . avy-move-line)
               ("a M" . avy-move-region)
