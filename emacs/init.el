@@ -260,7 +260,9 @@
 (setq org-todo-keyword-faces
       '(("TODO" . "goldenrod") ("ACTIVE" . "dark khaki")
         ("DONE" . "dark olive green") ("CANCELED" . "sienna")))
-(setq org-capture-templates `(("t" "Task" entry (file+headline "" "Tasks") "* %? \n%i" :prepend t :empty-lines 1)))
+(setq org-capture-templates
+      `(("t" "Task" entry (file+headline "tasks.org" "Tasks")
+         "* %?" :prepend t :empty-lines 1)))
 (with-eval-after-load 'org
   (unless (file-exists-p org-directory)
     (make-directory org-directory))
