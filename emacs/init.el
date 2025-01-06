@@ -105,17 +105,19 @@
 
            :map compilation-map
            ("." . compile-dwim)
-           ("," . comint)
-           ("g" . recompile)
+           (">" . comint)
+           ("," . recompile)
            ("B" . eval-buffer)
 
            :map toggle-map
-           ("m" . load-theme)
            ("f" . set-font-size)
+           ("h" . hl-line-mode)
+           ("H" . global-hl-line-mode)
            ("i" . display-fill-column-indicator-mode)
            ("I" . global-display-fill-column-indicator-mode)
            ("l" . display-line-numbers-mode)
            ("L" . global-display-line-numbers-mode)
+           ("m" . load-theme)
 
            :map diagnostics-map
            (";" . flymake-show-buffer-diagnostics)
@@ -303,14 +305,13 @@
 (repeat-mode nil) ;; Sometimes gets in the way.
 
 ;; save settings
-(auto-save-visited-mode -1) ;; Annoying with whitespace cleanup constantly moving the point
+(auto-save-visited-mode 1)
 (save-place-mode t)
 (savehist-mode t)
 
 ;; space settings
 (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
 (setq require-final-newline t)
-(add-hook 'before-save-hook #'whitespace-cleanup)
 
 ;; window settings
 (window-divider-mode -1)
@@ -483,6 +484,7 @@
 (defun indent-buffer ()
   (interactive)
   (save-excursion
+    (whitespace-cleanup)
     (indent-region (point-min) (point-max) nil)))
 
 (defun comint ()
