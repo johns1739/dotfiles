@@ -24,19 +24,19 @@
 (defvar-keymap window-map
   :doc "Window movement map")
 (keymap-set global-leader-map "w" window-map)
+(keymap-set goto-map "w" window-map)
 
 (defvar-keymap tab-movement-map
   :doc "Tab movement map")
 (keymap-set global-leader-map "t" tab-movement-map)
+(keymap-set goto-map "t" window-map)
 
 (defvar-keymap git-map
   :doc "Git map")
 (keymap-set global-leader-map "j" git-map)
 
 (keymap-set global-leader-map "g" goto-map)
-
 (keymap-set global-leader-map "s" search-map)
-
 (keymap-set global-leader-map "p" project-prefix-map)
 
 (bind-keys :map global-map
