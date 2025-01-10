@@ -34,13 +34,13 @@
   :bind (:map goto-map
               ("l" . avy-goto-line)
               ("g" . avy-goto-char-2)
-              ("a g" . avy-goto-char-timer)
-              ("a k" . avy-kill-whole-line)
-              ("a K" . avy-kill-region)
-              ("a m" . avy-move-line)
-              ("a M" . avy-move-region)
-              ("a y" . avy-copy-line)
-              ("a Y" . avy-copy-region)))
+              ;; ("g" . avy-goto-char-timer)
+              ("G k" . avy-kill-whole-line)
+              ("G K" . avy-kill-region)
+              ("G m" . avy-move-line)
+              ("G M" . avy-move-region)
+              ("G y" . avy-copy-line)
+              ("G Y" . avy-copy-region)))
 
 (use-package beacon
   :defer 5
