@@ -118,6 +118,7 @@
            ("l" . display-line-numbers-mode)
            ("L" . global-display-line-numbers-mode)
            ("m" . load-theme)
+           ("s" . flyspell-prog-mode)
 
            :map diagnostics-map
            (";" . flymake-show-buffer-diagnostics)

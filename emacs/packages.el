@@ -344,7 +344,8 @@
   :hook
   (text-mode . jinx-mode)
   :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)))
+         ("C-M-$" . jinx-languages)
+         ([remap flyspell-prog-mode] . global-jinx-mode)))
 
 ;; (use-package js
 ;;   :mode
@@ -367,7 +368,8 @@
   :init
   (defun lsp-set-bindings ()
     (bind-keys :map (current-local-map)
-               ([remap indent-buffer] . lsp-format-buffer)))
+               ([remap indent-buffer] . lsp-format-buffer)
+               ([remap xref-find-references] . lsp-find-references)))
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
   (lsp-mode . lsp-set-bindings))
@@ -412,16 +414,16 @@
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
     (meow-motion-overwrite-define-key
-     '("Q" . meow-quit)
-     '("j" . meow-next)
-     '("k" . meow-prev)
-     '("o" . other-window)
+     ;; '("Q" . meow-quit)
+     ;; '("j" . meow-next)
+     ;; '("k" . meow-prev) ;; fails with magit-discard for hunks for some reason
+     ;; '("o" . other-window)
      '("<escape>" . ignore))
-    (meow-leader-define-key
-     '("Q" . "H-Q")
-     '("j" . "H-j")
-     '("k" . "H-k")
-     '("o" . "H-o"))
+    ;; (meow-leader-define-key
+    ;;  '("Q" . "H-Q")
+    ;;  '("j" . "H-j")
+    ;;  '("k" . "H-k")
+    ;;  '("o" . "H-o"))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
      '("M-DEL" . meow-backward-kill-word)
