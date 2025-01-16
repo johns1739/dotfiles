@@ -244,36 +244,6 @@
   (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
   (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
-;; org settings
-(setq org-agenda-todo-ignore-deadlines 'far
-      org-cycle-hide-block-startup t
-      org-hide-drawer-startup t
-      org-hide-emphasis-markers t
-      org-hide-leading-stars t
-      org-log-done 'time
-      org-log-into-drawer t
-      org-return-follows-link nil
-      org-special-ctrl-a/e t
-      org-startup-folded 'overview
-      org-startup-indented t)
-(setq org-agenda-sorting-strategy
-      '(priority-down time-up habit-up deadline-up scheduled-up category-keep
-                      todo-state-down effort-down tag-up timestamp-up ts-up tsia-up alpha-up))
-(setq org-tag-faces '(("bug"  . "sienna") ("feature" . "goldenrod") ("chore" . "khaki")))
-(setq org-todo-keyword-faces
-      '(("TODO" . "goldenrod") ("ACTIVE" . "dark khaki")
-        ("DONE" . "dark olive green") ("CANCELED" . "sienna")))
-(setq org-capture-templates
-      `(("t" "Task" entry (file+headline "tasks.org" "Tasks")
-         "* %?" :prepend t :empty-lines 1)))
-(with-eval-after-load 'org
-  (unless (file-exists-p org-directory)
-    (make-directory org-directory))
-  (setq org-agenda-files `(,org-directory))
-  (org-babel-do-load-languages
-   'org-babel-load-languages '((emacs-lisp . t) (shell . t))))
-
-
 ;; column settings
 (column-number-mode -1)
 (setq-default fill-column 80)
@@ -306,11 +276,12 @@
 (repeat-mode nil) ;; Sometimes gets in the way.
 
 ;; save settings
-(auto-save-visited-mode 1)
+;; (auto-save-visited-mode 1)
 (save-place-mode t)
 (savehist-mode t)
 
 ;; space settings
+(add-hook 'before-save-hook #'whitespace-cleanup)
 (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
 (setq require-final-newline t)
 

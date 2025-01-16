@@ -224,6 +224,11 @@
 (use-package ef-themes
   :if (display-graphic-p))
 
+;; (use-package eldoc-box
+;;   :defer 2
+;;   :hook
+;;   (prog-mode eldoc-box-hover-mode))
+
 ;; (use-package elixir-ts-mode
 ;;   :mode (("\\.ex$" . elixir-ts-mode)
 ;;          ("\\.exs$" . elixir-ts-mode)
@@ -292,6 +297,9 @@
   :hook
   (flycheck-mode . flycheck-set-bindings))
 
+;; (use-package forge
+;;   :after magit)
+
 ;; (use-package geiser-guile
 ;;   :commands (geiser-mode))
 
@@ -321,6 +329,9 @@
               ([remap describe-symbol] . helpful-symbol)
               ([remap describe-key] . helpful-key)
               ("." . helpful-at-point)))
+
+;; TODO: Figure out how to get this to work b/c it's suppose to be faster.
+;; (use-package indent-bars)
 
 (use-package highlight-indent-guides
   :if (display-graphic-p)
@@ -390,6 +401,10 @@
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate"))
 
+;; (use-package magit-todos
+;;   :after magit
+;;   :config (magit-todos-mode 1))
+
 (use-package marginalia
   :defer 5
   :init
@@ -414,16 +429,16 @@
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
     (meow-motion-overwrite-define-key
-     ;; '("Q" . meow-quit)
-     ;; '("j" . meow-next)
-     ;; '("k" . meow-prev) ;; fails with magit-discard for hunks for some reason
-     ;; '("o" . other-window)
+     '("Q" . meow-quit)
+     '("j" . meow-next)
+     '("k" . meow-prev) ;; fails with magit-discard for hunks for some reason
+     '("o" . other-window)
      '("<escape>" . ignore))
-    ;; (meow-leader-define-key
-    ;;  '("Q" . "H-Q")
-    ;;  '("j" . "H-j")
-    ;;  '("k" . "H-k")
-    ;;  '("o" . "H-o"))
+    (meow-leader-define-key
+     '("Q" . "H-Q")
+     '("j" . "H-j")
+     '("k" . "H-k")
+     '("o" . "H-o"))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
      '("M-DEL" . meow-backward-kill-word)
@@ -519,6 +534,50 @@
 (use-package orderless
   :custom
   (completion-styles '(substring partial-completion initials orderless basic)))
+
+(use-package org
+  ;; do not install since this is builtin
+  :ensure nil
+  :straight nil
+  :config
+  (setq org-agenda-todo-ignore-deadlines 'far)
+  (setq org-cycle-hide-block-startup t)
+  (setq org-hide-drawer-startup t)
+  (setq org-hide-emphasis-markers t)
+  (setq org-hide-leading-stars t)
+  (setq org-log-done 'time)
+  (setq org-log-into-drawer t)
+  (setq org-return-follows-link nil)
+  (setq org-special-ctrl-a/e t)
+  (setq org-startup-folded 'overview)
+  (setq org-startup-indented t)
+  (setq org-agenda-sorting-strategy '(priority-down
+                                      time-up
+                                      habit-up
+                                      deadline-up
+                                      scheduled-up
+                                      category-keep
+                                      todo-state-down
+                                      effort-down
+                                      tag-up
+                                      timestamp-up
+                                      ts-up
+                                      tsia-up
+                                      alpha-up))
+  (setq org-tag-faces '(("bug"  . "sienna")
+                        ("feature" . "goldenrod")
+                        ("chore" . "khaki")))
+  (setq org-todo-keyword-faces '(("TODO" . "goldenrod")
+                                 ("ACTIVE" . "dark khaki")
+                                 ("DONE" . "dark olive green")
+                                 ("CANCELED" . "sienna")))
+  (setq org-capture-templates `(("t" "Task" entry (file+headline "tasks.org" "Tasks")
+                                 "* %?" :prepend t :empty-lines 1)))
+  (setq org-agenda-files (list org-directory))
+  (unless (file-exists-p org-directory)
+    (make-directory org-directory))
+  (org-babel-do-load-languages
+   'org-babel-load-languages '((emacs-lisp . t) (shell . t))))
 
 (use-package popper
   :defer 2
@@ -641,7 +700,7 @@
     (propertize "  "))
   (defun mode-line-buffer-name ()
     (if (buffer-file-name)
-        (string-truncate-left (relative-file-name) 60)
+        (string-truncate-left (relative-file-name) 70)
       (buffer-name)))
   :custom
   (simple-modeline-segments
@@ -666,6 +725,12 @@
 
 ;; (use-package sqlformat
 ;;   :commands (sqlformat)
+;;   :init
+;;   (defun sql-set-bindings ()
+;;     (bind-keys :map (current-local-map)
+;;                ([remap indent-buffer] . sqlformat-buffer)))
+;;   :hook
+;;   (sql-mode . sql-set-bindings)
 ;;   :config
 ;;   (setq sqlformat-command 'pgformatter)
 ;;   (setq sqlformat-args '("-s2" "-g")))
