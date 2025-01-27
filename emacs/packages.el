@@ -207,19 +207,23 @@
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-(use-package eat
-  :commands (eat eat-other-window)
-  :straight (eat :type git
-                 :host codeberg
-                 :repo "akib/emacs-eat"
-                 :files ("*.el" ("term" "term/*.el") "*.texi"
-                         "*.ti" ("terminfo/e" "terminfo/e/*")
-                         ("terminfo/65" "terminfo/65/*")
-                         ("integration" "integration/*")
-                         (:exclude ".dir-locals.el" "*-tests.el")))
-  :bind (:map toggle-map
-              ("t" . eat-project)
-              ("T" . eat)))
+;; (use-package eat
+;;   ;; When eat-terminal input is acting weird, try re-compiling with command:
+;;   ;; (eat-compile-terminfo)
+;;   :commands (eat eat-other-window)
+;;   :straight (eat :type git
+;;                  :host codeberg
+;;                  :repo "akib/emacs-eat"
+;;                  :files ("*.el" ("term" "term/*.el") "*.texi"
+;;                          "*.ti" ("terminfo/e" "terminfo/e/*")
+;;                          ("terminfo/65" "terminfo/65/*")
+;;                          ("integration" "integration/*")
+;;                          (:exclude ".dir-locals.el" "*-tests.el")))
+;;   :bind (:map toggle-map
+;;               ([remap eshell] . eat)
+;;               ([remap project-eshell] . eat-project))
+;;   :custom
+;;   (eat-term-scrollback-size nil))
 
 (use-package ef-themes
   :if (display-graphic-p))
@@ -322,13 +326,13 @@
   :if (display-graphic-p))
 
 (use-package helpful
-  :bind (:map help-map
-              ([remap describe-function] . helpful-callable)
-              ([remap describe-command] . helpful-command)
-              ([remap describe-variable] . helpful-variable)
-              ([remap describe-symbol] . helpful-symbol)
-              ([remap describe-key] . helpful-key)
-              ("." . helpful-at-point)))
+  :bind (([remap describe-function] . helpful-callable)
+         ([remap describe-command] . helpful-command)
+         ([remap describe-variable] . helpful-variable)
+         ([remap describe-symbol] . helpful-symbol)
+         ([remap describe-key] . helpful-key)
+         :map help-map
+         ("." . helpful-at-point)))
 
 ;; TODO: Figure out how to get this to work b/c it's suppose to be faster.
 ;; (use-package indent-bars)
@@ -350,13 +354,13 @@
 ;;     (add-to-list 'eglot-server-programs
 ;;                  '(janet-mode "janet-lsp"))))
 
-(use-package jinx
-  :defer 5
-  :hook
-  (text-mode . jinx-mode)
-  :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)
-         ([remap flyspell-prog-mode] . global-jinx-mode)))
+;; (use-package jinx
+;;   :defer 5
+;;   :hook
+;;   (text-mode . jinx-mode)
+;;   :bind (("M-$" . jinx-correct)
+;;          ("C-M-$" . jinx-languages)
+;;          ([remap flyspell-prog-mode] . global-jinx-mode)))
 
 ;; (use-package js
 ;;   :mode

@@ -119,6 +119,8 @@
            ("L" . global-display-line-numbers-mode)
            ("m" . load-theme)
            ("s" . flyspell-prog-mode)
+           ("t" . eshell)
+           ("T" . project-eshell)
 
            :map diagnostics-map
            (";" . flymake-show-buffer-diagnostics)
