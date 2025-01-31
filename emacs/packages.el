@@ -60,14 +60,15 @@
          ;; #'cape-line ;; Kinda buggy
          )))
 
-;; (use-package common-lisp-mode
-;;   :straight nil
-;;   :mode
-;;   (("\\.lisp$" . common-lisp-mode)
-;;    ("\\.clisp$" . common-lisp-mode))
-;;   :config
-;;   (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
-;;   (setq inferior-lisp-program "sbcl"))
+(use-package common-lisp-mode
+  :disabled
+  :straight nil
+  :mode
+  (("\\.lisp$" . common-lisp-mode)
+   ("\\.clisp$" . common-lisp-mode))
+  :config
+  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
+  (setq inferior-lisp-program "sbcl"))
 
 (use-package consult
   :init
@@ -134,9 +135,9 @@
   :bind (:map corfu-map
               ("RET" . nil))
   :custom
-  (corfu-auto nil) ; Enable auto completion
+  (corfu-auto t) ; Enable auto completion
   (corfu-auto-delay 0.2) ; Enable auto completion
-  (corfu-auto-prefix 2) ; Enable auto completion
+  (corfu-auto-prefix 3) ; Enable auto completion
   (corfu-cycle t) ; Allows cycling through candidates
   (corfu-echo-delay 0.3)
   (corfu-preselect 'valid)
@@ -207,53 +208,58 @@
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-;; (use-package eat
-;;   ;; When eat-terminal input is acting weird, try re-compiling with command:
-;;   ;; (eat-compile-terminfo)
-;;   :commands (eat eat-other-window)
-;;   :straight (eat :type git
-;;                  :host codeberg
-;;                  :repo "akib/emacs-eat"
-;;                  :files ("*.el" ("term" "term/*.el") "*.texi"
-;;                          "*.ti" ("terminfo/e" "terminfo/e/*")
-;;                          ("terminfo/65" "terminfo/65/*")
-;;                          ("integration" "integration/*")
-;;                          (:exclude ".dir-locals.el" "*-tests.el")))
-;;   :bind (:map toggle-map
-;;               ([remap eshell] . eat)
-;;               ([remap project-eshell] . eat-project))
-;;   :custom
-;;   (eat-term-scrollback-size nil))
+(use-package eat
+  :disabled
+  ;; When eat-terminal input is acting weird, try re-compiling with command:
+  ;; (eat-compile-terminfo)
+  :commands (eat eat-other-window)
+  :straight (eat :type git
+                 :host codeberg
+                 :repo "akib/emacs-eat"
+                 :files ("*.el" ("term" "term/*.el") "*.texi"
+                         "*.ti" ("terminfo/e" "terminfo/e/*")
+                         ("terminfo/65" "terminfo/65/*")
+                         ("integration" "integration/*")
+                         (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind (:map toggle-map
+              ([remap eshell] . eat)
+              ([remap project-eshell] . eat-project))
+  :custom
+  (eat-term-scrollback-size nil)
+  :config
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
 
 (use-package ef-themes
   :if (display-graphic-p))
 
-;; (use-package eldoc-box
-;;   :defer 2
-;;   :hook
-;;   (prog-mode eldoc-box-hover-mode))
+(use-package eldoc-box
+  :disabled
+  :defer 2
+  :hook
+  (prog-mode . eldoc-box-hover-mode))
 
-;; (use-package elixir-ts-mode
-;;   :mode (("\\.ex$" . elixir-ts-mode)
-;;          ("\\.exs$" . elixir-ts-mode)
-;;          ("\\.heex$" . heex-ts-mode))
-;;   :custom
-;;   (lsp-elixir-suggest-specs nil)
-;;   :init
-;;   (defun elixir-setup ()
-;;     (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
-;;   (with-eval-after-load 'eglot
-;;     (add-to-list 'eglot-server-programs
-;;                  `((elixir-ts-mode heex-ts-mode) .
-;;                    ,(if (and (fboundp 'w32-shell-dos-semantics)
-;;                              (w32-shell-dos-semantics))
-;;                         '("language_server.bat")
-;;                       (eglot-alternatives
-;;                        '("language_server.sh" "start_lexical.sh"))))))
-;;   :hook
-;;   (elixir-ts-mode . elixir-setup))
+(use-package elixir-ts-mode
+  :mode (("\\.ex$" . elixir-ts-mode)
+         ("\\.exs$" . elixir-ts-mode)
+         ("\\.heex$" . heex-ts-mode))
+  :custom
+  (lsp-elixir-suggest-specs nil)
+  :init
+  (defun elixir-setup ()
+    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 `((elixir-ts-mode heex-ts-mode) .
+                   ,(if (and (fboundp 'w32-shell-dos-semantics)
+                             (w32-shell-dos-semantics))
+                        '("language_server.bat")
+                      (eglot-alternatives
+                       '("language_server.sh" "start_lexical.sh"))))))
+  :hook
+  (elixir-ts-mode . elixir-setup))
 
-;; (use-package elm-mode)
+(use-package elm-mode)
 
 (use-package embark
   :bind (:map compilation-map
@@ -265,7 +271,6 @@
               ("B" . embark-bindings)))
 
 (use-package embark-consult
-  :ensure t
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -277,9 +282,9 @@
   :config
   (exec-path-from-shell-initialize))
 
-;; (use-package expand-region
-;;   :commands (er/expand-region)
-;;   :bind ("M-O" . er/expand-region))
+(use-package expand-region
+  :commands (er/expand-region)
+  :bind ("M-O" . er/expand-region))
 
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
@@ -301,26 +306,29 @@
   :hook
   (flycheck-mode . flycheck-set-bindings))
 
-;; (use-package forge
-;;   :after magit)
+(use-package forge
+  :disabled
+  :after magit)
 
-;; (use-package geiser-guile
-;;   :commands (geiser-mode))
+(use-package geiser-guile
+  :commands (geiser-mode))
 
 (use-package git-link
   :bind (:map git-map
               ("y" . git-link)))
 
-;; (use-package gleam-ts-mode
-;;   :straight (:host github :repo "gleam-lang/gleam-mode")
-;;   :mode (rx ".gleam" eos)
-;;   :init
-;;   (with-eval-after-load 'eglot
-;;     (add-to-list 'eglot-server-programs
-;;                  '(gleam-ts-mode "gleam" "lsp"))))
+(use-package gleam-ts-mode
+  :straight (:host github :repo "gleam-lang/gleam-mode")
+  :mode (rx ".gleam" eos)
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(gleam-ts-mode "gleam" "lsp"))))
 
-;; (use-package go-ts-mode
-;;   :mode "\\.go\\'")
+(use-package go-ts-mode
+  :mode "\\.go\\'"
+  :custom
+  (go-ts-mode-indent-offset 4))
 
 (use-package gruber-darker-theme
   :if (display-graphic-p))
@@ -334,8 +342,8 @@
          :map help-map
          ("." . helpful-at-point)))
 
-;; TODO: Figure out how to get this to work b/c it's suppose to be faster.
-;; (use-package indent-bars)
+(use-package indent-bars
+  :disabled) ;; TODO: Figure out how to get this to work b/c it's suppose to be faster.
 
 (use-package highlight-indent-guides
   :if (display-graphic-p)
@@ -347,32 +355,33 @@
   (highlight-indent-guides-responsive 'top)
   (highlight-indent-guides-auto-top-character-face-perc 50))
 
-;; (use-package janet-mode
-;;   :mode "\\.janet$"
-;;   :init
-;;   (with-eval-after-load 'eglot
-;;     (add-to-list 'eglot-server-programs
-;;                  '(janet-mode "janet-lsp"))))
+(use-package janet-mode
+  :mode "\\.janet$"
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 '(janet-mode "janet-lsp"))))
 
-;; (use-package jinx
-;;   :defer 5
-;;   :hook
-;;   (text-mode . jinx-mode)
-;;   :bind (("M-$" . jinx-correct)
-;;          ("C-M-$" . jinx-languages)
-;;          ([remap flyspell-prog-mode] . global-jinx-mode)))
+(use-package jinx
+  :disabled ;; Requires OS dependencies.
+  :defer 5
+  :hook
+  (text-mode . jinx-mode)
+  :bind (("M-$" . jinx-correct)
+         ("C-M-$" . jinx-languages)
+         ([remap flyspell-prog-mode] . global-jinx-mode)))
 
-;; (use-package js
-;;   :mode
-;;   (("\\.js$" . js-ts-mode)
-;;    ("\\.json$" . js-ts-mode))
-;;   :init
-;;   (defun js-setup ()
-;;     (setq outline-regexp " *\\(\".+\"\\) *:"))
-;;   :hook
-;;   (js-ts-mode . js-setup)
-;;   :custom
-;;   (js-indent-level 2))
+(use-package js
+  :mode
+  (("\\.js$" . js-ts-mode)
+   ("\\.json$" . js-ts-mode))
+  :init
+  (defun js-setup ()
+    (setq outline-regexp " *\\(\".+\"\\) *:"))
+  :hook
+  (js-ts-mode . js-setup)
+  :custom
+  (js-indent-level 2))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -405,9 +414,17 @@
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate"))
 
-;; (use-package magit-todos
-;;   :after magit
-;;   :config (magit-todos-mode 1))
+(use-package project
+  :ensure nil
+  :straight nil
+  :custom
+  (project-switch-commands '((project-find-file "Find file" "f")
+                             (project-find-dir "Find directory" "d"))))
+
+(use-package magit-todos
+  :disabled ;; Can be slow for big projects.
+  :after magit
+  :config (magit-todos-mode 1))
 
 (use-package marginalia
   :defer 5
@@ -630,64 +647,64 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
-;; (use-package python
-;;   :init
-;;   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-;;   (defun pytyhon-setup ()
-;;     (setq-local tab-width 4))
-;;   :hook
-;;   (python-ts-mode . pytyhon-setup))
+(use-package python
+  :init
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  (defun pytyhon-setup ()
+    (setq-local tab-width 4))
+  :hook
+  (python-ts-mode . pytyhon-setup))
 
-;; (use-package ruby-ts-mode
-;;   :init
-;;   (with-eval-after-load 'eglot
-;;     (add-to-list 'eglot-server-programs
-;;                  `((ruby-mode ruby-ts-mode)
-;;                    . ("solargraph" "stdio" :initializationOptions
-;;                       (;; options
-;;                        :useBundler t
-;;                        :diagnostics t
-;;                        :completion t
-;;                        :hover t
-;;                        :autoformat :json-false
-;;                        :formatting t
-;;                        :symbols t
-;;                        :definitions t
-;;                        :rename t
-;;                        :references t
-;;                        :folding t)))))
-;;   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-;;   (defun rails-compile ()
-;;     (interactive)
-;;     (setq compile-command
-;;           (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
-;;                  (let ((linum (number-to-string (line-number-at-pos)))
-;;                        (file-name (relative-file-name)))
-;;                    (if (< (line-number-at-pos) 5)
-;;                        (string-join (list "rails t " file-name))
-;;                      (string-join (list "rails t " (s-concat file-name ":" linum))))))
-;;                 ((string-match-p "engines/flexwork/.+_spec.rb" (buffer-file-name))
-;;                  (let ((linum (number-to-string (line-number-at-pos)))
-;;                        (file-name (file-relative-name (buffer-file-name)
-;;                                                       (concat (current-directory) "engines/flexwork")))
-;;                        (prefix-command "cd engines/flexwork/ && bundle exec rspec "))
-;;                    (if (< (line-number-at-pos) 5)
-;;                        (string-join (list prefix-command file-name))
-;;                      (string-join (list prefix-command (s-concat file-name ":" linum))))))
-;;                 (t compile-command)))
-;;     (call-interactively #'compile-dwim))
-;;   (defun rails-comint ()
-;;     (interactive)
-;;     (universal-argument)
-;;     (command-execute #'rails-compile))
-;;   (defun ruby-setup ()
-;;     (setq compile-command "rails t")
-;;     (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
-;;     (bind-keys :map (current-local-map)
-;;                ([remap compile-dwim] . rails-compile)
-;;                ([remap comint] . rails-comint)))
-;;   :hook
-;;   (ruby-base-mode . ruby-setup))
+(use-package ruby-ts-mode
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs
+                 `((ruby-mode ruby-ts-mode)
+                   . ("solargraph" "stdio" :initializationOptions
+                      (;; options
+                       :useBundler t
+                       :diagnostics t
+                       :completion t
+                       :hover t
+                       :autoformat :json-false
+                       :formatting t
+                       :symbols t
+                       :definitions t
+                       :rename t
+                       :references t
+                       :folding t)))))
+  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
+  (defun rails-compile ()
+    (interactive)
+    (setq compile-command
+          (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
+                 (let ((linum (number-to-string (line-number-at-pos)))
+                       (file-name (relative-file-name)))
+                   (if (< (line-number-at-pos) 5)
+                       (string-join (list "rails t " file-name))
+                     (string-join (list "rails t " (s-concat file-name ":" linum))))))
+                ((string-match-p "engines/flexwork/.+_spec.rb" (buffer-file-name))
+                 (let ((linum (number-to-string (line-number-at-pos)))
+                       (file-name (file-relative-name (buffer-file-name)
+                                                      (concat (current-directory) "engines/flexwork")))
+                       (prefix-command "cd engines/flexwork/ && bundle exec rspec "))
+                   (if (< (line-number-at-pos) 5)
+                       (string-join (list prefix-command file-name))
+                     (string-join (list prefix-command (s-concat file-name ":" linum))))))
+                (t compile-command)))
+    (call-interactively #'compile-dwim))
+  (defun rails-comint ()
+    (interactive)
+    (universal-argument)
+    (command-execute #'rails-compile))
+  (defun ruby-setup ()
+    (setq compile-command "rails t")
+    (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
+    (bind-keys :map (current-local-map)
+               ([remap compile-dwim] . rails-compile)
+               ([remap comint] . rails-comint)))
+  :hook
+  (ruby-base-mode . ruby-setup))
 
 (use-package simple-modeline
   :demand t
@@ -727,45 +744,47 @@
       simple-modeline-segment-end-spaces
       ))))
 
-;; (use-package sqlformat
-;;   :commands (sqlformat)
-;;   :init
-;;   (defun sql-set-bindings ()
-;;     (bind-keys :map (current-local-map)
-;;                ([remap indent-buffer] . sqlformat-buffer)))
-;;   :hook
-;;   (sql-mode . sql-set-bindings)
-;;   :config
-;;   (setq sqlformat-command 'pgformatter)
-;;   (setq sqlformat-args '("-s2" "-g")))
+(use-package sqlformat
+  :disabled ;; Requires OS dependency postgresql.
+  :commands (sqlformat)
+  :init
+  (defun sql-set-bindings ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-buffer] . sqlformat-buffer)))
+  :hook
+  (sql-mode . sql-set-bindings)
+  :config
+  (setq sqlformat-command 'pgformatter)
+  (setq sqlformat-args '("-s2" "-g")))
 
-;; (use-package typescript-ts-mode
-;;   :mode "\\.ts$"
-;;   :init
-;;   (with-eval-after-load 'eglot
-;;     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
+(use-package typescript-ts-mode
+  :mode "\\.ts$"
+  :init
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
 (use-package vertico
   :demand t
   :config
   (vertico-mode 1))
 
-;; (use-package vterm
-;;   :if (display-graphic-p)
-;;   :bind (:map toggle-map
-;;               ("t" . vterm-project)
-;;               ("T" . vterm-named))
-;;   :init
-;;   (defun vterm-project ()
-;;     (interactive)
-;;     (let ((default-directory (or (project-directory) default-directory)))
-;;       (vterm-other-window)))
-;;   (defun vterm-named ()
-;;     (interactive)
-;;     (vterm (read-string "Session name: ")))
-;;   :custom
-;;   (vterm-copy-mode-remove-fake-newlines t)
-;;   (vterm-max-scrollback 100000))
+(use-package vterm
+  :disabled ;; Eat is a better termianl emulator.
+  :if (display-graphic-p)
+  :bind (:map toggle-map
+              ("t" . vterm-project)
+              ("T" . vterm-named))
+  :init
+  (defun vterm-project ()
+    (interactive)
+    (let ((default-directory (or (project-directory) default-directory)))
+      (vterm-other-window)))
+  (defun vterm-named ()
+    (interactive)
+    (vterm (read-string "Session name: ")))
+  :custom
+  (vterm-copy-mode-remove-fake-newlines t)
+  (vterm-max-scrollback 100000))
 
 (use-package which-key
   :defer 5

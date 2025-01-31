@@ -118,9 +118,9 @@
            ("l" . display-line-numbers-mode)
            ("L" . global-display-line-numbers-mode)
            ("m" . load-theme)
-           ("s" . flyspell-prog-mode)
-           ("t" . eshell)
-           ("T" . project-eshell)
+           ("$" . flyspell-prog-mode)
+           ("t" . project-eshell)
+           ("T" . eshell)
 
            :map diagnostics-map
            (";" . flymake-show-buffer-diagnostics)
@@ -400,6 +400,7 @@
           (elisp "https://github.com/Wilfred/tree-sitter-elisp")
           (gleam "https://github.com/gleam-lang/tree-sitter-gleam/")
           (go "https://github.com/tree-sitter/tree-sitter-go")
+          (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
           (haskell "https://github.com/tree-sitter/tree-sitter-haskell")
           (html "https://github.com/tree-sitter/tree-sitter-html")
           (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
