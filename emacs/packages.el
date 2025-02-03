@@ -43,7 +43,7 @@
               ("G Y" . avy-copy-region)))
 
 (use-package beacon
-  :defer 5
+  :defer 2
   :config
   (beacon-mode 1))
 
@@ -61,7 +61,7 @@
          )))
 
 (use-package common-lisp-mode
-  :disabled
+  :disabled ;; dependency quicklisp/sbcl required
   :straight nil
   :mode
   (("\\.lisp$" . common-lisp-mode)
@@ -129,7 +129,7 @@
   :commands (consult-flycheck))
 
 (use-package corfu
-  :defer 5
+  :defer 2
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
@@ -150,7 +150,7 @@
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
-  :defer 5
+  :defer 2
   :unless (display-graphic-p)
   :after corfu
   :config
@@ -189,7 +189,7 @@
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
-  :defer 5
+  :defer 2
   :if (display-graphic-p)
   :bind (:map git-map
               ("." . diff-hl-show-hunk)
@@ -209,7 +209,6 @@
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 (use-package eat
-  :disabled
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
   :commands (eat eat-other-window)
@@ -234,10 +233,9 @@
   :if (display-graphic-p))
 
 (use-package eldoc-box
-  :disabled
   :defer 2
   :hook
-  (prog-mode . eldoc-box-hover-mode))
+  (prog-mode . eldoc-box-hover-at-point-mode))
 
 (use-package elixir-ts-mode
   :mode (("\\.ex$" . elixir-ts-mode)
@@ -307,7 +305,8 @@
   (flycheck-mode . flycheck-set-bindings))
 
 (use-package forge
-  :disabled
+  :disabled ;; requires host authentication token
+  :defer 2
   :after magit)
 
 (use-package geiser-guile
@@ -364,7 +363,7 @@
 
 (use-package jinx
   :disabled ;; Requires OS dependencies.
-  :defer 5
+  :defer 2
   :hook
   (text-mode . jinx-mode)
   :bind (("M-$" . jinx-correct)
@@ -423,11 +422,12 @@
 
 (use-package magit-todos
   :disabled ;; Can be slow for big projects.
+  :defer 2
   :after magit
   :config (magit-todos-mode 1))
 
 (use-package marginalia
-  :defer 5
+  :defer 2
   :init
   (setq completions-detailed nil)
   :config
@@ -787,7 +787,7 @@
   (vterm-max-scrollback 100000))
 
 (use-package which-key
-  :defer 5
+  :defer 2
   :config
   (which-key-mode))
 
@@ -801,7 +801,7 @@
   :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
 
 (use-package yasnippet
-  :defer 5
+  :defer 2
   ;; https://joaotavora.github.io/yasnippet/index.html
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
