@@ -220,9 +220,8 @@
                          ("terminfo/65" "terminfo/65/*")
                          ("integration" "integration/*")
                          (:exclude ".dir-locals.el" "*-tests.el")))
-  :bind (:map toggle-map
-              ([remap eshell] . eat)
-              ([remap project-eshell] . eat-project))
+  :bind ((([remap eshell] . eat)
+          ([remap project-eshell] . eat-project)))
   :custom
   (eat-term-scrollback-size nil)
   :config
@@ -342,12 +341,13 @@
          ("." . helpful-at-point)))
 
 (use-package indent-bars
-  :disabled) ;; TODO: Figure out how to get this to work b/c it's suppose to be faster.
+  :disabled) ;; Works only on mac Carbon version, not NS version: (version)
 
 (use-package highlight-indent-guides
   :if (display-graphic-p)
   :bind (:map toggle-map
               ("g" . highlight-indent-guides-mode))
+  :hook (prog-mode . highlight-indent-guides-mode)
   :custom
   (highlight-indent-guides-method 'bitmap)
   (highlight-indent-guides-character ?|)
@@ -617,25 +617,22 @@
         '(("Output\\*$" . hide)
           (completion-list-mode . hide)
           occur-mode
-          "\\*Messages\\*"))
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
+          "\\*Messages\\*"
           "\\*Warnings\\*"
-          "Output\\*$"
           "errors\\*$"
           "\\*Async Shell Command\\*"
           special-mode
           help-mode
           compilation-mode
           comint-mode))
-  ;; Match eshell, shell, term and/or vterm buffers
+  ;; Match eshell, shell, term, etc
   (setq popper-reference-buffers
         (append popper-reference-buffers
-                '("^\\*eshell.*\\*$" eshell-mode
+                '("^\\*.*eshell.*\\*$" eshell-mode
                   "^\\*shell.*\\*$"  shell-mode
                   "^\\*term.*\\*$"   term-mode
                   "^\\*vterm.*\\*$"  vterm-mode
-                  "^\\*eat.*\\*$"  eat-mode
+                  "^\\*.*eat.*\\*$"  eat-mode
                   )))
   (setq popper-window-height
         (lambda (win)
