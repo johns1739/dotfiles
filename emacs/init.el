@@ -195,6 +195,7 @@
 
 ;; xref settings
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
+(setq xref-search-program 'ripgrep)
 
 ;; hippie settings
 (setq hippie-expand-verbose t)
@@ -517,6 +518,9 @@
   (interactive)
   (require 'treesit)
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
+
+;; Load packages
+(load (locate-user-emacs-file "packages.el"))
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))

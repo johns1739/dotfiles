@@ -12,25 +12,22 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; (load (locate-user-emacs-file "packages.el"))
+;; ;; Packages
+
+
+;; ;; Color theme
 ;; (load-theme 'ef-dream t)
 
-;; Install third party commands
-;; (setq xref-search-program 'ripgrep)
-;; (setq find-program 'fd)
+;; ;; (setq find-program 'fd) ;; preferred if available
+;; ;; (setq find-program 'df) ;; on Fedora
 
-;; org custom settings
+;; Org Settings
 ;; (setq org-directory "~/org")
 
+;; ;; Hooks
 ;; (add-hook 'ruby-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
 ;; (add-hook 'elixir-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure
 
 ;; (when (display-graphic-p)
-;;   (set-face-attribute 'default nil
-;;                       :family "JetBrainsMono Nerd Font"
-;;                       :height 140
-;;                       :weight 'light ;; thin, light, medium, regular
-;;                       :slant 'normal ;; italic, oblique, normal, roman
-;;                       :width 'normal)
 ;;   (add-to-list 'default-frame-alist '(height . 50))
 ;;   (add-to-list 'default-frame-alist '(width . 112)))
