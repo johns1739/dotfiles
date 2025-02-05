@@ -194,8 +194,8 @@
 (setq-default tab-width 4)
 
 ;; xref settings
-(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 (setq xref-search-program 'ripgrep)
+(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
 ;; hippie settings
 (setq hippie-expand-verbose t)

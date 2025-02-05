@@ -9,3 +9,6 @@ alias e="emacs-nox" # or emacs-nw
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+
+# Recommended bash tools to install
+# alias top="btop"
