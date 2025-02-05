@@ -128,6 +128,26 @@
   :after flycheck
   :commands (consult-flycheck))
 
+(use-package copilot
+  :disabled ;; requires copilot subscription token
+  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :defer 5
+  :after corfu
+  :bind (:map copilot-completion-map
+              ("M-f" . copilot-accept-completion-by-word)
+              ("C-e" . copilot-accept-completion-by-line)
+              ("M-n" . copilot-next-completion)
+              ("M-p" . copilot-previous-completion)
+              ("C-<tab>" . copilot-accept-completion))
+  :custom
+  (corfu-auto nil)
+  (copilot-indent-offset-warning-disable t)
+  (copilot-idle-delay 0.5)
+  :hook
+  (prog-mode . copilot-mode)
+  :config
+  (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
+
 (use-package corfu
   :defer 2
   :straight (corfu :files (:defaults "extensions/*.el")
@@ -254,6 +274,7 @@
                       (eglot-alternatives
                        '("language_server.sh" "start_lexical.sh"))))))
   :hook
+  (elixir-ts-mode . lsp-deferred)
   (elixir-ts-mode . elixir-setup))
 
 (use-package elm-mode)
@@ -362,7 +383,7 @@
                  '(janet-mode "janet-lsp"))))
 
 (use-package jinx
-  :disabled ;; Requires OS dependencies.
+  ;; Requires OS dependencies.
   :defer 2
   :hook
   (text-mode . jinx-mode)
@@ -701,6 +722,7 @@
                ([remap compile-dwim] . rails-compile)
                ([remap comint] . rails-comint)))
   :hook
+  (ruby-base-mode . lsp-deffered)
   (ruby-base-mode . ruby-setup))
 
 (use-package simple-modeline

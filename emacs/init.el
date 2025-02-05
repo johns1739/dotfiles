@@ -383,6 +383,9 @@
 
 ;; frame settings
 (setq-default frame-title-format '("%f"))
+(when (display-graphic-p)
+  (add-to-list 'default-frame-alist '(height . 50))
+  (add-to-list 'default-frame-alist '(width . 125)))
 
 ;; emacs startup settings
 (setopt inhibit-startup-message t)
