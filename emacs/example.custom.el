@@ -21,8 +21,11 @@
 ;; ;; (setq find-program 'fd) ;; preferred if available
 ;; ;; (setq find-program 'df) ;; on Fedora
 
-;; Org Settings
-;; (setq org-directory "~/org")
+;; Note Settings
+;; (setq notes-directory "~/.notes")
+;; (setq org-directory notes-directory)
+;; (setq org-agenda-files (list org-directory))
+;; (setq denote-directory notes-directory)
 
 ;; ;; Hooks
 ;; (add-hook 'ruby-ts-mode-hook #'lsp-deferred) ;; lsp-deferred or eglot-ensure

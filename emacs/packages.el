@@ -193,17 +193,18 @@
 
 (use-package denote
   :defer 2
+  :after org
   :bind (:map notes-map
               ("SPC" . denote-open-or-create)
-              ("n" . denote)
-              ("k" . denote-find-link)
-              ("K" . denote-find-backlink)
+              ("c" . denote)
+              ("j" . denote-journal-extras-new-or-existing-entry)
               ("l" . denote-link-or-create)
-              ("L" . denote-link-insert-links-matching-regexp)
-              ("r" . denote-rename-file-using-front-matter)
-              ("R" . denote-rename-file))
+              ("o" . denote-find-link)
+              ("r" . denote-find-backlink)
+              ("w" . denote-rename-file-using-front-matter))
   :custom
-  (denote-known-keywords '("task" "doc" "snippet"))
+  (denote-directory notes-directory)
+  (denote-known-keywords '("private"))
   (denote-date-prompt-use-org-read-date t)
   :config
   (denote-rename-buffer-mode))
@@ -253,6 +254,7 @@
 
 (use-package eldoc-box
   :defer 2
+  :if (display-graphic-p)
   :hook
   (prog-mode . eldoc-box-hover-at-point-mode))
 
@@ -581,43 +583,46 @@
   ;; do not install since this is builtin
   :ensure nil
   :straight nil
+  :init
+  (defun org-mode-setup ()
+    (electric-indent-local-mode -1))
+  :hook
+  (org-mode . org-mode-setup)
+  :custom
+  (org-agenda-todo-ignore-deadlines 'far)
+  (org-cycle-hide-block-startup t)
+  (org-hide-drawer-startup t)
+  (org-hide-emphasis-markers t)
+  (org-hide-leading-stars t)
+  (org-log-done 'time)
+  (org-log-into-drawer t)
+  (org-return-follows-link nil)
+  (org-special-ctrl-a/e t)
+  (org-startup-folded 'overview)
+  (org-startup-indented t)
+  (org-agenda-sorting-strategy '(priority-down
+                                 time-up
+                                 habit-up
+                                 deadline-up
+                                 scheduled-up
+                                 category-keep
+                                 todo-state-down
+                                 effort-down
+                                 tag-up
+                                 timestamp-up
+                                 ts-up
+                                 tsia-up
+                                 alpha-up))
+  (org-tag-faces '(("bug"  . "sienna")
+                   ("feature" . "goldenrod")
+                   ("chore" . "khaki")))
+  (org-todo-keyword-faces '(("TODO" . "goldenrod")
+                            ("ACTIVE" . "dark khaki")
+                            ("DONE" . "dark olive green")
+                            ("CANCELED" . "sienna")))
+  (org-capture-templates `(("t" "Task" entry (file+headline "tasks.org" "Tasks")
+                            "* %?" :prepend t :empty-lines 1)))
   :config
-  (setq org-agenda-todo-ignore-deadlines 'far)
-  (setq org-cycle-hide-block-startup t)
-  (setq org-hide-drawer-startup t)
-  (setq org-hide-emphasis-markers t)
-  (setq org-hide-leading-stars t)
-  (setq org-log-done 'time)
-  (setq org-log-into-drawer t)
-  (setq org-return-follows-link nil)
-  (setq org-special-ctrl-a/e t)
-  (setq org-startup-folded 'overview)
-  (setq org-startup-indented t)
-  (setq org-agenda-sorting-strategy '(priority-down
-                                      time-up
-                                      habit-up
-                                      deadline-up
-                                      scheduled-up
-                                      category-keep
-                                      todo-state-down
-                                      effort-down
-                                      tag-up
-                                      timestamp-up
-                                      ts-up
-                                      tsia-up
-                                      alpha-up))
-  (setq org-tag-faces '(("bug"  . "sienna")
-                        ("feature" . "goldenrod")
-                        ("chore" . "khaki")))
-  (setq org-todo-keyword-faces '(("TODO" . "goldenrod")
-                                 ("ACTIVE" . "dark khaki")
-                                 ("DONE" . "dark olive green")
-                                 ("CANCELED" . "sienna")))
-  (setq org-capture-templates `(("t" "Task" entry (file+headline "tasks.org" "Tasks")
-                                 "* %?" :prepend t :empty-lines 1)))
-  (setq org-agenda-files (list org-directory))
-  (unless (file-exists-p org-directory)
-    (make-directory org-directory))
   (org-babel-do-load-languages
    'org-babel-load-languages '((emacs-lisp . t) (shell . t))))
 

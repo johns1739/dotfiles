@@ -7,7 +7,7 @@
 
 (defvar-keymap notes-map
   :doc "Notes map")
-(keymap-set global-leader-map "n" notes-map)
+(keymap-set global-leader-map ";" notes-map)
 
 (defvar-keymap diagnostics-map
   :doc "Diagnostics map")
@@ -35,6 +35,7 @@
   :doc "Git map")
 (keymap-set global-leader-map "j" git-map)
 
+(keymap-set global-leader-map "c" mode-specific-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
 (keymap-set global-leader-map "p" project-prefix-map)
@@ -98,8 +99,9 @@
            :map notes-map
            (";" . org-todo-list)
            (":" . org-agenda)
-           ("." . org-capture)
            ("," . org-store-link)
+           ("." . org-capture)
+           (">" . org-capture-goto-target)
            ("/" . org-search-view)
            ("?" . org-occur-in-agenda-files)
 
@@ -505,10 +507,6 @@
   "Copy absolute file path of current buffer."
   (interactive)
   (kill-new (absolute-file-name)))
-
-(defun org-mode-setup ()
-  (electric-indent-local-mode -1))
-(add-hook 'org-mode-hook #'org-mode-setup)
 
 (defun eglot-set-bindings ()
   "Inject eglot bindings."
