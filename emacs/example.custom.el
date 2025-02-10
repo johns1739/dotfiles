@@ -12,9 +12,6 @@
  ;; If there is more than one, they won't work right.
  )
 
-;; ;; Packages
-
-
 ;; ;; Color theme
 ;; (load-theme 'ef-dream t)
 
