@@ -150,6 +150,7 @@
 
 (use-package corfu
   :defer 2
+  :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
@@ -600,19 +601,11 @@
   (org-special-ctrl-a/e t)
   (org-startup-folded 'overview)
   (org-startup-indented t)
-  (org-agenda-sorting-strategy '(priority-down
-                                 time-up
-                                 habit-up
-                                 deadline-up
-                                 scheduled-up
-                                 category-keep
-                                 todo-state-down
-                                 effort-down
-                                 tag-up
-                                 timestamp-up
-                                 ts-up
-                                 tsia-up
-                                 alpha-up))
+  (org-agenda-sorting-strategy
+   '((agenda habit-down time-up priority-down category-keep)
+     (todo priority-down category-keep habit-up deadline-up todo-state-down)
+     (tags priority-down category-keep)
+     (search category-keep)))
   (org-tag-faces '(("bug"  . "sienna")
                    ("feature" . "goldenrod")
                    ("chore" . "khaki")))
