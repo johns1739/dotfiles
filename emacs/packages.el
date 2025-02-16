@@ -1,3 +1,5 @@
+;; TODO: Set up window tiling manager
+
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -148,6 +150,7 @@
   :config
   (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
 
+;; TODO: C-n and C-p corfu beindings get in the way
 (use-package corfu
   :defer 2
   :if (display-graphic-p)
