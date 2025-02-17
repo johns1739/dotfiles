@@ -283,6 +283,15 @@
   (elixir-ts-mode . lsp-deferred)
   (elixir-ts-mode . elixir-setup))
 
+(use-package ellama
+  :disabled ;; requires ollama installation
+  :bind (:map global-leader-map
+              ("l ;" . ellama-transient-main-menu))
+  :init
+  (require 'llm-ollama)
+  :config
+  (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
+
 (use-package elm-mode)
 
 (use-package embark
@@ -367,9 +376,6 @@
          :map help-map
          ("." . helpful-at-point)))
 
-(use-package indent-bars
-  :disabled) ;; Works only on mac Carbon version, not NS version: (version)
-
 (use-package highlight-indent-guides
   :if (display-graphic-p)
   :bind (:map toggle-map
@@ -380,6 +386,10 @@
   (highlight-indent-guides-character ?|)
   (highlight-indent-guides-responsive 'top)
   (highlight-indent-guides-auto-top-character-face-perc 50))
+
+(use-package indent-bars
+  ;; Can replace highlight-indent-guides
+  :disabled) ;; Works only on mac Carbon version, not NS version: (version)
 
 (use-package janet-mode
   :mode "\\.janet$"
@@ -787,6 +797,10 @@
   :demand t
   :config
   (vertico-mode 1))
+
+(use-package visual-replace
+  :config
+  (visual-replace-global-mode 1))
 
 (use-package vterm
   :disabled ;; Eat is a better termianl emulator.
