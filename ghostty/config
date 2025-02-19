@@ -1,21 +1,17 @@
-window-theme = auto
-theme = Adventure
-# theme = Belafonte Day
-
+background-opacity = 1
 cursor-style = block
 cursor-style-blink = true
-
-mouse-hide-while-typing = true
-
-background-opacity = 1
-unfocused-split-opacity = 0.4
-
-scrollback-limit = 1073741824
-
-# keybindings
 keybind = super+D=new_split:up
 keybind = super+h=goto_split:left
-keybind = super+l=goto_split:right
-keybind = super+k=goto_split:top
 keybind = super+j=goto_split:bottom
+keybind = super+k=goto_split:top
+keybind = super+l=goto_split:right
 keybind = super+o=toggle_quick_terminal
+mouse-hide-while-typing = true
+quit-after-last-window-closed = true
+scrollback-limit = 1073741824
+theme = Adventure
+unfocused-split-opacity = 0.4
+window-height = 42
+window-save-state = always
+window-width = 102
