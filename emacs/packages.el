@@ -257,6 +257,7 @@
   :if (display-graphic-p))
 
 (use-package eldoc-box
+  :disabled ;; Annoying
   :defer 2
   :if (display-graphic-p)
   :hook
@@ -345,7 +346,9 @@
   :after magit)
 
 (use-package geiser-guile
-  :commands (geiser-mode))
+  :commands (geiser-mode)
+  :hook
+  (scheme-mode . geiser-mode))
 
 (use-package git-link
   :bind (:map git-map
@@ -378,7 +381,7 @@
 
 (use-package highlight-indent-guides
   :if (display-graphic-p)
-  :bind (:map toggle-map
+  :bind (:map editor-settings-map
               ("g" . highlight-indent-guides-mode))
   :hook (prog-mode . highlight-indent-guides-mode)
   :custom
@@ -630,11 +633,11 @@
                             "* %?" :prepend t :empty-lines 1)))
   :config
   (org-babel-do-load-languages
-   'org-babel-load-languages '((emacs-lisp . t) (shell . t))))
+   'org-babel-load-languages '((emacs-lisp . t) (shell . t) (scheme . t))))
 
 (use-package popper
   :defer 2
-  :bind (:map toggle-map
+  :bind (:map open-toggle-map
               ("o" . popper-toggle)
               ("O" . popper-toggle-type)
               ("n" . popper-cycle)
@@ -799,13 +802,14 @@
   (vertico-mode 1))
 
 (use-package visual-replace
+  :demand t
   :config
   (visual-replace-global-mode 1))
 
 (use-package vterm
   :disabled ;; Eat is a better termianl emulator.
   :if (display-graphic-p)
-  :bind (:map toggle-map
+  :bind (:map open-toggle-map
               ("t" . vterm-project)
               ("T" . vterm-named))
   :init

@@ -1,0 +1,17 @@
+window-theme = dark
+theme = Adventure
+cursor-style = block
+cursor-style-blink = true
+mouse-hide-while-typing = true
+background-opacity = 0.8
+unfocused-split-opacity = 0.5
+scrollback-limit = 1073741824
+quick-terminal-position = bottom
+
+# keybindings
+keybind = super+D=new_split:up
+keybind = super+h=goto_split:left
+keybind = super+l=goto_split:right
+keybind = super+k=goto_split:top
+keybind = super+j=goto_split:bottom
+keybind = super+o=toggle_quick_terminal

@@ -3,7 +3,6 @@
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
 (keymap-global-set "M-SPC" global-leader-map)
-(keymap-global-set "M-j" global-leader-map)
 
 (defvar-keymap notes-map
   :doc "Notes map")
@@ -17,9 +16,13 @@
   :doc "Compilation map")
 (keymap-set global-leader-map "x" compilation-map)
 
-(defvar-keymap toggle-map
+(defvar-keymap open-toggle-map
   :doc "Toggle map")
-(keymap-set global-leader-map "o" toggle-map)
+(keymap-set global-leader-map "o" open-toggle-map)
+
+(defvar-keymap editor-settings-map
+  :doc "Editor Settings map")
+(keymap-set global-leader-map "e" editor-settings-map)
 
 (defvar-keymap window-map
   :doc "Window movement map")
@@ -48,6 +51,7 @@
            ("M-o" . other-window)
            ("M-#" . dictionary-lookup-definition)
            ("M-L" . duplicate-dwim)
+           ("M-j" . comment-indent-new-line)
 
            :map global-leader-map
            ("SPC" . switch-to-buffer)
@@ -112,18 +116,23 @@
            ("B" . eval-buffer)
            ("g" . recompile)
 
-           :map toggle-map
-           ("f" . set-font-size)
-           ("h" . hl-line-mode)
-           ("H" . global-hl-line-mode)
-           ("i" . display-fill-column-indicator-mode)
-           ("I" . global-display-fill-column-indicator-mode)
-           ("l" . display-line-numbers-mode)
-           ("L" . global-display-line-numbers-mode)
-           ("m" . load-theme)
-           ("$" . flyspell-prog-mode)
+           :map open-toggle-map
            ("t" . project-eshell)
            ("T" . eshell)
+
+           :map editor-settings-map
+           ("$" . flyspell-prog-mode)
+           ("=" . set-font-size)
+           ("b" . toggle-truncate-lines)
+           ("f" . display-fill-column-indicator-mode)
+           ("F" . global-display-fill-column-indicator-mode)
+           ("h" . hl-line-mode)
+           ("H" . global-hl-line-mode)
+           ("n" . display-line-numbers-mode)
+           ("N" . global-display-line-numbers-mode)
+           ("t" . load-theme)
+           ("v" . visual-line-mode)
+           ("V" . global-visual-line-mode)
 
            :map diagnostics-map
            (";" . flymake-show-buffer-diagnostics)

@@ -1,6 +1,6 @@
 PS1="\w \$ "
 
-export EDITOR="emacs-nox" # or emacs-nw
+export EDITOR="emacs" # or emacs-nw or emacs-nox
 export SUDO_EDITOR="$EDITOR"
 
 alias emacs="emacs-nox" # or emacs-nw
