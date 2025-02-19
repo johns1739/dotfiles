@@ -1,10 +1,11 @@
-window-theme = dark
-theme = Adventure
+window-theme = auto
+# theme = Adventure
+theme = Belafonte Day
 cursor-style = block
 cursor-style-blink = true
 mouse-hide-while-typing = true
-background-opacity = 0.8
-unfocused-split-opacity = 0.5
+background-opacity = 0.85
+unfocused-split-opacity = 0.4
 scrollback-limit = 1073741824
 quick-terminal-position = bottom
 
