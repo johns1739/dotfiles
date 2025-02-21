@@ -1,17 +1,29 @@
-background-opacity = 1
 cursor-style = block
 cursor-style-blink = true
-keybind = super+D=new_split:up
-keybind = super+h=goto_split:left
-keybind = super+j=goto_split:bottom
-keybind = super+k=goto_split:top
-keybind = super+l=goto_split:right
-keybind = super+o=toggle_quick_terminal
 mouse-hide-while-typing = true
 quit-after-last-window-closed = true
 scrollback-limit = 1073741824
-theme = Adventure
-unfocused-split-opacity = 0.4
-window-height = 42
+window-height = 45
 window-save-state = always
-window-width = 102
+window-width = 112
+
+keybind = super+;>0=close_surface
+keybind = super+;>1=toggle_split_zoom
+keybind = super+;>2=new_split:right
+keybind = super+;>3=new_split:down
+keybind = super+;>equal=equalize_splits
+keybind = super+h=goto_split:left
+keybind = super+j=goto_split:down
+keybind = super+k=goto_split:up
+keybind = super+l=goto_split:right
+keybind = super+o=toggle_quick_terminal
+keybind = super+shift+d=new_split:up
+keybind = super+;>y=write_screen_file:paste
+keybind = page_up=jump_to_prompt:-1
+keybind = page_down=jump_to_prompt:1
+
+config-file=?custom.config
+# window-theme = dark
+# theme = dark:Adventure,light:Desert
+# background-opacity = 0.9
+# unfocused-split-opacity = 0.4

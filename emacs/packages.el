@@ -197,7 +197,6 @@
 
 (use-package denote
   :defer 2
-  :after org
   :bind (:map notes-map
               ("SPC" . denote-open-or-create)
               ("c" . denote)
@@ -347,6 +346,8 @@
 
 (use-package geiser-guile
   :commands (geiser-mode)
+  :custom
+  (geiser-debug-jump-to-debug t)
   :hook
   (scheme-mode . geiser-mode))
 

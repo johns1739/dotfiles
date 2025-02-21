@@ -529,6 +529,12 @@
   (require 'treesit)
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
+;; Transparency for terminal
+(defun on-after-init ()
+  (unless (display-graphic-p (selected-frame))
+    (set-face-background 'default "unspecified-bg" (selected-frame))))
+(add-hook 'window-setup-hook 'on-after-init)
+
 ;; Load packages
 (load (locate-user-emacs-file "packages.el"))
 
