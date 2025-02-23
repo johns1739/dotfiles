@@ -84,9 +84,8 @@
 
            :map search-map
            ("SPC" . project-switch-to-buffer)
-           ("," . rgrep)
-           ("<" . rgrep)
            ("." . isearch-forward-thing-at-point)
+           ("," . rgrep)
            ("/" . isearch-forward)
            ("d" . project-find-dir)
            ("f" . project-find-file)
@@ -99,6 +98,8 @@
            ("K" . delete-matching-lines)
            ("s" . project-find-regexp)
            ("r" . recentf-open)
+           ("w" . isearch-forward-word)
+           ("W" . isearch-forward-symbol)
 
            :map notes-map
            (";" . org-todo-list)
@@ -193,12 +194,16 @@
 (setq next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
 
 ;; completion settings
-(setq completion-at-point-functions '(dabbrev-capf))
-(setq completion-cycle-threshold 3)
-(setq completions-detailed t)
+(setq completion-at-point-functions '(dabbrev-capf)) ;; available on v29
+(setq completion-auto-help 'always)
+(setq completion-auto-select 'second-tab)
 (setq completion-category-defaults nil)
-(setq completion-styles '(substring partial-completion initials flex))
 (setq completion-category-overrides '((file (styles . (basic partial-completion)))))
+(setq completion-cycle-threshold 3)
+(setq completion-styles '(substring partial-completion initials flex))
+(setq completions-detailed t)
+(setq completions-format 'one-column)
+(setq completions-max-height 20)
 
 ;; tab settings
 (setq tab-always-indent t)
@@ -306,8 +311,11 @@
 
 ;; window settings
 (window-divider-mode -1)
-(setq max-mini-window-height 0.2)
 (setq auto-window-vscroll nil)
+
+;; minibuffer settings
+(setq max-mini-window-height 0.2)
+(setq enable-recursive-minibuffers t) ;; Might be confusing
 
 ;; revert settings
 (global-auto-revert-mode t)

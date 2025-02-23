@@ -1,5 +1,3 @@
-;; TODO: Set up window tiling manager
-
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -36,7 +34,6 @@
   :bind (:map goto-map
               ("l" . avy-goto-line)
               ("g" . avy-goto-char-2)
-              ;; ("g" . avy-goto-char-timer)
               ("G k" . avy-kill-whole-line)
               ("G K" . avy-kill-region)
               ("G m" . avy-move-line)
@@ -58,7 +55,7 @@
          #'cape-keyword
          #'cape-file
          #'cape-dict
-         #'cape-elisp-symbol
+         ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
          ;; #'cape-line ;; Kinda buggy
          )))
 
@@ -150,10 +147,9 @@
   :config
   (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
 
-;; TODO: C-n and C-p corfu beindings get in the way
 (use-package corfu
+  :disabled ;; gets in the way sometimes w/ C-n & C-p
   :defer 2
-  :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
@@ -174,6 +170,7 @@
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
+  :disabled ;; because corfu is disabled
   :defer 2
   :unless (display-graphic-p)
   :after corfu
@@ -193,7 +190,8 @@
   (dashboard-setup-startup-hook))
 
 (use-package deadgrep
-  :bind (([remap rgrep] . deadgrep)))
+  :bind (:map search-map
+              (";" . deadgrep)))
 
 (use-package denote
   :defer 2
@@ -295,13 +293,12 @@
 (use-package elm-mode)
 
 (use-package embark
-  :bind (:map compilation-map
-              ("a" . embark-act)
-              ("A" . embark-act-all)
-              ("e" . embark-collect)
-              ("E" . embark-export)
-              :map help-map
-              ("B" . embark-bindings)))
+  :bind (([remap describe-bindings] . embark-bindings)
+         :map compilation-map
+         ("a" . embark-act)
+         ("A" . embark-act-all)
+         ("e" . embark-collect)
+         ("E" . embark-export)))
 
 (use-package embark-consult
   :hook
@@ -316,6 +313,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package expand-region
+  :disabled ;; rarely used
   :commands (er/expand-region)
   :bind ("M-O" . er/expand-region))
 
@@ -345,7 +343,7 @@
   :after magit)
 
 (use-package geiser-guile
-  :commands (geiser-mode)
+  :commands (geiser geiser-mode)
   :custom
   (geiser-debug-jump-to-debug t)
   :hook
@@ -586,6 +584,7 @@
   :if (display-graphic-p))
 
 (use-package multiple-cursors
+  :disabled ;; rarely used
   :bind (("M-n" . mc/mark-next-like-this)
          ("M-N" . mc/unmark-previous-like-this)
          ("M-p" . mc/mark-previous-like-this)
@@ -598,7 +597,6 @@
   (completion-styles '(substring partial-completion initials orderless basic)))
 
 (use-package org
-  ;; do not install since this is builtin
   :ensure nil
   :straight nil
   :init

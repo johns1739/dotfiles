@@ -6,7 +6,6 @@ scrollback-limit = 1073741824
 window-height = 45
 window-save-state = always
 window-width = 112
-
 keybind = super+;>0=close_surface
 keybind = super+;>1=toggle_split_zoom
 keybind = super+;>2=new_split:right
@@ -23,7 +22,8 @@ keybind = page_up=jump_to_prompt:-1
 keybind = page_down=jump_to_prompt:1
 
 config-file=?custom.config
-# window-theme = dark
-# theme = dark:Adventure,light:Desert
 # background-opacity = 0.9
+# font-size = 16
+# theme = dark:Adventure,light:Desert
 # unfocused-split-opacity = 0.4
+# window-theme = dark
