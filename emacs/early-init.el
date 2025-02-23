@@ -8,8 +8,8 @@
 (setq use-package-compute-statistics t)
 
 ;; Garbage Collection (for performance)
-(setq gc-cons-percentage 0.2)
-(setq gc-cons-threshold (* 16 1000 1000))
+(setq gc-cons-percentage 0.1)
+(setq gc-cons-threshold (* 128 1024 1024)) ;; 128MB
 
 ;; Silence logs
 (setq byte-compile-warnings '(not obsolete))

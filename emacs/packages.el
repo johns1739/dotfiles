@@ -278,7 +278,6 @@
                       (eglot-alternatives
                        '("language_server.sh" "start_lexical.sh"))))))
   :hook
-  (elixir-ts-mode . lsp-deferred)
   (elixir-ts-mode . elixir-setup))
 
 (use-package ellama
@@ -735,7 +734,6 @@
                ([remap compile-dwim] . rails-compile)
                ([remap comint] . rails-comint)))
   :hook
-  (ruby-base-mode . lsp-deffered)
   (ruby-base-mode . ruby-setup))
 
 (use-package simple-modeline

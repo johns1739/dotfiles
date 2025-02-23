@@ -44,8 +44,8 @@
 (keymap-set global-leader-map "p" project-prefix-map)
 
 (bind-keys :map global-map
-           ("M-i" . completion-at-point)
-           ("M-I" . hippie-expand)
+           ("M-i" . hippie-expand)
+           ("M-I" . completion-at-point)
            ("M-\\" . cycle-spacing)
            ("C-x C-b" . ibuffer)
            ("M-o" . other-window)
@@ -297,7 +297,7 @@
 (pixel-scroll-precision-mode t)
 
 ;; repeat settings
-(repeat-mode nil) ;; Sometimes gets in the way.
+(repeat-mode -1) ;; Sometimes gets in the way.
 
 ;; save settings
 ;; (auto-save-visited-mode 1)
