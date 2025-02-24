@@ -198,12 +198,12 @@
   :defer 2
   :bind (:map notes-map
               ("SPC" . denote-open-or-create)
-              ("c" . note)
-              ("j" . note-journal-extras-new-or-existing-entry)
-              ("l" . note-link-or-create)
-              ("k" . note-finlink)
-              ("K" . note-finbacklink)
-              ("r" . note-rename-file-using-front-matter))
+              ("c" . denote)
+              ("j" . denote-journal-extras-new-or-existing-entry)
+              ("l" . denote-link-or-create)
+              ("k" . denote-finlink)
+              ("K" . denote-finbacklink)
+              ("r" . denote-rename-file-using-front-matter))
   :custom
   (denote-directory notes-directory)
   (denote-known-keywords '("private"))
@@ -599,13 +599,16 @@
   (org-agenda-mode . hl-line-mode)
   :bind (:map notes-map
               (";" . org-todo-list)
-              (":" . org-agenda)
+              (":" . org-agenda-list)
               ("," . org-store-link)
               ("<" . org-insert-link)
               ("." . org-capture)
-              (">" . org-capture-goto-target)
+              (">" . org-capture-goto-last-stored)
               ("/" . org-search-view)
-              ("?" . org-occur-in-agenda-files))
+              ("?" . org-occur-in-agenda-files)
+              :map org-mode-map
+              ("M-n" . org-next-visible-heading)
+              ("M-p" . org-previous-visible-heading))
   :custom
   (org-agenda-todo-ignore-deadlines 'far)
   (org-cycle-hide-block-startup t)

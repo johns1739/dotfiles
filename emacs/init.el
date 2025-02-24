@@ -41,8 +41,8 @@
 (keymap-set global-leader-map "p" project-prefix-map)
 
 (bind-keys :map global-map
-           ("M-i" . hippie-expand)
-           ("M-I" . completion-at-point)
+           ("M-i" . completion-at-point)
+           ("M-I" . hippie-expand)
            ("M-\\" . cycle-spacing)
            ("C-x C-b" . ibuffer)
            ("M-o" . other-window)

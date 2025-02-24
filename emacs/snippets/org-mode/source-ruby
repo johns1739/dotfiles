@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: source-ruby
-# key: ,r
+# key: ,ruby
 # --
 #+begin_src ruby
 

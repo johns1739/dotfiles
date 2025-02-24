@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: source-sql
-# key: ,q
+# key: ,sql
 # --
 #+begin_src sql
 
