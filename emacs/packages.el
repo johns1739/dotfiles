@@ -34,14 +34,15 @@
   :bind (:map goto-map
               ("l" . avy-goto-line)
               ("g" . avy-goto-char-2)
-              ("G k" . avy-kill-whole-line)
-              ("G K" . avy-kill-region)
-              ("G m" . avy-move-line)
-              ("G M" . avy-move-region)
-              ("G y" . avy-copy-line)
-              ("G Y" . avy-copy-region)))
+              ("a k" . avy-kill-whole-line)
+              ("a K" . avy-kill-region)
+              ("a m" . avy-move-line)
+              ("a M" . avy-move-region)
+              ("a y" . avy-copy-line)
+              ("a Y" . avy-copy-region)))
 
 (use-package beacon
+  :if (display-graphic-p)
   :defer 2
   :config
   (beacon-mode 1))
@@ -116,8 +117,8 @@
 (use-package consult-denote
   :after denote
   :bind (:map notes-map
-              ("f" . consult-denote-find)
-              ("s" . consult-denote-grep))
+              ("d f" . consult-denote-find)
+              ("d s" . consult-denote-grep))
   :custom
   (consult-denote-grep-command 'consult-ripgrep)
   :config
@@ -196,13 +197,13 @@
 (use-package denote
   :defer 2
   :bind (:map notes-map
-              ("SPC" . denote-open-or-create)
-              ("c" . denote)
-              ("j" . denote-journal-extras-new-or-existing-entry)
-              ("l" . denote-link-or-create)
-              ("o" . denote-find-link)
-              ("r" . denote-find-backlink)
-              ("w" . denote-rename-file-using-front-matter))
+              ("d SPC" . denote-open-or-create)
+              ("d c" . denote)
+              ("d j" . denote-journal-extras-new-or-existing-entry)
+              ("d l" . denote-link-or-create)
+              ("d k" . denote-find-link)
+              ("d K" . denote-find-backlink)
+              ("d r" . denote-rename-file-using-front-matter))
   :custom
   (denote-directory notes-directory)
   (denote-known-keywords '("private"))
@@ -487,17 +488,8 @@
     (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
-    (meow-motion-overwrite-define-key
-     '("Q" . meow-quit)
-     '("j" . meow-next)
-     '("k" . meow-prev) ;; fails with magit-discard for hunks for some reason
-     '("o" . other-window)
+    (meow-motion-define-key
      '("<escape>" . ignore))
-    (meow-leader-define-key
-     '("Q" . "H-Q")
-     '("j" . "H-j")
-     '("k" . "H-k")
-     '("o" . "H-o"))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
      '("M-DEL" . meow-backward-kill-word)
@@ -541,10 +533,8 @@
      '("M" . meow-pop-to-mark)
      '("n" . meow-search)
      '("N" . meow-unpop-to-mark)
-     ;; '("o" . meow-block)
-     ;; '("O" . meow-to-block)
      '("o" . other-window)
-     '("O" . er/expand-region)
+     '("O" . meow-block)
      '("p" . meow-yank)
      '("P" . meow-yank-pop)
      '("q" . nil) ;; Keep q unbound for other apps to bind.
@@ -598,11 +588,25 @@
 (use-package org
   :ensure nil
   :straight nil
+  :commands (org-todo-list
+             org-agenda
+             org-capture
+             org-search-view
+             org-occur-in-agenda-files)
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))
   :hook
   (org-mode . org-mode-setup)
+  (org-agenda-mode . hl-line-mode)
+  :bind (:map notes-map
+              ("o t" . org-todo-list)
+              ("o a" . org-agenda)
+              ("o l" . org-store-link)
+              ("o c" . org-capture)
+              ("o ," . org-capture-goto-target)
+              ("o o" . org-search-view)
+              ("o s" . org-occur-in-agenda-files))
   :custom
   (org-agenda-todo-ignore-deadlines 'far)
   (org-cycle-hide-block-startup t)
@@ -844,4 +848,5 @@
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
+  :disabled ;; Rely on custom built templates over externals.
   :after yasnippet)

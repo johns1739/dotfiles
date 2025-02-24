@@ -6,7 +6,7 @@
 
 (defvar-keymap notes-map
   :doc "Notes map")
-(keymap-set global-leader-map ";" notes-map)
+(keymap-set global-leader-map "n" notes-map)
 
 (defvar-keymap diagnostics-map
   :doc "Diagnostics map")
@@ -100,15 +100,6 @@
            ("r" . recentf-open)
            ("w" . isearch-forward-word)
            ("W" . isearch-forward-symbol)
-
-           :map notes-map
-           (";" . org-todo-list)
-           (":" . org-agenda)
-           ("," . org-store-link)
-           ("." . org-capture)
-           (">" . org-capture-goto-target)
-           ("/" . org-search-view)
-           ("?" . org-occur-in-agenda-files)
 
            :map compilation-map
            ("." . compile-dwim)
@@ -287,6 +278,9 @@
 ;; eldoc settings
 (global-eldoc-mode t)
 (setq eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
+
+;; help / info settings
+(add-hook 'Info-mode-hook #'hl-line-mode)
 
 ;; line settings
 (line-number-mode t)
