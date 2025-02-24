@@ -1,11 +1,12 @@
 ;; timer report
+(setq use-package-verbose t)
+(setq use-package-compute-statistics t)
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message
              "*** Emacs loaded in %s seconds with %d garbage collections."
              (emacs-init-time "%.2f") gcs-done)))
-(setq use-package-verbose t)
-(setq use-package-compute-statistics t)
 
 ;; Garbage Collection (for performance)
 (setq gc-cons-percentage 0.1)

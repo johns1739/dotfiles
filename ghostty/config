@@ -6,6 +6,12 @@ scrollback-limit = 1073741824
 window-height = 45
 window-save-state = always
 window-width = 112
+
+# disable ligatures
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
 keybind = super+;>0=close_surface
 keybind = super+;>1=toggle_split_zoom
 keybind = super+;>2=new_split:right

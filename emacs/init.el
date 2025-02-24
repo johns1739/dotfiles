@@ -256,10 +256,12 @@
   (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
   (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
-;; column settings
+;; text / column settings
 (column-number-mode -1)
 (setq-default fill-column 80)
 (setq-default display-fill-column-indicator-column 100)
+(setq-default bidi-paragraph-direction 'left-to-right)
+(setq-default bidi-inhibit-bpa t)
 
 ;; delete settings
 (delete-selection-mode -1)
@@ -267,7 +269,7 @@
 ;; desktop settings
 (desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
 
-;; electric settings
+;; electric / parens settings
 (electric-indent-mode t)
 (electric-pair-mode -1)
 (setq show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
@@ -283,9 +285,6 @@
 (line-number-mode t)
 (global-so-long-mode t)
 (setq-default display-line-numbers-type t)
-
-;; pixel settings
-(pixel-scroll-precision-mode t)
 
 ;; repeat settings
 (repeat-mode -1) ;; Sometimes gets in the way.
@@ -314,6 +313,7 @@
 (setq auto-revert-avoid-polling t)
 
 ;; buffer settings
+(setq ibuffer-old-time 24)
 (add-to-list 'display-buffer-alist
              '("\\*Help\\*" (display-buffer-reuse-window display-buffer-pop-up-window)
                (inhibit-same-window . t)))
@@ -328,18 +328,12 @@
 (setq history-delete-duplicates t)
 (setq history-length 1000)
 
-;; ibuffer settings
-(setq ibuffer-old-time 24)
-
 ;; kill settings
 (setq kill-do-not-save-duplicates t)
 
 ;; dictionary settings
 (setq dictionary-server "dict.org")
 
-;; text settings
-(setq-default bidi-paragraph-direction 'left-to-right)
-(setq-default bidi-inhibit-bpa t)
 
 ;; imenu
 (setq imenu-max-item-length 80)
@@ -377,6 +371,7 @@
 (setq scroll-conservatively most-positive-fixnum)
 (setq scroll-preserve-screen-position t)
 (setq fast-but-imprecise-scrolling t)
+(pixel-scroll-precision-mode t)
 
 ;; dired settings
 (setq dired-kill-when-opening-new-dired-buffer t)
