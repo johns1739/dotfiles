@@ -277,7 +277,7 @@
 (setq eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
 
 ;; help / info settings
-(add-hook 'Info-mode-hook #'hl-line-mode)
+(add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
 (line-number-mode t)
@@ -374,7 +374,7 @@
 
 ;; scroll settings
 (setq scroll-margin 2)
-(setq scroll-conservatively 0) ;; or most-positive-fixnum
+(setq scroll-conservatively most-positive-fixnum)
 (setq scroll-preserve-screen-position t)
 (setq fast-but-imprecise-scrolling t)
 
