@@ -117,8 +117,8 @@
 (use-package consult-denote
   :after denote
   :bind (:map notes-map
-              ("d f" . consult-denote-find)
-              ("d s" . consult-denote-grep))
+              ("f" . consult-denote-find)
+              ("s" . consult-denote-grep))
   :custom
   (consult-denote-grep-command 'consult-ripgrep)
   :config
@@ -197,13 +197,13 @@
 (use-package denote
   :defer 2
   :bind (:map notes-map
-              ("d SPC" . denote-open-or-create)
-              ("d c" . denote)
-              ("d j" . denote-journal-extras-new-or-existing-entry)
-              ("d l" . denote-link-or-create)
-              ("d k" . denote-find-link)
-              ("d K" . denote-find-backlink)
-              ("d r" . denote-rename-file-using-front-matter))
+              ("SPC" . denote-open-or-create)
+              ("c" . note)
+              ("j" . note-journal-extras-new-or-existing-entry)
+              ("l" . note-link-or-create)
+              ("k" . note-finlink)
+              ("K" . note-finbacklink)
+              ("r" . note-rename-file-using-front-matter))
   :custom
   (denote-directory notes-directory)
   (denote-known-keywords '("private"))
@@ -598,13 +598,14 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind (:map notes-map
-              ("o t" . org-todo-list)
-              ("o a" . org-agenda)
-              ("o l" . org-store-link)
-              ("o c" . org-capture)
-              ("o ," . org-capture-goto-target)
-              ("o o" . org-search-view)
-              ("o s" . org-occur-in-agenda-files))
+              (";" . org-todo-list)
+              (":" . org-agenda)
+              ("," . org-store-link)
+              ("<" . org-insert-link)
+              ("." . org-capture)
+              (">" . org-capture-goto-target)
+              ("/" . org-search-view)
+              ("?" . org-occur-in-agenda-files))
   :custom
   (org-agenda-todo-ignore-deadlines 'far)
   (org-cycle-hide-block-startup t)
