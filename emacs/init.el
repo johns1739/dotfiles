@@ -34,10 +34,7 @@
 (keymap-set global-leader-map "t" tab-movement-map)
 (keymap-set goto-map "t" tab-movement-map)
 
-(defvar-keymap git-map
-  :doc "Git map")
-(keymap-set global-leader-map "j" git-map)
-
+(keymap-set global-leader-map "v" vc-prefix-map)
 (keymap-set global-leader-map "c" mode-specific-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)

@@ -214,10 +214,8 @@
 (use-package diff-hl
   :defer 2
   :if (display-graphic-p)
-  :bind (:map git-map
-              ("." . diff-hl-show-hunk)
-              ("n" . diff-hl-show-hunk-next)
-              ("p" . diff-hl-show-hunk-previous))
+  :bind (:map vc-prefix-map
+              ("," . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -350,7 +348,7 @@
   (scheme-mode . geiser-mode))
 
 (use-package git-link
-  :bind (:map git-map
+  :bind (:map vc-prefix-map
               ("y" . git-link)))
 
 (use-package gleam-ts-mode
@@ -437,16 +435,15 @@
   (lsp-mode . lsp-set-bindings))
 
 (use-package magit
-  :commands (magit-status)
-  :bind (:map git-map
+  :commands (magit-status magit-file-dispatch magit-blame-addition)
+  :bind (:map vc-prefix-map
               (";" . magit-status)
-              (":" . magit-status-here)
-              ("f" . magit-file-dispatch)
-              ("l" . magit-log-buffer-file)
-              ("m" . magit-blame-addition))
+              (":" . magit-dispatch)
+              ("." . magit-file-dispatch)
+              ("g" . magit-blame-addition))
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit" ";")))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
@@ -457,7 +454,8 @@
   :straight nil
   :custom
   (project-switch-commands '((project-find-file "Find file" "f")
-                             (project-find-dir "Find directory" "d"))))
+                             (project-find-dir "Find directory" "d")
+                             (project-vc-dir "VC-Dir" "v"))))
 
 (use-package magit-todos
   :disabled ;; Can be slow for big projects.
