@@ -1,9 +1,0 @@
-#+STARTUP: content logdone hidestars indent logdrawer
-#+FILETAGS: :task:
-#+Category: Tasks
-#+PRIORITIES: 65 67 67
-#+TAGS: bug(b) feature(f) chore(c) emacs(e) refactor(r)
-#+TODO: TODO(t) BUILDING(b) REVIEW(r) | DONE(d)
-#+TODO: | CANCELED(c@)
-
-* Tasks
