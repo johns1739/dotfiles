@@ -6,6 +6,7 @@ scrollback-limit = 1073741824
 window-height = 45
 window-save-state = always
 window-width = 112
+window-padding-x = 20
 
 # disable ligatures
 font-feature = -calt

@@ -285,12 +285,13 @@
   (ellama-user-nick "Juan")
   (ellama-assistant-nick "Cody")
   (ellama-language "English")
+  (ellama-spinner-enabled t)
   ;; (ellama-chat-display-action-function #'display-buffer-full-frame)
   ;; (ellama-instant-display-action-function #'display-buffer-at-bottom)
   (ellama-provider
-   (make-llm-ollama :chat-model "llama3"
+   (make-llm-ollama :chat-model "qwen2.5:7b"
                     :embedding-model "nomic-embed-text"
-                    :default-chat-non-standard-params '(("num_ctx" . 8192))))
+                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (ellama-coding-provider
    (make-llm-ollama :chat-model "qwen2.5-coder:7b"
                     :embedding-model "nomic-embed-text"
