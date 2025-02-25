@@ -10,7 +10,7 @@
 
 ;; Garbage Collection (for performance)
 (setq gc-cons-percentage 0.1)
-(setq gc-cons-threshold (* 128 1024 1024)) ;; 128MB
+(setq gc-cons-threshold (* 16 1024 1024)) ;; 16MB
 
 ;; Silence logs
 (setq byte-compile-warnings '(not obsolete))

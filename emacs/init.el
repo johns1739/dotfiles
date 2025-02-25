@@ -49,6 +49,8 @@
            ("M-#" . dictionary-lookup-definition)
            ("M-L" . duplicate-dwim)
            ("M-j" . comment-indent-new-line)
+           ("M-n" . forward-sexp)
+           ("M-p" . backward-sexp)
 
            :map global-leader-map
            ("SPC" . switch-to-buffer)

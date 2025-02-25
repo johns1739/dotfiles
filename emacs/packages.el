@@ -280,13 +280,33 @@
   (elixir-ts-mode . elixir-setup))
 
 (use-package ellama
-  :disabled ;; requires ollama installation
-  :bind (:map global-leader-map
-              ("l ;" . ellama-transient-main-menu))
+  :defer 2
+  :custom
+  (ellama-user-nick "Juan")
+  (ellama-assistant-nick "Cody")
+  (ellama-language "English")
+  ;; (ellama-chat-display-action-function #'display-buffer-full-frame)
+  ;; (ellama-instant-display-action-function #'display-buffer-at-bottom)
+  (ellama-provider
+   (make-llm-ollama :chat-model "llama3"
+                    :embedding-model "nomic-embed-text"
+                    :default-chat-non-standard-params '(("num_ctx" . 8192))))
+  (ellama-coding-provider
+   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                    :embedding-model "nomic-embed-text"
+                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  (ellama-summarization-provider
+   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                    :embedding-model "nomic-embed-text"
+                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  (ellama-keymap-prefix "C-;")
+  (ellama-auto-scroll t)
+  :hook
+  (org-ctrl-c-ctrl-c . ellama-chat-send-last-message)
   :init
   (require 'llm-ollama)
   :config
-  (add-hook 'org-ctrl-c-ctrl-c-hook #'ellama-chat-send-last-message))
+  (ellama-context-header-line-global-mode 1))
 
 (use-package elm-mode)
 
