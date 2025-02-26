@@ -112,16 +112,17 @@
            ("T" . eshell)
 
            :map editor-settings-map
+           (";" . load-theme)
            ("$" . flyspell-prog-mode)
            ("=" . set-font-size)
-           ("b" . toggle-truncate-lines)
+           ("," . which-function-mode)
            ("f" . display-fill-column-indicator-mode)
            ("F" . global-display-fill-column-indicator-mode)
            ("h" . hl-line-mode)
            ("H" . global-hl-line-mode)
            ("n" . display-line-numbers-mode)
            ("N" . global-display-line-numbers-mode)
-           ("t" . load-theme)
+           ("t" . toggle-truncate-lines)
            ("v" . visual-line-mode)
            ("V" . global-visual-line-mode)
 
@@ -293,7 +294,7 @@
 (repeat-mode -1) ;; Sometimes gets in the way.
 
 ;; save settings
-;; (auto-save-visited-mode 1)
+(auto-save-visited-mode -1) ;; auto-format constantly triggers, annoying
 (save-place-mode t)
 (savehist-mode t)
 

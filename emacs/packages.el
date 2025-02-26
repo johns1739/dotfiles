@@ -405,7 +405,7 @@
   (highlight-indent-guides-method 'bitmap)
   (highlight-indent-guides-character ?|)
   (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-auto-top-character-face-perc 50))
+  (highlight-indent-guides-auto-top-character-face-perc 25))
 
 (use-package indent-bars
   ;; Can replace highlight-indent-guides
