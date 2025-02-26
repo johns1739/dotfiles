@@ -305,7 +305,6 @@
   :hook
   (org-ctrl-c-ctrl-c . ellama-chat-send-last-message)
   :init
-  (require 'llm-ollama)
   :config
   (ellama-context-header-line-global-mode 1))
 
