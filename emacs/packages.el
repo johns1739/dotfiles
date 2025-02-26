@@ -280,6 +280,7 @@
   (elixir-ts-mode . elixir-setup))
 
 (use-package ellama
+  :disabled ;; trying not to use AI so much
   :defer 2
   :custom
   (ellama-user-nick "Juan")
@@ -312,11 +313,14 @@
 
 (use-package embark
   :bind (([remap describe-bindings] . embark-bindings)
-         :map compilation-map
+         :map embark-map
          ("a" . embark-act)
          ("A" . embark-act-all)
-         ("e" . embark-collect)
-         ("E" . embark-export)))
+         ("e" . embark-export))
+  :init
+  (defvar-keymap embark-map :doc "Embark keymap")
+  :config
+  (keymap-global-set "C->" embark-map))
 
 (use-package embark-consult
   :hook
@@ -591,7 +595,7 @@
   :if (display-graphic-p))
 
 (use-package multiple-cursors
-  :disabled ;; rarely used
+  :disabled ;; rarely used, meow curosr tends to be better
   :bind (("M-n" . mc/mark-next-like-this)
          ("M-N" . mc/unmark-previous-like-this)
          ("M-p" . mc/mark-previous-like-this)
@@ -870,5 +874,5 @@
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
-  :disabled ;; Rely on custom built templates over externals.
+  :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
