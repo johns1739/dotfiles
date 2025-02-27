@@ -198,7 +198,8 @@
 (setq completions-detailed t)
 (setq completions-format 'one-column)
 (setq completions-max-height 20)
-(global-completion-preview-mode -1)
+(unless (version< emacs-version "30.0")
+  (global-completion-preview-mode -1))
 
 ;; tab settings
 (setq tab-always-indent t)
