@@ -1,5 +1,8 @@
 ;;-*- lexical-binding: t; -*-
 
+;; TODO: Follow prots config suggestions: https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/
+;; TODO: Need to correctly sort org tasks in agenda.
+
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
 (keymap-global-set "M-SPC" global-leader-map)

@@ -647,7 +647,7 @@
   (org-startup-indented t)
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-keep)
-     (todo priority-down category-keep habit-up deadline-up todo-state-down)
+     (todo priority-down category-keep habit-up deadline-up scheduled-up todo-state-down)
      (tags priority-down category-keep)
      (search category-keep)))
   (org-tag-faces '(("bug"  . "sienna")
