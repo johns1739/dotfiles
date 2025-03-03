@@ -1,19 +1,12 @@
 ;;-*- lexical-binding: t; -*-
 
-;; TODO: Follow prots config suggestions: https://protesilaos.com/codelog/2024-11-28-basic-emacs-configuration/
-;; TODO: Need to correctly sort org tasks in agenda.
-
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
-(keymap-global-set "M-SPC" global-leader-map)
+(keymap-global-set "C-j" global-leader-map)
 
 (defvar-keymap notes-map
   :doc "Notes map")
 (keymap-set global-leader-map "n" notes-map)
-
-(defvar-keymap diagnostics-map
-  :doc "Diagnostics map")
-(keymap-set global-leader-map "d" diagnostics-map)
 
 (defvar-keymap compilation-map
   :doc "Compilation map")
@@ -27,18 +20,7 @@
   :doc "Editor Settings map")
 (keymap-set global-leader-map "e" editor-settings-map)
 
-(defvar-keymap window-map
-  :doc "Window movement map")
-(keymap-set global-leader-map "w" window-map)
-(keymap-set goto-map "w" window-map)
-
-(defvar-keymap tab-movement-map
-  :doc "Tab movement map")
-(keymap-set global-leader-map "t" tab-movement-map)
-(keymap-set goto-map "t" tab-movement-map)
-
 (keymap-set global-leader-map "v" vc-prefix-map)
-(keymap-set global-leader-map "c" mode-specific-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
 (keymap-set global-leader-map "p" project-prefix-map)
@@ -50,8 +32,8 @@
            ("C-x C-b" . ibuffer)
            ("M-o" . other-window)
            ("M-#" . dictionary-lookup-definition)
-           ("M-L" . duplicate-dwim)
-           ("M-j" . comment-indent-new-line)
+           ("M-L" . duplicate-line)
+           ("M-RET" . comment-indent-new-line)
            ("M-n" . forward-sexp)
            ("M-p" . backward-sexp)
 
@@ -72,12 +54,11 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
-           ("%" . xref-find-references-and-replace)
+           ("d" . flymake-show-buffer-diagnostics)
            ("f" . find-file-at-point)
            ("h" . eldoc)
            ("j" . jump-to-register)
            ("J" . point-to-register)
-           ("l" . goto-line)
            ("m" . bookmark-jump)
            ("M" . bookmark-set)
            ("n" . next-error)
@@ -86,87 +67,38 @@
 
            :map search-map
            ("SPC" . project-switch-to-buffer)
-           ("." . isearch-forward-thing-at-point)
            ("," . rgrep)
-           ("/" . isearch-forward)
-           ("d" . project-find-dir)
            ("f" . project-find-file)
-           ("i" . imenu)
-           ("j" . list-registers)
            ("l" . occur)
-           ("o" . outline-show-only-headings)
-           ("O" . outline-show-all)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
            ("s" . project-find-regexp)
            ("r" . recentf-open)
-           ("w" . isearch-forward-word)
-           ("W" . isearch-forward-symbol)
 
            :map compilation-map
            ("." . compile-dwim)
            (">" . comint)
-           ("," . recompile)
-           ("B" . eval-buffer)
            ("g" . recompile)
 
            :map open-toggle-map
            ("t" . project-eshell)
            ("T" . eshell)
+           ("c" . calc)
 
            :map editor-settings-map
            (";" . load-theme)
-           ("$" . flyspell-prog-mode)
            ("=" . set-font-size)
-           ("," . which-function-mode)
-           ("f" . display-fill-column-indicator-mode)
-           ("F" . global-display-fill-column-indicator-mode)
-           ("h" . hl-line-mode)
-           ("H" . global-hl-line-mode)
-           ("n" . display-line-numbers-mode)
-           ("N" . global-display-line-numbers-mode)
+           ("c" . global-display-fill-column-indicator-mode)
+           ("h" . global-hl-line-mode)
+           ("n" . global-display-line-numbers-mode)
+           ("R" . restart-emacs)
            ("t" . toggle-truncate-lines)
-           ("v" . visual-line-mode)
-           ("V" . global-visual-line-mode)
-
-           :map diagnostics-map
-           (";" . flymake-show-buffer-diagnostics)
-           (":" . flymake-show-project-diagnostics)
-           ("n" . flymake-goto-next-error)
-           ("p" . flymake-goto-prev-error)
-
-           :map window-map
-           ("SPC" . switch-to-buffer-other-window)
-           ("=" . balance-windows)
-           ("0" . delete-window)
-           ("1" . delete-other-windows)
-           ("2" . split-window-below-and-jump)
-           ("3" . split-window-right-and-jump)
-           ("h" . windmove-left)
-           ("j" . windmove-down)
-           ("k" . windmove-up)
-           ("l" . windmove-right)
-
-           :map tab-movement-map
-           ("SPC" . switch-to-buffer-other-tab)
-           ("0" . tab-close)
-           ("1" . tab-close-other)
-           ("2" . tab-new)
-           ("," . tab-previous)
-           ("." . tab-next)
-           (";" . tab-list)
-           ("/" . tab-switch)
-           ("q" . tab-close)
-           ("t" . tab-new)
-           ("T" . toggle-frame-tab-bar)
-           ("o" . tab-recent)
-           ("p" . tab-previous)
-           ("n" . tab-next)
-           ("u" . tab-undo)
+           ("v" . global-visual-line-mode)
 
            :map project-prefix-map
            ("SPC" . project-switch-to-buffer)
            ("%" . project-query-replace-regexp)
+           (";" . flymake-show-project-diagnostics)
 
            :map help-map
            ("h" . nil))
@@ -188,7 +120,6 @@
 (setq next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
 
 ;; completion settings
-(setq completion-at-point-functions '(dabbrev-capf)) ;; available on v29
 (setq completion-auto-help 'always)
 (setq completion-auto-select 'second-tab)
 (setq completion-category-defaults nil)
@@ -198,11 +129,13 @@
 (setq completions-detailed t)
 (setq completions-format 'one-column)
 (setq completions-max-height 20)
-(unless (version< emacs-version "30.0")
+(when (> emacs-major-version 28)
+  (setq completion-at-point-functions '(dabbrev-capf)))
+(when (> emacs-major-version 29)
   (global-completion-preview-mode -1))
 
 ;; tab settings
-(setq tab-always-indent t)
+(setq tab-always-indent 'complete)
 (setq-default tab-width 4)
 
 ;; xref settings
@@ -229,12 +162,6 @@
 
 ;; diagnostics
 (setq flymake-fringe-indicator-position 'right-fringe)
-
-;; process settings
-(setq proced-auto-update-interval 1)
-(setq proced-enable-color-flag t)
-(setq-default proced-auto-update-flag t)
-(setq read-process-output-max (* 1024 1024))
 
 ;; compilation settings
 (setq compilation-window-height 20)
@@ -290,6 +217,7 @@
 (add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
+(global-display-line-numbers-mode 1)
 (line-number-mode t)
 (global-so-long-mode t)
 (setq-default display-line-numbers-type t)
@@ -323,13 +251,16 @@
 ;; buffer settings
 (setq ibuffer-old-time 24)
 (add-to-list 'display-buffer-alist
-             '("\\*Help\\*" (display-buffer-reuse-window display-buffer-pop-up-window)
+             '("\\*Help\\*"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
                (inhibit-same-window . t)))
 (add-to-list 'display-buffer-alist
-             '("\\*Dictionary\\*" (display-buffer-reuse-window display-buffer-pop-up-window)
+             '("\\*Dictionary\\*"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
                (inhibit-same-window . t)))
 (add-to-list 'display-buffer-alist
-             '("\\*Completions\\*" (display-buffer-reuse-window display-buffer-pop-up-window)
+             '("\\*Completions\\*"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
                (inhibit-same-window . t) (window-height . 10)))
 
 ;; history settings
@@ -342,11 +273,11 @@
 ;; dictionary settings
 (setq dictionary-server "dict.org")
 
-
 ;; imenu
 (setq imenu-max-item-length 80)
 
 ;; eshell settings
+(setq read-process-output-max (* 1024 1024))
 (setq eshell-scroll-to-bottom-on-output 'this)
 
 ;; recentf settings
@@ -386,6 +317,11 @@
 (setq dired-dwim-target t)
 (setq dired-listing-switches "-alh")
 (setq dired-auto-revert-buffer t)
+(setq dired-recursive-copies 'always)
+(setq dired-recursive-deletes 'always)
+(setq dired-dwim-target t)
+(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+(add-hook 'dired-mode-hook #'hl-line-mode)
 
 ;; mouse settings
 (unless (display-graphic-p)
@@ -542,5 +478,4 @@
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))
-(when (file-exists-p custom-file)
-  (load custom-file))
+(load custom-file :no-error-if-file-is-missing)

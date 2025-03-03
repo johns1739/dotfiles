@@ -15,27 +15,27 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; use package settings
 (setq straight-use-package-by-default t)
 (setq use-package-always-defer t)
-
+(setq use-package-always-ensure t)
 
 ;;;; Packages
 
+(use-package benchmark-init
+  :demand t
+  :hook (after-init . benchmark-init/deactivate)
+  :config
+  (benchmark-init/activate))
+
 (use-package ace-window
-  :bind  (([remap other-window] . ace-window)
-          :map window-map
-          ("o" . ace-window)
-          ("O" . ace-swap-window)
-          ("0" . ace-delete-window)
-          ("1" . ace-delete-other-windows)))
+  :bind  ([remap other-window] . ace-window))
 
 (use-package avy
   :bind (:map goto-map
-              ("l" . avy-goto-line)
               ("g" . avy-goto-char-2)
               ("a k" . avy-kill-whole-line)
               ("a K" . avy-kill-region)
+              ("a l" . avy-goto-line)
               ("a m" . avy-move-line)
               ("a M" . avy-move-region)
               ("a y" . avy-copy-line)
@@ -43,12 +43,13 @@
 
 (use-package beacon
   :if (display-graphic-p)
-  :defer 2
+  :defer 3
   :config
   (beacon-mode 1))
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
+  :commands (cape-dabbrev cape--abbrev cape-keyword cape-file cape-dict cape-elisp-symbol cape-line)
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -61,7 +62,6 @@
          )))
 
 (use-package common-lisp-mode
-  :disabled ;; dependency quicklisp/sbcl required
   :straight nil
   :mode
   (("\\.lisp$" . common-lisp-mode)
@@ -101,21 +101,21 @@
          ([remap point-to-register] . consult-register-store)
          ([remap keep-lines] . consult-keep-lines)
          ([remap occur] . consult-line)
-         ([remap outline-show-only-headings] . consult-outline)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-         :map diagnostics-map
-         ("SPC" . consult-flymake)
+         ([remap flymake-show-buffer-diagnostics] . consult-flymake)
          :map compilation-map
          ("SPC" . consult-compile-error)
          :map search-map
-         ("," . consult-ripgrep-symbol-at-point)
-         ("L" . consult-focus-lines))
+         (">" . consult-ripgrep-symbol-at-point)
+         ("L" . consult-focus-lines)
+         ("o" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package consult-denote
   :after denote
+  :requires denote
   :bind (:map notes-map
               ("f" . consult-denote-find)
               ("s" . consult-denote-grep))
@@ -126,12 +126,13 @@
 
 (use-package consult-flycheck
   :after flycheck
+  :requires flycheck
   :commands (consult-flycheck))
 
 (use-package copilot
   :disabled ;; requires copilot subscription token
+  :defer 3
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :defer 5
   :after corfu
   :bind (:map copilot-completion-map
               ("M-f" . copilot-accept-completion-by-word)
@@ -143,27 +144,27 @@
   (corfu-auto nil)
   (copilot-indent-offset-warning-disable t)
   (copilot-idle-delay 0.5)
+  :custom-face
+  (copilot-overlay-face ((t (:family "Monaspace Krypton" :slant 'italic))))
   :hook
-  (prog-mode . copilot-mode)
-  :config
-  (set-face-attribute 'copilot-overlay-face nil :family "Monaspace Krypton" :slant 'italic))
+  (prog-mode . copilot-mode))
 
 (use-package corfu
-  :disabled ;; gets in the way sometimes w/ C-n & C-p
-  :defer 2
+  :defer 3
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
-  :bind (:map corfu-map
-              ("RET" . nil))
+  :bind (:map corfu-map ("RET" . nil))
   :custom
-  (corfu-auto t) ; Enable auto completion
-  (corfu-auto-delay 0.2) ; Enable auto completion
-  (corfu-auto-prefix 3) ; Enable auto completion
-  (corfu-cycle t) ; Allows cycling through candidates
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 3)
+  (corfu-cycle t)
   (corfu-echo-delay 0.3)
   (corfu-preselect 'valid)
   (corfu-separator ?\s)
-  (corfu-popupinfo-delay '(1.0 . 0.5))
+  (corfu-popupinfo-delay '(1.25 . 0.5))
+  (corfu-min-width 20)
+  (corfu-preview-current nil)
   :config
   (global-corfu-mode 1)
   (corfu-echo-mode 1)
@@ -171,10 +172,10 @@
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
-  :disabled ;; because corfu is disabled
-  :defer 2
+  :defer 3
   :unless (display-graphic-p)
   :after corfu
+  :requires corfu
   :config
   (corfu-terminal-mode 1))
 
@@ -191,11 +192,9 @@
   (dashboard-setup-startup-hook))
 
 (use-package deadgrep
-  :bind (:map search-map
-              (";" . deadgrep)))
+  :bind (:map search-map (";" . deadgrep)))
 
 (use-package denote
-  :defer 2
   :bind (:map notes-map
               ("SPC" . denote-open-or-create)
               ("c" . denote)
@@ -212,8 +211,7 @@
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
-  :defer 2
-  :if (display-graphic-p)
+  :defer 3
   :bind (:map vc-prefix-map
               ("," . diff-hl-show-hunk))
   :hook
@@ -225,7 +223,17 @@
     (diff-hl-margin-mode))
   (global-diff-hl-mode))
 
+(use-package dired-subtree
+  :bind (:map dired-mode-map
+              ("<tab>" . dired-subtree-toggle)
+              ("TAB" . dired-subtree-toggle)
+              ("<backtab>" . dired-subtree-remove)
+              ("S-TAB" . dired-subtree-remove))
+  :custom
+  (dired-subtree-use-backgrounds nil))
+
 (use-package dumb-jump
+  :commands (dumb-jump-xref-activate)
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
@@ -249,12 +257,10 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
 
-(use-package ef-themes
-  :if (display-graphic-p))
+(use-package ef-themes)
 
 (use-package eldoc-box
   :disabled ;; Annoying
-  :defer 2
   :if (display-graphic-p)
   :hook
   (prog-mode . eldoc-box-hover-at-point-mode))
@@ -280,8 +286,7 @@
   (elixir-ts-mode . elixir-setup))
 
 (use-package ellama
-  :disabled ;; trying not to use AI so much
-  :defer 2
+  :defer 3
   :custom
   (ellama-user-nick "Juan")
   (ellama-assistant-nick "Cody")
@@ -305,7 +310,6 @@
   (ellama-auto-scroll t)
   :hook
   (org-ctrl-c-ctrl-c . ellama-chat-send-last-message)
-  :init
   :config
   (ellama-context-header-line-global-mode 1))
 
@@ -313,14 +317,9 @@
 
 (use-package embark
   :bind (([remap describe-bindings] . embark-bindings)
-         :map embark-map
-         ("a" . embark-act)
-         ("A" . embark-act-all)
-         ("e" . embark-export))
-  :init
-  (defvar-keymap embark-map :doc "Embark keymap")
-  :config
-  (keymap-global-set "C->" embark-map))
+         :map compilation-map
+         ("A" . embark-act)
+         ("E" . embark-export)))
 
 (use-package embark-consult
   :hook
@@ -361,7 +360,7 @@
 
 (use-package forge
   :disabled ;; requires host authentication token
-  :defer 2
+  :defer 3
   :after magit)
 
 (use-package geiser-guile
@@ -372,8 +371,7 @@
   (scheme-mode . geiser-mode))
 
 (use-package git-link
-  :bind (:map vc-prefix-map
-              ("y" . git-link)))
+  :bind (:map vc-prefix-map ("y" . git-link)))
 
 (use-package gleam-ts-mode
   :straight (:host github :repo "gleam-lang/gleam-mode")
@@ -388,8 +386,7 @@
   :custom
   (go-ts-mode-indent-offset 4))
 
-(use-package gruber-darker-theme
-  :if (display-graphic-p))
+(use-package gruber-darker-theme)
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
@@ -424,11 +421,9 @@
 
 (use-package jinx
   ;; Requires OS dependencies.
-  :defer 2
   :hook
   (text-mode . jinx-mode)
   :bind (("M-$" . jinx-correct)
-         ("C-M-$" . jinx-languages)
          ([remap flyspell-prog-mode] . global-jinx-mode)))
 
 (use-package js
@@ -482,13 +477,15 @@
                              (project-vc-dir "VC-Dir" "v"))))
 
 (use-package magit-todos
-  :disabled ;; Can be slow for big projects.
-  :defer 2
+  :defer 3
   :after magit
-  :config (magit-todos-mode 1))
+  :requires magit
+  :bind (:map project-prefix-map ("t" . magit-todos-list))
+  :config
+  (magit-todos-mode 1))
 
 (use-package marginalia
-  :defer 2
+  :defer 3
   :init
   (setq completions-detailed nil)
   :config
@@ -591,11 +588,10 @@
   (meow-setup)
   (meow-global-mode 1))
 
-(use-package modus-themes
-  :if (display-graphic-p))
+(use-package modus-themes)
 
 (use-package multiple-cursors
-  :disabled ;; rarely used, meow curosr tends to be better
+  :disabled ;; rarely used, meow cursor tends to be better
   :bind (("M-n" . mc/mark-next-like-this)
          ("M-N" . mc/unmark-previous-like-this)
          ("M-p" . mc/mark-previous-like-this)
@@ -605,7 +601,9 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(substring partial-completion initials orderless basic)))
+  (completion-styles '(substring partial-completion initials orderless basic))
+  (completion-category-defaults nil)
+  (completion-category-overrides nil))
 
 (use-package org
   :ensure nil
@@ -647,7 +645,7 @@
   (org-startup-indented t)
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-keep)
-     (todo priority-down category-keep habit-up deadline-up scheduled-up todo-state-down)
+     (todo priority-down category-keep deadline-up scheduled-up todo-state-down)
      (tags priority-down category-keep)
      (search category-keep)))
   (org-tag-faces '(("bug"  . "sienna")
@@ -664,7 +662,7 @@
    'org-babel-load-languages '((emacs-lisp . t) (shell . t) (scheme . t))))
 
 (use-package popper
-  :defer 2
+  :defer 3
   :bind (:map open-toggle-map
               ("o" . popper-toggle)
               ("O" . popper-toggle-type)
@@ -817,6 +815,15 @@
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
 
+(use-package trashed
+  :bind (:map open-toggle-map ("z" . trashed))
+  :commands (trashed)
+  :config
+  (setq trashed-action-confirmer 'y-or-n-p)
+  (setq trashed-use-header-line t)
+  (setq trashed-sort-key '("Date deleted" . t))
+  (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
 (use-package typescript-ts-mode
   :mode "\\.ts$"
   :init
@@ -829,7 +836,7 @@
   (vertico-mode 1))
 
 (use-package visual-replace
-  :demand t
+  :defer 3
   :config
   (visual-replace-global-mode 1))
 
@@ -852,12 +859,12 @@
   (vterm-max-scrollback 100000))
 
 (use-package which-key
-  :defer 2
+  :defer 3
   :config
   (which-key-mode))
 
 (use-package xclip
-  :defer 2
+  :demand
   :unless (display-graphic-p)
   :config
   (xclip-mode 1))
@@ -866,7 +873,7 @@
   :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
 
 (use-package yasnippet
-  :defer 2
+  :defer 3
   ;; https://joaotavora.github.io/yasnippet/index.html
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
