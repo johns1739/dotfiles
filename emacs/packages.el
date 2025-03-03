@@ -645,6 +645,7 @@
   (org-special-ctrl-a/e t)
   (org-startup-folded 'overview)
   (org-startup-indented t)
+  (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-keep)
      (todo priority-down category-keep deadline-up scheduled-up todo-state-down)

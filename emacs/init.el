@@ -79,6 +79,7 @@
            ("." . compile-dwim)
            (">" . comint)
            ("g" . recompile)
+           ("y" . copy-relative-file-name)
 
            :map open-toggle-map
            ("t" . project-eshell)
