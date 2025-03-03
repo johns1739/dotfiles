@@ -2,7 +2,7 @@
 
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
-(keymap-global-set "C-j" global-leader-map)
+(keymap-global-set "M-SPC" global-leader-map)
 
 (defvar-keymap notes-map
   :doc "Notes map")

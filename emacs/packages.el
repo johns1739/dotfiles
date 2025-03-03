@@ -22,6 +22,7 @@
 ;;;; Packages
 
 (use-package benchmark-init
+  :disabled
   :demand t
   :hook (after-init . benchmark-init/deactivate)
   :config
@@ -63,6 +64,7 @@
 
 (use-package common-lisp-mode
   :straight nil
+  :ensure nil
   :mode
   (("\\.lisp$" . common-lisp-mode)
    ("\\.clisp$" . common-lisp-mode))
