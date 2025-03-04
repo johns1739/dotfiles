@@ -421,22 +421,8 @@
 
 (use-package jinx
   ;; Requires OS dependencies.
-  :hook
-  (text-mode . jinx-mode)
   :bind (("M-$" . jinx-correct)
-         ([remap flyspell-prog-mode] . global-jinx-mode)))
-
-(use-package js
-  :mode
-  (("\\.js$" . js-ts-mode)
-   ("\\.json$" . js-ts-mode))
-  :init
-  (defun js-setup ()
-    (setq outline-regexp " *\\(\".+\"\\) *:"))
-  :hook
-  (js-ts-mode . js-setup)
-  :custom
-  (js-indent-level 2))
+         ([remap flyspell-mode] . jinx-mode)))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -615,6 +601,8 @@
              org-occur-in-agenda-files)
   :init
   (defun org-mode-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap goto-address-at-point] . org-open-at-point))
     (electric-indent-local-mode -1))
   :hook
   (org-mode . org-mode-setup)

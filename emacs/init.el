@@ -87,13 +87,14 @@
            ("c" . calc)
 
            :map editor-settings-map
-           (";" . load-theme)
+           ("$" . flyspell-mode)
            ("=" . set-font-size)
            ("c" . global-display-fill-column-indicator-mode)
            ("h" . global-hl-line-mode)
            ("n" . global-display-line-numbers-mode)
            ("R" . restart-emacs)
-           ("t" . toggle-truncate-lines)
+           ("t" . load-theme)
+           ("T" . toggle-truncate-lines)
            ("v" . global-visual-line-mode)
 
            :map project-prefix-map
