@@ -150,7 +150,7 @@
   (prog-mode . copilot-mode))
 
 (use-package corfu
-  :demand t
+  :demand
   :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
@@ -183,7 +183,7 @@
   :mode "\\.csv\\'")
 
 (use-package dashboard
-  :demand t
+  :demand
   :if (display-graphic-p)
   :custom
   (dashboard-center-content t)
@@ -224,6 +224,7 @@
   (global-diff-hl-mode))
 
 (use-package dired-subtree
+  :demand
   :bind (:map dired-mode-map
               ("<tab>" . dired-subtree-toggle)
               ("TAB" . dired-subtree-toggle)
@@ -325,7 +326,7 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package exec-path-from-shell
-  :demand t
+  :demand
   :if (memq window-system '(mac ns))
   :custom
   (exec-path-from-shell-warn-duration-millis 1000)
@@ -481,7 +482,7 @@
   :mode "\\.md\\'")
 
 (use-package meow
-  :demand t
+  :demand
   :custom
   (meow-use-clipboard t)
   (meow-keypad--self-insert-undefined nil)
@@ -754,7 +755,7 @@
   (ruby-base-mode . ruby-setup))
 
 (use-package simple-modeline
-  :demand t
+  :demand
   :hook (after-init . simple-modeline-mode)
   :init
   (defun simple-modeline-segment-project-name ()
@@ -820,7 +821,7 @@
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
 (use-package vertico
-  :demand t
+  :demand
   :config
   (vertico-mode 1))
 

@@ -89,7 +89,7 @@
            :map editor-settings-map
            ("$" . flyspell-mode)
            ("=" . set-font-size)
-           ("c" . global-display-fill-column-indicator-mode)
+           ("f" . global-display-fill-column-indicator-mode)
            ("h" . global-hl-line-mode)
            ("n" . global-display-line-numbers-mode)
            ("R" . restart-emacs)
@@ -194,11 +194,12 @@
   (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
 ;; text / column settings
-(column-number-mode -1)
 (setq-default fill-column 80)
 (setq-default display-fill-column-indicator-column 100)
 (setq-default bidi-paragraph-direction 'left-to-right)
 (setq-default bidi-inhibit-bpa t)
+(column-number-mode -1)
+(global-display-fill-column-indicator-mode t)
 
 ;; delete settings
 (delete-selection-mode -1)
