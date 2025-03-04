@@ -16,19 +16,17 @@
   (load bootstrap-file nil 'nomessage))
 
 (setq straight-use-package-by-default t)
-(setq use-package-always-defer t)
-(setq use-package-always-ensure t)
 
 ;;;; Packages
 
 (use-package benchmark-init
   :disabled
-  :demand t
   :hook (after-init . benchmark-init/deactivate)
   :config
   (benchmark-init/activate))
 
 (use-package ace-window
+  :commands (ace-window)
   :bind  ([remap other-window] . ace-window))
 
 (use-package avy
@@ -44,7 +42,6 @@
 
 (use-package beacon
   :if (display-graphic-p)
-  :defer 3
   :config
   (beacon-mode 1))
 
@@ -73,6 +70,7 @@
   (setq inferior-lisp-program "sbcl"))
 
 (use-package consult
+  :defer
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
   (setq register-preview-function #'consult-register-format)
@@ -152,7 +150,8 @@
   (prog-mode . copilot-mode))
 
 (use-package corfu
-  :defer 3
+  :demand t
+  :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map ("RET" . nil))
@@ -174,7 +173,6 @@
   (corfu-popupinfo-mode 1))
 
 (use-package corfu-terminal
-  :defer 3
   :unless (display-graphic-p)
   :after corfu
   :requires corfu
@@ -259,7 +257,8 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
 
-(use-package ef-themes)
+(use-package ef-themes
+  :defer t)
 
 (use-package eldoc-box
   :disabled ;; Annoying
@@ -314,8 +313,6 @@
   (org-ctrl-c-ctrl-c . ellama-chat-send-last-message)
   :config
   (ellama-context-header-line-global-mode 1))
-
-(use-package elm-mode)
 
 (use-package embark
   :bind (([remap describe-bindings] . embark-bindings)
@@ -388,7 +385,8 @@
   :custom
   (go-ts-mode-indent-offset 4))
 
-(use-package gruber-darker-theme)
+(use-package gruber-darker-theme
+  :defer t)
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
@@ -471,7 +469,7 @@
   (magit-list-refs-sortby "-creatordate"))
 
 (use-package project
-  :ensure nil
+  :defer t
   :straight nil
   :custom
   (project-switch-commands '((project-find-file "Find file" "f")
@@ -590,7 +588,8 @@
   (meow-setup)
   (meow-global-mode 1))
 
-(use-package modus-themes)
+(use-package modus-themes
+  :defer t)
 
 (use-package multiple-cursors
   :disabled ;; rarely used, meow cursor tends to be better
@@ -608,7 +607,6 @@
   (completion-category-overrides nil))
 
 (use-package org
-  :ensure nil
   :straight nil
   :commands (org-todo-list
              org-agenda

@@ -2,7 +2,7 @@
 
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
-(keymap-global-set "M-SPC" global-leader-map)
+(keymap-global-set "M-j" global-leader-map)
 
 (defvar-keymap notes-map
   :doc "Notes map")
@@ -136,7 +136,7 @@
   (global-completion-preview-mode -1))
 
 ;; tab settings
-(setq tab-always-indent 'complete)
+(setq tab-always-indent t)
 (setq-default tab-width 4)
 
 ;; xref settings
