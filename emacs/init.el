@@ -469,10 +469,10 @@
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
 ;; Transparency for terminal
-(defun on-after-init ()
+(defun set-transparency ()
   (unless (display-graphic-p (selected-frame))
     (set-face-background 'default "unspecified-bg" (selected-frame))))
-(add-hook 'window-setup-hook 'on-after-init)
+;; (add-hook 'window-setup-hook 'set-transparency)
 
 ;; Load packages
 (load (locate-user-emacs-file "packages.el"))
