@@ -296,23 +296,24 @@
   (ellama-spinner-enabled t)
   ;; (ellama-chat-display-action-function #'display-buffer-full-frame)
   ;; (ellama-instant-display-action-function #'display-buffer-at-bottom)
-  (ellama-provider
-   (make-llm-ollama :chat-model "qwen2.5:7b"
-                    :embedding-model "nomic-embed-text"
-                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
-  (ellama-coding-provider
-   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
-                    :embedding-model "nomic-embed-text"
-                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
-  (ellama-summarization-provider
-   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
-                    :embedding-model "nomic-embed-text"
-                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (ellama-keymap-prefix "C-;")
   (ellama-auto-scroll t)
   :hook
   (org-ctrl-c-ctrl-c . ellama-chat-send-last-message)
   :config
+  (require 'llm-ollama)
+  (setopt ellama-provider
+   (make-llm-ollama :chat-model "qwen2.5:7b"
+                    :embedding-model "nomic-embed-text"
+                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  (setopt ellama-coding-provider
+   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                    :embedding-model "nomic-embed-text"
+                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  (setopt ellama-summarization-provider
+   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                    :embedding-model "nomic-embed-text"
+                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (ellama-context-header-line-global-mode 1))
 
 (use-package embark
