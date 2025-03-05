@@ -241,7 +241,7 @@
 (use-package eat
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
-  :commands (eat eat-other-window)
+  :commands (eat eat-project eat-other-window)
   :straight (eat :type git
                  :host codeberg
                  :repo "akib/emacs-eat"
@@ -254,7 +254,7 @@
           ([remap project-eshell] . eat-project)))
   :custom
   (eat-term-scrollback-size nil)
-  :config
+  :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
 
@@ -455,19 +455,11 @@
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate"))
 
-(use-package project
-  :defer t
-  :straight nil
-  :custom
-  (project-switch-commands '((project-find-file "Find file" "f")
-                             (project-find-dir "Find directory" "d")
-                             (project-vc-dir "VC-Dir" "v"))))
-
 (use-package magit-todos
-  :defer 3
-  :after magit
-  :requires magit
-  :bind (:map project-prefix-map ("t" . magit-todos-list))
+  :bind (:map project-prefix-map
+              ("t" . magit-todos-list)
+              :map vc-prefix-map
+              ("t" . magit-todos-list))
   :config
   (magit-todos-mode 1))
 
@@ -694,6 +686,15 @@
   :config
   (popper-mode +1)
   (popper-echo-mode +1))
+
+(use-package project
+  :defer t
+  :straight nil
+  :custom
+  (project-switch-commands '((project-find-file "Find file" "f")
+                             (project-find-dir "Find directory" "d")
+                             (project-vc-dir "VC-Dir" "v")
+                             (project-eshell "Eshell" "e"))))
 
 (use-package python
   :init
