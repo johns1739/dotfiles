@@ -6,7 +6,7 @@ theme = "rose_pine"
 line-number = "relative"
 mouse = true
 # cursorline = true
-# rulers = [90]
+rulers = [100]
 # bufferline = "multiple"
 
 [editor.cursor-shape]
