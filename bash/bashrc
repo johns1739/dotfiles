@@ -1,14 +1,23 @@
 #!/bin/bash
 
-PS1="\w \$ " #bash
-PROMPT='%~ %# ' #zsh
-
-alias emacs="emacs-nox" # or emacs-nw
-alias e="emacs-nox" # or emacs-nw
+PS1="\w \$ " # bash
 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-# Recommended bash tools to install
 alias top="btop"
+alias emacs="emacs -nw"
+
+# History
+# https://datawookie.dev/blog/2023/04/configuring-bash-history/
+HISTSIZE=100000
+HISTFILESIZE=10000
+HISTCONTROL=ignoreboth
+HISTIGNORE='ls:ll:ls -alh:pwd:clear:history:[bf]g:exit:date:* --help'
+HISTTIMEFORMAT='%F %T '
+shopt -s histappend
+
+
+# FZF
+eval "$(fzf --bash)"

@@ -1,0 +1,3 @@
+export EDITOR="emacs -nw"
+export SUDO_EDITOR="$EDITOR"
+eval "$(/opt/homebrew/bin/brew shellenv)"

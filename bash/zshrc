@@ -1,0 +1,30 @@
+#!/bin/zsh
+
+PROMPT='%~ %# '
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+alias top="btop"
+alias emacs="emacs -nw"
+
+# history
+# https://postgresqlstan.github.io/cli/zsh-history-options/
+HISTSIZE=100000
+SAVEHIST=10000
+setopt HIST_EXPIRE_DUPS_FIRST
+setopt HIST_FIND_NO_DUPS
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_NO_STORE
+setopt HIST_REDUCE_BLANKS
+setopt HIST_VERIFY
+setopt INC_APPEND_HISTORY
+
+# fzf
+source <(fzf --zsh)
+
+# asdf
+export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+. $(brew --prefix asdf)/libexec/asdf.sh
