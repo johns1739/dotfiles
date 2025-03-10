@@ -1,4 +1,5 @@
 /emacs/.cache/
+/emacs/eln-cache/
 /emacs/.emacs.desktop*
 /emacs/.lsp-session-v1
 /emacs/.mc-lists.el
