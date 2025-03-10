@@ -33,3 +33,12 @@
 /ghostty/custom.config
 /emacs/ellama/
 /ghostty/config
+*.eln
+/config/emacs/bookmarks
+/config/emacs/history
+/config/emacs/recentf
+/config/emacs/places
+/config/emacs/projects
+/config/emacs/straight/
+/config/emacs/transient/
+/config/emacs/tree-sitter/

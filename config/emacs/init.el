@@ -1,5 +1,8 @@
 ;;-*- lexical-binding: t; -*-
 
+;; TODO: Create config dir
+;; TODO: new wallpaper background
+
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
 (keymap-global-set "M-j" global-leader-map)
