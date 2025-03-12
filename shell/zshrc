@@ -25,6 +25,14 @@ setopt INC_APPEND_HISTORY
 # fzf
 source <(fzf --zsh)
 
+# guile
+export GUILE_LOAD_PATH="/opt/homebrew/share/guile/site/3.0"
+export GUILE_LOAD_COMPILED_PATH="/opt/homebrew/lib/guile/3.0/site-ccache"
+export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
+
+# golang
+. ~/.asdf/plugins/golang/set-env.zsh
+
 # asdf
 export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
 . $(brew --prefix asdf)/libexec/asdf.sh

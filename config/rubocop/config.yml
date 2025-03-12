@@ -1,11 +1,11 @@
 require:
-    - rubocop-minitest
-    - rubocop-rails
+    # - rubocop-rails
+    # - rubocop-rspec
+    # - rubocop-minit
     # - rubocop-factory_bot
     # - rubocop-thread_safety
     # - rubocop-rake
     # - rubocop-performance
-    - rubocop-rspec
 
 AllCops:
     SuggestExtensions: false
@@ -75,12 +75,12 @@ Metrics/ParameterLists:
 Metrics/BlockLength:
     Enabled: Yes
 
-RSpec/MultipleMemoizedHelpers:
-    AllowSubject: true
-    Max: 10
+# RSpec/MultipleMemoizedHelpers:
+#     AllowSubject: true
+#     Max: 10
 
-RSpec/NamedSubject:
-    EnforcedStyle: named_only
+# RSpec/NamedSubject:
+#     EnforcedStyle: named_only
 
-RSpec/NestedGroups:
-    MaxNesting: 5
+# RSpec/NestedGroups:
+#     MaxNesting: 5

@@ -642,20 +642,22 @@
                             "* %?" :prepend t :empty-lines 1)))
   :config
   (org-babel-do-load-languages
-   'org-babel-load-languages '((emacs-lisp . t) (shell . t) (scheme . t))))
+   'org-babel-load-languages
+   '((C . t)
+     (emacs-lisp . t)
+     (shell . t)
+     (scheme . t)
+     (python . t))))
 
 (use-package popper
   :defer 3
   :bind (:map open-toggle-map
               ("o" . popper-toggle)
               ("O" . popper-toggle-type)
-              ("n" . popper-cycle)
-              ("p" . popper-cycle-backwards)
-              ("q" . popper-kill-latest-popup)
-              :repeat-map toggle-cycle-repeat-map
-              ("n" . popper-cycle)
-              ("p" . popper-cycle-backwards)
-              ("q" . popper-kill-latest-popup))
+              :map popper-mode-map
+              ("Q" . popper-kill-latest-popup)
+              ("M-n" . popper-cycle)
+              ("M-p" . popper-cycle-backwards))
   :init
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)
@@ -676,14 +678,10 @@
                   "^\\*shell.*\\*$"  shell-mode
                   "^\\*term.*\\*$"   term-mode
                   "^\\*vterm.*\\*$"  vterm-mode
-                  "^\\*.*eat.*\\*$"  eat-mode
-                  )))
+                  "^\\*.*eat.*\\*$"  eat-mode)))
   (setq popper-window-height
         (lambda (win)
-          (fit-window-to-buffer
-           win
-           (floor (frame-height) 3)
-           12)))
+          (fit-window-to-buffer win (floor (frame-height) 3) 15)))
   :config
   (popper-mode +1)
   (popper-echo-mode +1))
@@ -815,6 +813,16 @@
   (setq trashed-use-header-line t)
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
+(use-package treemacs
+  :defer
+  :bind (:map open-toggle-map
+              ("p" . treemacs)
+              ("P" . treemacs-select-window))
+  :config
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-project-follow-mode t))
 
 (use-package typescript-ts-mode
   :mode "\\.ts$"

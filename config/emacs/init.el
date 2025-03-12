@@ -73,14 +73,17 @@
            ("," . rgrep)
            ("f" . project-find-file)
            ("l" . occur)
+           ("i" . imenu)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
            ("s" . project-find-regexp)
            ("r" . recentf-open)
 
            :map compilation-map
+           ("," . compile)
+           ("<" . comint)
            ("." . compile-dwim)
-           (">" . comint)
+           (">" . comint-dwim)
            ("g" . recompile)
            ("y" . copy-relative-file-name)
 
@@ -432,6 +435,11 @@
     (indent-region (point-min) (point-max) nil)))
 
 (defun comint ()
+  (interactive)
+  (universal-argument)
+  (command-execute #'compile))
+
+(defun comint-dwim ()
   (interactive)
   (universal-argument)
   (command-execute #'compile-dwim))

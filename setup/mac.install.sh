@@ -31,10 +31,25 @@ brew install neovim
 
 # Dependencies
 brew install autoconf
-brew install openssl
-brew install wxwidgets
+brew install coreutils
+brew install curl
+brew install gcc
+brew install guile
+brew install icu4c
 brew install libxslt fop
 brew install libyaml
+brew install openssl
+brew install ossp-uuid
+brew install pkg-config
+brew install readline
+brew install wxwidgets
+brew install zlib
+
+# Docker
+brew install --cask docker
+
+# Linking
+brew link icu4c --force
 
 # Asdf
 brew install asdf
@@ -53,7 +68,24 @@ asdf install erlang latest
 # Ruby
 asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
 asdf install ruby latest
+# gem install rails
+# gem install solargraph
+# gem install rubocop
 
 # Python
 asdf plugin add python
 asdf install python latest
+
+# Golang
+asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
+go install -v golang.org/x/tools/gopls@latest
+asdf reshim golang
+
+# Postgres
+asdf plugin add postgres
+asdf install postgres latest
+# pg_ctl start/stop
+# psql -h localhost -U postgres
+# > create role juan superuser;
+# > alter role juan with login;
+# createdb juan

@@ -21,20 +21,5 @@ log/
 *.log
 cache/
 
-# Config stuff to ignore
-iterm2/
-nvim/plugin
-tmux/plugins/
-.luarc.json
-htop/
-
-.solargraph.yml
-.rubocop.yml
-
 # Elixir
 deps/
-
-emacs/elpa/
-emacs/transient/
-emacs/custom.el
-emacs/projectile-bookmarks.eld
