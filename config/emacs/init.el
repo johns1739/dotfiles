@@ -29,19 +29,19 @@
 (keymap-set global-leader-map "p" project-prefix-map)
 
 (bind-keys :map global-map
+           ("C-x C-b" . ibuffer)
+           ("M-\\" . cycle-spacing)
+           ("M-#" . dictionary-lookup-definition)
+           ("M-RET" . comment-indent-new-line)
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
-           ("M-\\" . cycle-spacing)
-           ("C-x C-b" . ibuffer)
-           ("M-o" . other-window)
-           ("M-#" . dictionary-lookup-definition)
            ("M-L" . duplicate-line)
-           ("M-RET" . comment-indent-new-line)
            ("M-n" . forward-sexp)
+           ("M-o" . other-window)
            ("M-p" . backward-sexp)
 
            :map global-leader-map
-           ("SPC" . switch-to-buffer)
+           ("SPC" . project-switch-to-buffer)
            ("TAB" . indent-buffer)
            ("=" . balance-windows)
            ("0" . delete-window)
@@ -205,7 +205,7 @@
 (setq-default bidi-paragraph-direction 'left-to-right)
 (setq-default bidi-inhibit-bpa t)
 (column-number-mode -1)
-(global-display-fill-column-indicator-mode t)
+;; (global-display-fill-column-indicator-mode t)
 
 ;; delete settings
 (delete-selection-mode -1)
@@ -367,6 +367,7 @@
 (with-eval-after-load 'treesit
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (c "https://github.com/tree-sitter/tree-sitter-c")
           (cmake "https://github.com/uyha/tree-sitter-cmake")
           (css "https://github.com/tree-sitter/tree-sitter-css")
           (elisp "https://github.com/Wilfred/tree-sitter-elisp")

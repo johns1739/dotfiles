@@ -21,6 +21,7 @@
 
 (use-package benchmark-init
   :disabled
+  :demand
   :hook (after-init . benchmark-init/deactivate)
   :config
   (benchmark-init/activate))
@@ -44,6 +45,13 @@
   :if (display-graphic-p)
   :config
   (beacon-mode 1))
+
+(use-package cc-mode
+  :ensure nil
+  :straight nil
+  :defer
+  :init
+  (add-to-list 'major-mode-remap-alist '(cc-mode . c-ts-mode)))
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
@@ -224,17 +232,24 @@
   (global-diff-hl-mode))
 
 (use-package dired-subtree
-  :demand
+  :init
+  (defun dired-subtree-setup ()
+    (require 'dired-subtree))
   :bind (:map dired-mode-map
               ("<tab>" . dired-subtree-toggle)
               ("TAB" . dired-subtree-toggle)
               ("<backtab>" . dired-subtree-remove)
               ("S-TAB" . dired-subtree-remove))
+  :hook
+  (dired-mode . dired-subtree-setup)
   :custom
   (dired-subtree-use-backgrounds nil))
 
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
+  :custom
+  (dumb-jump-force-searcher 'rg)
+  (dumb-jump-prefer-searcher 'rg)
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
@@ -318,7 +333,7 @@
 
 (use-package embark
   :bind (([remap describe-bindings] . embark-bindings)
-         :map compilation-map
+         :map mode-specific-map
          ("A" . embark-act)
          ("E" . embark-export)))
 
@@ -457,10 +472,7 @@
   (magit-list-refs-sortby "-creatordate"))
 
 (use-package magit-todos
-  :bind (:map project-prefix-map
-              ("t" . magit-todos-list)
-              :map vc-prefix-map
-              ("t" . magit-todos-list))
+  :bind (:map open-toggle-map (";" . magit-todos-list))
   :config
   (magit-todos-mode 1))
 
@@ -597,6 +609,13 @@
   (defun org-mode-setup ()
     (bind-keys :map (current-local-map)
                ([remap goto-address-at-point] . org-open-at-point))
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((C . t)
+       (emacs-lisp . t)
+       (shell . t)
+       (scheme . t)
+       (python . t)))
     (electric-indent-local-mode -1))
   :hook
   (org-mode . org-mode-setup)
@@ -639,26 +658,19 @@
                             ("DONE" . "dark olive green")
                             ("CANCELED" . "sienna")))
   (org-capture-templates `(("t" "Task" entry (file+headline "tasks.org" "Tasks")
-                            "* %?" :prepend t :empty-lines 1)))
-  :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((C . t)
-     (emacs-lisp . t)
-     (shell . t)
-     (scheme . t)
-     (python . t))))
+                            "* %?" :prepend t :empty-lines 1))))
 
 (use-package popper
   :defer 3
   :bind (:map open-toggle-map
               ("o" . popper-toggle)
-              ("O" . popper-toggle-type)
-              :map popper-mode-map
-              ("Q" . popper-kill-latest-popup)
-              ("M-n" . popper-cycle)
-              ("M-p" . popper-cycle-backwards))
+              ("O" . popper-toggle-type))
   :init
+  (defun popper-setup ()
+    (bind-keys :map (current-local-map)
+               ("Q" . popper-kill-latest-popup)
+               ("M-n" . popper-cycle)
+               ("M-p" . popper-cycle-backwards)))
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)
           (completion-list-mode . hide)
@@ -682,6 +694,8 @@
   (setq popper-window-height
         (lambda (win)
           (fit-window-to-buffer win (floor (frame-height) 3) 15)))
+  :hook
+  (popper-open-popup . popper-setup)
   :config
   (popper-mode +1)
   (popper-echo-mode +1))
@@ -731,14 +745,6 @@
                    (if (< (line-number-at-pos) 5)
                        (string-join (list "rails t " file-name))
                      (string-join (list "rails t " (s-concat file-name ":" linum))))))
-                ((string-match-p "engines/flexwork/.+_spec.rb" (buffer-file-name))
-                 (let ((linum (number-to-string (line-number-at-pos)))
-                       (file-name (file-relative-name (buffer-file-name)
-                                                      (concat (current-directory) "engines/flexwork")))
-                       (prefix-command "cd engines/flexwork/ && bundle exec rspec "))
-                   (if (< (line-number-at-pos) 5)
-                       (string-join (list prefix-command file-name))
-                     (string-join (list prefix-command (s-concat file-name ":" linum))))))
                 (t compile-command)))
     (call-interactively #'compile-dwim))
   (defun rails-comint ()
@@ -750,7 +756,7 @@
     (setq outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
     (bind-keys :map (current-local-map)
                ([remap compile-dwim] . rails-compile)
-               ([remap comint] . rails-comint)))
+               ([remap comint-dwim] . rails-comint)))
   :hook
   (ruby-base-mode . ruby-setup))
 
@@ -815,10 +821,9 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 (use-package treemacs
-  :defer
   :bind (:map open-toggle-map
-              ("p" . treemacs)
-              ("P" . treemacs-select-window))
+              ("P" . treemacs)
+              ("p" . treemacs-select-window))
   :config
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
