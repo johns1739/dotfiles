@@ -215,7 +215,7 @@
 
 ;; electric / parens settings
 (electric-indent-mode t)
-(electric-pair-mode -1)
+(electric-pair-mode t)
 (setq show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
 
 ;; eldoc settings

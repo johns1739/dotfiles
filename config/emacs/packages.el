@@ -715,7 +715,9 @@
   (defun pytyhon-setup ()
     (setq-local tab-width 4))
   :hook
-  (python-ts-mode . pytyhon-setup))
+  (python-ts-mode . pytyhon-setup)
+  :custom
+  (python-indent-offset 4))
 
 (use-package ruby-ts-mode
   :init
