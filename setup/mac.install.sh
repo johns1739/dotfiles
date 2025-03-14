@@ -78,8 +78,13 @@ asdf install python latest
 
 # Golang
 asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
+asdf install golang latest
 go install -v golang.org/x/tools/gopls@latest
 asdf reshim golang
+
+# Zig
+asdf plugin add zig https://github.com/asdf-community/asdf-zig.git
+asdf install zig latest
 
 # Postgres
 asdf plugin add postgres

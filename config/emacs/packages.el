@@ -472,7 +472,7 @@
   (magit-list-refs-sortby "-creatordate"))
 
 (use-package magit-todos
-  :bind (:map open-toggle-map (";" . magit-todos-list))
+  :bind (:map open-toggle-map ("l" . magit-todos-list))
   :config
   (magit-todos-mode 1))
 
@@ -823,7 +823,10 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 (use-package treemacs
-  :bind (:map open-toggle-map
+  :bind (:map treemacs-mode-map
+              ("j" . treemacs-next-line)
+              ("k" . treemacs-previous-line)
+              :map open-toggle-map
               ("P" . treemacs)
               ("p" . treemacs-select-window))
   :config
@@ -890,3 +893,6 @@
 (use-package yasnippet-snippets
   :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
+
+(use-package zig-mode
+  :mode "\\.zig\\'")
