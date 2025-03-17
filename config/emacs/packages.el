@@ -47,6 +47,7 @@
   (beacon-mode 1))
 
 (use-package cc-mode
+  :mode "\\.c\\'"
   :ensure nil
   :straight nil
   :defer
@@ -122,8 +123,6 @@
   (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package consult-denote
-  :after denote
-  :requires denote
   :bind (:map notes-map
               ("f" . consult-denote-find)
               ("s" . consult-denote-grep))
@@ -133,8 +132,6 @@
   (consult-denote-mode))
 
 (use-package consult-flycheck
-  :after flycheck
-  :requires flycheck
   :commands (consult-flycheck))
 
 (use-package copilot
@@ -165,7 +162,7 @@
   :bind (:map corfu-map ("RET" . nil))
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0.2)
+  (corfu-auto-delay 0.3)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-echo-delay 0.3)
@@ -183,7 +180,6 @@
 (use-package corfu-terminal
   :unless (display-graphic-p)
   :after corfu
-  :requires corfu
   :config
   (corfu-terminal-mode 1))
 
@@ -650,6 +646,8 @@
      (todo priority-down category-keep deadline-up scheduled-up todo-state-down)
      (tags priority-down category-keep)
      (search category-keep)))
+  (org-todo-keywords
+   '((sequence "TODO(t!)" "ACTIVE(a!)" "WAITING(w@/!)" "|" "DONE(d@/!)" "CANCELED(c@/!)")))
   (org-tag-faces '(("bug"  . "sienna")
                    ("feature" . "goldenrod")
                    ("chore" . "khaki")))
@@ -657,8 +655,8 @@
                             ("ACTIVE" . "dark khaki")
                             ("DONE" . "dark olive green")
                             ("CANCELED" . "sienna")))
-  (org-capture-templates `(("t" "Task" entry (file+headline "tasks.org" "Tasks")
-                            "* %?" :prepend t :empty-lines 1))))
+  (org-capture-templates
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* %?" :prepend t :empty-lines 1))))
 
 (use-package popper
   :defer 3
@@ -709,13 +707,16 @@
                              (project-vc-dir "VC-Dir" "v")
                              (project-eshell "Eshell" "e"))))
 
-(use-package python
+(use-package python-mode
+  :ensure nil
+  :straight nil
+  :mode "\\.py\\'"
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  (defun pytyhon-setup ()
+  (defun python-setup ()
     (setq-local tab-width 4))
   :hook
-  (python-ts-mode . pytyhon-setup)
+  (python-ts-mode . python-setup)
   :custom
   (python-indent-offset 4))
 

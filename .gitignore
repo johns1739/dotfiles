@@ -45,3 +45,6 @@
 /config/emacs/.cache/
 /config/emacs/.lsp-session-v1
 /config/emacs/eln-cache/
+/config/btop/
+/config/emacs/tramp
+/config/emacs/custom.el
