@@ -42,6 +42,7 @@
               ("a Y" . avy-copy-region)))
 
 (use-package beacon
+  :defer 3
   :if (display-graphic-p)
   :config
   (beacon-mode 1))
@@ -56,7 +57,13 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
-  :commands (cape-dabbrev cape--abbrev cape-keyword cape-file cape-dict cape-elisp-symbol cape-line)
+  :commands (cape-dabbrev
+             cape--abbrev
+             cape-keyword
+             cape-file
+             cape-dict
+             cape-elisp-symbol
+             cape-line)
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -155,6 +162,7 @@
   (prog-mode . copilot-mode))
 
 (use-package corfu
+  :disabled ;; intrusive, ruins flow.
   :demand
   :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
@@ -173,11 +181,14 @@
   (corfu-preview-current nil)
   :config
   (global-corfu-mode 1)
-  (corfu-echo-mode 1)
+  (if (display-graphic-p)
+      (corfu-popupinfo-mode 1)
+    (corfu-echo-mode 1))
   (corfu-history-mode 1)
-  (corfu-popupinfo-mode 1))
+  (add-to-list 'savehist-additional-variables 'corfu-history))
 
 (use-package corfu-terminal
+  :disabled ;; because corfu is disabled
   :unless (display-graphic-p)
   :after corfu
   :config
@@ -187,6 +198,7 @@
   :mode "\\.csv\\'")
 
 (use-package dashboard
+  :disabled
   :demand
   :if (display-graphic-p)
   :custom
@@ -411,6 +423,7 @@
          ("." . helpful-at-point)))
 
 (use-package highlight-indent-guides
+  :disabled ;; interferes with treesitter font-locking
   :if (display-graphic-p)
   :bind (:map editor-settings-map
               ("g" . highlight-indent-guides-mode))
@@ -447,7 +460,8 @@
   (defun lsp-set-bindings ()
     (bind-keys :map (current-local-map)
                ([remap indent-buffer] . lsp-format-buffer)
-               ([remap xref-find-references] . lsp-find-references)))
+               ([remap xref-find-references] . lsp-find-references)
+               ([remap eldoc] . lsp-describe-thing-at-point)))
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
   (lsp-mode . lsp-set-bindings))
@@ -595,6 +609,8 @@
   (completion-category-overrides nil))
 
 (use-package org
+  :defer t
+  :ensure nil
   :straight nil
   :commands (org-todo-list
              org-agenda
@@ -765,7 +781,6 @@
 
 (use-package simple-modeline
   :demand
-  :hook (after-init . simple-modeline-mode)
   :init
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
@@ -799,7 +814,9 @@
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
       simple-modeline-segment-end-spaces
-      ))))
+      )))
+  :config
+  (simple-modeline-mode 1))
 
 (use-package sqlformat
   :disabled ;; Requires OS dependency postgresql.
