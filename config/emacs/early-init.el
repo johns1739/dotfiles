@@ -30,9 +30,16 @@
      ("stable" . 70)   ; prefer "released" versions from melpa
      ("melpa"  . 0))))  ; if all else fails, get it from melpa
 
-;; remove gui elements
+;; GUI Elements
+(setq frame-resize-pixelwise t)
+(setq frame-inhibit-implied-resize t)
+(setq frame-title-format '("Emacs"))
+(setq mode-line-format nil)
+(setq inhibit-compacting-font-caches t)
+
 (menu-bar-mode -1)
 (with-eval-after-load 'tool-bar
   (tool-bar-mode -1))
 (with-eval-after-load 'scroll-bar
   (scroll-bar-mode -1))
+(tooltip-mode -1)

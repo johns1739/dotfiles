@@ -24,6 +24,7 @@
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
 (keymap-set global-leader-map "p" project-prefix-map)
+(keymap-set global-leader-map "t" tab-prefix-map)
 
 (bind-keys :map global-map
            ("C-x C-b" . ibuffer)
@@ -36,6 +37,8 @@
            ("M-n" . forward-sexp)
            ("M-o" . other-window)
            ("M-p" . backward-sexp)
+           ("s-{" . tab-previous)
+           ("s-}" . tab-next)
 
            :map global-leader-map
            ("SPC" . project-switch-to-buffer)
@@ -55,6 +58,7 @@
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
            ("d" . flymake-show-buffer-diagnostics)
+           ("D" . flymake-show-project-diagnostics)
            ("f" . find-file-at-point)
            ("h" . eldoc)
            ("j" . jump-to-register)
@@ -64,6 +68,10 @@
            ("n" . next-error)
            ("p" . previous-error)
            ("u" . goto-address-at-point)
+
+           :map tab-prefix-map
+           ("SPC" . tab-switch)
+           ("'" . tab-recent)
 
            :map search-map
            ("SPC" . project-switch-to-buffer)
@@ -92,12 +100,13 @@
            :map editor-settings-map
            ("$" . flyspell-mode)
            ("=" . set-font-size)
+           ("c" . load-theme)
            ("f" . global-display-fill-column-indicator-mode)
            ("h" . global-hl-line-mode)
            ("n" . global-display-line-numbers-mode)
            ("R" . restart-emacs)
-           ("t" . load-theme)
-           ("T" . toggle-truncate-lines)
+           ("t" . tab-bar-mode)
+           ("l" . toggle-truncate-lines)
            ("v" . global-visual-line-mode)
 
            :map project-prefix-map
@@ -129,6 +138,7 @@
 (setq completion-auto-select 'second-tab)
 (setq completion-category-defaults nil)
 (setq completion-category-overrides '((file (styles . (basic partial-completion)))))
+(setq completion-ignore-case t)
 (setq completion-cycle-threshold 3)
 (setq completion-styles '(substring partial-completion initials flex))
 (setq completions-detailed t)
@@ -337,7 +347,6 @@
   (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
 
 ;; frame settings
-(setq-default frame-title-format '("%f"))
 (when (display-graphic-p)
   (add-to-list 'default-frame-alist '(height . 50))
   (add-to-list 'default-frame-alist '(width . 125)))
@@ -359,6 +368,9 @@
 ;; ffap settings - find-file-at-point
 (with-eval-after-load 'ffap
   (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1)))
+
+;; vc settings
+(setq vc-handled-backends '(Git))
 
 ;; treesit settings
 (with-eval-after-load 'treesit

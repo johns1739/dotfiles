@@ -208,7 +208,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package deadgrep
-  :bind (:map search-map (";" . deadgrep)))
+  :bind (:map search-map ("<" . deadgrep)))
 
 (use-package denote
   :bind (:map notes-map
@@ -278,8 +278,12 @@
   :custom
   (eat-term-scrollback-size nil)
   :init
+  (defun eat-mode-setup ()
+    (display-line-numbers-mode -1))
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
+    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t")))
+  :hook
+  (eat-mode . eat-mode-setup))
 
 (use-package ef-themes
   :defer t)
@@ -297,9 +301,28 @@
   :custom
   (lsp-elixir-suggest-specs nil)
   :init
+  (defun elixir-compile ()
+    (interactive)
+    (setq compile-command
+          (cond ((string-match-p "_test.exs\\'" (buffer-file-name))
+                 (let ((linum (number-to-string (line-number-at-pos)))
+                       (file-name (relative-file-name)))
+                   (if (< (line-number-at-pos) 5)
+                       (string-join (list "mix test " file-name))
+                     (string-join (list "mix test " (s-concat file-name ":" linum))))))
+                (t compile-command)))
+    (call-interactively #'compile-dwim))
+  (defun elixir-comint ()
+    (interactive)
+    (universal-argument)
+    (command-execute #'elixir-compile))
   (defun elixir-setup ()
-    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)"))
+    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)")
+    (bind-keys :map (current-local-map)
+               ([remap compile-dwim] . elixir-compile)
+               ([remap comint-dwim] . elixir-comint)))
   (with-eval-after-load 'eglot
+    (add-to-list 'exec-path "~/.lsp/elixir")
     (add-to-list 'eglot-server-programs
                  `((elixir-ts-mode heex-ts-mode) .
                    ,(if (and (fboundp 'w32-shell-dos-semantics)
@@ -450,6 +473,8 @@
   :bind (("M-$" . jinx-correct)
          ([remap flyspell-mode] . jinx-mode)))
 
+(use-package dap-mode)
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :custom
@@ -482,7 +507,7 @@
   (magit-list-refs-sortby "-creatordate"))
 
 (use-package magit-todos
-  :bind (:map open-toggle-map ("l" . magit-todos-list))
+  :bind (:map project-prefix-map ("t" . magit-todos-list))
   :config
   (magit-todos-mode 1))
 
@@ -646,6 +671,8 @@
               ("M-p" . org-previous-visible-heading))
   :custom
   (org-agenda-todo-ignore-deadlines 'far)
+  (org-agenda-todo-ignore-scheduled 'far)
+  (org-agenda-tags-todo-honor-ignore-options t)
   (org-cycle-hide-block-startup t)
   (org-hide-drawer-startup t)
   (org-hide-emphasis-markers t)
@@ -847,7 +874,11 @@
               :map open-toggle-map
               ("P" . treemacs)
               ("p" . treemacs-select-window))
+  :custom
+  (treemacs-no-png-images t)
+  (treemacs-hide-dot-git-directory t)
   :config
+  (treemacs-hide-gitignored-files-mode t)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-project-follow-mode t))
