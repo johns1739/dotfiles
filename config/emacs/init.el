@@ -152,8 +152,10 @@
 ;; tab settings
 (setq tab-always-indent t)
 (setq-default tab-width 4)
+(setq tab-bar-close-button-show nil)
+(setq tab-bar-new-button-show nil)
 
-;; xref settings
+;; xref / grep settings
 (setq xref-search-program 'ripgrep)
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
 
