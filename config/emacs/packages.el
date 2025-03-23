@@ -373,12 +373,10 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package exec-path-from-shell
-  :demand
   :if (memq window-system '(mac ns))
+  :hook (after-init . exec-path-from-shell-initialize)
   :custom
-  (exec-path-from-shell-warn-duration-millis 1000)
-  :config
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-warn-duration-millis 1000))
 
 (use-package expand-region
   :disabled ;; rarely used
@@ -522,7 +520,9 @@
   :mode "\\.md\\'")
 
 (use-package meow
-  :demand
+  :hook
+  (after-init . meow-setup)
+  (after-init . meow-global-mode)
   :custom
   (meow-use-clipboard t)
   (meow-keypad--self-insert-undefined nil)
@@ -610,10 +610,8 @@
      '("." . meow-bounds-of-thing)
      '(">" . meow-end-of-thing)
      '("<backspace>" . meow-backward-delete)
-     '("<escape>" . meow-cancel-selection)))
-  :config
-  (meow-setup)
-  (meow-global-mode 1))
+     '("<escape>" . meow-cancel-selection))))
+
 
 (use-package modus-themes
   :defer t)
@@ -807,7 +805,7 @@
   (ruby-base-mode . ruby-setup))
 
 (use-package simple-modeline
-  :demand
+  :hook (after-init . simple-modeline-mode)
   :init
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
@@ -841,9 +839,7 @@
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
       simple-modeline-segment-end-spaces
-      )))
-  :config
-  (simple-modeline-mode 1))
+      ))))
 
 (use-package sqlformat
   :disabled ;; Requires OS dependency postgresql.
@@ -890,9 +886,7 @@
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
 (use-package vertico
-  :demand
-  :config
-  (vertico-mode 1))
+  :hook (after-init . vertico-mode))
 
 (use-package visual-replace
   :defer 3
@@ -923,10 +917,8 @@
   (which-key-mode))
 
 (use-package xclip
-  :demand
   :unless (display-graphic-p)
-  :config
-  (xclip-mode 1))
+  :hook (after-init . xclip-mode))
 
 (use-package yaml-ts-mode
   :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
