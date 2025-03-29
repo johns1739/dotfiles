@@ -124,6 +124,7 @@
          ("SPC" . consult-compile-error)
          :map search-map
          (">" . consult-ripgrep-symbol-at-point)
+         ("I" . consult-imenu-multi)
          ("L" . consult-focus-lines)
          ("o" . consult-outline))
   :hook
@@ -196,6 +197,11 @@
 
 (use-package csv-mode
   :mode "\\.csv\\'")
+
+(use-package css-mode
+  :mode "\\.css\\'"
+  :custom
+  (css-indent-offset 2))
 
 (use-package dashboard
   :disabled
@@ -471,6 +477,13 @@
   :bind (("M-$" . jinx-correct)
          ([remap flyspell-mode] . jinx-mode)))
 
+(use-package js-mode
+  :straight nil
+  :mode "\\.js\\'"
+  :custom
+  (js-indent-level 2))
+
+
 (use-package dap-mode)
 
 (use-package lsp-mode
@@ -502,7 +515,11 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
-  (magit-list-refs-sortby "-creatordate"))
+  (magit-list-refs-sortby "-creatordate")
+  :config
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(magit "Magit" ";"))))
+
 
 (use-package magit-todos
   :bind (:map project-prefix-map ("t" . magit-todos-list))
