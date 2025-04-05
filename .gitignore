@@ -48,3 +48,5 @@
 /config/btop/
 /config/emacs/tramp
 /config/emacs/custom.el
+/config/emacs/elpa/
+/config/emacs/eshell/

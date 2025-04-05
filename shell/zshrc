@@ -34,5 +34,5 @@ export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
 . ~/.asdf/plugins/golang/set-env.zsh
 
 # asdf
-export PATH="${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
-. $(brew --prefix asdf)/libexec/asdf.sh
+export ASDF_DIR="$HOME/.asdf"
+export PATH="$ASDF_DIR/shims:$PATH"

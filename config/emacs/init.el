@@ -2,7 +2,7 @@
 
 (defvar-keymap global-leader-map
   :doc "Global leader keymap.")
-(keymap-global-set "M-j" global-leader-map)
+(keymap-set ctl-x-map "SPC" global-leader-map)
 
 (defvar-keymap notes-map
   :doc "Notes map")
@@ -28,7 +28,6 @@
 
 (bind-keys :map global-map
            ("C-x C-b" . ibuffer)
-           ("M-\\" . cycle-spacing)
            ("M-#" . dictionary-lookup-definition)
            ("M-RET" . comment-indent-new-line)
            ("M-i" . completion-at-point)
@@ -37,8 +36,14 @@
            ("M-n" . forward-sexp)
            ("M-o" . other-window)
            ("M-p" . backward-sexp)
+           ("M-T" . transpose-lines)
+           ("C-z" . nil) ;; unbind suspend-frame
+
+           ;; Works only in GUI
            ("s-{" . tab-previous)
            ("s-}" . tab-next)
+           ("s-t" . tab-bar-new-tab)
+           ("s-w" . tab-bar-closed-tab)
 
            :map global-leader-map
            ("SPC" . project-switch-to-buffer)
@@ -89,6 +94,7 @@
            ("<" . comint)
            ("." . compile-dwim)
            (">" . comint-dwim)
+           ("B" . eval-buffer)
            ("g" . recompile)
            ("y" . copy-relative-file-name)
 
@@ -101,13 +107,17 @@
            ("$" . flyspell-mode)
            ("=" . set-font-size)
            ("c" . load-theme)
-           ("f" . global-display-fill-column-indicator-mode)
-           ("h" . global-hl-line-mode)
-           ("n" . global-display-line-numbers-mode)
+           ("f" . display-fill-column-indicator-mode)
+           ("F" . global-display-fill-column-indicator-mode)
+           ("h" . hl-line-mode)
+           ("H" . global-hl-line-mode)
+           ("n" . display-line-numbers-mode)
+           ("N" . global-display-line-numbers-mode)
            ("R" . restart-emacs)
            ("t" . tab-bar-mode)
            ("l" . toggle-truncate-lines)
-           ("v" . global-visual-line-mode)
+           ("v" . visual-line-mode)
+           ("V" . global-visual-line-mode)
 
            :map project-prefix-map
            ("SPC" . project-switch-to-buffer)
@@ -152,8 +162,13 @@
 ;; tab settings
 (setq tab-always-indent t)
 (setq-default tab-width 4)
+
+;; tab-bar settings
+(setq tab-bar-select-tab-modifiers '(super))
 (setq tab-bar-close-button-show nil)
+(setq tab-bar-close-button nil)
 (setq tab-bar-new-button-show nil)
+(setq tab-bar-new-button nil)
 
 ;; xref / grep settings
 (setq xref-search-program 'ripgrep)
@@ -190,22 +205,14 @@
 (setq compilation-error-regexp-alist-alist '())
 (with-eval-after-load 'compile
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
   (add-to-list 'compilation-error-regexp-alist-alist
                '(failure-newline-target
                  "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]" 1 2 nil nil 1))
-  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
-  (add-to-list 'compilation-error-regexp-alist-alist
-               '(rails-test-target
-                 "^rails test \\([^:]+\\):\\([0-9]+\\)" 1 2 nil nil 1))
-  (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
+  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
   (add-to-list 'compilation-error-regexp-alist-alist
                '(simple-spaced-target
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1))
-  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
-  (add-to-list 'compilation-error-regexp-alist-alist
-               '(rspec-backtrace-target
-                 "^ +# \\(./[A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1))
-  (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
   (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
 ;; text / column settings
@@ -235,6 +242,7 @@
 (add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
+(setq display-line-numbers-width 3)
 (global-display-line-numbers-mode 1)
 (line-number-mode t)
 (global-so-long-mode t)
@@ -371,6 +379,12 @@
 (with-eval-after-load 'ffap
   (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1)))
 
+;; project settings
+(setq project-switch-commands '((project-find-file "Find file" "f")
+                                (project-find-dir "Find directory" "d")
+                                (project-vc-dir "VC-Dir" "v")
+                                (project-eshell "Eshell" "e")))
+
 ;; vc settings
 (setq vc-handled-backends '(Git))
 
@@ -498,6 +512,7 @@
   (unless (display-graphic-p (selected-frame))
     (set-face-background 'default "unspecified-bg" (selected-frame))))
 ;; (add-hook 'window-setup-hook 'set-transparency)
+
 
 ;; Load packages
 (load (locate-user-emacs-file "packages.el"))

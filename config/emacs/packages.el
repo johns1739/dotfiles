@@ -14,7 +14,6 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
 (setq straight-use-package-by-default t)
 
 ;;;; Packages
@@ -307,6 +306,12 @@
   :custom
   (lsp-elixir-suggest-specs nil)
   :init
+  (with-eval-after-load 'compile
+    ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(elixir-warning-target
+                   "└─ \\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\)" 1 2 3 1 1)))
   (defun elixir-compile ()
     (interactive)
     (setq compile-command
@@ -355,17 +360,17 @@
   :config
   (require 'llm-ollama)
   (setopt ellama-provider
-   (make-llm-ollama :chat-model "qwen2.5:7b"
-                    :embedding-model "nomic-embed-text"
-                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
+          (make-llm-ollama :chat-model "qwen2.5:7b"
+                           :embedding-model "nomic-embed-text"
+                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (setopt ellama-coding-provider
-   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
-                    :embedding-model "nomic-embed-text"
-                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
+          (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                           :embedding-model "nomic-embed-text"
+                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (setopt ellama-summarization-provider
-   (make-llm-ollama :chat-model "qwen2.5-coder:7b"
-                    :embedding-model "nomic-embed-text"
-                    :default-chat-non-standard-params '(("num_ctx" . 32768))))
+          (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                           :embedding-model "nomic-embed-text"
+                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (ellama-context-header-line-global-mode 1))
 
 (use-package embark
@@ -503,7 +508,7 @@
   (lsp-mode . lsp-set-bindings))
 
 (use-package magit
-  :commands (magit-status magit-file-dispatch magit-blame-addition)
+  :commands (magit-status magit-project-status magit-file-dispatch magit-blame-addition)
   :bind (:map vc-prefix-map
               (";" . magit-status)
               (":" . magit-dispatch)
@@ -515,11 +520,7 @@
   :custom
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
-  (magit-list-refs-sortby "-creatordate")
-  :config
-  (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(magit "Magit" ";"))))
-
+  (magit-list-refs-sortby "-creatordate"))
 
 (use-package magit-todos
   :bind (:map project-prefix-map ("t" . magit-todos-list))
@@ -729,7 +730,6 @@
                ("M-p" . popper-cycle-backwards)))
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)
-          (completion-list-mode . hide)
           occur-mode
           "\\*Messages\\*"
           "\\*Warnings\\*"
@@ -756,15 +756,6 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
-(use-package project
-  :defer t
-  :straight nil
-  :custom
-  (project-switch-commands '((project-find-file "Find file" "f")
-                             (project-find-dir "Find directory" "d")
-                             (project-vc-dir "VC-Dir" "v")
-                             (project-eshell "Eshell" "e"))))
-
 (use-package python-mode
   :ensure nil
   :straight nil
@@ -780,6 +771,15 @@
 
 (use-package ruby-ts-mode
   :init
+  (with-eval-after-load 'compile
+    (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(rails-test-target
+                   "^rails test \\([^:]+\\):\\([0-9]+\\)" 1 2 nil nil 1))
+    (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(rspec-backtrace-target
+                   "^ +# \\(./[A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  `((ruby-mode ruby-ts-mode)
