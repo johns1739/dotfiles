@@ -702,7 +702,7 @@
   (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-keep)
-     (todo priority-down category-keep deadline-up scheduled-up todo-state-down)
+     (todo priority-down category-keep deadline-up todo-state-down)
      (tags priority-down category-keep)
      (search category-keep)))
   (org-todo-keywords

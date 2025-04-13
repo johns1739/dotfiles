@@ -43,7 +43,7 @@
            ("s-{" . tab-previous)
            ("s-}" . tab-next)
            ("s-t" . tab-bar-new-tab)
-           ("s-w" . tab-bar-closed-tab)
+           ("s-w" . tab-bar-close-tab)
 
            :map global-leader-map
            ("SPC" . project-switch-to-buffer)
