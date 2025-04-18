@@ -154,8 +154,6 @@
 (setq completions-detailed t)
 (setq completions-format 'one-column)
 (setq completions-max-height 20)
-(when (> emacs-major-version 28)
-  (setq completion-at-point-functions '(dabbrev-capf)))
 (when (> emacs-major-version 29)
   (global-completion-preview-mode -1))
 
@@ -515,7 +513,7 @@
 
 
 ;; Load packages
-(load (locate-user-emacs-file "packages.el"))
+(load (locate-user-emacs-file "packages.el") :no-error-if-file-is-missing)
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))

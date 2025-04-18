@@ -1,3 +1,9 @@
+custom.el
+history
+places
+projects
+recentf
+
 /emacs/.cache/
 /emacs/eln-cache/
 /emacs/.emacs.desktop*
@@ -9,7 +15,6 @@
 /emacs/denote/
 /emacs/eln-cache/
 /emacs/eshell/
-/emacs/history
 /emacs/notes/
 /emacs/places
 /emacs/projects
@@ -35,7 +40,6 @@
 /ghostty/config
 *.eln
 /config/emacs/bookmarks
-/config/emacs/history
 /config/emacs/recentf
 /config/emacs/places
 /config/emacs/projects
@@ -47,6 +51,5 @@
 /config/emacs/eln-cache/
 /config/btop/
 /config/emacs/tramp
-/config/emacs/custom.el
 /config/emacs/elpa/
 /config/emacs/eshell/

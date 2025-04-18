@@ -486,10 +486,7 @@
   :straight nil
   :mode "\\.js\\'"
   :custom
-  (js-indent-level 2))
-
-
-(use-package dap-mode)
+  (js-indent-level 4))
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -898,6 +895,8 @@
 
 (use-package typescript-ts-mode
   :mode "\\.ts$"
+  :custom
+  (typescript-ts-mode-indent-offset 4)
   :init
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
