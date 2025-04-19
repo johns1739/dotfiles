@@ -673,8 +673,8 @@
   :bind (:map notes-map
               (";" . org-todo-list)
               (":" . org-agenda-list)
-              ("," . org-store-link)
-              ("<" . org-insert-link)
+              ("," . org-insert-link)
+              ("<" . org-store-link)
               ("." . org-capture)
               (">" . org-capture-goto-last-stored)
               ("/" . org-search-view)
@@ -712,7 +712,7 @@
                             ("DONE" . "dark olive green")
                             ("CANCELED" . "sienna")))
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* %?" :prepend t :empty-lines 1))))
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?" :prepend t :empty-lines 1))))
 
 (use-package popper
   :defer 3
