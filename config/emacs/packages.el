@@ -720,7 +720,7 @@
                             ("DONE" . "dark olive green")
                             ("CANCELED" . "sienna")))
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?" :prepend t :empty-lines 1))))
+   `(("t" "Task" entry (file+headline "tasks.org" "Personal") "* TODO %?" :prepend t :empty-lines 1))))
 
 (use-package popper
   :defer 3

@@ -46,7 +46,7 @@
            ("s-w" . tab-bar-close-tab)
 
            :map global-leader-map
-           ("SPC" . project-switch-to-buffer)
+           ("SPC" . switch-to-buffer)
            ("TAB" . indent-buffer)
            ("=" . balance-windows)
            ("0" . delete-window)
