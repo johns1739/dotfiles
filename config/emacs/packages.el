@@ -222,8 +222,8 @@
               ("c" . denote)
               ("j" . denote-journal-extras-new-or-existing-entry)
               ("l" . denote-link-or-create)
-              ("k" . denote-finlink)
-              ("K" . denote-finbacklink)
+              ("k" . denote-find-link)
+              ("K" . denote-find-backlink)
               ("r" . denote-rename-file-using-front-matter))
   :custom
   (denote-directory notes-directory)
@@ -681,12 +681,10 @@
   :bind (:map notes-map
               (";" . org-todo-list)
               (":" . org-agenda-list)
-              ("," . org-insert-link)
-              ("<" . org-store-link)
-              ("." . org-capture)
-              (">" . org-capture-goto-last-stored)
-              ("/" . org-search-view)
-              ("?" . org-occur-in-agenda-files)
+              ("," . org-capture-goto-last-stored)
+              ("t" . org-capture)
+              ("o" . org-search-view)
+              ("S" . org-occur-in-agenda-files)
               :map org-mode-map
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading))
