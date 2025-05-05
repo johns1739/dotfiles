@@ -24,7 +24,12 @@ brew install --cask ghostty
 
 # Emacs
 brew tap d12frosted/emacs-plus
-brew install emacs-plus
+brew install emacs-plus \
+     --with-modern-black-dragon-icon \
+     --with-debug \
+     --with-imagemagick \
+     --with-mailutils \
+     --with-no-frame-refocus
 
 # Neovim
 brew install neovim

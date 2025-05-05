@@ -218,6 +218,7 @@
 (use-package denote
   :bind (:map notes-map
               ("SPC" . denote-open-or-create)
+              ("n" . denote-open-or-create)
               ("c" . denote)
               ("j" . denote-journal-extras-new-or-existing-entry)
               ("l" . denote-link-or-create)
@@ -229,6 +230,13 @@
   (denote-known-keywords '("private"))
   (denote-date-prompt-use-org-read-date t)
   :config
+  (with-eval-after-load 'org-capture
+    (add-to-list 'org-capture-templates
+                 '("j" "Journal" entry
+                   (file denote-journal-extras-path-to-new-or-existing-entry)
+                   "* %U %?\n%i\n%a"
+                   :kill-buffer t
+                   :empty-lines 1)))
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
@@ -684,7 +692,7 @@
               ("M-p" . org-previous-visible-heading))
   :custom
   (org-agenda-todo-ignore-deadlines 'far)
-  (org-agenda-todo-ignore-scheduled 'far)
+  (org-agenda-todo-ignore-scheduled 'far) ;; TODO: Org deadlines show up, but not scheduled in the todo-list
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-cycle-hide-block-startup t)
   (org-hide-drawer-startup t)

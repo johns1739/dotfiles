@@ -8,6 +8,7 @@ alias ....='cd ../../..'
 
 alias top="btop"
 alias emacs="emacs -nw"
+alias e="emacs -nw"
 
 # history
 # https://postgresqlstan.github.io/cli/zsh-history-options/
