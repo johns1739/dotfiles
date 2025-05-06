@@ -230,11 +230,12 @@
   (denote-known-keywords '("private"))
   (denote-date-prompt-use-org-read-date t)
   :config
+  ;; https://orgmode.org/manual/Capture-templates.html
   (with-eval-after-load 'org-capture
     (add-to-list 'org-capture-templates
                  '("j" "Journal" entry
                    (file denote-journal-extras-path-to-new-or-existing-entry)
-                   "* %U %?\n%i\n%a"
+                   "* %U %?\n%i"
                    :kill-buffer t
                    :empty-lines 1)))
   (denote-rename-buffer-mode))
@@ -717,6 +718,7 @@
                             ("ACTIVE" . "dark khaki")
                             ("DONE" . "dark olive green")
                             ("CANCELED" . "sienna")))
+  ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Personal") "* TODO %?" :prepend t :empty-lines 1))))
 
