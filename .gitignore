@@ -4,26 +4,6 @@ places
 projects
 recentf
 
-/emacs/.cache/
-/emacs/eln-cache/
-/emacs/.emacs.desktop*
-/emacs/.lsp-session-v1
-/emacs/.mc-lists.el
-/emacs/auto-save-list/
-/emacs/backups/
-/emacs/bookmarks
-/emacs/denote/
-/emacs/eln-cache/
-/emacs/eshell/
-/emacs/notes/
-/emacs/places
-/emacs/projects
-/emacs/recentf
-/emacs/straight/
-/emacs/transient/
-/emacs/tree-sitter/
-/emacs/viper
-
 /gem/
 /btop/
 /github-copilot/
@@ -53,3 +33,5 @@ recentf
 /config/emacs/tramp
 /config/emacs/elpa/
 /config/emacs/eshell/
+/config/emacs/auto-save-list/
+/config/emacs/backups/

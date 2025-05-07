@@ -497,6 +497,9 @@
   :custom
   (js-indent-level 4))
 
+(use-package lua-mode
+  :mode "\\.lua\\'")
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :custom
