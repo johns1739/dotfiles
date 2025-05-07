@@ -37,3 +37,7 @@ export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
 # asdf
 export ASDF_DIR="$HOME/.asdf"
 export PATH="$ASDF_DIR/shims:$PATH"
+
+# editor integration
+export EDITOR="nvim"
+export GPG_TTY=$(tty) # used for gpg signing
