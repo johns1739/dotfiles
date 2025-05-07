@@ -725,7 +725,10 @@
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Personal") "* TODO %?" :prepend t :empty-lines 1))))
 
-(use-package pinentry)
+(use-package pinentry
+  :init
+  (with-eval-after-load 'magit
+    (pinentry-start)))
 
 (use-package popper
   :defer 3
