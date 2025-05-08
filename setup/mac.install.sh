@@ -39,6 +39,9 @@ brew install emacs-plus \
 # Neovim
 brew install neovim
 
+# Helix
+brew install helix
+
 # Dependencies
 brew install autoconf
 brew install coreutils

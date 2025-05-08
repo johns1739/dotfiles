@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 ;; timer report
 (setq use-package-verbose t)
 (setq use-package-compute-statistics t)

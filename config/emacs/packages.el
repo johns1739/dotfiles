@@ -1,3 +1,5 @@
+;;; -*- lexical-binding: t -*-
+
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -163,14 +165,15 @@
   (prog-mode . copilot-mode))
 
 (use-package corfu
-  :disabled ;; intrusive, ruins flow.
   :demand
   :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
-  :bind (:map corfu-map ("RET" . nil))
+  :bind (:map corfu-map
+              ;; ("RET" . nil)
+              ("SPC" . corfu-insert-separator))
   :custom
-  (corfu-auto t)
+  (corfu-auto nil)
   (corfu-auto-delay 0.3)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
@@ -179,21 +182,12 @@
   (corfu-separator ?\s)
   (corfu-popupinfo-delay '(1.25 . 0.5))
   (corfu-min-width 20)
-  (corfu-preview-current nil)
+  (corfu-preview-current 'insert)
   :config
   (global-corfu-mode 1)
-  (if (display-graphic-p)
-      (corfu-popupinfo-mode 1)
-    (corfu-echo-mode 1))
+  (corfu-popupinfo-mode 1)
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history))
-
-(use-package corfu-terminal
-  :disabled ;; because corfu is disabled
-  :unless (display-graphic-p)
-  :after corfu
-  :config
-  (corfu-terminal-mode 1))
 
 (use-package csv-mode
   :mode "\\.csv\\'")
@@ -657,7 +651,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(substring partial-completion initials orderless basic))
+  (completion-styles '(orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides nil))
 

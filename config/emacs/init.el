@@ -70,8 +70,7 @@
            ("J" . point-to-register)
            ("m" . bookmark-jump)
            ("M" . bookmark-set)
-           ("n" . next-error)
-           ("p" . previous-error)
+           ("p" . project-switch-project)
            ("u" . goto-address-at-point)
 
            :map tab-prefix-map
@@ -96,6 +95,8 @@
            (">" . comint-dwim)
            ("B" . eval-buffer)
            ("g" . recompile)
+           ("n" . next-error)
+           ("p" . previous-error)
            ("y" . copy-relative-file-name)
 
            :map open-toggle-map
@@ -154,8 +155,6 @@
 (setq completions-detailed t)
 (setq completions-format 'one-column)
 (setq completions-max-height 20)
-(when (> emacs-major-version 29)
-  (global-completion-preview-mode -1))
 
 ;; tab settings
 (setq tab-always-indent t)
