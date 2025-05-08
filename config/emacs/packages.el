@@ -730,7 +730,7 @@
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?" :prepend t :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Note" entry (file+datetree "journal.org") "* %?\nEntered on %U\n%i" :prepend t :empty-lines 1))))
+     ("j" "Journal" entry (file+datetree "journal.org") "* %?\nEntered on %U\n%i" :prepend t :empty-lines 1))))
 
 (use-package pinentry
   :init
