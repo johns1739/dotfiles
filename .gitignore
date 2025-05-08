@@ -35,3 +35,4 @@ recentf
 /config/emacs/eshell/
 /config/emacs/auto-save-list/
 /config/emacs/backups/
+/config/emacs/org-persist/

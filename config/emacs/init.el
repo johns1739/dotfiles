@@ -136,6 +136,9 @@
 ;; duplicating line settings
 (setq duplicate-line-final-position 1)
 
+;; notes settings
+(setq notes-directory "~/.notes")
+
 ;; navigating errors settings
 (setq next-error-recenter '(4))
 (setq next-error-highlight 1.0)

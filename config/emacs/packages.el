@@ -536,6 +536,15 @@
   :config
   (magit-todos-mode 1))
 
+(use-package make-mode
+  :ensure nil
+  :straight nil
+  :init
+  (defun make-mode-setup ()
+    (setq-local outline-regexp "^[a-z].+: "))
+  :hook
+  (makefile-bsdmake-mode . make-mode-setup))
+
 (use-package marginalia
   :defer 3
   :init
@@ -693,6 +702,8 @@
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading))
   :custom
+  (org-directory notes-directory)
+  (org-agenda-files (list org-directory))
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far) ;; TODO: Org deadlines show up, but not scheduled in the todo-list
   (org-agenda-tags-todo-honor-ignore-options t)
@@ -723,7 +734,7 @@
                             ("CANCELED" . "sienna")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Personal") "* TODO %?" :prepend t :empty-lines 1))))
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?" :prepend t :empty-lines 1))))
 
 (use-package pinentry
   :init

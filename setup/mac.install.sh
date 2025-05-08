@@ -53,6 +53,7 @@ brew install ossp-uuid
 brew install pkg-config
 brew install readline
 brew install wxwidgets
+brew install unixodbc
 brew install zlib
 
 # Docker
