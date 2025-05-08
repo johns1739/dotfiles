@@ -130,6 +130,7 @@
   (completion-list-mode . consult-preview-at-point-mode))
 
 (use-package consult-denote
+  :disabled
   :bind (:map notes-map
               ("f" . consult-denote-find)
               ("s" . consult-denote-grep))
@@ -216,6 +217,7 @@
   :bind (:map search-map ("<" . deadgrep)))
 
 (use-package denote
+  :disabled
   :bind (:map notes-map
               ("SPC" . denote-open-or-create)
               ("n" . denote-open-or-create)
@@ -230,14 +232,6 @@
   (denote-known-keywords '("private"))
   (denote-date-prompt-use-org-read-date t)
   :config
-  ;; https://orgmode.org/manual/Capture-templates.html
-  (with-eval-after-load 'org-capture
-    (add-to-list 'org-capture-templates
-                 '("j" "Journal" entry
-                   (file denote-journal-extras-path-to-new-or-existing-entry)
-                   "* %U %?\n%i"
-                   :kill-buffer t
-                   :empty-lines 1)))
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
@@ -692,17 +686,17 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind (:map notes-map
+              ("SPC" . org-search-view)
               (";" . org-todo-list)
               (":" . org-agenda-list)
               ("," . org-capture-goto-last-stored)
-              ("t" . org-capture)
-              ("o" . org-search-view)
-              ("S" . org-occur-in-agenda-files)
+              ("n" . org-capture)
+              ("s" . org-occur-in-agenda-files)
               :map org-mode-map
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading))
   :custom
-  (org-directory notes-directory)
+  (org-directory "~/.notes")
   (org-agenda-files (list org-directory))
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far) ;; TODO: Org deadlines show up, but not scheduled in the todo-list
@@ -734,7 +728,9 @@
                             ("CANCELED" . "sienna")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?" :prepend t :empty-lines 1))))
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?" :prepend t :empty-lines 1)
+     ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t :empty-lines 1)
+     ("j" "Note" entry (file+datetree "journal.org") "* %?\nEntered on %U\n%i" :prepend t :empty-lines 1))))
 
 (use-package pinentry
   :init
