@@ -712,17 +712,15 @@
      (tags priority-down category-keep)
      (search category-keep)))
   (org-todo-keywords
-   '((sequence "TODO(t!)" "ACTIVE(a!)" "WAITING(w@/!)" "|" "DONE(d@/!)" "CANCELED(c@/!)")))
-  (org-tag-faces '(("bug"  . "sienna")
-                   ("feature" . "goldenrod")
-                   ("chore" . "khaki")))
+   '((sequence "TODO(t!)" "ACTIVE(a!)" "BLOCKED(b@/!)" "|" "DONE(d@/!)" "CANCELED(c@/!)")))
   (org-todo-keyword-faces '(("TODO" . "goldenrod")
                             ("ACTIVE" . "dark khaki")
+                            ("BLOCKED" . "peru")
                             ("DONE" . "dark olive green")
                             ("CANCELED" . "sienna")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?" :prepend t :empty-lines 1)
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nEntered on %U" :prepend t :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t :empty-lines 1)
      ("j" "Journal" entry (file+datetree "journal.org") "* %?\nEntered on %U\n%i" :prepend t :empty-lines 1))))
 
