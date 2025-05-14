@@ -4,22 +4,6 @@
   :doc "Global leader keymap.")
 (keymap-set ctl-x-map "SPC" global-leader-map)
 
-(defvar-keymap notes-map
-  :doc "Notes map")
-(keymap-set global-leader-map "n" notes-map)
-
-(defvar-keymap compilation-map
-  :doc "Compilation map")
-(keymap-set global-leader-map "x" compilation-map)
-
-(defvar-keymap open-toggle-map
-  :doc "Toggle map")
-(keymap-set global-leader-map "o" open-toggle-map)
-
-(defvar-keymap editor-settings-map
-  :doc "Editor Settings map")
-(keymap-set global-leader-map "e" editor-settings-map)
-
 (keymap-set global-leader-map "v" vc-prefix-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
@@ -45,7 +29,9 @@
            ("s-t" . tab-bar-new-tab)
            ("s-w" . tab-bar-close-tab)
 
+           ;; Global Leader Bindings
            :map global-leader-map
+
            ("SPC" . switch-to-buffer)
            ("TAB" . indent-buffer)
            ("=" . balance-windows)
@@ -53,6 +39,40 @@
            ("1" . delete-other-windows)
            ("2" . split-window-below-and-jump)
            ("3" . split-window-right-and-jump)
+
+           ;; Compilation
+           ("x ," . compile)
+           ("x <" . comint)
+           ("x ." . compile-dwim)
+           ("x >" . comint-dwim)
+           ("x B" . eval-buffer)
+           ("x d" . flymake-show-buffer-diagnostics)
+           ("x D" . flymake-show-project-diagnostics)
+           ("x g" . recompile)
+           ("x n" . next-error)
+           ("x p" . previous-error)
+           ("x y" . copy-relative-file-name)
+           ("x Y" . copy-absolute-file-name)
+
+           ;; Open / Toggle
+           ("o t" . project-eshell)
+           ("o T" . eshell)
+           ("o c" . calc)
+
+           ;; Editor Settings
+           ("e $" . flyspell-mode)
+           ("e ." . load-theme)
+           ("e c" . display-fill-column-indicator-mode)
+           ("e C" . global-display-fill-column-indicator-mode)
+           ("e f" . set-font-size)
+           ("e h" . hl-line-mode)
+           ("e H" . global-hl-line-mode)
+           ("e n" . display-line-numbers-mode)
+           ("e N" . global-display-line-numbers-mode)
+           ("e R" . restart-emacs)
+           ("e t" . toggle-truncate-lines)
+           ("e v" . visual-line-mode)
+           ("e V" . global-visual-line-mode)
 
            :map goto-map
            ("SPC" . switch-to-buffer)
@@ -62,20 +82,18 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
-           ("d" . flymake-show-buffer-diagnostics)
-           ("D" . flymake-show-project-diagnostics)
            ("f" . find-file-at-point)
            ("h" . eldoc)
            ("j" . jump-to-register)
            ("J" . point-to-register)
            ("m" . bookmark-jump)
            ("M" . bookmark-set)
-           ("p" . project-switch-project)
            ("u" . goto-address-at-point)
 
            :map tab-prefix-map
            ("SPC" . tab-switch)
            ("'" . tab-recent)
+           ("T" . tab-bar-mode)
 
            :map search-map
            ("SPC" . project-switch-to-buffer)
@@ -87,43 +105,6 @@
            ("K" . delete-matching-lines)
            ("s" . project-find-regexp)
            ("r" . recentf-open)
-
-           :map compilation-map
-           ("," . compile)
-           ("<" . comint)
-           ("." . compile-dwim)
-           (">" . comint-dwim)
-           ("B" . eval-buffer)
-           ("g" . recompile)
-           ("n" . next-error)
-           ("p" . previous-error)
-           ("y" . copy-relative-file-name)
-
-           :map open-toggle-map
-           ("t" . project-eshell)
-           ("T" . eshell)
-           ("c" . calc)
-
-           :map editor-settings-map
-           ("$" . flyspell-mode)
-           ("=" . set-font-size)
-           ("c" . load-theme)
-           ("f" . display-fill-column-indicator-mode)
-           ("F" . global-display-fill-column-indicator-mode)
-           ("h" . hl-line-mode)
-           ("H" . global-hl-line-mode)
-           ("n" . display-line-numbers-mode)
-           ("N" . global-display-line-numbers-mode)
-           ("R" . restart-emacs)
-           ("t" . tab-bar-mode)
-           ("l" . toggle-truncate-lines)
-           ("v" . visual-line-mode)
-           ("V" . global-visual-line-mode)
-
-           :map project-prefix-map
-           ("SPC" . project-switch-to-buffer)
-           ("%" . project-query-replace-regexp)
-           (";" . flymake-show-project-diagnostics)
 
            :map help-map
            ("h" . nil))
@@ -378,9 +359,7 @@
 
 ;; project settings
 (setq project-switch-commands '((project-find-file "Find file" "f")
-                                (project-find-dir "Find directory" "d")
-                                (project-vc-dir "VC-Dir" "v")
-                                (project-eshell "Eshell" "e")))
+                                (project-find-dir "Find directory" "d")))
 
 ;; vc settings
 (setq vc-handled-backends '(Git))
@@ -422,12 +401,6 @@
         (expand-file-name filename (project-directory))
       (expand-file-name filename default-directory))))
 
-(defun compile-dwim ()
-  (interactive)
-  (if (project-current)
-      (call-interactively #'project-compile)
-    (call-interactively #'compile)))
-
 (defun set-font-size ()
   "Set the font size of Emacs"
   (interactive)
@@ -462,6 +435,12 @@
   (universal-argument)
   (command-execute #'compile))
 
+(defun compile-dwim ()
+  (interactive)
+  (if (project-current)
+      (call-interactively #'project-compile)
+    (call-interactively #'compile)))
+
 (defun comint-dwim ()
   (interactive)
   (universal-argument)
@@ -485,12 +464,16 @@
 (defun copy-relative-file-name ()
   "Copy file path of current buffer relative to project directory."
   (interactive)
-  (kill-new (relative-file-name)))
+  (let ((rfn (relative-file-name)))
+    (kill-new (relative-file-name))
+    (message "Copied %s" rfn)))
 
 (defun copy-absolute-file-name ()
   "Copy absolute file path of current buffer."
   (interactive)
-  (kill-new (absolute-file-name)))
+  (let ((afn (absolute-file-name)))
+    (kill-new (absolute-file-name))
+    (message "Copied %s" afn)))
 
 (defun eglot-set-bindings ()
   "Inject eglot bindings."
@@ -498,7 +481,7 @@
              ([remap indent-buffer] . eglot-format)))
 (add-hook 'eglot-managed-mode-hook #'eglot-set-bindings)
 
-(defun treesit-install-default-languages ()
+(defun treesit-pull-languages ()
   "Install all language grammars registered with Treesitter"
   (interactive)
   (require 'treesit)

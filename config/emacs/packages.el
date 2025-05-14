@@ -121,8 +121,8 @@
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          ([remap flymake-show-buffer-diagnostics] . consult-flymake)
-         :map compilation-map
-         ("SPC" . consult-compile-error)
+         :map global-leader-map
+         ("x SPC" . consult-compile-error)
          :map search-map
          (">" . consult-ripgrep-symbol-at-point)
          ("I" . consult-imenu-multi)
@@ -133,7 +133,7 @@
 
 (use-package consult-denote
   :disabled
-  :bind (:map notes-map
+  :bind (:map global-leader-map
               ("N f" . consult-denote-find)
               ("N s" . consult-denote-grep))
   :custom
@@ -452,8 +452,8 @@
 (use-package highlight-indent-guides
   :disabled ;; interferes with treesitter font-locking
   :if (display-graphic-p)
-  :bind (:map editor-settings-map
-              ("g" . highlight-indent-guides-mode))
+  :bind (:map global-leader-map
+              ("e g" . highlight-indent-guides-mode))
   :hook (prog-mode . highlight-indent-guides-mode)
   :custom
   (highlight-indent-guides-method 'bitmap)
@@ -677,13 +677,13 @@
   :hook
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
-  :bind (:map notes-map
-              ("SPC" . org-search-view)
-              (";" . org-todo-list)
-              (":" . org-agenda-list)
-              ("," . org-capture-goto-last-stored)
-              ("n" . org-capture)
-              ("s" . org-occur-in-agenda-files)
+  :bind (:map global-leader-map
+              ("n SPC" . org-search-view)
+              ("n ;" . org-todo-list)
+              ("n :" . org-agenda-list)
+              ("n '" . org-capture-goto-last-stored)
+              ("n n" . org-capture)
+              ("n s" . org-occur-in-agenda-files)
               :map org-mode-map
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading))
@@ -729,9 +729,9 @@
 
 (use-package popper
   :defer 3
-  :bind (:map open-toggle-map
-              ("o" . popper-toggle)
-              ("O" . popper-toggle-type))
+  :bind (:map global-leader-map
+              ("o o" . popper-toggle)
+              ("o O" . popper-toggle-type))
   :init
   (defun popper-setup ()
     (bind-keys :map (current-local-map)
@@ -882,7 +882,8 @@
   (setq sqlformat-args '("-s2" "-g")))
 
 (use-package trashed
-  :bind (:map open-toggle-map ("z" . trashed))
+  :bind (:map global-leader-map
+              ("o z" . trashed))
   :commands (trashed)
   :config
   (setq trashed-action-confirmer 'y-or-n-p)
@@ -894,9 +895,9 @@
   :bind (:map treemacs-mode-map
               ("j" . treemacs-next-line)
               ("k" . treemacs-previous-line)
-              :map open-toggle-map
-              ("P" . treemacs)
-              ("p" . treemacs-select-window))
+              :map global-leader-map
+              ("o p" . treemacs-select-window)
+              ("o P" . treemacs))
   :custom
   (treemacs-no-png-images t)
   (treemacs-hide-dot-git-directory t)
@@ -925,9 +926,9 @@
 (use-package vterm
   :disabled ;; Eat is a better termianl emulator.
   :if (display-graphic-p)
-  :bind (:map open-toggle-map
-              ("t" . vterm-project)
-              ("T" . vterm-named))
+  :bind (:map global-leader-map
+              ("o t" . vterm-project)
+              ("o T" . vterm-named))
   :init
   (defun vterm-project ()
     (interactive)
