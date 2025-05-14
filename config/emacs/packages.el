@@ -134,8 +134,8 @@
 (use-package consult-denote
   :disabled
   :bind (:map notes-map
-              ("f" . consult-denote-find)
-              ("s" . consult-denote-grep))
+              ("N f" . consult-denote-find)
+              ("N s" . consult-denote-grep))
   :custom
   (consult-denote-grep-command 'consult-ripgrep)
   :config
@@ -212,18 +212,16 @@
 
 (use-package denote
   :disabled
-  :bind (:map notes-map
-              ("SPC" . denote-open-or-create)
-              ("n" . denote-open-or-create)
-              ("c" . denote)
-              ("j" . denote-journal-extras-new-or-existing-entry)
-              ("l" . denote-link-or-create)
-              ("k" . denote-find-link)
-              ("K" . denote-find-backlink)
-              ("r" . denote-rename-file-using-front-matter))
+  :bind (:map global-leader-map
+              ("N SPC" . denote-open-or-create)
+              ("N n" . denote)
+              ("N j" . denote-journal-extras-new-or-existing-entry)
+              ("N l" . denote-link-or-create)
+              ("N k" . denote-find-link)
+              ("N K" . denote-find-backlink)
+              ("N r" . denote-rename-file-using-front-matter))
   :custom
-  (denote-directory notes-directory)
-  (denote-known-keywords '("private"))
+  (denote-directory "~/workspaces/notes")
   (denote-date-prompt-use-org-read-date t)
   :config
   (denote-rename-buffer-mode))

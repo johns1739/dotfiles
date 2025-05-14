@@ -9,6 +9,9 @@ brew update
 # Git
 brew install git
 
+# AWS
+brew install awscli
+
 # Btop
 brew install btop
 
@@ -29,7 +32,7 @@ brew install --cask ghostty
 
 # Emacs
 brew tap d12frosted/emacs-plus
-brew install emacs-plus \
+brew install emacs-plus@31 \
      --with-modern-black-dragon-icon \
      --with-debug \
      --with-imagemagick \
@@ -49,6 +52,7 @@ brew install curl
 brew install gcc
 brew install guile
 brew install icu4c
+brew install jq
 brew install libxslt fop
 brew install libyaml
 brew install openssl
@@ -68,39 +72,39 @@ brew link icu4c --force
 # Asdf
 brew install asdf
 
-# Elixir
+## Elixir
 asdf plugin add elixir https://github.com/asdf-vm/asdf-elixir.git
 asdf install elixir latest
 
-# Erlang
+## Erlang
 asdf plugin add erlang https://github.com/asdf-vm/asdf-erlang.git
 KERL_BUILD_DOCS=yes
 KERL_INSTALL_HTMLDOCS=yes
 KERL_INSTALL_MANPAGES=yes
 asdf install erlang latest
 
-# Ruby
+## Ruby
 asdf plugin add ruby https://github.com/asdf-vm/asdf-ruby.git
 asdf install ruby latest
 # gem install rails
 # gem install solargraph
 # gem install rubocop
 
-# Python
+## Python
 asdf plugin add python
 asdf install python latest
 
-# Golang
+## Golang
 asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
 asdf install golang latest
 go install -v golang.org/x/tools/gopls@latest
 asdf reshim golang
 
-# Zig
+## Zig
 asdf plugin add zig https://github.com/asdf-community/asdf-zig.git
 asdf install zig latest
 
-# Postgres
+## Postgres
 asdf plugin add postgres
 asdf install postgres latest
 # pg_ctl start/stop
