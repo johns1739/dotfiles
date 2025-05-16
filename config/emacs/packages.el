@@ -655,6 +655,7 @@
   (completion-category-overrides nil))
 
 (use-package org
+  ;; Useful documentation: https://orgmode.org/worg/org-syntax.html
   :defer t
   :ensure nil
   :straight nil
@@ -680,11 +681,11 @@
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
               ("n SPC" . org-search-view)
-              ("n ;" . org-todo-list)
-              ("n :" . org-agenda-list)
               ("n '" . org-capture-goto-last-stored)
+              ("n /" . org-occur-in-agenda-files)
+              ("n a" . org-agenda-list)
               ("n n" . org-capture)
-              ("n s" . org-occur-in-agenda-files)
+              ("n t" . org-todo-list)
               :map org-mode-map
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading))
@@ -719,9 +720,9 @@
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nEntered on %U" :prepend t :empty-lines 1)
-     ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\nEntered on %U\n%i" :prepend t :empty-lines 1))))
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nEntered on %U" :prepend t)
+     ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t)
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %U %?\n%i" :prepend t :tree-type month))))
 
 (use-package pinentry
   :init
@@ -948,6 +949,8 @@
   (vterm-max-scrollback 100000))
 
 (use-package which-key
+  :ensure nil
+  :straight nil
   :defer 3
   :config
   (which-key-mode))
