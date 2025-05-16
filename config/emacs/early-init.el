@@ -1,8 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 
 ;; timer report
+(require 'benchmark)
 (setq use-package-verbose t)
 (setq use-package-compute-statistics t)
+
+(defmacro tt (label &rest forms)
+  `(message "%s took %ss" ,label (benchmark-elapse ,@forms)))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
