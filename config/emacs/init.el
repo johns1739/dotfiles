@@ -1,7 +1,6 @@
 ;;-*- lexical-binding: t; -*-
 
-(defvar-keymap global-leader-map
-  :doc "Global leader keymap.")
+(defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-set ctl-x-map "SPC" global-leader-map)
 
 (keymap-set global-leader-map "v" vc-prefix-map)
@@ -12,18 +11,27 @@
 
 (bind-keys :map global-map
            ("C-x C-b" . ibuffer)
-           ("M-#" . dictionary-lookup-definition)
-           ("M-RET" . comment-indent-new-line)
-           ("M-i" . completion-at-point)
-           ("M-I" . hippie-expand)
-           ("M-L" . duplicate-line)
-           ("M-n" . forward-sexp)
-           ("M-o" . other-window)
-           ("M-p" . backward-sexp)
-           ("M-T" . transpose-lines)
            ("C-z" . nil) ;; unbind suspend-frame
 
-           ;; Works only in GUI
+           ;; movements
+           ([remap backward-sentence] . backward-sexp)
+           ([remap forward-sentence] . forward-sexp)
+           ("M-n" . forward-paragraph)
+           ("M-p" . backward-paragraph)
+           ("M-o" . other-window)
+
+           ;; indentation
+           ("M-RET" . comment-indent-new-line)
+
+           ;; completion
+           ("M-i" . completion-at-point)
+           ("M-I" . hippie-expand)
+
+           ;; text editing
+           ("M-L" . duplicate-line)
+           ("M-T" . transpose-lines)
+
+           ;; tab navigation (Works only in GUI)
            ("s-{" . tab-previous)
            ("s-}" . tab-next)
            ("s-t" . tab-bar-new-tab)
@@ -31,7 +39,6 @@
 
            ;; Global Leader Bindings
            :map global-leader-map
-
            ("SPC" . switch-to-buffer)
            ("TAB" . indent-buffer)
            ("=" . balance-windows)
@@ -45,7 +52,7 @@
            ("x <" . comint)
            ("x ." . compile-dwim)
            ("x >" . comint-dwim)
-           ("x B" . eval-buffer)
+           ("x b" . eval-buffer)
            ("x d" . flymake-show-buffer-diagnostics)
            ("x D" . flymake-show-project-diagnostics)
            ("x g" . recompile)
@@ -79,6 +86,7 @@
            ("." . xref-find-definitions)
            ("," . xref-go-back)
            (";" . scratch-buffer)
+           (":" . goto-line)
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
@@ -97,8 +105,8 @@
 
            :map search-map
            ("SPC" . project-switch-to-buffer)
-           ("," . rgrep)
            ("f" . project-find-file)
+           ("g" . rgrep)
            ("l" . occur)
            ("i" . imenu)
            ("k" . keep-lines)
@@ -132,7 +140,7 @@
 (setq completion-category-overrides '((file (styles . (basic partial-completion)))))
 (setq completion-ignore-case t)
 (setq completion-cycle-threshold 3)
-(setq completion-styles '(substring partial-completion initials flex))
+(setq completion-styles '(basic substring partial-completion))
 (setq completions-detailed t)
 (setq completions-format 'one-column)
 (setq completions-max-height 20)
@@ -193,13 +201,14 @@
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1))
   (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
-;; text / column settings
-(setq-default fill-column 80)
+;; column settings
 (setq-default display-fill-column-indicator-column 100)
+(column-number-mode -1)
+
+;; text settings
+(setq-default fill-column 80)
 (setq-default bidi-paragraph-direction 'left-to-right)
 (setq-default bidi-inhibit-bpa t)
-(column-number-mode -1)
-;; (global-display-fill-column-indicator-mode t)
 
 ;; delete settings
 (delete-selection-mode -1)
@@ -220,11 +229,11 @@
 (add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
+(setq-default display-line-numbers-type t)
 (setq display-line-numbers-width 3)
 (global-display-line-numbers-mode 1)
 (line-number-mode t)
 (global-so-long-mode t)
-(setq-default display-line-numbers-type t)
 
 ;; repeat settings
 (repeat-mode -1) ;; Sometimes gets in the way.
@@ -234,7 +243,7 @@
 (save-place-mode t)
 (savehist-mode t)
 
-;; space settings
+;; whitespace settings
 (add-hook 'before-save-hook #'whitespace-cleanup)
 (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
 (setq require-final-newline t)

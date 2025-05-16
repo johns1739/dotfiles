@@ -21,22 +21,23 @@
 ;;;; Packages
 
 (use-package benchmark-init
-  :disabled
+  :disabled ;; does not work well with gui, must run in terminal
   :demand
   :hook (after-init . benchmark-init/deactivate)
   :config
   (benchmark-init/activate))
 
 (use-package ace-window
+  :disabled
   :commands (ace-window)
   :bind  ([remap other-window] . ace-window))
 
 (use-package avy
   :bind (:map goto-map
               ("g" . avy-goto-char-2)
+              ("l" . avy-goto-line)
               ("a k" . avy-kill-whole-line)
               ("a K" . avy-kill-region)
-              ("a l" . avy-goto-line)
               ("a m" . avy-move-line)
               ("a M" . avy-move-region)
               ("a y" . avy-copy-line)
@@ -94,7 +95,7 @@
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
   (advice-add #'register-preview :override #'consult-register-window)
-  (defun consult-ripgrep-symbol-at-point ()
+  (defun consult-ripgrep-thing-at-point ()
     (interactive)
     (consult-ripgrep nil (format "%s -- -w" (thing-at-point 'symbol))))
   :bind (([remap Info-search] . consult-info)
@@ -124,7 +125,7 @@
          :map global-leader-map
          ("x SPC" . consult-compile-error)
          :map search-map
-         (">" . consult-ripgrep-symbol-at-point)
+         (">" . consult-ripgrep-thing-at-point)
          ("I" . consult-imenu-multi)
          ("L" . consult-focus-lines)
          ("o" . consult-outline))
@@ -173,9 +174,9 @@
               ;; ("RET" . nil)
               ("SPC" . corfu-insert-separator))
   :custom
-  (corfu-auto nil)
-  (corfu-auto-delay 0.3)
-  (corfu-auto-prefix 3)
+  (corfu-auto nil) ;; required to be off for the bindings defined above.
+  ;; (corfu-auto-delay 0.3)
+  ;; (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-echo-delay 0.3)
   (corfu-preselect 'valid)
@@ -208,7 +209,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package deadgrep
-  :bind (:map search-map ("<" . deadgrep)))
+  :bind (:map search-map ("g" . deadgrep)))
 
 (use-package denote
   :disabled
@@ -340,6 +341,7 @@
   (elixir-ts-mode . elixir-setup))
 
 (use-package ellama
+  :disabled
   :defer 3
   :custom
   (ellama-user-nick "Juan")
@@ -505,13 +507,13 @@
 (use-package magit
   :commands (magit-status magit-project-status magit-file-dispatch magit-blame-addition)
   :bind (:map vc-prefix-map
-              (";" . magit-status)
+              (";" . magit-status-here)
               (":" . magit-dispatch)
               ("." . magit-file-dispatch)
               ("g" . magit-blame-addition))
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit" ";")))
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "v")))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
@@ -634,7 +636,6 @@
      '("<backspace>" . meow-backward-delete)
      '("<escape>" . meow-cancel-selection))))
 
-
 (use-package modus-themes
   :defer t)
 
@@ -649,7 +650,7 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic))
+  (completion-styles '(substring partial-completion orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides nil))
 
@@ -720,7 +721,7 @@
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nEntered on %U" :prepend t :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Journal" entry (file+datetree "journal.org") "* %?\nEntered on %U\n%i" :prepend t :empty-lines 1))))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\nEntered on %U\n%i" :prepend t :empty-lines 1))))
 
 (use-package pinentry
   :init
@@ -880,6 +881,11 @@
   :config
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
+
+(use-package terraform-mode
+  :mode "\\.tf\'"
+  :custom
+  (terraform-indent-level 2))
 
 (use-package trashed
   :bind (:map global-leader-map
