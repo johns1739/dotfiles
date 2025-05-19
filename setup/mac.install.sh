@@ -48,6 +48,7 @@ brew install helix
 # Dependencies
 brew install autoconf
 brew install coreutils
+brew install crypto
 brew install curl
 brew install gcc
 brew install guile
@@ -104,9 +105,10 @@ asdf reshim golang
 asdf plugin add zig https://github.com/asdf-community/asdf-zig.git
 asdf install zig latest
 
-## Postgres
+## Postgres - many openssl issues, probably better to download pgadmin
 asdf plugin add postgres
 asdf install postgres latest
+# asdf set -u postgres 17.5
 # pg_ctl start/stop
 # psql -h localhost -U postgres
 # > create role juan superuser;

@@ -667,7 +667,8 @@
   :init
   (defun org-mode-setup ()
     (bind-keys :map (current-local-map)
-               ([remap goto-address-at-point] . org-open-at-point))
+               ([remap goto-address-at-point] . org-open-at-point)
+               ([remap kill-sentence] . org-cut-subtree))
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((C . t)
@@ -681,7 +682,7 @@
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
               ("n SPC" . org-search-view)
-              ("n '" . org-capture-goto-last-stored)
+              ("n ," . org-capture-goto-last-stored)
               ("n /" . org-occur-in-agenda-files)
               ("n a" . org-agenda-list)
               ("n n" . org-capture)
@@ -720,7 +721,7 @@
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nEntered on %U" :prepend t)
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nCreated on: %U" :prepend t)
      ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %U %?\n%i" :prepend t :tree-type month))))
 
