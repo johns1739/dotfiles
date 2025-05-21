@@ -713,8 +713,9 @@
      (todo priority-down category-keep deadline-up todo-state-down)
      (tags priority-down category-keep)
      (search category-keep)))
+  ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
   (org-todo-keywords
-   '((sequence "TODO(t!)" "ACTIVE(a!)" "BLOCKED(b@/!)" "|" "DONE(d!)" "CANCELED(c@/!)")))
+   '((sequence "TODO(t!)" "ACTIVE(a!)" "BLOCKED(b@)" "|" "DONE(d!)" "CANCELED(c@)")))
   (org-todo-keyword-faces '(("TODO" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
                             ("BLOCKED" . "sienna")
@@ -722,9 +723,12 @@
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nCreated on: %U" :prepend t)
-     ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i" :prepend t)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %U %?\n%i" :prepend t :tree-type month))))
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nCREATED: %U"
+      :prepend t :empty-lines-after 1)
+     ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i"
+      :prepend t :empty-lines-after 1)
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
+      :prepend t :tree-type month))))
 
 (use-package pinentry
   :init
