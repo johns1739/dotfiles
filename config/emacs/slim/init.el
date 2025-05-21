@@ -120,3 +120,7 @@
 
 (global-display-line-numbers-mode 1)
 (fido-mode 1)
+
+;; custom settings
+(setq custom-file (concat user-emacs-directory "custom.el"))
+(load custom-file :no-error-if-file-is-missing)

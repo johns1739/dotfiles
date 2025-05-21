@@ -8,6 +8,9 @@
     name = Juan Banda Jr
     email = jubajr17@gmail.com
 
+[merge]
+    ff = only
+
 [alias]
     p = push
     st = status -sb
