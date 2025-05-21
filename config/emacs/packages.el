@@ -28,7 +28,6 @@
   (benchmark-init/activate))
 
 (use-package ace-window
-  :disabled
   :commands (ace-window)
   :bind  ([remap other-window] . ace-window))
 
@@ -130,7 +129,9 @@
          ("L" . consult-focus-lines)
          ("o" . consult-outline))
   :hook
-  (completion-list-mode . consult-preview-at-point-mode))
+  (completion-list-mode . consult-preview-at-point-mode)
+  :config
+  (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
 (use-package consult-denote
   :disabled

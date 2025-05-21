@@ -2,7 +2,7 @@
 # git maintenace start
 
 [core]
-    autocrlf = true
+    autocrlf = input
 
 [user]
     name = Juan Banda Jr

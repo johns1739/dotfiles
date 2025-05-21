@@ -1,21 +1,12 @@
 ;;-*- lexical-binding: t; -*-
 
-(defvar-keymap global-leader-map :doc "Global leader keymap.")
-(keymap-set ctl-x-map "SPC" global-leader-map)
-
-(keymap-set global-leader-map "v" vc-prefix-map)
-(keymap-set global-leader-map "g" goto-map)
-(keymap-set global-leader-map "s" search-map)
-(keymap-set global-leader-map "p" project-prefix-map)
-(keymap-set global-leader-map "t" tab-prefix-map)
-
 (bind-keys :map global-map
+           ("C-x C-b" . ibuffer)
+           ("C-z" . nil) ;; unbind suspend-frame
            ([remap backward-sentence] . backward-sexp)
            ([remap forward-sentence] . forward-sexp)
            ([remap split-window-below] . split-window-below-and-jump)
            ([remap split-window-right] . split-window-right-and-jump)
-           ("C-x C-b" . ibuffer)
-           ("C-z" . nil) ;; unbind suspend-frame
            ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph)
            ("M-o" . other-window)
@@ -24,56 +15,6 @@
            ("M-I" . hippie-expand)
            ("M-L" . duplicate-line)
            ("M-T" . transpose-lines)
-
-           ;; tab navigation (Works only in GUI)
-           ("s-{" . tab-previous)
-           ("s-}" . tab-next)
-           ("s-t" . tab-bar-new-tab)
-           ("s-w" . tab-bar-close-tab)
-
-           ;; Global Leader Bindings
-           :map global-leader-map
-           ("SPC" . switch-to-buffer)
-           ("TAB" . indent-buffer)
-           ("=" . balance-windows)
-           ("0" . delete-window)
-           ("1" . delete-other-windows)
-           ("2" . split-window-below-and-jump)
-           ("3" . split-window-right-and-jump)
-
-           ;; Compilation
-           ("x ," . compile)
-           ("x <" . comint)
-           ("x ." . compile-dwim)
-           ("x >" . comint-dwim)
-           ("x b" . eval-buffer)
-           ("x d" . flymake-show-buffer-diagnostics)
-           ("x D" . flymake-show-project-diagnostics)
-           ("x g" . recompile)
-           ("x n" . next-error)
-           ("x p" . previous-error)
-           ("x y" . copy-relative-file-name)
-           ("x Y" . copy-absolute-file-name)
-
-           ;; Open / Toggle
-           ("o t" . project-eshell)
-           ("o T" . eshell)
-           ("o c" . calc)
-
-           ;; Editor Settings
-           ("e $" . flyspell-mode)
-           ("e ." . load-theme)
-           ("e c" . display-fill-column-indicator-mode)
-           ("e C" . global-display-fill-column-indicator-mode)
-           ("e f" . set-font-size)
-           ("e h" . hl-line-mode)
-           ("e H" . global-hl-line-mode)
-           ("e n" . display-line-numbers-mode)
-           ("e N" . global-display-line-numbers-mode)
-           ("e R" . restart-emacs)
-           ("e t" . toggle-truncate-lines)
-           ("e v" . visual-line-mode)
-           ("e V" . global-visual-line-mode)
 
            :map goto-map
            ("SPC" . switch-to-buffer)
@@ -92,11 +33,6 @@
            ("M" . bookmark-set)
            ("u" . goto-address-at-point)
 
-           :map tab-prefix-map
-           ("SPC" . tab-switch)
-           ("'" . tab-recent)
-           ("T" . tab-bar-mode)
-
            :map search-map
            ("SPC" . project-switch-to-buffer)
            ("f" . project-find-file)
@@ -114,21 +50,11 @@
 ;; isearch settings
 (setq isearch-wrap-pause 'no)
 
-;; register settings
-(setq register-preview-delay 0.5)
-
 ;; duplicating line settings
 (setq duplicate-line-final-position 1)
 
-;; navigating errors settings
-(setq next-error-recenter '(4))
-(setq next-error-highlight 1.0)
-(setq next-error-highlight-no-select 1.0)
-(setq next-error-message-highlight t)
-(setq next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
-
 ;; completion settings
-(setq completion-auto-help 'always)
+(setq completion-auto-help t)
 (setq completion-auto-select 'second-tab)
 (setq completion-category-defaults nil)
 (setq completion-category-overrides '((file (styles . (basic partial-completion)))))
@@ -140,15 +66,8 @@
 (setq completions-max-height 20)
 
 ;; tab settings
-(setq tab-always-indent t)
+(setq tab-always-indent 'complete)
 (setq-default tab-width 4)
-
-;; tab-bar settings
-(setq tab-bar-select-tab-modifiers '(super))
-(setq tab-bar-close-button-show nil)
-(setq tab-bar-close-button nil)
-(setq tab-bar-new-button-show nil)
-(setq tab-bar-new-button nil)
 
 ;; xref / grep settings
 (setq xref-search-program 'ripgrep)
@@ -172,58 +91,15 @@
     ad-do-it))
 (ad-activate 'hippie-expand)
 
-;; diagnostics
-(setq flymake-fringe-indicator-position 'right-fringe)
-
-;; compilation settings
-(setq compilation-window-height 20)
-(setq compilation-context-lines 10)
-(setq compilation-always-kill t)
-(setq compilation-scroll-output t)
-(setq compilation-max-output-line-length 200)
-(setq compilation-error-regexp-alist '())
-(setq compilation-error-regexp-alist-alist '())
-(with-eval-after-load 'compile
-  ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
-  (add-to-list 'compilation-error-regexp-alist-alist
-               '(failure-newline-target
-                 "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]" 1 2 nil nil 1))
-  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
-  (add-to-list 'compilation-error-regexp-alist-alist
-               '(simple-spaced-target
-                 "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1))
-  (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
-
-;; column settings
-(setq-default display-fill-column-indicator-column 100)
 (column-number-mode -1)
-
-;; text settings
-(setq-default fill-column 80)
-(setq-default bidi-paragraph-direction 'left-to-right)
-(setq-default bidi-inhibit-bpa t)
-
-;; delete settings
-(delete-selection-mode -1)
-
-;; desktop settings
-(desktop-save-mode -1) ;; After a while, CPU gets bogged down with all tracked files under LSP
-
-;; electric / parens settings
+(delete-selection-mode 1)
 (electric-indent-mode t)
 (electric-pair-mode t)
-(setq show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
-
-;; eldoc settings
-(global-eldoc-mode t)
-(setq eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
 
 ;; help / info settings
 (add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
-(setq-default display-line-numbers-type t)
 (setq display-line-numbers-width 3)
 (global-display-line-numbers-mode 1)
 (line-number-mode t)
@@ -249,26 +125,6 @@
 ;; minibuffer settings
 (setq max-mini-window-height 0.2)
 (setq enable-recursive-minibuffers t) ;; Might be confusing
-
-;; revert settings
-(global-auto-revert-mode t)
-(setq global-auto-revert-non-file-buffers t)
-(setq auto-revert-avoid-polling t)
-
-;; buffer settings
-(setq ibuffer-old-time 24)
-(add-to-list 'display-buffer-alist
-             '("\\*Help\\*"
-               (display-buffer-reuse-window display-buffer-pop-up-window)
-               (inhibit-same-window . t)))
-(add-to-list 'display-buffer-alist
-             '("\\*Dictionary\\*"
-               (display-buffer-reuse-window display-buffer-pop-up-window)
-               (inhibit-same-window . t)))
-(add-to-list 'display-buffer-alist
-             '("\\*Completions\\*"
-               (display-buffer-reuse-window display-buffer-pop-up-window)
-               (inhibit-same-window . t) (window-height . 10)))
 
 ;; history settings
 (setq history-delete-duplicates t)

@@ -1,21 +1,14 @@
 ;;-*- lexical-binding: t; -*-
 
-(defvar-keymap global-leader-map :doc "Global leader keymap.")
-(keymap-set ctl-x-map "SPC" global-leader-map)
-
-(keymap-set global-leader-map "v" vc-prefix-map)
-(keymap-set global-leader-map "g" goto-map)
-(keymap-set global-leader-map "s" search-map)
-(keymap-set global-leader-map "p" project-prefix-map)
-(keymap-set global-leader-map "t" tab-prefix-map)
-
 (bind-keys :map global-map
+           ("C-x C-b" . ibuffer)
+           ("C-z" . nil) ;; unbind suspend-frame
            ([remap backward-sentence] . backward-sexp)
            ([remap forward-sentence] . forward-sexp)
            ([remap split-window-below] . split-window-below-and-jump)
            ([remap split-window-right] . split-window-right-and-jump)
-           ("C-x C-b" . ibuffer)
-           ("C-z" . nil) ;; unbind suspend-frame
+           ("2" . split-window-below-and-jump)
+           ("3" . split-window-right-and-jump)
            ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph)
            ("M-o" . other-window)
@@ -24,56 +17,6 @@
            ("M-I" . hippie-expand)
            ("M-L" . duplicate-line)
            ("M-T" . transpose-lines)
-
-           ;; tab navigation (Works only in GUI)
-           ("s-{" . tab-previous)
-           ("s-}" . tab-next)
-           ("s-t" . tab-bar-new-tab)
-           ("s-w" . tab-bar-close-tab)
-
-           ;; Global Leader Bindings
-           :map global-leader-map
-           ("SPC" . switch-to-buffer)
-           ("TAB" . indent-buffer)
-           ("=" . balance-windows)
-           ("0" . delete-window)
-           ("1" . delete-other-windows)
-           ("2" . split-window-below-and-jump)
-           ("3" . split-window-right-and-jump)
-
-           ;; Compilation
-           ("x ," . compile)
-           ("x <" . comint)
-           ("x ." . compile-dwim)
-           ("x >" . comint-dwim)
-           ("x b" . eval-buffer)
-           ("x d" . flymake-show-buffer-diagnostics)
-           ("x D" . flymake-show-project-diagnostics)
-           ("x g" . recompile)
-           ("x n" . next-error)
-           ("x p" . previous-error)
-           ("x y" . copy-relative-file-name)
-           ("x Y" . copy-absolute-file-name)
-
-           ;; Open / Toggle
-           ("o t" . project-eshell)
-           ("o T" . eshell)
-           ("o c" . calc)
-
-           ;; Editor Settings
-           ("e $" . flyspell-mode)
-           ("e ." . load-theme)
-           ("e c" . display-fill-column-indicator-mode)
-           ("e C" . global-display-fill-column-indicator-mode)
-           ("e f" . set-font-size)
-           ("e h" . hl-line-mode)
-           ("e H" . global-hl-line-mode)
-           ("e n" . display-line-numbers-mode)
-           ("e N" . global-display-line-numbers-mode)
-           ("e R" . restart-emacs)
-           ("e t" . toggle-truncate-lines)
-           ("e v" . visual-line-mode)
-           ("e V" . global-visual-line-mode)
 
            :map goto-map
            ("SPC" . switch-to-buffer)
@@ -92,11 +35,6 @@
            ("M" . bookmark-set)
            ("u" . goto-address-at-point)
 
-           :map tab-prefix-map
-           ("SPC" . tab-switch)
-           ("'" . tab-recent)
-           ("T" . tab-bar-mode)
-
            :map search-map
            ("SPC" . project-switch-to-buffer)
            ("f" . project-find-file)
@@ -114,18 +52,8 @@
 ;; isearch settings
 (setq isearch-wrap-pause 'no)
 
-;; register settings
-(setq register-preview-delay 0.5)
-
 ;; duplicating line settings
 (setq duplicate-line-final-position 1)
-
-;; navigating errors settings
-(setq next-error-recenter '(4))
-(setq next-error-highlight 1.0)
-(setq next-error-highlight-no-select 1.0)
-(setq next-error-message-highlight t)
-(setq next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
 
 ;; completion settings
 (setq completion-auto-help 'always)

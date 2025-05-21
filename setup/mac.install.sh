@@ -93,6 +93,7 @@ asdf install ruby latest
 
 ## Python
 asdf plugin add python
+brew install python-tk
 asdf install python latest
 
 ## Golang
