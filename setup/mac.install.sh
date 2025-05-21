@@ -31,6 +31,8 @@ brew install --cask font-jetbrains-mono-nerd-font
 brew install --cask ghostty
 
 # Emacs
+mkdir ~/.config
+ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
 brew tap d12frosted/emacs-plus
 brew install emacs-plus@31 \
      --with-modern-black-dragon-icon \

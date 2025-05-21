@@ -1,6 +1,5 @@
 ;;-*- lexical-binding: t; -*-
 
-;; alias e="emacs -nw --init-directory=~/.config/emacs/slim"
 (bind-keys :map global-map
            ("C-x C-b" . ibuffer)
            ("C-z" . nil) ;; unbind suspend-frame
