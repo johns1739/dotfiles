@@ -361,7 +361,9 @@
   (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1)))
 
 ;; project settings
-(setq project-switch-commands '((project-find-file "Find file" "f")
+(setq project-switch-commands '((project-switch-to-buffer "Find buffer" "SPC")
+                                (project-find-regexp "Search" "s")
+                                (project-find-file "Find file" "f")
                                 (project-find-dir "Find directory" "d")))
 
 ;; vc settings
