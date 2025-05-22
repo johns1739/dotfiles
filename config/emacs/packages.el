@@ -16,7 +16,9 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
 (setq straight-use-package-by-default t)
+(setq package-install-upgrade-built-in t)
 
 ;;;; Packages
 
@@ -43,7 +45,6 @@
               ("a Y" . avy-copy-region)))
 
 (use-package beacon
-  :defer 3
   :if (display-graphic-p)
   :config
   (beacon-mode 1))
@@ -52,7 +53,7 @@
   :mode "\\.c\\'"
   :ensure nil
   :straight nil
-  :defer
+  :defer t
   :init
   (add-to-list 'major-mode-remap-alist '(cc-mode . c-ts-mode)))
 
@@ -90,7 +91,7 @@
   (setq inferior-lisp-program "sbcl"))
 
 (use-package consult
-  :defer
+  :defer t
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
   (setq register-preview-function #'consult-register-format)
@@ -146,7 +147,6 @@
 
 (use-package copilot
   :disabled ;; requires copilot subscription token
-  :defer 3
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :after corfu
   :bind (:map copilot-completion-map
@@ -227,7 +227,6 @@
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
-  :defer 3
   :bind (:map vc-prefix-map
               ("," . diff-hl-show-hunk))
   :hook
@@ -341,7 +340,6 @@
 
 (use-package ellama
   :disabled
-  :defer 3
   :custom
   (ellama-user-nick "Juan")
   (ellama-assistant-nick "Cody")
@@ -411,9 +409,13 @@
   (flycheck-mode . flycheck-set-bindings))
 
 (use-package forge
-  :disabled ;; requires host authentication token
-  :defer 3
-  :after magit)
+  :disabled
+  :after magit
+  :init
+  ;; https://magit.vc/manual/forge/Setup-for-Githubcom.html
+  (setq auth-sources '("~/.authinfo"))
+  (with-eval-after-load 'magit
+    (require 'forge)))
 
 (use-package geiser-guile
   :commands (geiser geiser-mode)
@@ -536,7 +538,6 @@
   (makefile-bsdmake-mode . make-mode-setup))
 
 (use-package marginalia
-  :defer 3
   :init
   (setq completions-detailed nil)
   :config
@@ -737,7 +738,6 @@
     (pinentry-start)))
 
 (use-package popper
-  :defer 3
   :bind (:map global-leader-map
               ("o o" . popper-toggle)
               ("o O" . popper-toggle-type))
@@ -936,7 +936,6 @@
   :hook (after-init . vertico-mode))
 
 (use-package visual-replace
-  :defer 3
   :config
   (visual-replace-global-mode 1))
 
@@ -972,7 +971,6 @@
 (use-package which-key
   :ensure nil
   :straight nil
-  :defer 3
   :config
   (which-key-mode))
 
@@ -984,7 +982,6 @@
   :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
 
 (use-package yasnippet
-  :defer 3
   ;; https://joaotavora.github.io/yasnippet/index.html
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
