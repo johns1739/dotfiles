@@ -76,6 +76,9 @@
          ;; #'cape-line ;; Kinda buggy
          )))
 
+(use-package color-theme-sanityinc-tomorrow
+  :defer t)
+
 (use-package common-lisp-mode
   :straight nil
   :ensure nil
@@ -93,10 +96,6 @@
   (setq register-preview-function #'consult-register-format)
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
-  (advice-add #'register-preview :override #'consult-register-window)
-  (defun consult-ripgrep-thing-at-point ()
-    (interactive)
-    (consult-ripgrep nil (format "%s -- -w" (thing-at-point 'symbol))))
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
          ([remap goto-line] . consult-goto-line)
@@ -124,7 +123,6 @@
          :map global-leader-map
          ("x SPC" . consult-compile-error)
          :map search-map
-         (">" . consult-ripgrep-thing-at-point)
          ("I" . consult-imenu-multi)
          ("L" . consult-focus-lines)
          ("o" . consult-outline))
@@ -443,6 +441,9 @@
 (use-package gruber-darker-theme
   :defer t)
 
+(use-package gruvbox-theme
+  :defer t)
+
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-command] . helpful-command)
@@ -723,7 +724,7 @@
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\nCREATED: %U"
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\n"
       :prepend t :empty-lines-after 1)
      ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i"
       :prepend t :empty-lines-after 1)
@@ -889,6 +890,9 @@
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
 
+(use-package solarized-theme
+  :defer t)
+
 (use-package terraform-mode
   :mode "\\.tf\'"
   :custom
@@ -954,6 +958,17 @@
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 100000))
 
+(use-package web-mode
+  :mode
+  (("\\.phtml\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.tpl\\'" . web-mode)
+   ("\\.[agj]sp\\'" . web-mode)
+   ("\\.as[cp]x\\'" . web-mode)
+   ("\\.erb\\'" . web-mode)
+   ("\\.mustache\\'" . web-mode)
+   ("\\.djhtml\\'" . web-mode)))
+
 (use-package which-key
   :ensure nil
   :straight nil
@@ -979,6 +994,9 @@
 (use-package yasnippet-snippets
   :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
+
+(use-package zenburn-theme
+  :defer t)
 
 (use-package zig-mode
   :mode "\\.zig\\'")

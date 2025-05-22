@@ -88,8 +88,6 @@
            ("h" . eldoc)
            ("j" . jump-to-register)
            ("J" . point-to-register)
-           ("m" . bookmark-jump)
-           ("M" . bookmark-set)
            ("u" . goto-address-at-point)
 
            :map tab-prefix-map
@@ -101,10 +99,13 @@
            ("SPC" . project-switch-to-buffer)
            ("f" . project-find-file)
            ("g" . rgrep)
+           ("j" . list-registers)
            ("l" . occur)
            ("i" . imenu)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
+           ("m" . bookmark-jump)
+           ("M" . bookmark-set)
            ("s" . project-find-regexp)
            ("r" . recentf-open)
 
@@ -238,7 +239,6 @@
 (savehist-mode t)
 
 ;; whitespace settings
-(add-hook 'before-save-hook #'whitespace-cleanup)
 (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
 (setq require-final-newline t)
 
