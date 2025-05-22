@@ -695,7 +695,7 @@
   (org-directory "~/.notes")
   (org-agenda-files (list org-directory))
   (org-agenda-todo-ignore-deadlines 'far)
-  (org-agenda-todo-ignore-scheduled 'far) ;; TODO: Org deadlines show up, but not scheduled in the todo-list
+  (org-agenda-todo-ignore-scheduled 'far)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-cycle-hide-block-startup t)
   (org-hide-drawer-startup t)
