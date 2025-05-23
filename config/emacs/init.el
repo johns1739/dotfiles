@@ -340,7 +340,7 @@
 ;; frame settings
 (when (display-graphic-p)
   (add-to-list 'default-frame-alist '(height . 50))
-  (add-to-list 'default-frame-alist '(width . 125)))
+  (add-to-list 'default-frame-alist '(width . 140)))
 
 ;; emacs startup settings
 (setopt inhibit-startup-message t)
