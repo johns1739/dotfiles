@@ -511,9 +511,9 @@
 (use-package magit
   :commands (magit-status magit-project-status magit-file-dispatch magit-blame-addition)
   :bind (:map vc-prefix-map
-              (";" . magit-status-here)
-              (":" . magit-dispatch)
-              ("." . magit-file-dispatch)
+              (";" . magit-status)
+              ("." . magit-status-here)
+              (">" . magit-file-dispatch)
               ("g" . magit-blame-addition))
   :init
   (with-eval-after-load 'project
@@ -702,7 +702,7 @@
   (org-cycle-hide-block-startup t)
   (org-hide-drawer-startup t)
   (org-hide-emphasis-markers t)
-  (org-hide-leading-stars t)
+  (org-hide-leading-stars (display-graphic-p))
   (org-log-done 'time)
   (org-log-into-drawer t)
   (org-return-follows-link nil)
@@ -846,11 +846,11 @@
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
     (if (project-current)
-        (propertize (project-name (project-current)) 'face 'bold)))
+        (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)))
   (defun simple-modeline-segment-buffer-name-2 ()
     "Display buffer's relative-name in mode line."
     (propertize (concat "  " (mode-line-buffer-name)) 'face 'mode-line-buffer-id))
-  (defun simple-modeline-segment-end-spaces ()
+  (defun simple-modeline-segment-spaces ()
     (propertize "  "))
   (defun mode-line-buffer-name ()
     (if (buffer-file-name)
@@ -861,7 +861,8 @@
    '((
       meow-indicator
       simple-modeline-segment-modified
-      ;; simple-modeline-segment-project-name
+      simple-modeline-segment-spaces
+      simple-modeline-segment-project-name
       ;; simple-modeline-segment-buffer-name
       simple-modeline-segment-buffer-name-2
       simple-modeline-segment-position)
@@ -874,7 +875,7 @@
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
-      simple-modeline-segment-end-spaces
+      simple-modeline-segment-spaces
       ))))
 
 (use-package sqlformat

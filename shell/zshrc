@@ -6,9 +6,10 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-alias top="btop"
 alias emacs="emacs -nw"
 alias e="emacs -nw --init-directory=~/.config/emacs/slim"
+alias l="less"
+alias reload="source ~/.zshrc"
 
 # history
 # https://postgresqlstan.github.io/cli/zsh-history-options/
