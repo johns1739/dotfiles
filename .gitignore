@@ -1,4 +1,5 @@
 *.eln
+.DS_Store
 /config/btop/
 /config/emacs/.cache/
 /config/emacs/.lsp-session-v1
@@ -17,6 +18,7 @@
 /config/emacs/tramp
 /config/emacs/transient/
 /config/emacs/tree-sitter/
+backups
 custom.el
 history
 places
