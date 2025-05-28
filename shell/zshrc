@@ -5,11 +5,12 @@ PROMPT='%~ %# '
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
-
-alias emacs="emacs -nw"
-alias e="emacs -nw --init-directory=~/.config/emacs/slim"
 alias l="less"
 alias reload="source ~/.zshrc"
+
+# emacs
+alias emacs="emacs -nw"
+alias e="emacs -nw --init-directory=~/.config/emacs/slim"
 
 # history
 # https://postgresqlstan.github.io/cli/zsh-history-options/
@@ -24,7 +25,12 @@ setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 setopt INC_APPEND_HISTORY
 
+# docker
+alias dc="docker container"
+alias dl="docker logs -fn0"
+
 # fzf
+alias f="fzf"
 source <(fzf --zsh)
 
 # guile

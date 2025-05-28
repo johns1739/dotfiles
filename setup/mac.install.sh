@@ -6,32 +6,15 @@
 # mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
 brew update
 
-# Git
-brew install git
-
-# AWS
-brew install awscli
-
-# Btop
-brew install btop
-
-# Fzf
-brew install fzf
-
-# Ripgrep
-brew install ripgrep
-
-# GPG
-brew install gnupg
-
-# Fonts
+# Necessities
+brew install git btop fzf ripgrep btop
+brew install --cask ghostty
 brew install --cask font-jetbrains-mono-nerd-font
 
-# Ghostty
-brew install --cask ghostty
-
-# Emacs
+git clone 
 mkdir ~/.config
+mkdir ~/workspaces
+cd ~/workspaces && git clone https://github.com/johns1739/dotfiles.git
 ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
 brew tap d12frosted/emacs-plus
 brew install emacs-plus@31 \
@@ -41,22 +24,22 @@ brew install emacs-plus@31 \
      --with-mailutils \
      --with-no-frame-refocus
 
-# Neovim
-brew install neovim
-
-# Helix
-brew install helix
+# Optional
+brew install awscli
+brew install gnupg
+brew install --cask docker
 
 # Dependencies
+brew install asdf
 brew install autoconf
 brew install coreutils
 brew install crypto
 brew install curl
 brew install gcc
 brew install guile
-brew install icu4c
 brew install jq
-brew install libxslt fop
+brew install libxslt
+brew install fop
 brew install libyaml
 brew install openssl
 brew install ossp-uuid
@@ -66,14 +49,8 @@ brew install wxwidgets
 brew install unixodbc
 brew install zlib
 
-# Docker
-brew install --cask docker
-
-# Linking
+brew install icu4c
 brew link icu4c --force
-
-# Asdf
-brew install asdf
 
 ## Elixir
 asdf plugin add elixir https://github.com/asdf-vm/asdf-elixir.git
