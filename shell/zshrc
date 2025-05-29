@@ -1,10 +1,20 @@
 #!/bin/zsh
 
 PROMPT='%~ %# '
+autoload -U select-word-style
+select-word-style bash
+bindkey -e # emacs mode
+
+
+# editor integration
+export VISUAL="nano"
+export EDITOR=$VISUAL
+export GPG_TTY=$(tty) # used for gpg signing
 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
+
 alias l="less"
 alias reload="source ~/.zshrc"
 
@@ -14,16 +24,23 @@ alias e="emacs -nw --init-directory=~/.config/emacs/slim"
 
 # history
 # https://postgresqlstan.github.io/cli/zsh-history-options/
+HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
-SAVEHIST=10000
-setopt HIST_EXPIRE_DUPS_FIRST
-setopt HIST_FIND_NO_DUPS
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-setopt HIST_NO_STORE
-setopt HIST_REDUCE_BLANKS
-setopt HIST_VERIFY
-setopt INC_APPEND_HISTORY
+SAVEHIST=$HISTSIZE
+# setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+setopt APPEND_HISTORY            # append to history file
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
+setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+setopt HIST_NO_STORE             # Don't store history commands
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
 
 # docker
 alias dc="docker container"
@@ -51,7 +68,3 @@ export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
 # asdf
 export ASDF_DIR="$HOME/.asdf"
 export PATH="$ASDF_DIR/shims:$PATH"
-
-# editor integration
-export EDITOR="nvim"
-export GPG_TTY=$(tty) # used for gpg signing

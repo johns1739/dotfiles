@@ -22,15 +22,7 @@
 
 ;;;; Packages
 
-(use-package benchmark-init
-  :disabled ;; does not work well with gui, must run in terminal
-  :demand
-  :hook (after-init . benchmark-init/deactivate)
-  :config
-  (benchmark-init/activate))
-
 (use-package ace-window
-  :commands (ace-window)
   :bind  ([remap other-window] . ace-window))
 
 (use-package avy
@@ -59,13 +51,6 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
-  :commands (cape-dabbrev
-             cape--abbrev
-             cape-keyword
-             cape-file
-             cape-dict
-             cape-elisp-symbol
-             cape-line)
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -91,7 +76,6 @@
   (setq inferior-lisp-program "sbcl"))
 
 (use-package consult
-  :defer t
   :init
   (setq completion-in-region-function #'consult-completion-in-region)
   (setq register-preview-function #'consult-register-format)
@@ -326,17 +310,17 @@
     (bind-keys :map (current-local-map)
                ([remap compile-dwim] . elixir-compile)
                ([remap comint-dwim] . elixir-comint)))
+  :hook
+  (elixir-ts-mode . elixir-setup)
+  :config
   (with-eval-after-load 'eglot
-    (add-to-list 'exec-path "~/.lsp/elixir")
     (add-to-list 'eglot-server-programs
                  `((elixir-ts-mode heex-ts-mode) .
                    ,(if (and (fboundp 'w32-shell-dos-semantics)
                              (w32-shell-dos-semantics))
                         '("language_server.bat")
                       (eglot-alternatives
-                       '("language_server.sh" "start_lexical.sh"))))))
-  :hook
-  (elixir-ts-mode . elixir-setup))
+                       '("language_server.sh" "start_lexical.sh")))))))
 
 (use-package ellama
   :disabled
@@ -378,22 +362,16 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
-  :hook (after-init . exec-path-from-shell-initialize)
+  :if (and (memq window-system '(mac ns)) (display-graphic-p))
+  :demand
   :custom
-  (exec-path-from-shell-warn-duration-millis 1000))
-
-(use-package expand-region
-  :disabled ;; rarely used
-  :commands (er/expand-region)
-  :bind ("M-O" . er/expand-region))
+  (exec-path-from-shell-warn-duration-millis 1000)
+  :config
+  (exec-path-from-shell-initialize))
 
 (use-package flycheck
   ;; https://www.flycheck.org/en/latest/
-  :bind (:repeat-map flycheck-error-repeat-map
-                     ("n" . flycheck-next-error)
-                     ("p" . flycheck-previous-error)
-                     ("." . flycheck-display-error-at-point))
+  :commands (global-flycheck-mode flycheck-mode)
   :init
   (defun flycheck-set-bindings ()
     (bind-keys :map (current-local-map)
@@ -411,9 +389,10 @@
 (use-package forge
   :disabled
   :after magit
+  :custom
+  (auth-sources '("~/.authinfo"))
   :init
   ;; https://magit.vc/manual/forge/Setup-for-Githubcom.html
-  (setq auth-sources '("~/.authinfo"))
   (with-eval-after-load 'magit
     (require 'forge)))
 
@@ -455,25 +434,9 @@
          :map help-map
          ("." . helpful-at-point)))
 
-(use-package highlight-indent-guides
-  :disabled ;; interferes with treesitter font-locking
-  :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("e g" . highlight-indent-guides-mode))
-  :hook (prog-mode . highlight-indent-guides-mode)
-  :custom
-  (highlight-indent-guides-method 'bitmap)
-  (highlight-indent-guides-character ?|)
-  (highlight-indent-guides-responsive 'top)
-  (highlight-indent-guides-auto-top-character-face-perc 25))
-
-(use-package indent-bars
-  ;; Can replace highlight-indent-guides
-  :disabled) ;; Works only on mac Carbon version, not NS version: (version)
-
 (use-package janet-mode
   :mode "\\.janet$"
-  :init
+  :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(janet-mode "janet-lsp"))))
@@ -509,7 +472,7 @@
   (lsp-mode . lsp-set-bindings))
 
 (use-package magit
-  :commands (magit-status magit-project-status magit-file-dispatch magit-blame-addition)
+  :commands (magit-project-status)
   :bind (:map vc-prefix-map
               (";" . magit-status)
               ("." . magit-status-here)
@@ -538,8 +501,8 @@
   (makefile-bsdmake-mode . make-mode-setup))
 
 (use-package marginalia
-  :init
-  (setq completions-detailed nil)
+  :custom
+  (completions-detailed nil)
   :config
   (marginalia-mode 1))
 
@@ -642,15 +605,6 @@
 (use-package modus-themes
   :defer t)
 
-(use-package multiple-cursors
-  :disabled ;; rarely used, meow cursor tends to be better
-  :bind (("M-n" . mc/mark-next-like-this)
-         ("M-N" . mc/unmark-previous-like-this)
-         ("M-p" . mc/mark-previous-like-this)
-         ("M-P" . mc/unmark-next-like-this)
-         :map mc/keymap
-         ("<return>" . nil)))
-
 (use-package orderless
   :custom
   (completion-styles '(substring partial-completion orderless basic))
@@ -733,11 +687,13 @@
       :prepend t :tree-type month))))
 
 (use-package pinentry
+  ;; allows for secure entry of passphrases requested by GnuPG
   :init
   (with-eval-after-load 'magit
     (pinentry-start)))
 
 (use-package popper
+  :demand
   :bind (:map global-leader-map
               ("o o" . popper-toggle)
               ("o O" . popper-toggle-type))
@@ -789,7 +745,33 @@
   (python-indent-offset 4))
 
 (use-package ruby-ts-mode
+  :mode "\\.rb\\'"
   :init
+  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
+  (defun rails-compile ()
+    (interactive)
+    (setq compile-command
+          (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
+                 (let ((linum (number-to-string (line-number-at-pos)))
+                       (file-name (relative-file-name)))
+                   (if (< (line-number-at-pos) 5)
+                       (string-join (list "rails t " file-name))
+                     (string-join (list "rails t " (s-concat file-name ":" linum))))))
+                (t compile-command)))
+    (call-interactively #'compile-dwim))
+  (defun rails-comint ()
+    (interactive)
+    (universal-argument)
+    (command-execute #'rails-compile))
+  (defun ruby-setup ()
+    (setq-local compile-command "rails t")
+    (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
+    (bind-keys :map (current-local-map)
+               ([remap compile-dwim] . rails-compile)
+               ([remap comint-dwim] . rails-comint)))
+  :hook
+  (ruby-base-mode . ruby-setup)
+  :config
   (with-eval-after-load 'compile
     (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
     (add-to-list 'compilation-error-regexp-alist-alist
@@ -814,34 +796,10 @@
                        :definitions t
                        :rename t
                        :references t
-                       :folding t)))))
-  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-  (defun rails-compile ()
-    (interactive)
-    (setq compile-command
-          (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
-                 (let ((linum (number-to-string (line-number-at-pos)))
-                       (file-name (relative-file-name)))
-                   (if (< (line-number-at-pos) 5)
-                       (string-join (list "rails t " file-name))
-                     (string-join (list "rails t " (s-concat file-name ":" linum))))))
-                (t compile-command)))
-    (call-interactively #'compile-dwim))
-  (defun rails-comint ()
-    (interactive)
-    (universal-argument)
-    (command-execute #'rails-compile))
-  (defun ruby-setup ()
-    (setq-local compile-command "rails t")
-    (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
-    (bind-keys :map (current-local-map)
-               ([remap compile-dwim] . rails-compile)
-               ([remap comint-dwim] . rails-comint)))
-  :hook
-  (ruby-base-mode . ruby-setup))
+                       :folding t))))))
 
 (use-package simple-modeline
-  :hook (after-init . simple-modeline-mode)
+  :demand
   :init
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
@@ -876,7 +834,9 @@
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
       simple-modeline-segment-spaces
-      ))))
+      )))
+  :config
+  (simple-modeline-mode))
 
 (use-package sqlformat
   :disabled ;; Requires OS dependency postgresql.
@@ -902,7 +862,6 @@
 (use-package trashed
   :bind (:map global-leader-map
               ("o z" . trashed))
-  :commands (trashed)
   :config
   (setq trashed-action-confirmer 'y-or-n-p)
   (setq trashed-use-header-line t)
@@ -929,14 +888,17 @@
   :mode "\\.ts$"
   :custom
   (typescript-ts-mode-indent-offset 4)
-  :init
+  :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
 (use-package vertico
-  :hook (after-init . vertico-mode))
+  :demand
+  :config
+  (vertico-mode))
 
 (use-package visual-replace
+  :demand
   :config
   (visual-replace-global-mode 1))
 
@@ -977,12 +939,14 @@
 
 (use-package xclip
   :unless (display-graphic-p)
-  :hook (after-init . xclip-mode))
+  :config
+  (xclip-mode))
 
 (use-package yaml-ts-mode
   :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
 
 (use-package yasnippet
+  :demand
   ;; https://joaotavora.github.io/yasnippet/index.html
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))

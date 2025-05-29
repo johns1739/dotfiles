@@ -6,10 +6,13 @@
 # mkdir homebrew && curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
 brew update
 
-# Necessities
-brew install git btop fzf ripgrep btop
+# https://github.com/junegunn/fzf/tree/master
+brew install fzf
+
+brew install git btop ripgrep btop
 brew install --cask ghostty
 brew install --cask font-jetbrains-mono-nerd-font
+
 
 git clone 
 mkdir ~/.config
