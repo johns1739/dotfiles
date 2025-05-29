@@ -1,6 +1,6 @@
 ;;-*- lexical-binding: t; -*-
 
-;; mkdir -p ~/.config/emacs && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/minimal-init.el -o ~/.config/emacs/init.el
+;; mkdir -p ~/.config/emacs && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim/init.el -o ~/.config/emacs/init.el
 
 (add-hook 'emacs-startup-hook
           (lambda ()

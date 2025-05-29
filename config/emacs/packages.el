@@ -510,16 +510,19 @@
   :mode "\\.md\\'")
 
 (use-package meow
-  :hook
-  (after-init . meow-setup)
-  (after-init . meow-global-mode)
+  :demand
   :custom
   (meow-use-clipboard t)
   (meow-keypad--self-insert-undefined nil)
   (meow-expand-hint-remove-delay 2)
+  (meow-cursor-type-motion '(hbar . 2))
   :init
+  (defun meow-search-reverse ()
+    (interactive)
+    (unless (meow--direction-backward-p)
+      (meow-reverse))
+    (call-interactively #'meow-search))
   (defun meow-setup ()
-    (setq meow-cursor-type-motion '(hbar . 2))
     (set-face-attribute 'meow-insert-indicator nil :inherit 'bold)
     (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
@@ -565,10 +568,11 @@
      '("K" . meow-prev-expand)
      '("l" . meow-right)
      '("L" . meow-right-expand)
-     '("m" . meow-join)
-     '("M" . meow-pop-to-mark)
+     '("m" . meow-pop-to-mark)
+     '("M" . meow-unpop-to-mark)
      '("n" . meow-search)
-     '("N" . meow-unpop-to-mark)
+     '("n" . meow-search)
+     '("N" . meow-search-reverse)
      '("o" . other-window)
      '("O" . meow-block)
      '("p" . meow-yank)
@@ -600,7 +604,10 @@
      '("." . meow-bounds-of-thing)
      '(">" . meow-end-of-thing)
      '("<backspace>" . meow-backward-delete)
-     '("<escape>" . meow-cancel-selection))))
+     '("<escape>" . meow-cancel-selection)))
+  :config
+  (meow-setup)
+  (meow-global-mode))
 
 (use-package modus-themes
   :defer t)
