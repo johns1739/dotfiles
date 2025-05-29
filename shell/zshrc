@@ -29,6 +29,13 @@ setopt INC_APPEND_HISTORY
 alias dc="docker container"
 alias dl="docker logs -fn0"
 
+# tmux
+alias tt="tmux new-session"
+alias ts="tmux new-session -A -s" # [session-name]
+alias tk="tmux kill-session -t" # [session-name]
+alias ta="tmux attach" # attach to last session
+alias tls="tmux list-sessions"
+
 # fzf
 alias f="fzf"
 source <(fzf --zsh)
