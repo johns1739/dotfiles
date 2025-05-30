@@ -394,14 +394,10 @@
   (flycheck-mode . flycheck-set-bindings))
 
 (use-package forge
-  :disabled
   :after magit
+  :commands (forge-dispatch)
   :custom
-  (auth-sources '("~/.authinfo"))
-  :init
-  ;; https://magit.vc/manual/forge/Setup-for-Githubcom.html
-  (with-eval-after-load 'magit
-    (require 'forge)))
+  (auth-sources '("~/.authinfo")))
 
 (use-package geiser-guile
   :commands (geiser geiser-mode)
