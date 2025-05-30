@@ -151,10 +151,6 @@
 (setq tab-bar-new-button-show nil)
 (setq tab-bar-new-button nil)
 
-;; xref / grep settings
-(setq xref-search-program 'ripgrep)
-(setq xref-show-definitions-function #'xref-show-definitions-completing-read)
-
 ;; hippie settings
 (setq hippie-expand-verbose t)
 (setq hippie-expand-try-functions-list

@@ -271,6 +271,13 @@
 (use-package ef-themes
   :defer t)
 
+(use-package eglot-booster
+  ;; cargo install emacs-lsp-booster
+  :after eglot
+  :straight (:host github :repo "jdtsmith/eglot-booster")
+  :config
+  (eglot-booster-mode))
+
 (use-package eldoc-box
   :disabled ;; Annoying
   :if (display-graphic-p)
@@ -456,6 +463,7 @@
   :mode "\\.lua\\'")
 
 (use-package lsp-mode
+  :disabled
   :commands (lsp lsp-deferred)
   :custom
   (lsp-keymap-prefix "s-l")
@@ -469,7 +477,39 @@
                ([remap eldoc] . lsp-describe-thing-at-point)))
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
-  (lsp-mode . lsp-set-bindings))
+  (lsp-mode . lsp-set-bindings)
+  :config
+  ;; https://github.com/blahgeek/emacs-lsp-booster?tab=readme-ov-file#how-to-use
+  (defun lsp-booster--advice-json-parse (old-fn &rest args)
+    "Try to parse bytecode instead of json."
+    (or
+     (when (equal (following-char) ?#)
+       (let ((bytecode (read (current-buffer))))
+         (when (byte-code-function-p bytecode)
+           (funcall bytecode))))
+     (apply old-fn args)))
+  ;; (advice-add (if (progn (require 'json)
+  ;;                        (fboundp 'json-parse-buffer))
+  ;;                 'json-parse-buffer
+  ;;               'json-read)
+  ;;             :around
+  ;;             #'lsp-booster--advice-json-parse)
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster command to lsp CMD."
+    (let ((orig-result (funcall old-fn cmd test?)))
+      (if (and (not test?)                             ;; for check lsp-server-present?
+               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))  ;; native json-rpc
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
+              (setcar orig-result command-from-exec-path))
+            (message "Using emacs-lsp-booster for %s!" orig-result)
+            (cons "emacs-lsp-booster" orig-result))
+        orig-result)))
+  ;; (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
+  )
 
 (use-package magit
   :commands (magit-project-status)
@@ -948,6 +988,13 @@
   :unless (display-graphic-p)
   :config
   (xclip-mode))
+
+(use-package xref
+  :straight nil
+  :custom
+  (xref-after-return-hook '(recenter xref-pulse-momentarily))
+  (xref-search-program 'ripgrep)
+  (xref-show-definitions-function #'xref-show-definitions-completing-read))
 
 (use-package yaml-ts-mode
   :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")

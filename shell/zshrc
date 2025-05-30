@@ -11,12 +11,21 @@ export VISUAL="nano"
 export EDITOR=$VISUAL
 export GPG_TTY=$(tty) # used for gpg signing
 
+alias reload="source ~/.zshrc"
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
+# utilities
 alias l="less"
-alias reload="source ~/.zshrc"
+alias ll="ls -lh --color"
+alias grep="grep --line-buffered --color"
+alias rgrep="grep --color -rnIi"
+
+# git
+alias gs="git status -sb"
+alias gl="git log --oneline"
 
 # emacs
 alias emacs="emacs -nw"
@@ -28,6 +37,7 @@ HISTFILE="$HOME/.zsh_history"
 HISTSIZE=100000
 SAVEHIST=$HISTSIZE
 # setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+# setopt SHARE_HISTORY             # Share history between all sessions.
 setopt APPEND_HISTORY            # append to history file
 setopt HIST_BEEP                 # Beep when accessing nonexistent history.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
@@ -40,21 +50,20 @@ setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording en
 setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
 
 # docker
 alias dc="docker container"
 alias dl="docker logs -fn0"
+alias dcget="dc ls --format 'table {{.ID}}\t{{.Image}}\t{{.Names}}' | tail -n +2 | fzf | awk '{printf \$1}' | tee >(pbcopy)"
 
 # tmux
 alias tt="tmux new-session"
 alias ts="tmux new-session -A -s" # [session-name]
 alias tk="tmux kill-session -t" # [session-name]
 alias ta="tmux attach" # attach to last session
-alias tls="tmux list-sessions"
+alias tl="tmux list-sessions"
 
 # fzf
-alias f="fzf"
 source <(fzf --zsh)
 
 # guile

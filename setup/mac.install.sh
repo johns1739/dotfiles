@@ -13,7 +13,10 @@ brew install git btop ripgrep btop
 brew install --cask ghostty
 brew install --cask font-jetbrains-mono-nerd-font
 
+# Rust & Cargo
+curl https://sh.rustup.rs -sSf | sh
 
+# Emacs
 git clone 
 mkdir ~/.config
 mkdir ~/workspaces
@@ -26,6 +29,7 @@ brew install emacs-plus@31 \
      --with-imagemagick \
      --with-mailutils \
      --with-no-frame-refocus
+cargo install emacs-lsp-booster
 
 # Optional
 brew install awscli

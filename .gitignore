@@ -1,4 +1,6 @@
 *.eln
+*.eld
+*.dylib
 .DS_Store
 /config/btop/
 /config/emacs/.cache/
