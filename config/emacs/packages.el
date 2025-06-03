@@ -532,7 +532,7 @@
   :straight nil
   :init
   (defun make-mode-setup ()
-    (setq-local outline-regexp "^[a-z].+: "))
+    (setq-local outline-regexp "^[A-Za-z].+:"))
   :hook
   (makefile-bsdmake-mode . make-mode-setup))
 
@@ -987,6 +987,7 @@
 
 (use-package xref
   :straight nil
+  :defer
   :custom
   (xref-after-return-hook '(recenter xref-pulse-momentarily))
   (xref-search-program 'ripgrep)

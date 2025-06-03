@@ -5,10 +5,11 @@ autoload -U select-word-style
 select-word-style bash
 bindkey -e # emacs mode
 
-
 # editor integration
+export TERM="xterm"
 export VISUAL="nano"
 export EDITOR=$VISUAL
+export SUDO_EDITOR=$VISUAL
 export GPG_TTY=$(tty) # used for gpg signing
 
 alias reload="source ~/.zshrc"
@@ -77,3 +78,6 @@ export GUILE_SYSTEM_EXTENSIONS_PATH="/opt/homebrew/lib/guile/3.0/extensions"
 # asdf
 export ASDF_DIR="$HOME/.asdf"
 export PATH="$ASDF_DIR/shims:$PATH"
+
+# cargo
+export PATH="$HOME/.cargo/bin:$PATH"
