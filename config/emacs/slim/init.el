@@ -23,8 +23,6 @@
 (define-key goto-map (kbd "m") #'bookmark-jump)
 (define-key goto-map (kbd "M") #'bookmark-set)
 (define-key search-map (kbd "s") #'rgrep)
-(define-key search-map (kbd "k") #'keep-lines)
-(define-key search-map (kbd "K") #'delete-matching-lines)
 
 (setq use-short-answers t)
 (setq recentf-auto-cleanup 300)
