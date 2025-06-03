@@ -98,6 +98,7 @@ asdf install postgres latest
 # asdf set -u postgres 17.5
 # pg_ctl start/stop
 # psql -h localhost -U postgres
+# psql postgres
 # > create role juan superuser;
 # > alter role juan with login;
 # createdb juan

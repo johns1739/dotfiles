@@ -31,6 +31,8 @@ alias gl="git log --oneline"
 # emacs
 alias emacs="emacs -nw"
 alias e="emacs -nw --init-directory=~/.config/emacs/slim"
+[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
+    source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 
 # history
 # https://postgresqlstan.github.io/cli/zsh-history-options/

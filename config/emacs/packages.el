@@ -154,19 +154,20 @@
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
-              ;; ("RET" . nil)
-              ("SPC" . corfu-insert-separator))
+              ("TAB" . nil)
+              ("RET" . nil)
+              ("SPC" . nil))
   :custom
-  (corfu-auto nil) ;; required to be off for the bindings defined above.
-  ;; (corfu-auto-delay 0.3)
-  ;; (corfu-auto-prefix 3)
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 3)
   (corfu-cycle t)
-  (corfu-echo-delay 0.3)
-  (corfu-preselect 'valid)
-  (corfu-separator ?\s)
-  (corfu-popupinfo-delay '(1.25 . 0.5))
-  (corfu-min-width 20)
   (corfu-preview-current 'insert)
+  (corfu-preselect 'prompt)
+  (corfu-separator ?\s)
+  (corfu-echo-delay 0.2)
+  (corfu-popupinfo-delay '(1.25 . 0.2))
+  (corfu-min-width 20)
   :config
   (global-corfu-mode 1)
   (corfu-popupinfo-mode 1)
@@ -260,6 +261,9 @@
           ([remap project-eshell] . eat-project)))
   :custom
   (eat-term-scrollback-size nil)
+  (process-adaptive-read-buffering nil) ;; possible perf improvement
+  (read-process-output-max (* 4 1024 1024)) ;; 4MB
+  (eat-kill-buffer-on-exit t)
   :init
   (defun eat-mode-setup ()
     (display-line-numbers-mode -1))
@@ -682,6 +686,7 @@
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
               ("n SPC" . org-search-view)
+              ("n ;" . org-agenda)
               ("n ," . org-capture-goto-last-stored)
               ("n /" . org-occur-in-agenda-files)
               ("n a" . org-agenda-list)
@@ -693,9 +698,12 @@
   :custom
   (org-directory "~/.notes")
   (org-agenda-files (list org-directory))
+  (org-agenda-restore-windows-after-quit t)
+  (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
-  (org-agenda-tags-todo-honor-ignore-options t)
+  (org-agenda-window-setup 'only-window)
+  (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-cycle-hide-block-startup t)
   (org-hide-drawer-startup t)
   (org-hide-emphasis-markers t)
@@ -706,7 +714,6 @@
   (org-special-ctrl-a/e t)
   (org-startup-folded 'overview)
   (org-startup-indented t)
-  (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up priority-down category-keep)
      (todo priority-down category-keep deadline-up todo-state-down)

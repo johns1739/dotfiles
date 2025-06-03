@@ -1,8 +1,0 @@
-# key: sc
-# name: git commit with shortcut prefix
-# condition: (and (project-current) (magit-git-repo-p default-directory))
-# --
-`(let ((branch (magit-get-current-branch)))
-          (if (string-match "\\(sc-[0-9]+\\)-" branch)
-            (concat "[" (match-string 1 branch) "]")
-            "fix:"))` $0

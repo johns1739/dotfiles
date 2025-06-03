@@ -83,10 +83,13 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
+           ("d" . dired-jump)
            ("f" . find-file-at-point)
            ("h" . eldoc)
            ("j" . jump-to-register)
            ("J" . point-to-register)
+           ("m" . bookmark-jump)
+           ("M" . bookmark-set)
            ("u" . goto-address-at-point)
 
            :map tab-prefix-map
@@ -103,8 +106,6 @@
            ("i" . imenu)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
-           ("m" . bookmark-jump)
-           ("M" . bookmark-set)
            ("s" . project-find-regexp)
            ("r" . recentf-open)
 
@@ -275,10 +276,6 @@
 
 ;; imenu
 (setq imenu-max-item-length 80)
-
-;; eshell settings
-(setq read-process-output-max (* 1024 1024))
-(setq eshell-scroll-to-bottom-on-output 'this)
 
 ;; recentf settings
 (setq recentf-auto-cleanup 300)
