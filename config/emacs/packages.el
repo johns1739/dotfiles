@@ -106,7 +106,7 @@
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          ([remap flymake-show-buffer-diagnostics] . consult-flymake)
          :map global-leader-map
-         ("x SPC" . consult-compile-error)
+         ("k SPC" . consult-compile-error)
          :map search-map
          ("I" . consult-imenu-multi)
          ("L" . consult-focus-lines)
@@ -213,7 +213,7 @@
 
 (use-package diff-hl
   :bind (:map global-leader-map
-              ("j M" . diff-hl-show-hunk))
+              ("j ," . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -738,6 +738,7 @@
 
 (use-package pinentry
   ;; allows for secure entry of passphrases requested by GnuPG
+  :commands (pinentry-start)
   :init
   (with-eval-after-load 'magit
     (pinentry-start)))

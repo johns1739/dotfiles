@@ -40,20 +40,18 @@
            ("3" . split-window-right-and-jump)
 
            ;; Compilation
-           ("x ," . compile)
-           ("x <" . comint)
-           ("x ." . compile-dwim)
-           ("x >" . comint-dwim)
-           ("x b" . eval-buffer)
-           ("x d" . flymake-show-buffer-diagnostics)
-           ("x D" . flymake-show-project-diagnostics)
-           ("x g" . recompile)
-           ("x n" . next-error)
-           ("x p" . previous-error)
-           ("x y" . copy-relative-file-name)
-           ("x Y" . copy-absolute-file-name)
+           ("k k" . compile-dwim)
+           ("k K" . comint-dwim)
+           ("k b" . eval-buffer)
+           ("k d" . flymake-show-buffer-diagnostics)
+           ("k D" . flymake-show-project-diagnostics)
+           ("k g" . recompile)
+           ("k n" . next-error)
+           ("k p" . previous-error)
+           ("k y" . copy-relative-file-name)
+           ("k Y" . copy-absolute-file-name)
 
-           ;; Open / Toggle
+           ;; Toggling buffers
            ("o t" . project-eshell)
            ("o T" . eshell)
            ("o c" . calc)
@@ -68,6 +66,7 @@
            ("e H" . global-hl-line-mode)
            ("e n" . display-line-numbers-mode)
            ("e N" . global-display-line-numbers-mode)
+           ("e r" . reload-emacs)
            ("e R" . restart-emacs)
            ("e t" . toggle-truncate-lines)
            ("e v" . visual-line-mode)
@@ -111,6 +110,9 @@
 
            :map help-map
            ("h" . nil))
+
+;; compilation settings
+(setq compile-command nil)
 
 ;; isearch settings
 (setq isearch-wrap-pause 'no)
@@ -424,6 +426,10 @@
   (save-excursion
     (whitespace-cleanup)
     (indent-region (point-min) (point-max) nil)))
+
+(defun reload-emacs ()
+  (interactive)
+  (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
 
 (defun comint ()
   (interactive)

@@ -56,8 +56,9 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 
 # docker
 alias dc="docker container"
-alias dl="docker logs -fn0"
 alias dcget="dc ls --format 'table {{.ID}}\t{{.Image}}\t{{.Names}}' | tail -n +2 | fzf | awk '{printf \$1}' | tee >(pbcopy)"
+alias dcstop="docker stop $(docker ps -a -q)"
+alias dl="docker logs -fn0"
 
 # tmux
 alias tt="tmux new-session"
