@@ -211,8 +211,8 @@
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
-  :bind (:map vc-prefix-map
-              ("," . diff-hl-show-hunk))
+  :bind (:map global-leader-map
+              ("j ," . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -407,7 +407,7 @@
   (scheme-mode . geiser-mode))
 
 (use-package git-link
-  :bind (:map vc-prefix-map ("y" . git-link)))
+  :bind (:map global-leader-map ("j y" . git-link)))
 
 (use-package gleam-ts-mode
   :straight (:host github :repo "gleam-lang/gleam-mode")
@@ -509,11 +509,11 @@
 
 (use-package magit
   :commands (magit-project-status)
-  :bind (:map vc-prefix-map
-              (";" . magit-status)
-              ("." . magit-status-here)
-              (">" . magit-file-dispatch)
-              ("g" . magit-blame-addition))
+  :bind (:map global-leader-map
+              ("j v" . magit-status)
+              ("j ." . magit-status-here)
+              ("j >" . magit-file-dispatch)
+              ("j m" . magit-blame-addition))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "v")))

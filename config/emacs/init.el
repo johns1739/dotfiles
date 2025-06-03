@@ -3,7 +3,6 @@
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-set ctl-x-map "SPC" global-leader-map)
 
-(keymap-set global-leader-map "v" vc-prefix-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
 (keymap-set global-leader-map "p" project-prefix-map)
@@ -220,8 +219,6 @@
 (add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
-(setq-default display-line-numbers-type t)
-(setq display-line-numbers-width 3)
 (global-display-line-numbers-mode 1)
 (line-number-mode t)
 (global-so-long-mode t)
