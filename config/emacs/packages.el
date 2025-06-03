@@ -212,7 +212,7 @@
 
 (use-package diff-hl
   :bind (:map global-leader-map
-              ("j ," . diff-hl-show-hunk))
+              ("j M" . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -510,13 +510,13 @@
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
-              ("j v" . magit-status)
-              ("j ." . magit-status-here)
-              ("j >" . magit-file-dispatch)
+              ("j j" . magit-status)
+              ("j J" . magit-status-here)
+              ("j f" . magit-file-dispatch)
               ("j m" . magit-blame-addition))
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "v")))
+    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
   :custom
   (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
