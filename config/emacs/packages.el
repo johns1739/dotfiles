@@ -292,8 +292,6 @@
   :mode (("\\.ex$" . elixir-ts-mode)
          ("\\.exs$" . elixir-ts-mode)
          ("\\.heex$" . heex-ts-mode))
-  :custom
-  (lsp-elixir-suggest-specs nil)
   :init
   (with-eval-after-load 'compile
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
@@ -327,11 +325,7 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  `((elixir-ts-mode heex-ts-mode) .
-                   ,(if (and (fboundp 'w32-shell-dos-semantics)
-                             (w32-shell-dos-semantics))
-                        '("language_server.bat")
-                      (eglot-alternatives
-                       '("language_server.sh" "start_lexical.sh")))))))
+                   (eglot-alternatives '("language_server.sh" "start_lexical.sh"))))))
 
 (use-package ellama
   :disabled
@@ -514,10 +508,9 @@
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
-              ("j j" . magit-status)
-              ("j J" . magit-status-here)
-              ("j f" . magit-file-dispatch)
-              ("j m" . magit-blame-addition))
+              ("j j" . magit-status-here)
+              ("j m" . magit-blame-addition)
+              ("j f" . magit-file-dispatch))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
