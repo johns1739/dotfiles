@@ -72,6 +72,14 @@
            ("e v" . visual-line-mode)
            ("e V" . global-visual-line-mode)
 
+           ;; LSP
+           ("l l" . eglot)
+           ("l L" . eglot-reconnect)
+           ("l TAB" . eglot-format-buffer)
+           ("l q" . eglot-shutdown)
+           ("l r" . eglot-rename)
+           ("l x" . eglot-code-actions)
+
            :map goto-map
            ("SPC" . switch-to-buffer)
            ("." . xref-find-definitions)
