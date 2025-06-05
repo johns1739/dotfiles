@@ -108,8 +108,9 @@
          :map global-leader-map
          ("k SPC" . consult-compile-error)
          :map search-map
-         ("I" . consult-imenu-multi)
          ("L" . consult-focus-lines)
+         :map goto-map
+         ("I" . consult-imenu-multi)
          ("o" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)

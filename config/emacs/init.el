@@ -18,6 +18,7 @@
            ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph)
            ("M-o" . other-window)
+           ("M-H" . mark-end-of-sentence)
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
            ("M-L" . duplicate-line)
@@ -52,6 +53,7 @@
            ("k Y" . copy-absolute-file-name)
 
            ;; Toggling buffers
+           ("o r" . regexp-builder)
            ("o t" . project-eshell)
            ("o T" . eshell)
            ("o c" . calc)
@@ -104,12 +106,10 @@
            ("T" . tab-bar-mode)
 
            :map search-map
-           ("SPC" . project-switch-to-buffer)
            ("f" . project-find-file)
            ("g" . rgrep)
            ("j" . list-registers)
            ("l" . occur)
-           ("L" . sort-lines)
            ("i" . imenu)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
@@ -357,8 +357,15 @@
 (setq-default cursor-type 'bar)
 
 ;; ffap settings - find-file-at-point
+(string-split (string-trim-left ":123:34" ":") ":")
 (with-eval-after-load 'ffap
-  (add-to-list 'ffap-alist '("\\([^\s]+\\):?" . ffap-project-match-1)))
+  (defvar ffap-project-match-regexp " +\\([^/]+/[^:]+\\)\\(:[0-9]+\\)\\{0,2\\} ")
+  (defun ffap-project-match (name)
+    (let ((filename (match-string 1 name)))
+      (if (and (project-current) (not (string-prefix-p "./" filename)))
+          (expand-file-name filename (project-directory))
+        (expand-file-name filename default-directory))))
+  (add-to-list 'ffap-alist '(ffap-project-match-regexp . #'ffap-project-match)))
 
 ;; project settings
 (setq project-switch-commands '((project-switch-to-buffer "Find buffer" "SPC")
@@ -399,12 +406,6 @@
 
 
 ;; commands & functions
-
-(defun ffap-project-match-1 (name)
-  (let ((filename (match-string 1 name)))
-    (if (and (project-current) (not (string-prefix-p "./" filename)))
-        (expand-file-name filename (project-directory))
-      (expand-file-name filename default-directory))))
 
 (defun set-font-size ()
   "Set the font size of Emacs"
