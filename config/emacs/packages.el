@@ -307,7 +307,7 @@
                        (file-name (relative-file-name)))
                    (if (< (line-number-at-pos) 5)
                        (string-join (list "mix test " file-name))
-                     (string-join (list "mix test " (s-concat file-name ":" linum))))))
+                     (string-join (list "mix test " (format "%s:%s" file-name linum))))))
                 (t compile-command)))
     (call-interactively #'compile-dwim))
   (defun elixir-comint ()
@@ -325,7 +325,7 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  `((elixir-ts-mode heex-ts-mode) .
-                   (eglot-alternatives '("language_server.sh" "start_lexical.sh"))))))
+                   ,(eglot-alternatives '("language_server.sh" "start_lexical.sh"))))))
 
 (use-package ellama
   :disabled
