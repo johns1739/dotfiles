@@ -294,12 +294,12 @@
          ("\\.exs$" . elixir-ts-mode)
          ("\\.heex$" . heex-ts-mode))
   :init
-  (with-eval-after-load 'compile
-    ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(elixir-warning-target
-                   "└─ \\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\)" 1 2 3 1 1)))
+  ;; (with-eval-after-load 'compile
+  ;;   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+  ;;   (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
+  ;;   (add-to-list 'compilation-error-regexp-alist-alist
+  ;;                '(elixir-warning-target
+  ;;                  "└─ \\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\)" 1 2 3 1 1)))
   (defun elixir-compile ()
     (interactive)
     (setq compile-command

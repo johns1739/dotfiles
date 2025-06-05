@@ -32,7 +32,7 @@
 
            ;; Global Leader Bindings
            :map global-leader-map
-           ("SPC" . switch-to-buffer)
+           ("SPC" . project-switch-to-buffer)
            ("TAB" . indent-buffer)
            ("=" . balance-windows-area)
            ("0" . delete-window)
@@ -110,7 +110,6 @@
            ("g" . rgrep)
            ("j" . list-registers)
            ("l" . occur)
-           ("i" . imenu)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
            ("s" . project-find-regexp)
@@ -484,12 +483,6 @@
   (let ((afn (absolute-file-name)))
     (kill-new (absolute-file-name))
     (message "Copied %s" afn)))
-
-(defun eglot-set-bindings ()
-  "Inject eglot bindings."
-  (bind-keys :map (current-local-map)
-             ([remap indent-buffer] . eglot-format)))
-(add-hook 'eglot-managed-mode-hook #'eglot-set-bindings)
 
 (defun treesit-pull-languages ()
   "Install all language grammars registered with Treesitter"
