@@ -152,8 +152,8 @@
 ;; hippie settings
 (setq hippie-expand-verbose t)
 (setq hippie-expand-try-functions-list
-      '(try-expand-line
-        try-expand-list
+      '(try-expand-list
+        try-expand-line
         try-expand-dabbrev-visible
         try-expand-dabbrev
         try-expand-list-all-buffers

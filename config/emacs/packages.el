@@ -335,7 +335,7 @@
     (universal-argument)
     (command-execute #'elixir-compile))
   (defun elixir-setup ()
-    (setq outline-regexp "\s*\\(describe \\|test \\|setup \\)")
+    (setq outline-regexp " *\\(describe \\|test \\|setup \\)")
     (bind-keys :map (current-local-map)
                ([remap compile-dwim] . elixir-compile)
                ([remap comint-dwim] . elixir-comint)))
