@@ -18,11 +18,8 @@
            ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph)
            ("M-o" . other-window)
-           ("M-H" . mark-end-of-sentence)
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
-           ("M-L" . duplicate-line)
-           ("M-T" . transpose-lines)
 
            ;; tab navigation (Works only in GUI)
            ("s-{" . tab-previous)
@@ -73,14 +70,6 @@
            ("e t" . toggle-truncate-lines)
            ("e v" . visual-line-mode)
            ("e V" . global-visual-line-mode)
-
-           ;; LSP
-           ("l l" . eglot)
-           ("l L" . eglot-reconnect)
-           ("l TAB" . eglot-format-buffer)
-           ("l q" . eglot-shutdown)
-           ("l r" . eglot-rename)
-           ("l x" . eglot-code-actions)
 
            :map goto-map
            ("SPC" . switch-to-buffer)
@@ -163,8 +152,8 @@
 ;; hippie settings
 (setq hippie-expand-verbose t)
 (setq hippie-expand-try-functions-list
-      '(try-expand-list
-        try-expand-line
+      '(try-expand-line
+        try-expand-list
         try-expand-dabbrev-visible
         try-expand-dabbrev
         try-expand-list-all-buffers

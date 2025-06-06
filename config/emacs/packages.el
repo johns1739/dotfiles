@@ -276,6 +276,25 @@
 (use-package ef-themes
   :defer t)
 
+(use-package eglot
+  :straight nil
+  :bind (:map global-leader-map
+              ("l TAB" . eglot-format-buffer)
+              ("l l" . eglot)
+              ("l L" . eglot-reconnect)
+              ("l q" . eglot-shutdown)
+              ("l Q" . eglot-shutdown-all)
+              ("l r" . eglot-rename)
+              ("l a" . eglot-code-actions))
+  :init
+  (defun eglot-set-bindings ()
+    "Inject eglot bindings."
+    (bind-keys :map (current-local-map)
+               ([remap indent-buffer] . eglot-format)
+               ("C-c C-c" . eglot-code-actions)))
+  :hook
+  (eglot-managed-mode . eglot-set-bindings))
+
 (use-package eglot-booster
   ;; cargo install emacs-lsp-booster
   :after eglot
@@ -294,12 +313,12 @@
          ("\\.exs$" . elixir-ts-mode)
          ("\\.heex$" . heex-ts-mode))
   :init
-  ;; (with-eval-after-load 'compile
-  ;;   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-  ;;   (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
-  ;;   (add-to-list 'compilation-error-regexp-alist-alist
-  ;;                '(elixir-warning-target
-  ;;                  "└─ \\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\)" 1 2 3 1 1)))
+  (with-eval-after-load 'compile
+    ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(elixir-warning-target
+                   "└─ \\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\)" 1 2 3 1 1)))
   (defun elixir-compile ()
     (interactive)
     (setq compile-command
@@ -614,10 +633,11 @@
      '("q" . nil) ;; Keep q unbound for other apps to bind.
      '("Q" . meow-quit)
      '("r" . meow-replace)
-     '("R" . meow-swap-grab)
+     '("R" . meow-sync-grab)
      (cons "s" search-map)
      '("S" . save-buffer)
      '("t" . meow-till)
+     '("T" . meow-swap-grab)
      '("u" . meow-undo)
      '("U" . meow-undo-in-selection)
      '("v" . meow-page-down)
