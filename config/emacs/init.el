@@ -57,10 +57,12 @@
 
            ;; Editor Settings
            ("e $" . flyspell-mode)
+           ("e =" . set-font-size)
            ("e ." . load-theme)
            ("e c" . display-fill-column-indicator-mode)
            ("e C" . global-display-fill-column-indicator-mode)
-           ("e f" . set-font-size)
+           ("e f" . toggle-frame-maximized)
+           ("e F" . toggle-frame-fullscreen)
            ("e h" . hl-line-mode)
            ("e H" . global-hl-line-mode)
            ("e n" . display-line-numbers-mode)
