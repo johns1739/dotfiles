@@ -104,7 +104,7 @@
          ([remap occur] . consult-line)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-         ([remap flymake-show-buffer-diagnostics] . consult-flymake)
+         ;; ([remap flymake-show-buffer-diagnostics] . consult-flymake) ;; Errors aren't verbose
          :map global-leader-map
          ("k SPC" . consult-compile-error)
          :map search-map
@@ -342,6 +342,9 @@
   :hook
   (elixir-ts-mode . elixir-setup)
   :config
+  ;; TODO: Enable more features
+  ;; https://joaotavora.github.io/eglot/#User_002dspecific-configuration-1
+  ;; https://github.com/elixir-lsp/elixir-ls?tab=readme-ov-file#elixirls-configuration-settings
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  `((elixir-ts-mode heex-ts-mode) .
@@ -777,6 +780,7 @@
           "\\*Async Shell Command\\*"
           special-mode
           help-mode
+          flymake-diagnostics-buffer-mode
           compilation-mode
           comint-mode))
   ;; Match eshell, shell, term, etc
@@ -881,7 +885,7 @@
       (buffer-name)))
   :custom
   (simple-modeline-segments
-   '((
+   '(( ;; left indicators
       meow-indicator
       simple-modeline-segment-modified
       simple-modeline-segment-spaces
@@ -889,7 +893,7 @@
       ;; simple-modeline-segment-buffer-name
       simple-modeline-segment-buffer-name-2
       simple-modeline-segment-position)
-     (
+     ( ;; right indicators
       ;; simple-modeline-segment-minor-modes
       ;; simple-modeline-segment-input-method
       ;; simple-modeline-segment-eol
@@ -898,8 +902,7 @@
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
-      simple-modeline-segment-spaces
-      )))
+      simple-modeline-segment-spaces)))
   :config
   (simple-modeline-mode))
 

@@ -158,8 +158,8 @@
         try-expand-line
         try-expand-dabbrev-visible
         try-expand-dabbrev
-        try-expand-list-all-buffers
-        try-expand-line-all-buffers
+        ;; try-expand-list-all-buffers
+        ;; try-expand-line-all-buffers
         try-expand-dabbrev-all-buffers
         try-complete-file-name-partially
         try-complete-file-name))
