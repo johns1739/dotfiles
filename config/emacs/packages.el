@@ -294,15 +294,7 @@
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
-              ("l a" . eglot-code-actions))
-  :init
-  (defun eglot-set-bindings ()
-    "Inject eglot bindings."
-    (bind-keys :map (current-local-map)
-               ([remap indent-buffer] . eglot-format)
-               ("C-c C-c" . eglot-code-actions)))
-  :hook
-  (eglot-managed-mode . eglot-set-bindings))
+              ("l a" . eglot-code-actions)))
 
 (use-package eglot-booster
   ;; cargo install emacs-lsp-booster
