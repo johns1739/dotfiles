@@ -18,8 +18,8 @@
            ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph)
            ("M-o" . other-window)
-           ("M-i" . completion-at-point)
-           ("M-I" . hippie-expand)
+           ("M-i" . hippie-expand)
+           ("M-I" . completion-at-point)
 
            ;; tab navigation (Works only in GUI)
            ("s-{" . tab-previous)
@@ -83,28 +83,29 @@
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
            ("d" . dired-jump)
-           ("f" . find-file-at-point)
            ("h" . eldoc)
+           ("i" . imenu)
            ("j" . jump-to-register)
            ("J" . point-to-register)
            ("m" . bookmark-jump)
            ("M" . bookmark-set)
-           ("u" . goto-address-at-point)
-
-           :map tab-prefix-map
-           ("SPC" . tab-switch)
-           ("'" . tab-recent)
-           ("T" . tab-bar-mode)
+           ("u" . find-file-at-point)
+           ("U" . goto-address-at-point)
 
            :map search-map
            ("f" . project-find-file)
            ("g" . rgrep)
            ("j" . list-registers)
-           ("l" . occur)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
+           ("o" . occur)
            ("s" . project-find-regexp)
            ("r" . recentf-open)
+
+           :map tab-prefix-map
+           ("SPC" . tab-switch)
+           ("'" . tab-recent)
+           ("T" . tab-bar-mode)
 
            :map help-map
            ("h" . nil))
@@ -161,6 +162,8 @@
         ;; try-expand-list-all-buffers
         ;; try-expand-line-all-buffers
         try-expand-dabbrev-all-buffers
+        ;; try-expand-whole-kill ;; use M-y instead
+        ;; try-expand-dabbrev-from-kill
         try-complete-file-name-partially
         try-complete-file-name))
 (defadvice hippie-expand (around hippie-expand-case-fold)

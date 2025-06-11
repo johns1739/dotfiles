@@ -51,6 +51,15 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
+  :bind (("M-l" . cape-line)
+         :map global-leader-map
+         ("i d" . cape-dict)
+         ("i e" . cape-elisp-symbol)
+         ("i f" . cape-file)
+         ("i h" . cape-history)
+         ("i i" . cape-dabbrev)
+         ("i l" . cape-line)
+         ("i s" . cape-keyword))
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -101,13 +110,13 @@
          ([remap jump-to-register] . consult-register-load)
          ([remap point-to-register] . consult-register-store)
          ([remap keep-lines] . consult-keep-lines)
-         ([remap occur] . consult-line)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-         ;; ([remap flymake-show-buffer-diagnostics] . consult-flymake) ;; Errors aren't verbose
+         ([remap flymake-show-buffer-diagnostics] . consult-flymake) ;; Errors aren't verbose sometimes
          :map global-leader-map
          ("k SPC" . consult-compile-error)
          :map search-map
+         ("l" . consult-line)
          ("L" . consult-focus-lines)
          :map goto-map
          ("I" . consult-imenu-multi)
@@ -494,39 +503,7 @@
                ([remap eldoc] . lsp-describe-thing-at-point)))
   :hook
   (lsp-mode . lsp-enable-which-key-integration)
-  (lsp-mode . lsp-set-bindings)
-  :config
-  ;; https://github.com/blahgeek/emacs-lsp-booster?tab=readme-ov-file#how-to-use
-  (defun lsp-booster--advice-json-parse (old-fn &rest args)
-    "Try to parse bytecode instead of json."
-    (or
-     (when (equal (following-char) ?#)
-       (let ((bytecode (read (current-buffer))))
-         (when (byte-code-function-p bytecode)
-           (funcall bytecode))))
-     (apply old-fn args)))
-  ;; (advice-add (if (progn (require 'json)
-  ;;                        (fboundp 'json-parse-buffer))
-  ;;                 'json-parse-buffer
-  ;;               'json-read)
-  ;;             :around
-  ;;             #'lsp-booster--advice-json-parse)
-  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
-    "Prepend emacs-lsp-booster command to lsp CMD."
-    (let ((orig-result (funcall old-fn cmd test?)))
-      (if (and (not test?)                             ;; for check lsp-server-present?
-               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
-               lsp-use-plists
-               (not (functionp 'json-rpc-connection))  ;; native json-rpc
-               (executable-find "emacs-lsp-booster"))
-          (progn
-            (when-let ((command-from-exec-path (executable-find (car orig-result))))  ;; resolve command from exec-path (in case not found in $PATH)
-              (setcar orig-result command-from-exec-path))
-            (message "Using emacs-lsp-booster for %s!" orig-result)
-            (cons "emacs-lsp-booster" orig-result))
-        orig-result)))
-  ;; (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command)
-  )
+  (lsp-mode . lsp-set-bindings))
 
 (use-package magit
   :commands (magit-project-status)
@@ -703,10 +680,9 @@
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
               ("n SPC" . org-search-view)
-              ("n ;" . org-agenda)
+              ("n a" . org-agenda)
               ("n ," . org-capture-goto-last-stored)
               ("n /" . org-occur-in-agenda-files)
-              ("n a" . org-agenda-list)
               ("n n" . org-capture)
               ("n t" . org-todo-list)
               :map org-mode-map
@@ -741,6 +717,7 @@
    '((sequence "TODO(t!)" "ACTIVE(a!)" "BLOCKED(b@)" "|" "DONE(d!)" "CANCELED(c@)")))
   (org-todo-keyword-faces '(("TODO" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
+                            ("REVIEW" . "light goldenrod")
                             ("BLOCKED" . "sienna")
                             ("DONE" . "dark olive green")
                             ("CANCELED" . "dim gray")))
