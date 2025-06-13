@@ -876,7 +876,8 @@
   (simple-modeline-mode))
 
 (use-package sqlformat
-  :disabled ;; Requires OS dependency postgresql.
+  ;; brew install pgformatter
+  ;; :disabled ;; Requires OS dependency postgresql.
   :commands (sqlformat)
   :init
   (defun sql-set-bindings ()

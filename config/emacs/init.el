@@ -44,11 +44,12 @@
            ("k d" . flymake-show-buffer-diagnostics)
            ("k D" . flymake-show-project-diagnostics)
            ("k g" . recompile)
+           ("k L" . sort-lines)
            ("k n" . next-error)
            ("k p" . previous-error)
            ("k y" . copy-relative-file-name)
            ("k Y" . copy-absolute-file-name)
-
+           
            ;; Toggling buffers
            ("o r" . regexp-builder)
            ("o t" . project-eshell)
