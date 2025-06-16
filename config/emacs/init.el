@@ -18,8 +18,8 @@
            ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph)
            ("M-o" . other-window)
-           ("M-i" . hippie-expand)
-           ("M-I" . completion-at-point)
+           ("M-I" . hippie-expand)
+           ("M-i" . completion-at-point)
 
            ;; tab navigation (Works only in GUI)
            ("s-{" . tab-previous)
@@ -161,7 +161,7 @@
         try-expand-dabbrev-visible
         try-expand-dabbrev
         ;; try-expand-list-all-buffers
-        ;; try-expand-line-all-buffers
+        try-expand-line-all-buffers
         try-expand-dabbrev-all-buffers
         ;; try-expand-whole-kill ;; use M-y instead
         ;; try-expand-dabbrev-from-kill

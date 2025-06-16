@@ -164,7 +164,7 @@
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
-              ("TAB" . nil)
+              ;; ("TAB" . nil)
               ("RET" . nil)
               ("SPC" . nil))
   :custom
@@ -733,13 +733,10 @@
   :demand
   :bind (:map global-leader-map
               ("o o" . popper-toggle)
-              ("o O" . popper-toggle-type))
+              ("o O" . popper-toggle-type)
+              :map popper-mode-map
+              ("Q" . popper-kill-latest-popup))
   :init
-  (defun popper-setup ()
-    (bind-keys :map (current-local-map)
-               ("Q" . popper-kill-latest-popup)
-               ("M-n" . popper-cycle)
-               ("M-p" . popper-cycle-backwards)))
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)
           occur-mode
