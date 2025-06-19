@@ -319,7 +319,7 @@
     (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-warning-target
-                   "└─ \\([^:]+\\):\\([0-9]+\\):\\([0-9]+\\)" 1 2 3 1 1)))
+                   "└─ \\([^:]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
   (defun elixir-compile ()
     (interactive)
     (setq compile-command
