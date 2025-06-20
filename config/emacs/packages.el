@@ -289,8 +289,8 @@
   :straight nil
   :bind (:map global-leader-map
               ("l TAB" . eglot-format-buffer)
-              ("l l" . eglot)
-              ("l L" . eglot-reconnect)
+              ("l l" . eglot-reconnect)
+              ("l L" . eglot)
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
@@ -733,10 +733,11 @@
   :demand
   :bind (:map global-leader-map
               ("o o" . popper-toggle)
-              ("o O" . popper-toggle-type)
-              :map popper-mode-map
-              ("Q" . popper-kill-latest-popup))
+              ("o O" . popper-toggle-type))
   :init
+  (defun popper-setup ()
+    (bind-keys :map (current-local-map)
+               ("Q" . popper-kill-latest-popup)))
   (setq popper-reference-buffers
         '(("Output\\*$" . hide)
           occur-mode

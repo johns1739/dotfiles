@@ -1,5 +1,5 @@
 # Run this command in main repos
-# git maintenace start
+# git maintenance start
 
 [core]
     autocrlf = input

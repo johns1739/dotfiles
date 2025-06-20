@@ -113,6 +113,20 @@
 
 ;; compilation settings
 (setq compile-command nil)
+;; TODO: Figure out how to fetch compile-command from different buffer
+;; TODO: Figure out how to run compile without jumping to it.
+;; (defvar recompile-watch-command nil "Recompile command to execute upon a file save.")
+;; (defun recompile-watch-stop ()
+;;   (interactive)
+;;   (remove-hook 'after-save-hook #'recompile-watch-run))
+;; (defun recompile-watch-run ()
+;;   (interactive)
+;;   (let ((compile-command recompile-watch-command))
+;;     (save-excursion (recompile))))
+;; (defun recompile-watch-start ()
+;;   (interactive)
+;;   (setq recompile-watch-command compile-command)
+;;   (add-hook 'after-save-hook #'recompile-watch-run))
 
 ;; isearch settings
 (setq isearch-wrap-pause 'no)
@@ -213,7 +227,7 @@
 
 ;; electric / parens settings
 (electric-indent-mode t)
-(electric-pair-mode t)
+(electric-pair-mode -1)
 (setq show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
 
 ;; eldoc settings
