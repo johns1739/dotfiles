@@ -37,7 +37,7 @@
               ("a Y" . avy-copy-region)))
 
 (use-package beacon
-  :if (display-graphic-p)
+  :if (display-graphic-p) ;; Not pretty in terminal
   :config
   (beacon-mode 1))
 
@@ -160,7 +160,6 @@
 
 (use-package corfu
   :demand
-  :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
@@ -233,6 +232,11 @@
     (diff-hl-margin-mode))
   (global-diff-hl-mode))
 
+(use-package dimmer
+  :if (display-graphic-p) ;; Only works in GUI
+  :config
+  (dimmer-mode))
+
 (use-package dired-subtree
   :init
   (defun dired-subtree-setup ()
@@ -275,12 +279,8 @@
   (read-process-output-max (* 4 1024 1024)) ;; 4MB
   (eat-kill-buffer-on-exit t)
   :init
-  (defun eat-mode-setup ()
-    (display-line-numbers-mode -1))
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t")))
-  :hook
-  (eat-mode . eat-mode-setup))
+    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
 
 (use-package ef-themes
   :defer t)
@@ -336,7 +336,12 @@
     (universal-argument)
     (command-execute #'elixir-compile))
   (defun elixir-setup ()
-    (setq outline-regexp " *\\(describe \\|test \\|setup \\)")
+    (cond
+     ((string-match-p "router.ex$" (buffer-name))
+      (setq outline-regexp
+            " *\\(get\\|delete\\|put\\|post\\|scope\\|pipe_through\\|resources\\) "))
+     ((string-match-p "_test.exs$" (buffer-name))
+      (setq outline-regexp " *\\(describe \\|test \\|setup \\)")))
     (bind-keys :map (current-local-map)
                ([remap compile-dwim] . elixir-compile)
                ([remap comint-dwim] . elixir-comint)))
@@ -416,10 +421,13 @@
   (flycheck-mode . flycheck-set-bindings))
 
 (use-package forge
-  :after magit
   :commands (forge-dispatch)
   :custom
-  (auth-sources '("~/.authinfo")))
+  (auth-sources '("~/.authinfo"))
+  :config
+  ;; Required. Seems like :after option doesn't always work.
+  (with-eval-after-load 'magit
+    (require 'forge)))
 
 (use-package geiser-guile
   :commands (geiser geiser-mode)

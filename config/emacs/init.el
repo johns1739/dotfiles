@@ -238,7 +238,7 @@
 (add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
-(global-display-line-numbers-mode 1)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (line-number-mode t)
 (global-so-long-mode t)
 
