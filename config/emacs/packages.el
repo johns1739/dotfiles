@@ -160,6 +160,7 @@
 
 (use-package corfu
   :demand
+  :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   :bind (:map corfu-map
@@ -167,7 +168,7 @@
               ("RET" . nil)
               ("SPC" . nil))
   :custom
-  (corfu-auto t)
+  (corfu-auto (display-graphic-p)) ;; Popup messes up in terminal.
   (corfu-auto-delay 0.2)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
@@ -423,11 +424,11 @@
 (use-package forge
   :commands (forge-dispatch)
   :custom
-  (auth-sources '("~/.authinfo"))
+  (auth-sources '("~/.authinfo")))
   :config
   ;; Required. Seems like :after option doesn't always work.
-  (with-eval-after-load 'magit
-    (require 'forge)))
+  ;; (with-eval-after-load 'magit
+  ;;   (require 'forge)))
 
 (use-package geiser-guile
   :commands (geiser geiser-mode)
@@ -515,9 +516,11 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
   :custom
-  (magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
-  (magit-list-refs-sortby "-creatordate"))
+  (magit-list-refs-sortby "-creatordate")
+  :config
+  (if (display-graphic-p)
+      (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)))
 
 (use-package magit-todos
   :bind (:map project-prefix-map ("t" . magit-todos-list))
@@ -604,10 +607,9 @@
      '("m" . meow-pop-to-mark)
      '("M" . meow-unpop-to-mark)
      '("n" . meow-search)
-     '("n" . meow-search)
      '("N" . meow-search-reverse)
-     '("o" . other-window)
-     '("O" . meow-block)
+     '("o" . meow-block)
+     '("O" . meow-block-expand)
      '("p" . meow-yank)
      '("P" . meow-yank-pop)
      '("q" . nil) ;; Keep q unbound for other apps to bind.
@@ -739,6 +741,7 @@
 
 (use-package popper
   :demand
+  :if (display-graphic-p)
   :bind (:map global-leader-map
               ("o o" . popper-toggle)
               ("o O" . popper-toggle-type))
