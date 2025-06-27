@@ -225,8 +225,8 @@
   (denote-rename-buffer-mode))
 
 (use-package devdocs
-  :bind (:map help-map
-              ("h" . devdocs-lookup)))
+  :bind (:map goto-map
+              ("H" . devdocs-lookup)))
 
 (use-package diff-hl
   :bind (:map global-leader-map
