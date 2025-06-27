@@ -226,7 +226,7 @@
 
 (use-package devdocs
   :bind (:map help-map
-              ("D" . devdocs-lookup)))
+              ("h" . devdocs-lookup)))
 
 (use-package diff-hl
   :bind (:map global-leader-map
