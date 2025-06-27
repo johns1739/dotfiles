@@ -26,15 +26,18 @@
   :bind  ([remap other-window] . ace-window))
 
 (use-package avy
-  :bind (:map goto-map
-              ("g" . avy-goto-char-2)
-              ("l" . avy-goto-line)
-              ("a k" . avy-kill-whole-line)
-              ("a K" . avy-kill-region)
-              ("a m" . avy-move-line)
-              ("a M" . avy-move-region)
-              ("a y" . avy-copy-line)
-              ("a Y" . avy-copy-region)))
+  :bind (([remap goto-line] . avy-goto-line)
+         ("C-'" . avy-resume)
+         :map isearch-mode-map
+         ("C-'" . avy-isearch)
+         :map goto-map
+         ("g" . avy-goto-char-2)
+         ("a k" . avy-kill-whole-line)
+         ("a K" . avy-kill-region)
+         ("a m" . avy-move-line)
+         ("a M" . avy-move-region)
+         ("a y" . avy-copy-line)
+         ("a Y" . avy-copy-region)))
 
 (use-package beacon
   :if (display-graphic-p) ;; Not pretty in terminal
@@ -92,7 +95,7 @@
   (setq xref-show-definitions-function #'consult-xref)
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
-         ([remap goto-line] . consult-goto-line)
+         ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
          ([remap imenu] . consult-imenu)
          ([remap keep-lines] . consult-keep-lines)
          ([remap isearch-edit-string] . consult-isearch-history)
@@ -221,9 +224,13 @@
   :config
   (denote-rename-buffer-mode))
 
+(use-package devdocs
+  :bind (:map help-map
+              ("D" . devdocs-lookup)))
+
 (use-package diff-hl
   :bind (:map global-leader-map
-              ("j ," . diff-hl-show-hunk))
+              ("j d" . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -439,6 +446,9 @@
 (use-package git-link
   :bind (:map global-leader-map ("j y" . git-link)))
 
+(use-package git-timemachine
+  :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
+
 (use-package gleam-ts-mode
   :straight (:host github :repo "gleam-lang/gleam-mode")
   :mode (rx ".gleam" eos)
@@ -508,7 +518,8 @@
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
-              ("j j" . magit-status-here)
+              ("j ." . magit-status-here)
+              ("j j" . magit-status)
               ("j m" . magit-blame-addition)
               ("j f" . magit-file-dispatch))
   :init
@@ -1008,7 +1019,7 @@
   (yas-global-mode 1))
 
 (use-package yasnippet-snippets
-  :disabled ;; Better to rely on custom built templates over externals.
+  ;; :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
 
 (use-package zenburn-theme

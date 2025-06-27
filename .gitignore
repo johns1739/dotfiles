@@ -1,6 +1,6 @@
-*.eln
-*.eld
 *.dylib
+*.eld
+*.eln
 .DS_Store
 /config/btop/
 /config/emacs/.cache/
@@ -8,9 +8,11 @@
 /config/emacs/auto-save-list/
 /config/emacs/backups/
 /config/emacs/bookmarks
+/config/emacs/devdocs/
 /config/emacs/eln-cache/
 /config/emacs/elpa/
 /config/emacs/eshell/
+/config/emacs/forge-database.sqlite
 /config/emacs/org-persist/
 /config/emacs/places
 /config/emacs/projects
@@ -26,4 +28,3 @@ history
 places
 projects
 recentf
-/config/emacs/forge-database.sqlite
