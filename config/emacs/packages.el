@@ -424,11 +424,10 @@
 (use-package forge
   :commands (forge-dispatch)
   :custom
-  (auth-sources '("~/.authinfo")))
-  :config
-  ;; Required. Seems like :after option doesn't always work.
-  ;; (with-eval-after-load 'magit
-  ;;   (require 'forge)))
+  (auth-sources '("~/.authinfo"))
+  :init
+  (with-eval-after-load 'magit
+    (require 'forge)))
 
 (use-package geiser-guile
   :commands (geiser geiser-mode)
