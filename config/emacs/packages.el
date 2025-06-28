@@ -431,10 +431,7 @@
 (use-package forge
   :commands (forge-dispatch)
   :custom
-  (auth-sources '("~/.authinfo"))
-  :init
-  (with-eval-after-load 'magit
-    (require 'forge)))
+  (auth-sources '("~/.authinfo")))
 
 (use-package geiser-guile
   :commands (geiser geiser-mode)

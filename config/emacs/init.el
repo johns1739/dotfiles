@@ -83,6 +83,7 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
+           ("f" . find-file)
            ("d" . dired-jump)
            ("h" . eldoc)
            ("i" . imenu)
