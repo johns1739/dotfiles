@@ -616,7 +616,7 @@
      '("n" . meow-search)
      '("N" . meow-search-reverse)
      '("o" . meow-block)
-     '("O" . meow-block-expand)
+     '("O" . meow-to-block)
      '("p" . meow-yank)
      '("P" . meow-yank-pop)
      '("q" . nil) ;; Keep q unbound for other apps to bind.
