@@ -14,6 +14,7 @@
            ([remap split-window-below] . split-window-below-and-jump)
            ([remap split-window-right] . split-window-right-and-jump)
            ("C-x C-b" . ibuffer)
+           ("C-x E" . eval-buffer)
            ("C-z" . nil) ;; unbind suspend-frame
            ("M-n" . forward-paragraph)
            ("M-p" . backward-paragraph)
@@ -37,19 +38,23 @@
            ("2" . split-window-below-and-jump)
            ("3" . split-window-right-and-jump)
 
+           ;; Command Actions
+           ("x d" . ediff-files)
+           ("x s" . sort-lines)
+           ("x y" . copy-relative-file-name)
+           ("x Y" . copy-absolute-file-name)
+
            ;; Compilation
+           ("k ." . compile)
+           ("k >" . comint)
+           ("k g" . recompile)
            ("k k" . compile-dwim)
            ("k K" . comint-dwim)
-           ("k b" . eval-buffer)
            ("k d" . flymake-show-buffer-diagnostics)
            ("k D" . flymake-show-project-diagnostics)
-           ("k L" . sort-lines)
            ("k n" . next-error)
            ("k p" . previous-error)
-           ("k r" . recompile)
-           ("k y" . copy-relative-file-name)
-           ("k Y" . copy-absolute-file-name)
-           
+
            ;; Toggling buffers
            ("o r" . regexp-builder)
            ("o t" . project-eshell)

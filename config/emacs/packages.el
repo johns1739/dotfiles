@@ -144,22 +144,30 @@
 
 (use-package copilot
   :disabled ;; requires copilot subscription token
+  :if (display-graphic-p)
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :after corfu
   :bind (:map copilot-completion-map
-              ("M-f" . copilot-accept-completion-by-word)
-              ("C-e" . copilot-accept-completion-by-line)
-              ("M-n" . copilot-next-completion)
-              ("M-p" . copilot-previous-completion)
+              ("M-F" . copilot-accept-completion-by-word)
+              ("M-E" . copilot-accept-completion-by-line)
+              ("M-N" . copilot-next-completion)
+              ("M-P" . copilot-previous-completion)
               ("C-<tab>" . copilot-accept-completion))
   :custom
   (corfu-auto nil)
   (copilot-indent-offset-warning-disable t)
-  (copilot-idle-delay 0.5)
+  (copilot-idle-delay 1.0)
   :custom-face
-  (copilot-overlay-face ((t (:family "Monaspace Krypton" :slant 'italic))))
+  (copilot-overlay-face ((t (:family "Monaspace Krypton" :slant italic))))
   :hook
   (prog-mode . copilot-mode))
+
+(use-package copilot-chat
+  :disabled
+  :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
+  :if (display-graphic-p)
+  :requires copilot
+  :after (request org markdown-mode copilot))
 
 (use-package corfu
   :demand
@@ -172,13 +180,13 @@
               ("SPC" . nil))
   :custom
   (corfu-auto (display-graphic-p)) ;; Popup messes up in terminal.
-  (corfu-auto-delay 0.2)
+  (corfu-auto-delay 0.3)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-preview-current 'insert)
   (corfu-preselect 'prompt)
   (corfu-separator ?\s)
-  (corfu-echo-delay 0.2)
+  (corfu-echo-delay 0.3)
   (corfu-popupinfo-delay '(1.25 . 0.2))
   (corfu-min-width 20)
   :config
@@ -516,6 +524,7 @@
   :commands (magit-project-status)
   :bind (:map global-leader-map
               ("j ." . magit-status-here)
+              ("j C" . magit-clone)
               ("j j" . magit-status)
               ("j m" . magit-blame-addition)
               ("j f" . magit-file-dispatch))
@@ -852,6 +861,10 @@
                        :references t
                        :folding t))))))
 
+(use-package show-font
+  :bind ((:map global-leader-map)
+         ("e >" . show-font-tabulated)))
+
 (use-package simple-modeline
   :demand
   :init
@@ -912,6 +925,9 @@
   :mode "\\.tf\'"
   :custom
   (terraform-indent-level 2))
+
+(use-package kuronami-theme)
+(use-package timu-rouge-theme)
 
 (use-package trashed
   :bind (:map global-leader-map

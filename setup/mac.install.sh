@@ -59,6 +59,10 @@ brew install zlib
 brew install icu4c
 brew link icu4c --force
 
+# ASDF Helpful commands
+# asdf list all <name>
+# asdf reshim <name>
+
 ## Elixir
 asdf plugin add elixir https://github.com/asdf-vm/asdf-elixir.git
 asdf install elixir latest
@@ -81,6 +85,10 @@ asdf install ruby latest
 asdf plugin add python
 brew install python-tk
 asdf install python latest
+
+## Nodejs
+asdf plugin add nodejs
+asdf install nodejs latest
 
 ## Golang
 asdf plugin add golang https://github.com/asdf-community/asdf-golang.git
