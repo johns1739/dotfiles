@@ -5,8 +5,8 @@
 
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
-(keymap-set global-leader-map "p" project-prefix-map)
-(keymap-set global-leader-map "t" tab-prefix-map)
+(keymap-set goto-map "p" project-prefix-map)
+(keymap-set goto-map "t" tab-prefix-map)
 
 (bind-keys :map global-map
            ([remap backward-sentence] . backward-sexp)
@@ -98,6 +98,16 @@
            ("M" . bookmark-set)
            ("u" . find-file-at-point)
            ("U" . goto-address-at-point)
+
+           ;; Window navigation
+           ("w h" . windmove-left)
+           ("w j" . windmove-down)
+           ("w k" . windmove-up)
+           ("w l" . windmove-right)
+           ("w H" . windmove-swap-states-left)
+           ("w J" . windmove-swap-states-down)
+           ("w K" . windmove-swap-states-up)
+           ("w L" . windmove-swap-states-right)
 
            :map search-map
            ("f" . project-find-file)

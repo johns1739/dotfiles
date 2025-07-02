@@ -23,7 +23,12 @@
 ;;;; Packages
 
 (use-package ace-window
-  :bind  ([remap other-window] . ace-window))
+  :bind  (([remap other-window] . ace-window)
+          :map goto-map
+          ("w 0" . ace-delete-window)
+          ("w 1" . ace-delete-other-windows)
+          ("w o" . ace-select-window)
+          ("w O" . ace-swap-window)))
 
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
@@ -148,10 +153,10 @@
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :after corfu
   :bind (:map copilot-completion-map
-              ("M-F" . copilot-accept-completion-by-word)
-              ("M-E" . copilot-accept-completion-by-line)
-              ("M-N" . copilot-next-completion)
-              ("M-P" . copilot-previous-completion)
+              ("M-f" . copilot-accept-completion-by-word)
+              ("M-e" . copilot-accept-completion-by-line)
+              ("M-n" . copilot-next-completion)
+              ("M-p" . copilot-previous-completion)
               ("C-<tab>" . copilot-accept-completion))
   :custom
   (corfu-auto nil)
