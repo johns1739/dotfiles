@@ -761,6 +761,7 @@
     (pinentry-start)))
 
 (use-package popper
+  :disabled
   :demand
   :if (display-graphic-p)
   :bind (:map global-leader-map

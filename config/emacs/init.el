@@ -5,6 +5,8 @@
 
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
+(keymap-set global-leader-map "p" project-prefix-map)
+(keymap-set global-leader-map "t" tab-prefix-map)
 (keymap-set goto-map "p" project-prefix-map)
 (keymap-set goto-map "t" tab-prefix-map)
 
