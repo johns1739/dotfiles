@@ -161,9 +161,12 @@
   :custom
   (corfu-auto nil)
   (copilot-indent-offset-warning-disable t)
-  (copilot-idle-delay 1.0)
+  (copilot-idle-delay 0.5)
   :custom-face
-  (copilot-overlay-face ((t (:family "Monaspace Krypton" :slant italic))))
+  (copilot-overlay-face ((t (:family "JetBrainsMonoNL Nerd Font Mono"
+                                     :slant italic
+                                     :weight ultra-light
+                                     :inherit completions-annotations))))
   :hook
   (prog-mode . copilot-mode))
 
