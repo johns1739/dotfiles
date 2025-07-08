@@ -161,7 +161,7 @@
   :custom
   (corfu-auto nil)
   (copilot-indent-offset-warning-disable t)
-  (copilot-idle-delay 0.5)
+  (copilot-idle-delay 1.0)
   :custom-face
   (copilot-overlay-face ((t (:family "JetBrainsMonoNL Nerd Font Mono"
                                      :slant italic
@@ -171,7 +171,7 @@
   (prog-mode . copilot-mode))
 
 (use-package copilot-chat
-  :disabled
+  :disabled ;; too slow
   :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
   :if (display-graphic-p)
   :requires copilot

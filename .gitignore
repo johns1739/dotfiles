@@ -17,6 +17,7 @@
 /config/emacs/places
 /config/emacs/projects
 /config/emacs/recentf
+/config/emacs/request/
 /config/emacs/slim/eln-cache/
 /config/emacs/straight/
 /config/emacs/tramp
