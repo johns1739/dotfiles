@@ -148,7 +148,8 @@
   :commands (consult-flycheck))
 
 (use-package copilot
-  :disabled ;; requires copilot subscription token
+  ;; M-x copilot-install-server
+  :disabled ;; requires copilot subscription token  
   :if (display-graphic-p)
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :after corfu
