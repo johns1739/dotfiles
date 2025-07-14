@@ -123,6 +123,8 @@
          ([remap flymake-show-buffer-diagnostics] . consult-flymake) ;; Errors aren't verbose sometimes
          :map global-leader-map
          ("k SPC" . consult-compile-error)
+         :map minibuffer-mode-map
+         ("M-i" . consult-history)
          :map search-map
          ("l" . consult-line)
          ("L" . consult-focus-lines)
@@ -247,7 +249,7 @@
 
 (use-package diff-hl
   :bind (:map global-leader-map
-              ("j d" . diff-hl-show-hunk))
+              ("j D" . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -534,7 +536,10 @@
   :bind (:map global-leader-map
               ("j ." . magit-status-here)
               ("j C" . magit-clone)
+              ("j d" . magit-diff-buffer-file)
               ("j j" . magit-status)
+              ("j l" . magit-log-buffer-file)
+              ("j S" . magit-stage-buffer-file)
               ("j m" . magit-blame-addition)
               ("j f" . magit-file-dispatch))
   :init

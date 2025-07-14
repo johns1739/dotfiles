@@ -55,6 +55,7 @@
            ("k d" . flymake-show-buffer-diagnostics)
            ("k D" . flymake-show-project-diagnostics)
            ("k n" . next-error)
+           ("k o" . compilation-goto-in-progress-buffer)
            ("k p" . previous-error)
 
            ;; Toggling buffers

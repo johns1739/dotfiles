@@ -11,8 +11,6 @@
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key [remap backward-sentence] #'backward-sexp)
 (global-set-key [remap forward-sentence] #'forward-sexp)
-(global-set-key [remap split-window-below] #'split-window-below-and-jump)
-(global-set-key [remap split-window-right] #'split-window-right-and-jump)
 (global-set-key (kbd "M-n") #'forward-paragraph)
 (global-set-key (kbd "M-p") #'backward-paragraph)
 (global-set-key (kbd "M-o") #'other-window)
@@ -68,17 +66,6 @@
 (save-place-mode t)
 (savehist-mode t)
 (fido-mode 1)
-
-;; commands & functions
-(defun split-window-below-and-jump ()
-  "Split window below and jump to it."
-  (interactive)
-  (select-window (split-window-below)))
-
-(defun split-window-right-and-jump ()
-  "Split window right and jump to it."
-  (interactive)
-  (select-window (split-window-right)))
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))
