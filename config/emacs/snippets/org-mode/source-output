@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: source-output
-# key: ,output
+# key: ,out
 # --
 #+begin_output
 $0

@@ -33,10 +33,12 @@
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          ("C-'" . avy-resume)
+         :map global-leader-map
+         ("n W" . avy-org-refile-as-child)
          :map isearch-mode-map
          ("C-'" . avy-isearch)
          :map goto-map
-         ("g" . avy-goto-char-2)
+         ("g" . avy-goto-char-timer)
          ("a k" . avy-kill-whole-line)
          ("a K" . avy-kill-region)
          ("a m" . avy-move-line)
@@ -277,6 +279,8 @@
   (dired-mode . dired-subtree-setup)
   :custom
   (dired-subtree-use-backgrounds nil))
+
+(use-package dockerfile-mode)
 
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
@@ -573,7 +577,10 @@
   (marginalia-mode 1))
 
 (use-package markdown-mode
-  :mode "\\.md\\'")
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "multimarkdown")
+  :bind (:map markdown-mode-map
+              ("C-c C-e" . markdown-do)))
 
 (use-package meow
   :demand
@@ -678,6 +685,9 @@
 (use-package modus-themes
   :defer t)
 
+(use-package ob-http
+  :after org)
+
 (use-package orderless
   :custom
   (completion-styles '(substring partial-completion orderless basic))
@@ -703,6 +713,7 @@
      'org-babel-load-languages
      '((C . t)
        (emacs-lisp . t)
+       (http . t)
        (shell . t)
        (scheme . t)
        (python . t)))
@@ -711,12 +722,15 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
+              ("N" . org-capture)
+              ("n '" . org-capture-goto-last-stored)
+              ("n /" . org-occur-in-agenda-files)
               ("n SPC" . org-search-view)
               ("n a" . org-agenda)
-              ("n ," . org-capture-goto-last-stored)
-              ("n /" . org-occur-in-agenda-files)
+              ("n f" . org-capture-goto-target)
               ("n n" . org-capture)
               ("n t" . org-todo-list)
+              ("n w" . org-refile)
               :map org-mode-map
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading))

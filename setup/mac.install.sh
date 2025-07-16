@@ -48,6 +48,7 @@ brew install jq
 brew install libxslt
 brew install fop
 brew install libyaml
+brew install multimarkdown
 brew install openssl
 brew install ossp-uuid
 brew install pkg-config
