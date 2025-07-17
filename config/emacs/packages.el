@@ -716,6 +716,7 @@
        (http . t)
        (shell . t)
        (scheme . t)
+       (sql . t)
        (python . t)))
     (electric-indent-local-mode -1))
   :hook
@@ -934,8 +935,7 @@
   (simple-modeline-mode))
 
 (use-package sqlformat
-  ;; brew install pgformatter
-  ;; :disabled ;; Requires OS dependency postgresql.
+  :if (executable-find "pgformatter")
   :commands (sqlformat)
   :init
   (defun sql-set-bindings ()
