@@ -84,3 +84,6 @@ export PATH="$ASDF_DIR/shims:$PATH"
 
 # cargo
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# Local Bin
+export PATH="$HOME/.local/bin:$PATH"
