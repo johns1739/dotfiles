@@ -34,7 +34,7 @@
   :bind (([remap goto-line] . avy-goto-line)
          ("C-'" . avy-resume)
          :map global-leader-map
-         ("n W" . avy-org-refile-as-child)
+         ("n w" . avy-org-refile-as-child)
          :map isearch-mode-map
          ("C-'" . avy-isearch)
          :map goto-map
@@ -729,12 +729,15 @@
               ("n SPC" . org-search-view)
               ("n a" . org-agenda)
               ("n f" . org-capture-goto-target)
+              ("n L" . org-store-link)
               ("n n" . org-capture)
               ("n t" . org-todo-list)
-              ("n w" . org-refile)
+              ("n W" . org-refile)
               :map org-mode-map
               ("M-n" . org-next-visible-heading)
-              ("M-p" . org-previous-visible-heading))
+              ("M-p" . org-previous-visible-heading)
+              ("M-N" . org-move-subtree-down)
+              ("M-P" . org-move-subtree-up))
   :custom
   (org-directory "~/.notes")
   (org-agenda-files (list org-directory))
@@ -763,10 +766,12 @@
   (org-todo-keywords
    '((sequence "TODO(t!)" "ACTIVE(a!)" "BLOCKED(b@)" "|" "DONE(d!)" "CANCELED(c@)")))
   (org-todo-keyword-faces '(("TODO" . "steel blue")
+                            ("QUESTION" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
                             ("REVIEW" . "light goldenrod")
                             ("BLOCKED" . "sienna")
-                            ("DONE" . "dark olive green")
+                            ("DONE" . "dim gray")
+                            ("ANSWERED" . "dim gray")
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates

@@ -5,6 +5,7 @@
 /config/btop/
 /config/emacs/.cache/
 /config/emacs/.lsp-session-v1
+/config/emacs/.org-id-locations
 /config/emacs/auto-save-list/
 /config/emacs/backups/
 /config/emacs/bookmarks
