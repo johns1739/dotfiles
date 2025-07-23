@@ -141,8 +141,8 @@
 (use-package consult-denote
   :disabled
   :bind (:map global-leader-map
-              ("N f" . consult-denote-find)
-              ("N s" . consult-denote-grep))
+              ("n d f" . consult-denote-find)
+              ("n d s" . consult-denote-grep))
   :custom
   (consult-denote-grep-command 'consult-ripgrep)
   :config
@@ -232,13 +232,13 @@
 (use-package denote
   :disabled
   :bind (:map global-leader-map
-              ("N SPC" . denote-open-or-create)
-              ("N n" . denote)
-              ("N j" . denote-journal-extras-new-or-existing-entry)
-              ("N l" . denote-link-or-create)
-              ("N k" . denote-find-link)
-              ("N K" . denote-find-backlink)
-              ("N r" . denote-rename-file-using-front-matter))
+              ("n d SPC" . denote-open-or-create)
+              ("n d n" . denote)
+              ("n d j" . denote-journal-extras-new-or-existing-entry)
+              ("n d l" . denote-link-or-create)
+              ("n d k" . denote-find-link)
+              ("n d K" . denote-find-backlink)
+              ("n d r" . denote-rename-file-using-front-matter))
   :custom
   (denote-directory "~/workspaces/notes")
   (denote-date-prompt-use-org-read-date t)
@@ -724,13 +724,12 @@
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
               ("N" . org-capture)
-              ("n '" . org-capture-goto-last-stored)
-              ("n /" . org-occur-in-agenda-files)
+              ("n ," . org-capture-goto-last-stored)
               ("n SPC" . org-search-view)
               ("n a" . org-agenda)
               ("n f" . org-capture-goto-target)
               ("n L" . org-store-link)
-              ("n n" . org-capture)
+              ("n s" . org-occur-in-agenda-files)
               ("n t" . org-todo-list)
               ("n W" . org-refile)
               :map org-mode-map
