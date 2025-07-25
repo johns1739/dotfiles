@@ -538,14 +538,13 @@
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
-              ("j ." . magit-status-here)
-              ("j C" . magit-clone)
-              ("j d" . magit-diff-buffer-file)
-              ("j j" . magit-status)
+              ("j ;" . magit-file-dispatch)
+              ("j :" . magit-dispatch)
+              ("j b" . magit-blame-addition)
+              ("j B" . magit-branch-or-checkout)
+              ("j j" . magit-status-here)
               ("j l" . magit-log-buffer-file)
-              ("j S" . magit-stage-buffer-file)
-              ("j m" . magit-blame-addition)
-              ("j f" . magit-file-dispatch))
+              ("j L" . magit-log-current))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
