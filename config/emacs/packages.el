@@ -282,6 +282,9 @@
 
 (use-package dockerfile-mode)
 
+(use-package doric-themes
+  :defer t)
+
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
   :custom
