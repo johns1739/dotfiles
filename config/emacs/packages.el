@@ -61,8 +61,7 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
-  :bind (("M-l" . cape-line)
-         :map global-leader-map
+  :bind (:map global-leader-map
          ("i d" . cape-dict)
          ("i e" . cape-elisp-symbol)
          ("i f" . cape-file)
@@ -227,7 +226,10 @@
   (dashboard-setup-startup-hook))
 
 (use-package deadgrep
-  :bind (:map search-map ("g" . deadgrep)))
+  :bind (:map search-map ("g" . deadgrep))
+  :init
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(deadgrep "Deadgrep" "g"))))
 
 (use-package denote
   :disabled
