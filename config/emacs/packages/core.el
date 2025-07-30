@@ -247,6 +247,9 @@
 (use-package git-link
   :bind (:map global-leader-map ("j y" . git-link)))
 
+(use-package google-this
+  :bind (:map global-leader-map ("o g" . google-this)))
+
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-command] . helpful-command)
