@@ -38,26 +38,12 @@
          :map isearch-mode-map
          ("C-'" . avy-isearch)
          :map goto-map
-         ("g" . avy-goto-char-timer)
-         ("a k" . avy-kill-whole-line)
-         ("a K" . avy-kill-region)
-         ("a m" . avy-move-line)
-         ("a M" . avy-move-region)
-         ("a y" . avy-copy-line)
-         ("a Y" . avy-copy-region)))
+         ("g" . avy-goto-char-timer)))
 
 (use-package beacon
   :if (display-graphic-p) ;; Not pretty in terminal
   :config
   (beacon-mode 1))
-
-(use-package cc-mode
-  :mode "\\.c\\'"
-  :ensure nil
-  :straight nil
-  :defer t
-  :init
-  (add-to-list 'major-mode-remap-alist '(cc-mode . c-ts-mode)))
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
@@ -79,19 +65,6 @@
          ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
          ;; #'cape-line ;; Kinda buggy
          )))
-
-(use-package color-theme-sanityinc-tomorrow
-  :defer t)
-
-(use-package common-lisp-mode
-  :straight nil
-  :ensure nil
-  :mode
-  (("\\.lisp$" . common-lisp-mode)
-   ("\\.clisp$" . common-lisp-mode))
-  :config
-  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
-  (setq inferior-lisp-program "sbcl"))
 
 (use-package consult
   :init
@@ -137,25 +110,9 @@
   :config
   (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
-(use-package consult-denote
-  :disabled
-  :bind (:map global-leader-map
-              ("n d f" . consult-denote-find)
-              ("n d s" . consult-denote-grep))
-  :custom
-  (consult-denote-grep-command 'consult-ripgrep)
-  :config
-  (consult-denote-mode))
-
-(use-package consult-flycheck
-  :commands (consult-flycheck))
-
 (use-package copilot
   ;; M-x copilot-install-server
-  :disabled ;; requires copilot subscription token  
-  :if (display-graphic-p)
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :after corfu
   :bind (:map copilot-completion-map
               ("M-f" . copilot-accept-completion-by-word)
               ("M-e" . copilot-accept-completion-by-line)
@@ -165,7 +122,7 @@
   :custom
   (corfu-auto nil)
   (copilot-indent-offset-warning-disable t)
-  (copilot-idle-delay 1.0)
+  (copilot-idle-delay 0.5)
   :custom-face
   (copilot-overlay-face ((t (:family "JetBrainsMonoNL Nerd Font Mono"
                                      :slant italic
@@ -174,24 +131,18 @@
   :hook
   (prog-mode . copilot-mode))
 
-(use-package copilot-chat
-  :disabled ;; too slow
-  :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
-  :if (display-graphic-p)
-  :requires copilot
-  :after (request org markdown-mode copilot))
-
 (use-package corfu
   :demand
   :if (display-graphic-p)
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
-  :bind (:map corfu-map
-              ;; ("TAB" . nil)
-              ("RET" . nil)
-              ("SPC" . nil))
+  ;; When corfu-auto is off, better to not modify bindings.
+  ;; :bind (:map corfu-map
+  ;;             ("TAB" . nil)
+  ;;             ("RET" . nil)
+  ;;             ("SPC" . nil))
   :custom
-  (corfu-auto (display-graphic-p)) ;; Popup messes up in terminal.
+  (corfu-auto nil)
   (corfu-auto-delay 0.3)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
@@ -207,61 +158,15 @@
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
-(use-package csv-mode
-  :mode "\\.csv\\'")
-
-(use-package css-mode
-  :mode "\\.css\\'"
-  :custom
-  (css-indent-offset 2))
-
-(use-package dashboard
-  :disabled
-  :demand
-  :if (display-graphic-p)
-  :custom
-  (dashboard-center-content t)
-  (dashboard-vertically-center-content t)
-  :config
-  (dashboard-setup-startup-hook))
-
 (use-package deadgrep
   :bind (:map search-map ("g" . deadgrep))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(deadgrep "Deadgrep" "g"))))
 
-(use-package denote
-  :disabled
-  :bind (:map global-leader-map
-              ("n d SPC" . denote-open-or-create)
-              ("n d n" . denote)
-              ("n d j" . denote-journal-extras-new-or-existing-entry)
-              ("n d l" . denote-link-or-create)
-              ("n d k" . denote-find-link)
-              ("n d K" . denote-find-backlink)
-              ("n d r" . denote-rename-file-using-front-matter))
-  :custom
-  (denote-directory "~/workspaces/notes")
-  (denote-date-prompt-use-org-read-date t)
-  :config
-  (denote-rename-buffer-mode))
-
 (use-package devdocs
   :bind (:map goto-map
               ("H" . devdocs-lookup)))
-
-(use-package diff-hl
-  :bind (:map global-leader-map
-              ("j D" . diff-hl-show-hunk))
-  :hook
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh)
-  :config
-  ;; Terminal does not have a fringe, so use margin instead.
-  (unless (display-graphic-p)
-    (diff-hl-margin-mode))
-  (global-diff-hl-mode))
 
 (use-package dimmer
   :if (display-graphic-p) ;; Only works in GUI
@@ -281,11 +186,6 @@
   (dired-mode . dired-subtree-setup)
   :custom
   (dired-subtree-use-backgrounds nil))
-
-(use-package dockerfile-mode)
-
-(use-package doric-themes
-  :defer t)
 
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
@@ -318,9 +218,6 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
 
-(use-package ef-themes
-  :defer t)
-
 (use-package eglot
   :straight nil
   :bind (:map global-leader-map
@@ -339,98 +236,6 @@
   :config
   (eglot-booster-mode))
 
-(use-package eldoc-box
-  :disabled ;; Annoying
-  :if (display-graphic-p)
-  :hook
-  (prog-mode . eldoc-box-hover-at-point-mode))
-
-(use-package elixir-ts-mode
-  :mode (("\\.ex$" . elixir-ts-mode)
-         ("\\.exs$" . elixir-ts-mode)
-         ("\\.heex$" . heex-ts-mode))
-  :init
-  (with-eval-after-load 'compile
-    ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(elixir-warning-target
-                   "└─ \\([^:]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
-  (defun elixir-compile ()
-    (interactive)
-    (setq compile-command
-          (cond ((string-match-p "_test.exs\\'" (buffer-file-name))
-                 (let ((linum (number-to-string (line-number-at-pos)))
-                       (file-name (relative-file-name)))
-                   (if (< (line-number-at-pos) 5)
-                       (string-join (list "mix test " file-name))
-                     (string-join (list "mix test " (format "%s:%s" file-name linum))))))
-                (t compile-command)))
-    (call-interactively #'compile-dwim))
-  (defun elixir-comint ()
-    (interactive)
-    (universal-argument)
-    (command-execute #'elixir-compile))
-  (defun elixir-setup ()
-    (cond
-     ((string-match-p "router.ex$" (buffer-name))
-      (setq outline-regexp
-            " *\\(get\\|delete\\|put\\|post\\|scope\\|pipe_through\\|resources\\) "))
-     ((string-match-p "_test.exs$" (buffer-name))
-      (setq outline-regexp " *\\(describe \\|test \\|setup \\)")))
-    (bind-keys :map (current-local-map)
-               ([remap compile-dwim] . elixir-compile)
-               ([remap comint-dwim] . elixir-comint)))
-  :hook
-  (elixir-ts-mode . elixir-setup)
-  :config
-  ;; TODO: Enable more features
-  ;; https://joaotavora.github.io/eglot/#User_002dspecific-configuration-1
-  ;; https://github.com/elixir-lsp/elixir-ls?tab=readme-ov-file#elixirls-configuration-settings
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((elixir-ts-mode heex-ts-mode) .
-                   ,(eglot-alternatives '("language_server.sh" "start_lexical.sh"))))))
-
-(use-package ellama
-  :disabled
-  :custom
-  (ellama-user-nick "Juan")
-  (ellama-assistant-nick "Cody")
-  (ellama-language "English")
-  (ellama-spinner-enabled t)
-  ;; (ellama-chat-display-action-function #'display-buffer-full-frame)
-  ;; (ellama-instant-display-action-function #'display-buffer-at-bottom)
-  (ellama-keymap-prefix "C-;")
-  (ellama-auto-scroll t)
-  :hook
-  (org-ctrl-c-ctrl-c . ellama-chat-send-last-message)
-  :config
-  (require 'llm-ollama)
-  (setopt ellama-provider
-          (make-llm-ollama :chat-model "qwen2.5:7b"
-                           :embedding-model "nomic-embed-text"
-                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
-  (setopt ellama-coding-provider
-          (make-llm-ollama :chat-model "qwen2.5-coder:7b"
-                           :embedding-model "nomic-embed-text"
-                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
-  (setopt ellama-summarization-provider
-          (make-llm-ollama :chat-model "qwen2.5-coder:7b"
-                           :embedding-model "nomic-embed-text"
-                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
-  (ellama-context-header-line-global-mode 1))
-
-(use-package embark
-  :bind (([remap describe-bindings] . embark-bindings)
-         :map mode-specific-map
-         ("A" . embark-act)
-         ("E" . embark-export)))
-
-(use-package embark-consult
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
-
 (use-package exec-path-from-shell
   :if (and (memq window-system '(mac ns)) (display-graphic-p))
   :demand
@@ -439,59 +244,8 @@
   :config
   (exec-path-from-shell-initialize))
 
-(use-package flycheck
-  ;; https://www.flycheck.org/en/latest/
-  :commands (global-flycheck-mode flycheck-mode)
-  :init
-  (defun flycheck-set-bindings ()
-    (bind-keys :map (current-local-map)
-               ([remap consult-flymake] . consult-flycheck)
-               ([remap flymake-show-buffer-diagnostics] . consult-flycheck)
-               ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
-               ([remap flymake-show-project-diagnostics] . nil)
-               ([remap flymake-goto-next-error] . flycheck-next-error)
-               ([remap flymake-goto-prev-error] . flycheck-previous-error)))
-  :custom
-  (flycheck-indication-mode 'right-fringe)
-  :hook
-  (flycheck-mode . flycheck-set-bindings))
-
-(use-package forge
-  :commands (forge-dispatch)
-  :custom
-  (auth-sources '("~/.authinfo")))
-
-(use-package geiser-guile
-  :commands (geiser geiser-mode)
-  :custom
-  (geiser-debug-jump-to-debug t)
-  :hook
-  (scheme-mode . geiser-mode))
-
 (use-package git-link
   :bind (:map global-leader-map ("j y" . git-link)))
-
-(use-package git-timemachine
-  :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
-
-(use-package gleam-ts-mode
-  :straight (:host github :repo "gleam-lang/gleam-mode")
-  :mode (rx ".gleam" eos)
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(gleam-ts-mode "gleam" "lsp"))))
-
-(use-package go-ts-mode
-  :mode "\\.go\\'"
-  :custom
-  (go-ts-mode-indent-offset 4))
-
-(use-package gruber-darker-theme
-  :defer t)
-
-(use-package gruvbox-theme
-  :defer t)
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
@@ -502,54 +256,11 @@
          :map help-map
          ("." . helpful-at-point)))
 
-(use-package janet-mode
-  :mode "\\.janet$"
-  :config
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(janet-mode "janet-lsp"))))
-
-(use-package jinx
-  ;; Requires OS dependencies.
-  :bind (("M-$" . jinx-correct)
-         ([remap flyspell-mode] . jinx-mode)))
-
-(use-package js-mode
-  :straight nil
-  :mode "\\.js\\'"
-  :custom
-  (js-indent-level 4))
-
-(use-package lua-mode
-  :mode "\\.lua\\'")
-
-(use-package lsp-mode
-  :disabled
-  :commands (lsp lsp-deferred)
-  :custom
-  (lsp-keymap-prefix "s-l")
-  (lsp-idle-delay 0.500)
-  (lsp-headerline-breadcrumb-enable nil)
-  :init
-  (defun lsp-set-bindings ()
-    (bind-keys :map (current-local-map)
-               ([remap indent-buffer] . lsp-format-buffer)
-               ([remap xref-find-references] . lsp-find-references)
-               ([remap eldoc] . lsp-describe-thing-at-point)))
-  :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  (lsp-mode . lsp-set-bindings))
-
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
-              ("j ;" . magit-file-dispatch)
-              ("j :" . magit-dispatch)
-              ("j b" . magit-blame-addition)
-              ("j B" . magit-branch-or-checkout)
-              ("j j" . magit-status-here)
-              ("j l" . magit-log-buffer-file)
-              ("j L" . magit-log-current))
+              ("j" . magit-file-dispatch)
+              ("J" . magit-dispatch))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
@@ -560,31 +271,11 @@
   (if (display-graphic-p)
       (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)))
 
-(use-package magit-todos
-  :bind (:map project-prefix-map ("t" . magit-todos-list))
-  :config
-  (magit-todos-mode 1))
-
-(use-package make-mode
-  :ensure nil
-  :straight nil
-  :init
-  (defun make-mode-setup ()
-    (setq-local outline-regexp "^[A-Za-z].+:"))
-  :hook
-  (makefile-bsdmake-mode . make-mode-setup))
-
 (use-package marginalia
   :custom
   (completions-detailed nil)
   :config
   (marginalia-mode 1))
-
-(use-package markdown-mode
-  :mode ("README\\.md\\'" . gfm-mode)
-  :init (setq markdown-command "multimarkdown")
-  :bind (:map markdown-mode-map
-              ("C-c C-e" . markdown-do)))
 
 (use-package meow
   :demand
@@ -622,6 +313,8 @@
      '("1" . meow-expand-1)
      '("-" . negative-argument)
      '("_" . meow-reverse)
+     '("(" . kmacro-start-macro)
+     '(")" . meow-end-or-call-kmacro)
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("b" . meow-back-word)
@@ -686,9 +379,6 @@
   (meow-setup)
   (meow-global-mode))
 
-(use-package modus-themes
-  :defer t)
-
 (use-package ob-http
   :after org)
 
@@ -700,8 +390,6 @@
 
 (use-package org
   ;; Useful documentation: https://orgmode.org/worg/org-syntax.html
-  :defer t
-  :ensure nil
   :straight nil
   :commands (org-todo-list
              org-agenda
@@ -792,114 +480,8 @@
   (with-eval-after-load 'magit
     (pinentry-start)))
 
-(use-package popper
-  :disabled
-  :demand
-  :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("o o" . popper-toggle)
-              ("o O" . popper-toggle-type))
-  :init
-  (defun popper-setup ()
-    (bind-keys :map (current-local-map)
-               ("Q" . popper-kill-latest-popup)))
-  (setq popper-reference-buffers
-        '(("Output\\*$" . hide)
-          occur-mode
-          "\\*Messages\\*"
-          "\\*Warnings\\*"
-          "errors\\*$"
-          "\\*Async Shell Command\\*"
-          special-mode
-          help-mode
-          flymake-diagnostics-buffer-mode
-          compilation-mode
-          comint-mode))
-  ;; Match eshell, shell, term, etc
-  (setq popper-reference-buffers
-        (append popper-reference-buffers
-                '("^\\*.*eshell.*\\*$" eshell-mode
-                  "^\\*shell.*\\*$"  shell-mode
-                  "^\\*term.*\\*$"   term-mode
-                  "^\\*vterm.*\\*$"  vterm-mode
-                  "^\\*.*eat.*\\*$"  eat-mode)))
-  (setq popper-window-height
-        (lambda (win)
-          (fit-window-to-buffer win (floor (frame-height) 3) 15)))
-  :hook
-  (popper-open-popup . popper-setup)
-  :config
-  (popper-mode +1)
-  (popper-echo-mode +1))
-
-(use-package python-mode
-  :ensure nil
-  :straight nil
-  :mode "\\.py\\'"
-  :init
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  (defun python-setup ()
-    (setq-local tab-width 4))
-  :hook
-  (python-ts-mode . python-setup)
-  :custom
-  (python-indent-offset 4))
-
-(use-package ruby-ts-mode
-  :mode "\\.rb\\'"
-  :init
-  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-  (defun rails-compile ()
-    (interactive)
-    (setq compile-command
-          (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
-                 (let ((linum (number-to-string (line-number-at-pos)))
-                       (file-name (relative-file-name)))
-                   (if (< (line-number-at-pos) 5)
-                       (string-join (list "rails t " file-name))
-                     (string-join (list "rails t " (s-concat file-name ":" linum))))))
-                (t compile-command)))
-    (call-interactively #'compile-dwim))
-  (defun rails-comint ()
-    (interactive)
-    (universal-argument)
-    (command-execute #'rails-compile))
-  (defun ruby-setup ()
-    (setq-local compile-command "rails t")
-    (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
-    (bind-keys :map (current-local-map)
-               ([remap compile-dwim] . rails-compile)
-               ([remap comint-dwim] . rails-comint)))
-  :hook
-  (ruby-base-mode . ruby-setup)
-  :config
-  (with-eval-after-load 'compile
-    (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(rails-test-target
-                   "^rails test \\([^:]+\\):\\([0-9]+\\)" 1 2 nil nil 1))
-    (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(rspec-backtrace-target
-                   "^ +# \\(./[A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((ruby-mode ruby-ts-mode)
-                   . ("solargraph" "stdio" :initializationOptions
-                      (;; options
-                       :useBundler t
-                       :diagnostics t
-                       :completion t
-                       :hover t
-                       :autoformat :json-false
-                       :formatting t
-                       :symbols t
-                       :definitions t
-                       :rename t
-                       :references t
-                       :folding t))))))
-
 (use-package show-font
+  :if (display-graphic-p) ;; none exist in terminal
   :bind ((:map global-leader-map)
          ("e >" . show-font-tabulated)))
 
@@ -934,7 +516,7 @@
       ;; simple-modeline-segment-input-method
       ;; simple-modeline-segment-eol
       ;; simple-modeline-segment-encoding
-      ;; simple-modeline-segment-vc
+      simple-modeline-segment-vc
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
@@ -943,7 +525,7 @@
   (simple-modeline-mode))
 
 (use-package sqlformat
-  :if (executable-find "pgformatter")
+  :if (executable-find "pg_format")
   :commands (sqlformat)
   :init
   (defun sql-set-bindings ()
@@ -954,17 +536,6 @@
   :config
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
-
-(use-package solarized-theme
-  :defer t)
-
-(use-package terraform-mode
-  :mode "\\.tf\'"
-  :custom
-  (terraform-indent-level 2))
-
-(use-package kuronami-theme)
-(use-package timu-rouge-theme)
 
 (use-package trashed
   :bind (:map global-leader-map
@@ -991,14 +562,6 @@
   (treemacs-filewatch-mode t)
   (treemacs-project-follow-mode t))
 
-(use-package typescript-ts-mode
-  :mode "\\.ts$"
-  :custom
-  (typescript-ts-mode-indent-offset 4)
-  :config
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
-
 (use-package vertico
   :demand
   :config
@@ -1009,37 +572,7 @@
   :config
   (visual-replace-global-mode 1))
 
-(use-package vterm
-  :disabled ;; Eat is a better termianl emulator.
-  :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("o t" . vterm-project)
-              ("o T" . vterm-named))
-  :init
-  (defun vterm-project ()
-    (interactive)
-    (let ((default-directory (or (project-directory) default-directory)))
-      (vterm-other-window)))
-  (defun vterm-named ()
-    (interactive)
-    (vterm (read-string "Session name: ")))
-  :custom
-  (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000))
-
-(use-package web-mode
-  :mode
-  (("\\.phtml\\'" . web-mode)
-   ("\\.php\\'" . web-mode)
-   ("\\.tpl\\'" . web-mode)
-   ("\\.[agj]sp\\'" . web-mode)
-   ("\\.as[cp]x\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.mustache\\'" . web-mode)
-   ("\\.djhtml\\'" . web-mode)))
-
 (use-package which-key
-  :ensure nil
   :straight nil
   :config
   (which-key-mode))
@@ -1057,23 +590,12 @@
   (xref-search-program 'ripgrep)
   (xref-show-definitions-function #'xref-show-definitions-completing-read))
 
-(use-package yaml-ts-mode
-  :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
-
 (use-package yasnippet
   :demand
   ;; https://joaotavora.github.io/yasnippet/index.html
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
+  :bind (:map global-leader-map
+              ("e y" . yas-new-snippet))
   :config
   (yas-global-mode 1))
-
-(use-package yasnippet-snippets
-  ;; :disabled ;; Better to rely on custom built templates over externals.
-  :after yasnippet)
-
-(use-package zenburn-theme
-  :defer t)
-
-(use-package zig-mode
-  :mode "\\.zig\\'")

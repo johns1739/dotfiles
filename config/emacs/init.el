@@ -15,14 +15,15 @@
            ([remap forward-sentence] . forward-sexp)
            ([remap split-window-below] . split-window-below-and-jump)
            ([remap split-window-right] . split-window-right-and-jump)
+
            ("C-x C-b" . ibuffer)
-           ("C-x E" . eval-buffer)
            ("C-z" . nil) ;; unbind suspend-frame
-           ("M-n" . forward-paragraph)
-           ("M-p" . backward-paragraph)
-           ("M-o" . other-window)
-           ("M-I" . hippie-expand)
+
            ("M-i" . completion-at-point)
+           ("M-I" . hippie-expand)
+           ("M-n" . forward-paragraph)
+           ("M-o" . other-window)
+           ("M-p" . backward-paragraph)
 
            ;; tab navigation (Works only in GUI)
            ("s-{" . tab-previous)
@@ -41,6 +42,8 @@
            ("3" . split-window-right-and-jump)
 
            ;; Command Actions
+           ("x b" . eval-buffer)
+           ("x e" . eval-last-sexp)
            ("x d" . ediff-files)
            ("x s" . sort-lines)
            ("x y" . copy-relative-file-name)
@@ -58,16 +61,17 @@
            ("k o" . compilation-goto-in-progress-buffer)
            ("k p" . previous-error)
 
-           ;; Toggling buffers
+           ;; Open / Toggling Application
            ("o r" . regexp-builder)
            ("o t" . project-eshell)
            ("o T" . eshell)
            ("o c" . calc)
 
-           ;; Editor Settings
+           ;; Settings
            ("e $" . flyspell-mode)
            ("e =" . set-font-size)
            ("e ." . load-theme)
+           ("e ," . customize-option)
            ("e c" . display-fill-column-indicator-mode)
            ("e C" . global-display-fill-column-indicator-mode)
            ("e f" . toggle-frame-maximized)
@@ -519,7 +523,9 @@
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
 ;; Load packages
-(load (locate-user-emacs-file "packages.el") :no-error-if-file-is-missing)
+(load (locate-user-emacs-file "packages/core.el") :no-error-if-file-is-missing)
+(load (locate-user-emacs-file "packages/langs.el") :no-error-if-file-is-missing)
+(load (locate-user-emacs-file "packages/color-themes.el") :no-error-if-file-is-missing)
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))
