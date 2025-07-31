@@ -246,7 +246,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package git-link
-  :bind (:map global-leader-map ("j y" . git-link)))
+  :bind (:map global-leader-map ("x j" . git-link)))
 
 (use-package google-this
   :bind (:map global-leader-map ("o g" . google-this)))
