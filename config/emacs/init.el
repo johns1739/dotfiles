@@ -17,7 +17,6 @@
            ([remap split-window-right] . split-window-right-and-jump)
 
            ("C-x C-b" . ibuffer)
-           ("C-z" . nil) ;; unbind suspend-frame
 
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
@@ -129,10 +128,7 @@
            :map tab-prefix-map
            ("SPC" . tab-switch)
            ("'" . tab-recent)
-           ("T" . tab-bar-mode)
-
-           :map help-map
-           ("h" . nil))
+           ("T" . tab-bar-mode))
 
 ;; compilation settings
 (setq compile-command nil)

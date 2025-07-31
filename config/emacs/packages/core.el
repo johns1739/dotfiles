@@ -47,6 +47,7 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
+  :commands (cape-dict cape-elisp-symbol cape-file cape-history cape-dabbrev cape-line cape-keyword)
   :bind (:map global-leader-map
          ("i d" . cape-dict)
          ("i e" . cape-elisp-symbol)
@@ -67,11 +68,6 @@
          )))
 
 (use-package consult
-  :init
-  (setq completion-in-region-function #'consult-completion-in-region)
-  (setq register-preview-function #'consult-register-format)
-  (setq xref-show-xrefs-function #'consult-xref)
-  (setq xref-show-definitions-function #'consult-xref)
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
          ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
@@ -107,6 +103,11 @@
          ("o" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
+  :init
+  (setq completion-in-region-function #'consult-completion-in-region)
+  (setq register-preview-function #'consult-register-format)
+  (setq xref-show-xrefs-function #'consult-xref)
+  (setq xref-show-definitions-function #'consult-xref)
   :config
   (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
@@ -275,13 +276,14 @@
       (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)))
 
 (use-package marginalia
+  :hook (after-init . marginalia-mode)
   :custom
-  (completions-detailed nil)
-  :config
-  (marginalia-mode 1))
+  (completions-detailed nil))
 
 (use-package meow
-  :demand
+  :hook
+  ((after-init . meow-setup)
+   (after-init . meow-global-mode))
   :custom
   (meow-use-clipboard t)
   (meow-keypad--self-insert-undefined nil)
@@ -377,10 +379,7 @@
      '("." . meow-bounds-of-thing)
      '(">" . meow-end-of-thing)
      '("<backspace>" . meow-backward-delete)
-     '("<escape>" . meow-cancel-selection)))
-  :config
-  (meow-setup)
-  (meow-global-mode))
+     '("<escape>" . meow-cancel-selection))))
 
 (use-package ob-http
   :after org)
@@ -489,7 +488,7 @@
          ("e >" . show-font-tabulated)))
 
 (use-package simple-modeline
-  :demand
+  :hook (after-init . simple-modeline-mode)
   :init
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
@@ -523,9 +522,7 @@
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
-      simple-modeline-segment-spaces)))
-  :config
-  (simple-modeline-mode))
+      simple-modeline-segment-spaces))))
 
 (use-package sqlformat
   :if (executable-find "pg_format")
@@ -566,24 +563,19 @@
   (treemacs-project-follow-mode t))
 
 (use-package vertico
-  :demand
-  :config
-  (vertico-mode))
+  :hook (after-init . vertico-mode))
 
 (use-package visual-replace
-  :demand
-  :config
-  (visual-replace-global-mode 1))
+  :hook
+  (after-init . visual-replace-global-mode))
 
 (use-package which-key
-  :straight nil
-  :config
-  (which-key-mode))
+  :hook (after-init . which-key-mode)
+  :straight nil)
 
 (use-package xclip
   :unless (display-graphic-p)
-  :config
-  (xclip-mode))
+  :hook (after-init . xclip-mode))
 
 (use-package xref
   :straight nil
@@ -594,11 +586,9 @@
   (xref-show-definitions-function #'xref-show-definitions-completing-read))
 
 (use-package yasnippet
-  :demand
   ;; https://joaotavora.github.io/yasnippet/index.html
+  :hook (after-init . yas-global-mode)
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
   :bind (:map global-leader-map
-              ("e y" . yas-new-snippet))
-  :config
-  (yas-global-mode 1))
+              ("e y" . yas-new-snippet)))

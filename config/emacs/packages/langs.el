@@ -25,7 +25,9 @@
   :custom
   (css-indent-offset 2))
 
-(use-package dockerfile-mode)
+(use-package dockerfile-mode
+  :mode (("\\Dockerfile\\'" . dockerfile-mode)
+         ("\\.dockerfile\\'" . dockerfile-mode)))
 
 (use-package elixir-ts-mode
   :mode (("\\.ex$" . elixir-ts-mode)

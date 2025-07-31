@@ -1,11 +1,15 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package command-log-mode
+  :bind (:map global-leader-map
+              ("o l" . clm/toggle-command-log-buffer))
+  :config
+  (global-command-log-mode))
+
 (use-package consult-flycheck
-  :disabled ;; never used
   :commands (consult-flycheck))
 
 (use-package consult-denote
-  :disabled
   :bind (:map global-leader-map
               ("n d f" . consult-denote-find)
               ("n d s" . consult-denote-grep))
@@ -15,14 +19,13 @@
   (consult-denote-mode))
 
 (use-package copilot-chat
-  :disabled ;; too slow
+  ;; too slow
   :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
   :if (display-graphic-p)
   :requires copilot
   :after (request org markdown-mode copilot))
 
 (use-package dashboard
-  :disabled
   :demand
   :if (display-graphic-p)
   :custom
@@ -32,7 +35,7 @@
   (dashboard-setup-startup-hook))
 
 (use-package denote
-  :disabled
+  ;; prefer org default setup
   :bind (:map global-leader-map
               ("n d SPC" . denote-open-or-create)
               ("n d n" . denote)
@@ -48,7 +51,7 @@
   (denote-rename-buffer-mode))
 
 (use-package diff-hl
-  :disabled ;; not really used, better to use magit-diff.
+  ;; not really used, better to use magit-diff.
   :bind (:map global-leader-map
               ("j D" . diff-hl-show-hunk))
   :hook
@@ -61,13 +64,12 @@
   (global-diff-hl-mode))
 
 (use-package eldoc-box
-  :disabled ;; Annoying
+  ;; Annoying GUI
   :if (display-graphic-p)
   :hook
   (prog-mode . eldoc-box-hover-at-point-mode))
 
 (use-package ellama
-  :disabled
   :custom
   (ellama-user-nick "Juan")
   (ellama-assistant-nick "Cody")
@@ -96,19 +98,17 @@
   (ellama-context-header-line-global-mode 1))
 
 (use-package embark
-  :disabled ;; never us3ed
   :bind (([remap describe-bindings] . embark-bindings)
          :map mode-specific-map
          ("A" . embark-act)
          ("E" . embark-export)))
 
 (use-package embark-consult
-  :disabled ;; never us3ed
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package flycheck
-  :disabled ;; only used with lsp-mode
+  ;; only used with lsp-mode
   ;; https://www.flycheck.org/en/latest/
   :commands (global-flycheck-mode flycheck-mode)
   :init
@@ -126,23 +126,23 @@
   (flycheck-mode . flycheck-set-bindings))
 
 (use-package forge
-  :disabled ;; a bit slow, not really used.
+  ;; a bit slow, not really used.
   :commands (forge-dispatch)
   :custom
   (auth-sources '("~/.authinfo")))
 
 (use-package git-timemachine
-  :disabled ;; never really used.
+  ;; never really used.
   :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
 
 (use-package jinx
-  :disabled ;; never really used.
+  ;; never really used.
   ;; Requires OS dependencies.
   :bind (("M-$" . jinx-correct)
          ([remap flyspell-mode] . jinx-mode)))
 
 (use-package lsp-mode
-  :disabled ;; preferred eglot.
+  ;; preferred eglot
   :commands (lsp lsp-deferred)
   :custom
   (lsp-keymap-prefix "s-l")
@@ -159,13 +159,12 @@
   (lsp-mode . lsp-set-bindings))
 
 (use-package magit-todos
-  :disabled ;; not really used
+  ;; not really used
   :bind (:map project-prefix-map ("t" . magit-todos-list))
   :config
   (magit-todos-mode 1))
 
 (use-package popper
-  :disabled ;; not really used anymore.
   :demand
   :if (display-graphic-p)
   :bind (:map global-leader-map
@@ -205,7 +204,7 @@
   (popper-echo-mode +1))
 
 (use-package vterm
-  :disabled ;; Eat is a better termianl emulator.
+  ;; Eat is a better termianl emulator.
   :if (display-graphic-p)
   :bind (:map global-leader-map
               ("o t" . vterm-project)
@@ -223,5 +222,5 @@
   (vterm-max-scrollback 100000))
 
 (use-package yasnippet-snippets
-  :disabled ;; Better to rely on custom built templates over externals.
+  ;; Better to rely on custom built templates over externals.
   :after yasnippet)
