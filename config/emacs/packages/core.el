@@ -199,7 +199,6 @@
 (use-package eat
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
-  :commands (eat eat-project eat-other-window)
   :straight (eat :type git
                  :host codeberg
                  :repo "akib/emacs-eat"
@@ -208,16 +207,24 @@
                          ("terminfo/65" "terminfo/65/*")
                          ("integration" "integration/*")
                          (:exclude ".dir-locals.el" "*-tests.el")))
-  :bind ((([remap eshell] . eat)
-          ([remap project-eshell] . eat-project)))
-  :custom
-  (eat-term-scrollback-size nil)
-  (process-adaptive-read-buffering nil) ;; possible perf improvement
-  (read-process-output-max (* 4 1024 1024)) ;; 4MB
-  (eat-kill-buffer-on-exit t)
+  :commands (eat eat-project eat-other-window)
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t"))))
+    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t")))
+  :bind (([remap eshell] . eat)
+         ([remap project-eshell] . eat-project))
+  :custom
+  (eat-term-scrollback-size nil)
+  (read-process-output-max (* 4 1024 1024)) ;; 4MB
+  (eat-kill-buffer-on-exit t)
+  :hook
+  (eshell-load . eat-eshell-visual-command-mode)
+  (eshell-load . eat-eshell-mode)
+  :config
+  (add-to-list 'display-buffer-alist
+             '("\\*.*eat\\*"
+               (display-buffer-reuse-window display-buffer-pop-up-window)
+               (inhibit-same-window . t) (window-height . 10))))
 
 (use-package eglot
   :straight nil
