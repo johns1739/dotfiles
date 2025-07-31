@@ -60,8 +60,8 @@
 
            ;; Open / Toggling Application
            ("o r" . regexp-builder)
-           ("o t" . project-eshell)
-           ("o T" . eshell)
+           ("o e" . project-eshell)
+           ("o E" . eshell)
            ("o c" . calc)
 
            ;; Settings
@@ -284,20 +284,13 @@
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-avoid-polling t)
 
-;; buffer settings
+;; buffer settings & display
 (setq ibuffer-old-time 24)
 (add-to-list 'display-buffer-alist
-             '("\\*Help\\*"
-               (display-buffer-reuse-window display-buffer-pop-up-window)
-               (inhibit-same-window . t)))
-(add-to-list 'display-buffer-alist
-             '("\\*Dictionary\\*"
-               (display-buffer-reuse-window display-buffer-pop-up-window)
-               (inhibit-same-window . t)))
-(add-to-list 'display-buffer-alist
-             '("\\*Completions\\*"
-               (display-buffer-reuse-window display-buffer-pop-up-window)
-               (inhibit-same-window . t) (window-height . 10)))
+             '("\\*.*eshell\\*"
+               (display-buffer-reuse-window display-buffer-at-bottom display-buffer-pop-up-window)
+               (inhibit-same-window . t)
+               (window-height . 25)))
 
 ;; history settings
 (setq history-delete-duplicates t)
@@ -305,9 +298,6 @@
 
 ;; kill settings
 (setq kill-do-not-save-duplicates t)
-
-;; dictionary settings
-(setq dictionary-server "dict.org")
 
 ;; imenu
 (setq imenu-max-item-length 80)

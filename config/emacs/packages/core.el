@@ -207,24 +207,12 @@
                          ("terminfo/65" "terminfo/65/*")
                          ("integration" "integration/*")
                          (:exclude ".dir-locals.el" "*-tests.el")))
-  :commands (eat eat-project eat-other-window)
-  :init
-  (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(eat-project "Terminal" "t")))
-  :bind (([remap eshell] . eat)
-         ([remap project-eshell] . eat-project))
   :custom
   (eat-term-scrollback-size nil)
   (read-process-output-max (* 4 1024 1024)) ;; 4MB
-  (eat-kill-buffer-on-exit t)
   :hook
   (eshell-load . eat-eshell-visual-command-mode)
-  (eshell-load . eat-eshell-mode)
-  :config
-  (add-to-list 'display-buffer-alist
-             '("\\*.*eat\\*"
-               (display-buffer-reuse-window display-buffer-pop-up-window)
-               (inhibit-same-window . t) (window-height . 10))))
+  (eshell-load . eat-eshell-mode))
 
 (use-package eglot
   :straight nil
@@ -278,9 +266,7 @@
   :custom
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate")
-  :config
-  (if (display-graphic-p)
-      (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1)))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package marginalia
   :hook (after-init . marginalia-mode)
