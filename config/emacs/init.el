@@ -15,6 +15,7 @@
            ([remap split-window-right] . split-window-right-and-jump)
 
            ("C-x C-b" . ibuffer)
+           ("C-h h" . nil)
 
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
