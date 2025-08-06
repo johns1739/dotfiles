@@ -166,8 +166,10 @@
     (add-to-list 'project-switch-commands '(deadgrep "Deadgrep" "g"))))
 
 (use-package devdocs
-  :bind (:map goto-map
-              ("H" . devdocs-lookup)))
+  :bind (:map global-leader-map
+              ("x H" . devdocs-install)
+              ("o h" . devdocs-lookup)
+              ("o H" . devdocs-search)))
 
 (use-package dimmer
   :if (display-graphic-p) ;; Only works in GUI
@@ -217,9 +219,9 @@
 (use-package eglot
   :straight nil
   :bind (:map global-leader-map
+              ("L" . eglot)
               ("l TAB" . eglot-format-buffer)
               ("l l" . eglot-reconnect)
-              ("l L" . eglot)
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
@@ -241,7 +243,9 @@
   (exec-path-from-shell-initialize))
 
 (use-package git-link
-  :bind (:map global-leader-map ("x j" . git-link)))
+  :bind (:map global-leader-map
+              ("x j" . git-link)
+              ("x J" . git-link-dispatch)))
 
 (use-package google-this
   :bind (:map global-leader-map ("o g" . google-this)))
