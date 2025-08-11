@@ -109,6 +109,7 @@
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
   :config
+  (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
   (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
 (use-package copilot
@@ -119,7 +120,8 @@
               ("M-e" . copilot-accept-completion-by-line)
               ("M-n" . copilot-next-completion)
               ("M-p" . copilot-previous-completion)
-              ("C-<tab>" . copilot-accept-completion))
+              ("M-<tab>" . copilot-accept-completion)
+              ("C-M-i" . copilot-accept-completion))
   :custom
   (corfu-auto nil)
   (copilot-indent-offset-warning-disable t)
@@ -167,9 +169,9 @@
 
 (use-package devdocs
   :bind (:map global-leader-map
-              ("x H" . devdocs-install)
-              ("o h" . devdocs-lookup)
-              ("o H" . devdocs-search)))
+              ("x h I" . devdocs-install)
+              ("x h h" . devdocs-lookup)
+              ("x hunquote s" . devdocs-search)))
 
 (use-package dimmer
   :if (display-graphic-p) ;; Only works in GUI
@@ -234,6 +236,15 @@
   :config
   (eglot-booster-mode))
 
+(use-package eshell
+  :straight nil
+  :config
+  (add-to-list 'display-buffer-alist
+             '("\\*.*eshell\\*"
+               (display-buffer-reuse-mode-window display-buffer-below-selected)
+               (inhibit-same-window . t)
+               (window-height . 25))))
+
 (use-package exec-path-from-shell
   :if (and (memq window-system '(mac ns)) (display-graphic-p))
   :demand
@@ -249,6 +260,13 @@
 
 (use-package google-this
   :bind (:map global-leader-map ("o g" . google-this)))
+
+(use-package help
+  :straight nil
+  :bind (:map help-map
+              ("h" . nil)) ;; accidentally pressed too often
+  :custom
+  (help-window-select 'other))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
@@ -393,6 +411,7 @@
   :commands (org-todo-list
              org-agenda
              org-capture
+             org-capture-goto-target
              org-search-view
              org-occur-in-agenda-files)
   :init
@@ -414,12 +433,12 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
-              ("N" . org-capture)
               ("n ," . org-capture-goto-last-stored)
               ("n SPC" . org-search-view)
               ("n a" . org-agenda)
               ("n f" . org-capture-goto-target)
               ("n L" . org-store-link)
+              ("n n" . org-capture)
               ("n s" . org-occur-in-agenda-files)
               ("n t" . org-todo-list)
               ("n W" . org-refile)
@@ -470,7 +489,9 @@
      ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i"
       :prepend t :empty-lines-after 1)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
-      :prepend t :tree-type month))))
+      :prepend t :tree-type month)))
+  :config
+  (require 'org-capture))
 
 (use-package pinentry
   ;; allows for secure entry of passphrases requested by GnuPG
@@ -515,7 +536,7 @@
       ;; simple-modeline-segment-input-method
       ;; simple-modeline-segment-eol
       ;; simple-modeline-segment-encoding
-      simple-modeline-segment-vc
+      ;; simple-modeline-segment-vc
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode

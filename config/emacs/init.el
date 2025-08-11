@@ -15,7 +15,6 @@
            ([remap split-window-right] . split-window-right-and-jump)
 
            ("C-x C-b" . ibuffer)
-           ("C-h h" . nil)
 
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
@@ -40,30 +39,27 @@
            ("3" . split-window-right-and-jump)
 
            ;; Command Actions
-           ("x b" . eval-buffer)
-           ("x e" . eval-last-sexp)
+           ("x c" . calc)
            ("x d" . ediff-files)
-           ("x s" . sort-lines)
+           ("x r" . regexp-builder)
            ("x y" . copy-relative-file-name)
            ("x Y" . copy-absolute-file-name)
 
            ;; Compilation
            ("k ." . compile)
            ("k >" . comint)
+           ("k b" . eval-buffer)
+           ("k d" . flymake-show-buffer-diagnostics)
+           ("k D" . flymake-show-project-diagnostics)
+           ("k e" . project-eshell)
+           ("k E" . eshell)
            ("k g" . recompile)
            ("k k" . compile-dwim)
            ("k K" . comint-dwim)
-           ("k d" . flymake-show-buffer-diagnostics)
-           ("k D" . flymake-show-project-diagnostics)
            ("k n" . next-error)
            ("k o" . compilation-goto-in-progress-buffer)
            ("k p" . previous-error)
-
-           ;; Open / Toggling Application
-           ("o r" . regexp-builder)
-           ("o e" . project-eshell)
-           ("o E" . eshell)
-           ("o c" . calc)
+           ("k X" . send-region-to-process)
 
            ;; Settings
            ("e $" . flyspell-mode)
@@ -99,6 +95,7 @@
            ("i" . imenu)
            ("j" . jump-to-register)
            ("J" . point-to-register)
+           ("l" . goto-line)
            ("m" . bookmark-jump)
            ("M" . bookmark-set)
            ("u" . find-file-at-point)
@@ -286,11 +283,6 @@
 
 ;; buffer settings & display
 (setq ibuffer-old-time 24)
-(add-to-list 'display-buffer-alist
-             '("\\*.*eshell\\*"
-               (display-buffer-reuse-window display-buffer-at-bottom display-buffer-pop-up-window)
-               (inhibit-same-window . t)
-               (window-height . 25)))
 
 ;; history settings
 (setq history-delete-duplicates t)
@@ -383,8 +375,7 @@
   (add-to-list 'ffap-alist '(ffap-project-match-regexp . #'ffap-project-match)))
 
 ;; project settings
-(setq project-switch-commands '((project-switch-to-buffer "Find buffer" "SPC")
-                                (project-find-regexp "Search" "s")
+(setq project-switch-commands '((project-find-regexp "Search" "s")
                                 (project-find-file "Find file" "f")
                                 (project-find-dir "Find directory" "d")))
 
@@ -420,7 +411,26 @@
           (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
 
 
-;; commands & functions
+;; commands & functions & definitions
+
+(defun send-region-to-process (arg beg end)
+  "Send the current region to a process buffer.
+The first time it's called, will prompt for the buffer to
+send to. Subsequent calls send to the same buffer, unless a
+prefix argument is used (C-u), or the buffer no longer has an
+active process."
+  (interactive "P\nr")
+  (if (or arg ;; user asks for selection
+          (not (boundp 'send-region-to-process-target)) ;; target not set
+          ;; or target is not set to an active process:
+          (not (process-live-p (get-buffer-process
+                                send-region-to-process-target)))) 
+      (setq send-region-to-process-target
+            (completing-read
+             "Process: "
+             (seq-map (lambda (el) (buffer-name (process-buffer el)))
+                      (process-list)))))
+  (process-send-region send-region-to-process-target beg end))
 
 (defun set-font-size ()
   "Set the font size of Emacs"
