@@ -30,8 +30,8 @@
 
            ;; Global Leader Bindings
            :map global-leader-map
+           ("TAB" . indent-format-buffer)
            ("SPC" . project-switch-to-buffer)
-           ("TAB" . indent-buffer)
            ("=" . balance-windows-area)
            ("0" . delete-window)
            ("1" . delete-other-windows)
@@ -111,6 +111,7 @@
            ("w L" . windmove-swap-states-right)
 
            :map search-map
+           ("d" . project-dired)
            ("f" . project-find-file)
            ("g" . rgrep)
            ("j" . list-registers)
@@ -424,7 +425,7 @@ active process."
           (not (boundp 'send-region-to-process-target)) ;; target not set
           ;; or target is not set to an active process:
           (not (process-live-p (get-buffer-process
-                                send-region-to-process-target)))) 
+                                send-region-to-process-target))))
       (setq send-region-to-process-target
             (completing-read
              "Process: "
@@ -455,7 +456,7 @@ active process."
     (if project
         (project-root project))))
 
-(defun indent-buffer ()
+(defun indent-format-buffer ()
   (interactive)
   (save-excursion
     (whitespace-cleanup)

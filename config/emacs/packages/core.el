@@ -49,13 +49,13 @@
   ;; Cape provides Completion At Point Extensions
   :commands (cape-dict cape-elisp-symbol cape-file cape-history cape-dabbrev cape-line cape-keyword)
   :bind (:map global-leader-map
-         ("i d" . cape-dict)
-         ("i e" . cape-elisp-symbol)
-         ("i f" . cape-file)
-         ("i h" . cape-history)
-         ("i i" . cape-dabbrev)
-         ("i l" . cape-line)
-         ("i s" . cape-keyword))
+              ("i d" . cape-dict)
+              ("i e" . cape-elisp-symbol)
+              ("i f" . cape-file)
+              ("i h" . cape-history)
+              ("i i" . cape-dabbrev)
+              ("i l" . cape-line)
+              ("i s" . cape-keyword))
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -227,7 +227,14 @@
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
-              ("l a" . eglot-code-actions)))
+              ("l a" . eglot-code-actions))
+  :init
+  (defun eglot-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-format-buffer] . eglot-format-buffer)))
+  :hook
+  (eglot-managed-mode . eglot-setup))
+
 
 (use-package eglot-booster
   ;; cargo install emacs-lsp-booster
@@ -236,14 +243,21 @@
   :config
   (eglot-booster-mode))
 
+(use-package embark
+  :bind (([remap describe-bindings] . embark-bindings)
+         :map global-leader-map
+         ("x x" . embark-act)
+         ("x C" . embark-collect)
+         ("x E" . embark-export)))
+
 (use-package eshell
   :straight nil
   :config
   (add-to-list 'display-buffer-alist
-             '("\\*.*eshell\\*"
-               (display-buffer-reuse-mode-window display-buffer-below-selected)
-               (inhibit-same-window . t)
-               (window-height . 25))))
+               '("\\*.*eshell\\*"
+                 (display-buffer-reuse-mode-window display-buffer-below-selected)
+                 (inhibit-same-window . t)
+                 (window-height . 25))))
 
 (use-package exec-path-from-shell
   :if (and (memq window-system '(mac ns)) (display-graphic-p))
@@ -433,12 +447,12 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
+              ("N" . org-capture)
               ("n ," . org-capture-goto-last-stored)
               ("n SPC" . org-search-view)
               ("n a" . org-agenda)
               ("n f" . org-capture-goto-target)
               ("n L" . org-store-link)
-              ("n n" . org-capture)
               ("n s" . org-occur-in-agenda-files)
               ("n t" . org-todo-list)
               ("n W" . org-refile)
@@ -500,6 +514,17 @@
   (with-eval-after-load 'magit
     (pinentry-start)))
 
+(use-package proced
+  :straight nil
+  :commands proced
+  :bind (("C-M-p" . proced))
+  :custom
+  (proced-auto-update-flag 'visible)
+  (proced-goal-attribute nil)
+  (proced-show-remote-processes t)
+  (proced-enable-color-flag t)
+  (proced-format 'short))
+
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
   :bind ((:map global-leader-map)
@@ -548,7 +573,7 @@
   :init
   (defun sql-set-bindings ()
     (bind-keys :map (current-local-map)
-               ([remap indent-buffer] . sqlformat-buffer)))
+               ([remap indent-format-buffer] . sqlformat-buffer)))
   :hook
   (sql-mode . sql-set-bindings)
   :config
@@ -563,22 +588,6 @@
   (setq trashed-use-header-line t)
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
-
-(use-package treemacs
-  :bind (:map treemacs-mode-map
-              ("j" . treemacs-next-line)
-              ("k" . treemacs-previous-line)
-              :map global-leader-map
-              ("o p" . treemacs-select-window)
-              ("o P" . treemacs))
-  :custom
-  (treemacs-no-png-images t)
-  (treemacs-hide-dot-git-directory t)
-  :config
-  (treemacs-hide-gitignored-files-mode t)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-project-follow-mode t))
 
 (use-package vertico
   :hook (after-init . vertico-mode))

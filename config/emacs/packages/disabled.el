@@ -97,13 +97,8 @@
                            :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (ellama-context-header-line-global-mode 1))
 
-(use-package embark
-  :bind (([remap describe-bindings] . embark-bindings)
-         :map mode-specific-map
-         ("A" . embark-act)
-         ("E" . embark-export)))
-
 (use-package embark-consult
+  ;; Not sure when this is helpful. What's the use case?
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -133,6 +128,7 @@
 
 (use-package git-timemachine
   ;; never really used.
+  ;; Magit tools are preferred.
   :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
 
 (use-package jinx
@@ -151,7 +147,7 @@
   :init
   (defun lsp-set-bindings ()
     (bind-keys :map (current-local-map)
-               ([remap indent-buffer] . lsp-format-buffer)
+               ([remap indent-format-buffer] . lsp-format-buffer)
                ([remap xref-find-references] . lsp-find-references)
                ([remap eldoc] . lsp-describe-thing-at-point)))
   :hook
@@ -202,6 +198,23 @@
   :config
   (popper-mode +1)
   (popper-echo-mode +1))
+
+(use-package treemacs
+  ;; Prefer emacs dired.
+  :bind (:map treemacs-mode-map
+              ("j" . treemacs-next-line)
+              ("k" . treemacs-previous-line)
+              :map global-leader-map
+              ("o p" . treemacs-select-window)
+              ("o P" . treemacs))
+  :custom
+  (treemacs-no-png-images t)
+  (treemacs-hide-dot-git-directory t)
+  :config
+  (treemacs-hide-gitignored-files-mode t)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-project-follow-mode t))
 
 (use-package vterm
   ;; Eat is a better termianl emulator.
