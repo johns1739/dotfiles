@@ -1,6 +1,11 @@
 ;;-*- lexical-binding: t; -*-
 
-(defvar-keymap global-leader-map :doc "Global leader keymap.")
+;; TODO: org-jouranl for better auto journaling
+;;       https://github.com/bastibe/org-journal
+;; TODO: syncthing for syncing things across devices
+;;       https://github.com/syncthing/syncthing
+
+
 (keymap-set ctl-x-map "SPC" global-leader-map)
 
 (keymap-set global-leader-map "g" goto-map)
