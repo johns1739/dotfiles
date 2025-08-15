@@ -4,6 +4,7 @@
 ;;       https://github.com/bastibe/org-journal
 ;; TODO: syncthing for syncing things across devices
 ;;       https://github.com/syncthing/syncthing
+;; TODO: magit-blame-styles for better git blame
 
 
 (keymap-set ctl-x-map "SPC" global-leader-map)
