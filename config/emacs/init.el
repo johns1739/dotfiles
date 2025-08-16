@@ -1,14 +1,7 @@
 ;;-*- lexical-binding: t; -*-
 
-;; TODO: org-jouranl for better auto journaling
-;;       https://github.com/bastibe/org-journal
-;; TODO: syncthing for syncing things across devices
-;;       https://github.com/syncthing/syncthing
-;; TODO: magit-blame-styles for better git blame
-
-
+(defvar-keymap global-leader-map :doc "Global leader keymap.")
 (keymap-set ctl-x-map "SPC" global-leader-map)
-
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
 (keymap-set global-leader-map "p" project-prefix-map)

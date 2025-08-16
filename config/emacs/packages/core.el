@@ -300,6 +300,7 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
   :custom
+  (magit-blame-echo-style 'headings)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate")
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
