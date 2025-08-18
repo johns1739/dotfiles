@@ -14,9 +14,10 @@
            ([remap split-window-right] . split-window-right-and-jump)
 
            ("C-x C-b" . ibuffer)
-
+           
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
+           ("M-L" . duplicate-dwim)
            ("M-n" . forward-paragraph)
            ("M-o" . other-window)
            ("M-p" . backward-paragraph)
@@ -377,7 +378,8 @@
 ;; project settings
 (setq project-switch-commands '((project-find-regexp "Search" "s")
                                 (project-find-file "Find file" "f")
-                                (project-find-dir "Find directory" "d")))
+                                (project-find-dir "Find directory" "d")
+                                (project-kill-buffers "Kill buffers" "k")))
 
 ;; vc settings
 (setq vc-handled-backends '(Git))

@@ -222,7 +222,6 @@
   :straight nil
   :bind (:map global-leader-map
               ("L" . eglot)
-              ("l TAB" . eglot-format-buffer)
               ("l l" . eglot-reconnect)
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
@@ -485,14 +484,10 @@
   (org-startup-indented t)
   ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
   (org-todo-keywords
-   '((sequence "TODO(t!)" "ACTIVE(a!)" "BLOCKED(b@)" "|" "DONE(d!)" "CANCELED(c@)")))
+   '((sequence "TODO(t!)" "ACTIVE(a!)" "|" "DONE(d!)" "CANCELED(c@)")))
   (org-todo-keyword-faces '(("TODO" . "steel blue")
-                            ("QUESTION" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
-                            ("REVIEW" . "light goldenrod")
-                            ("BLOCKED" . "sienna")
                             ("DONE" . "dim gray")
-                            ("ANSWERED" . "dim gray")
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
