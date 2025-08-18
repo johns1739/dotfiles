@@ -289,7 +289,8 @@
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-key] . helpful-key)
          :map help-map
-         ("." . helpful-at-point)))
+         ("." . helpful-at-point)
+         ("F" . helpful-function)))
 
 (use-package magit
   :commands (magit-project-status)
@@ -505,7 +506,7 @@
      ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i"
       :prepend t :empty-lines-after 1)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
-      :prepend t :tree-type month)))
+      :prepend t :tree-type week)))
   :config
   (require 'org-capture))
 
