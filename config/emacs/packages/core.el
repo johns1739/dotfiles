@@ -483,11 +483,6 @@
   (org-special-ctrl-a/e t)
   (org-startup-folded 'overview)
   (org-startup-indented t)
-  (org-agenda-sorting-strategy
-   '((agenda habit-down time-up priority-down category-keep)
-     (todo priority-down category-keep deadline-up todo-state-down)
-     (tags priority-down category-keep)
-     (search category-keep)))
   ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
   (org-todo-keywords
    '((sequence "TODO(t!)" "ACTIVE(a!)" "BLOCKED(b@)" "|" "DONE(d!)" "CANCELED(c@)")))
