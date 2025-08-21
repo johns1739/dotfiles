@@ -111,8 +111,10 @@
            ("w L" . windmove-swap-states-right)
 
            :map search-map
-           ("d" . project-dired)
+           ("d" . project-find-dir)
+           ("D" . project-dired)
            ("f" . project-find-file)
+           ("F" . project-root-find-file)
            ("g" . rgrep)
            ("j" . list-registers)
            ("k" . keep-lines)

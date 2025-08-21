@@ -259,7 +259,7 @@
                  (window-height . 25))))
 
 (use-package exec-path-from-shell
-  :if (and (memq window-system '(mac ns)) (display-graphic-p))
+  :if (and (memq window-system '(mac ns x)) (display-graphic-p))
   :demand
   :custom
   (exec-path-from-shell-warn-duration-millis 1000)
@@ -290,6 +290,10 @@
          :map help-map
          ("." . helpful-at-point)
          ("F" . helpful-function)))
+
+(use-package indent-bars
+  :custom
+  :hook (prog-mode . indent-bars-mode))
 
 (use-package magit
   :commands (magit-project-status)
@@ -457,6 +461,7 @@
               ("n L" . org-store-link)
               ("n s" . org-occur-in-agenda-files)
               ("n t" . org-todo-list)
+              ("n v" . org-agenda-list)
               ("n W" . org-refile)
               :map org-mode-map
               ("M-n" . org-next-visible-heading)
