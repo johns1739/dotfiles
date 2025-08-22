@@ -244,10 +244,10 @@
 
 (use-package embark
   :bind (([remap describe-bindings] . embark-bindings)
-         :map global-leader-map
-         ("x x" . embark-act)
-         ("x C" . embark-collect)
-         ("x E" . embark-export)))
+         :map mode-specific-map
+         ("." . embark-act)
+         (">" . embark-collect)
+         ("E" . embark-export)))
 
 (use-package eshell
   :straight nil
@@ -262,6 +262,7 @@
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
   :demand
   :custom
+  (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
   (exec-path-from-shell-initialize))
@@ -273,6 +274,10 @@
 
 (use-package google-this
   :bind (:map global-leader-map ("o g" . google-this)))
+
+(use-package gptel
+  :straight (:nonrecursive t)
+  :bind (("C-c RET" . gptel-send)))
 
 (use-package help
   :straight nil
@@ -292,7 +297,6 @@
          ("F" . helpful-function)))
 
 (use-package indent-bars
-  :custom
   :hook (prog-mode . indent-bars-mode))
 
 (use-package magit
