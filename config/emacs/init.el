@@ -14,7 +14,7 @@
            ([remap split-window-right] . split-window-right-and-jump)
 
            ("C-x C-b" . ibuffer)
-           
+
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
            ("M-L" . duplicate-dwim)
@@ -130,6 +130,7 @@
 
 ;; compilation settings
 (setq compile-command nil)
+;; TODO: K -> k k RET (alias to a seq of keys)
 ;; TODO: Figure out how to fetch compile-command from different buffer
 ;; TODO: Figure out how to run compile without jumping to it.
 ;; (defvar recompile-watch-command nil "Recompile command to execute upon a file save.")
@@ -521,9 +522,9 @@ active process."
   (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
 ;; Load packages
-(load (locate-user-emacs-file "packages/core.el") :no-error-if-file-is-missing)
-(load (locate-user-emacs-file "packages/langs.el") :no-error-if-file-is-missing)
-(load (locate-user-emacs-file "packages/color-themes.el") :no-error-if-file-is-missing)
+(load (locate-user-emacs-file "packages/package-core.el") :no-error-if-file-is-missing)
+(load (locate-user-emacs-file "packages/package-langs.el") :no-error-if-file-is-missing)
+(load (locate-user-emacs-file "packages/package-color-themes.el") :no-error-if-file-is-missing)
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))
