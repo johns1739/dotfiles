@@ -46,20 +46,6 @@
            ("x y" . copy-relative-file-name)
            ("x Y" . copy-absolute-file-name)
 
-           ;; Compilation
-           ("k ." . compile)
-           ("k >" . comint)
-           ("k b" . eval-buffer)
-           ("k d" . flymake-show-buffer-diagnostics)
-           ("k D" . flymake-show-project-diagnostics)
-           ("k g" . recompile)
-           ("k k" . compile-dwim)
-           ("k K" . comint-dwim)
-           ("k n" . next-error)
-           ("k o" . compilation-goto-in-progress-buffer)
-           ("k p" . previous-error)
-           ("k X" . send-region-to-process)
-
            ;; Settings
            ("e $" . flyspell-mode)
            ("e =" . set-font-size)
@@ -127,24 +113,6 @@
            ("'" . tab-recent)
            ("T" . tab-bar-mode))
 
-;; compilation settings
-(setq compile-command nil)
-;; TODO: K -> k k RET (alias to a seq of keys)
-;; TODO: Figure out how to fetch compile-command from different buffer
-;; TODO: Figure out how to run compile without jumping to it.
-;; (defvar recompile-watch-command nil "Recompile command to execute upon a file save.")
-;; (defun recompile-watch-stop ()
-;;   (interactive)
-;;   (remove-hook 'after-save-hook #'recompile-watch-run))
-;; (defun recompile-watch-run ()
-;;   (interactive)
-;;   (let ((compile-command recompile-watch-command))
-;;     (save-excursion (recompile))))
-;; (defun recompile-watch-start ()
-;;   (interactive)
-;;   (setq recompile-watch-command compile-command)
-;;   (add-hook 'after-save-hook #'recompile-watch-run))
-
 ;; isearch settings
 (setq isearch-wrap-pause 'no)
 
@@ -203,29 +171,6 @@
   (let ((case-fold-search nil))
     ad-do-it))
 (ad-activate 'hippie-expand)
-
-;; diagnostics
-(setq flymake-fringe-indicator-position 'right-fringe)
-
-;; compilation settings
-(setq compilation-window-height 20)
-(setq compilation-context-lines 10)
-(setq compilation-always-kill t)
-(setq compilation-scroll-output t)
-(setq compilation-max-output-line-length 200)
-(setq compilation-error-regexp-alist '())
-(setq compilation-error-regexp-alist-alist '())
-(with-eval-after-load 'compile
-  ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
-  (add-to-list 'compilation-error-regexp-alist-alist
-               '(failure-newline-target
-                 "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]" 1 2 nil nil 1))
-  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
-  (add-to-list 'compilation-error-regexp-alist-alist
-               '(simple-spaced-target
-                 "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1))
-  (add-hook 'compilation-filter-hook  #'ansi-color-compilation-filter))
 
 ;; column settings
 (setq-default display-fill-column-indicator-column 100)
@@ -468,22 +413,6 @@ active process."
 (defun reload-emacs ()
   (interactive)
   (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
-
-(defun comint ()
-  (interactive)
-  (universal-argument)
-  (command-execute #'compile))
-
-(defun compile-dwim ()
-  (interactive)
-  (if (project-current)
-      (call-interactively #'project-compile)
-    (call-interactively #'compile)))
-
-(defun comint-dwim ()
-  (interactive)
-  (universal-argument)
-  (command-execute #'compile-dwim))
 
 (defun current-directory ()
   "Current project directory or cwd."

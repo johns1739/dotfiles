@@ -66,6 +66,54 @@
          ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
          ;; #'cape-line ;; Kinda buggy
          )))
+(use-package compile
+  :bind (:map global-leader-map
+              ("k ." . compile)
+              ("k >" . comint)
+              ("k ," . compilation-goto-in-progress-buffer)
+              ("k b" . eval-buffer)
+              ("k g" . recompile)
+              ("k k" . compile-dwim)
+              ("k K" . comint-dwim)
+              ("k n" . next-error)
+              ("k p" . previous-error)
+              ("k w" . send-region-to-process))
+  :custom
+  (compile-command nil)
+  (compilation-window-height 20)
+  (compilation-context-lines 10)
+  (compilation-always-kill t)
+  (compilation-scroll-output t)
+  (compilation-max-output-line-length 200)
+  (compilation-error-regexp-alist '())
+  (compilation-error-regexp-alist-alist '())
+  :hook
+  (compilation-filter . ansi-color-compilation-filter)
+  :init
+  (defun comint ()
+    (interactive)
+    (universal-argument)
+    (command-execute #'compile))
+  (defun compile-dwim ()
+    (interactive)
+    (if (project-current)
+        (call-interactively #'project-compile)
+      (call-interactively #'compile)))
+  (defun comint-dwim ()
+    (interactive)
+    (universal-argument)
+    (command-execute #'compile-dwim))
+  :config
+  ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(failure-newline-target
+                 "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]" 1 2 nil nil 1))
+  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(simple-spaced-target
+                 "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
+
 
 (use-package consult
   :bind (([remap Info-search] . consult-info)
@@ -223,9 +271,9 @@
   :config
   (add-to-list 'display-buffer-alist
                '("\\*.*eat\\*"
-                 (display-buffer-reuse-mode-window display-buffer-below-selected)
+                 (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
                  (inhibit-same-window . t)
-                 (window-height . 25))))
+                 (window-min-height . 25))))
 
 (use-package eglot
   :straight nil
@@ -266,9 +314,9 @@
   :config
   (add-to-list 'display-buffer-alist
                '("\\*.*eshell\\*"
-                 (display-buffer-reuse-mode-window display-buffer-below-selected)
+                 (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
                  (inhibit-same-window . t)
-                 (window-height . 25))))
+                 (window-min-height . 25))))
 
 (use-package exec-path-from-shell
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
@@ -278,6 +326,14 @@
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
   (exec-path-from-shell-initialize))
+
+(use-package flymake
+  :straight nil
+  :bind (:map global-leader-map
+              ("k d" . flymake-show-buffer-diagnostics)
+              ("k D" . flymake-show-project-diagnostics))
+  :custom
+  (flymake-fringe-indicator-position 'right-fringe))
 
 (use-package git-link
   :bind (:map global-leader-map
