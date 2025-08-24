@@ -211,12 +211,21 @@
                          ("terminfo/65" "terminfo/65/*")
                          ("integration" "integration/*")
                          (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind (:map global-leader-map
+              ("k t" . eat-project)
+              ("k T" . eat))
   :custom
   (eat-term-scrollback-size nil)
   (read-process-output-max (* 4 1024 1024)) ;; 4MB
   :hook
   (eshell-load . eat-eshell-visual-command-mode)
-  (eshell-load . eat-eshell-mode))
+  (eshell-load . eat-eshell-mode)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\*.*eat\\*"
+                 (display-buffer-reuse-mode-window display-buffer-below-selected)
+                 (inhibit-same-window . t)
+                 (window-height . 25))))
 
 (use-package eglot
   :straight nil
@@ -251,6 +260,9 @@
 
 (use-package eshell
   :straight nil
+  :bind (:map global-leader-map
+              ("k e" . project-eshell)
+              ("k E" . eshell))
   :config
   (add-to-list 'display-buffer-alist
                '("\\*.*eshell\\*"

@@ -17,6 +17,7 @@
 
            ("M-i" . completion-at-point)
            ("M-I" . hippie-expand)
+           ("M-j" . join-line)
            ("M-L" . duplicate-dwim)
            ("M-n" . forward-paragraph)
            ("M-o" . other-window)
@@ -51,8 +52,6 @@
            ("k b" . eval-buffer)
            ("k d" . flymake-show-buffer-diagnostics)
            ("k D" . flymake-show-project-diagnostics)
-           ("k e" . project-eshell)
-           ("k E" . eshell)
            ("k g" . recompile)
            ("k k" . compile-dwim)
            ("k K" . comint-dwim)
