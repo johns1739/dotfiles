@@ -346,6 +346,8 @@
 (use-package gptel
   :straight (:nonrecursive t)
   :bind (("C-c RET" . gptel-send)))
+;; Settings gptel with copilot
+;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
 
 (use-package help
   :straight nil
