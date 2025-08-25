@@ -103,6 +103,26 @@
     (interactive)
     (universal-argument)
     (command-execute #'compile-dwim))
+  (defun send-region-to-process (arg beg end)
+    """
+    Send the current region to a process buffer.
+    The first time it's called, will prompt for the buffer to
+    send to. Subsequent calls send to the same buffer, unless a
+    prefix argument is used (C-u), or the buffer no longer has an
+    active process.
+    """
+    (interactive "P\nr")
+    (if (or arg ;; user asks for selection
+            (not (boundp 'send-region-to-process-target)) ;; target not set
+            ;; or target is not set to an active process:
+            (not (process-live-p (get-buffer-process
+                                  send-region-to-process-target))))
+        (setq send-region-to-process-target
+              (completing-read
+               "Process: "
+               (seq-map (lambda (el) (buffer-name (process-buffer el)))
+                        (process-list)))))
+    (process-send-region send-region-to-process-target beg end))
   :config
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
@@ -367,7 +387,8 @@
          ("F" . helpful-function)))
 
 (use-package indent-bars
-  :hook (prog-mode . indent-bars-mode))
+  :bind (:map global-leader-map
+              ("; g" . indent-bars-mode)))
 
 (use-package magit
   :commands (magit-project-status)
@@ -600,7 +621,7 @@
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
   :bind ((:map global-leader-map)
-         ("e >" . show-font-tabulated)))
+         ("; '" . show-font-tabulated)))
 
 (use-package simple-modeline
   :hook (after-init . simple-modeline-mode)

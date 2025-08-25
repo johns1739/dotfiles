@@ -47,23 +47,25 @@
            ("x Y" . copy-absolute-file-name)
 
            ;; Settings
-           ("e $" . flyspell-mode)
-           ("e =" . set-font-size)
-           ("e ." . load-theme)
-           ("e ," . customize-option)
-           ("e c" . display-fill-column-indicator-mode)
-           ("e C" . global-display-fill-column-indicator-mode)
-           ("e f" . toggle-frame-maximized)
-           ("e F" . toggle-frame-fullscreen)
-           ("e h" . hl-line-mode)
-           ("e H" . global-hl-line-mode)
-           ("e n" . display-line-numbers-mode)
-           ("e N" . global-display-line-numbers-mode)
-           ("e r" . reload-emacs)
-           ("e R" . restart-emacs)
-           ("e t" . toggle-truncate-lines)
-           ("e v" . visual-line-mode)
-           ("e V" . global-visual-line-mode)
+           ("; ," . open-init-file)
+           ("; <" . open-packages-file)
+           ("; $" . flyspell-mode)
+           ("; =" . set-font-size)
+           ("; ;" . load-theme)
+           ("; :" . customize-option)
+           ("; c" . display-fill-column-indicator-mode)
+           ("; C" . global-display-fill-column-indicator-mode)
+           ("; f" . toggle-frame-maximized)
+           ("; F" . toggle-frame-fullscreen)
+           ("; h" . hl-line-mode)
+           ("; H" . global-hl-line-mode)
+           ("; n" . display-line-numbers-mode)
+           ("; N" . global-display-line-numbers-mode)
+           ("; r" . reload-emacs)
+           ("; R" . restart-emacs)
+           ("; t" . toggle-truncate-lines)
+           ("; v" . visual-line-mode)
+           ("; V" . global-visual-line-mode)
 
            :map goto-map
            ("SPC" . switch-to-buffer)
@@ -362,24 +364,13 @@
 
 ;; commands & functions & definitions
 
-(defun send-region-to-process (arg beg end)
-  "Send the current region to a process buffer.
-The first time it's called, will prompt for the buffer to
-send to. Subsequent calls send to the same buffer, unless a
-prefix argument is used (C-u), or the buffer no longer has an
-active process."
-  (interactive "P\nr")
-  (if (or arg ;; user asks for selection
-          (not (boundp 'send-region-to-process-target)) ;; target not set
-          ;; or target is not set to an active process:
-          (not (process-live-p (get-buffer-process
-                                send-region-to-process-target))))
-      (setq send-region-to-process-target
-            (completing-read
-             "Process: "
-             (seq-map (lambda (el) (buffer-name (process-buffer el)))
-                      (process-list)))))
-  (process-send-region send-region-to-process-target beg end))
+(defun open-init-file ()
+  (interactive)
+  (find-file user-init-file))
+
+(defun open-packages-file ()
+  (interactive)
+  (find-file (locate-user-emacs-file "packages/package-core.el")))
 
 (defun set-font-size ()
   "Set the font size of Emacs"
