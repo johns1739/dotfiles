@@ -344,10 +344,10 @@
   :bind (:map global-leader-map ("o g" . google-this)))
 
 (use-package gptel
+  ;; Copilot settings:
+  ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :straight (:nonrecursive t)
   :bind (("C-c RET" . gptel-send)))
-;; Settings gptel with copilot
-;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
 
 (use-package help
   :straight nil
