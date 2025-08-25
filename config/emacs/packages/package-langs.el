@@ -30,6 +30,8 @@
          ("\\.dockerfile\\'" . dockerfile-mode)))
 
 (use-package elixir-ts-mode
+  ;; Setup
+  ;; (add-to-list 'exec-path "~/.local/elixir-ls")
   :mode (("\\.ex$" . elixir-ts-mode)
          ("\\.exs$" . elixir-ts-mode)
          ("\\.heex$" . heex-ts-mode))
