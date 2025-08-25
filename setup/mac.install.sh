@@ -9,18 +9,21 @@ brew update
 # https://github.com/junegunn/fzf/tree/master
 brew install fzf
 
-brew install git btop ripgrep btop
-brew install --cask ghostty
+brew install git btop ripgrep
 brew install --cask font-jetbrains-mono-nerd-font
+
+# dotfiles
+mkdir ~/.config
+mkdir ~/workspaces
+cd ~/workspaces && git clone https://github.com/johns1739/dotfiles.git
+
+ln -s ~/workspaces/dotfiles/config/ghostty ~/.config/ghostty
+brew install --cask ghostty
 
 # Rust & Cargo
 curl https://sh.rustup.rs -sSf | sh
 
 # Emacs
-git clone 
-mkdir ~/.config
-mkdir ~/workspaces
-cd ~/workspaces && git clone https://github.com/johns1739/dotfiles.git
 ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
 brew tap d12frosted/emacs-plus
 brew install emacs-plus@31 \
@@ -31,30 +34,19 @@ brew install emacs-plus@31 \
      --with-no-frame-refocus
 cargo install emacs-lsp-booster
 
-# Optional
-brew install awscli
-brew install gnupg
-brew install --cask docker
-
 # Dependencies
 brew install asdf
 brew install autoconf
 brew install coreutils
-brew install crypto
 brew install curl
 brew install gcc
-brew install guile
 brew install jq
-brew install libxslt
-brew install fop
 brew install libyaml
 brew install multimarkdown
 brew install openssl
-brew install ossp-uuid
 brew install pkg-config
 brew install readline
 brew install wxwidgets
-brew install unixodbc
 brew install zlib
 
 brew install icu4c

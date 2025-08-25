@@ -16,7 +16,7 @@
 
 ;; Garbage Collection (for performance)
 (setq gc-cons-percentage 0.1)
-(setq gc-cons-threshold (* 16 1024 1024)) ;; 16MB
+(setq gc-cons-threshold (* 64 1024 1024)) ;; 64MB
 
 ;; Silence logs
 (setq byte-compile-warnings '(not obsolete))
@@ -35,11 +35,11 @@
 (setq inhibit-compacting-font-caches t)
 
 (menu-bar-mode -1)
+(tooltip-mode -1)
 (with-eval-after-load 'tool-bar
   (tool-bar-mode -1))
 (with-eval-after-load 'scroll-bar
   (scroll-bar-mode -1))
-(tooltip-mode -1)
 
 ;; https://emacs-lsp.github.io/lsp-mode/page/performance/#use-plists-for-deserialization
 (setenv "LSP_USE_PLISTS" "true")
