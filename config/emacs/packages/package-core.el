@@ -181,6 +181,7 @@
   (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
 (use-package copilot
+  :if (executable-find "npm")
   ;; M-x copilot-install-server
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind (:map copilot-completion-map
