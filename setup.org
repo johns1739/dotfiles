@@ -1,0 +1,138 @@
+* Brew
+#+begin_src bash
+
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  brew update
+
+#+end_src
+
+
+* Developer Tools
+#+begin_src bash
+
+  mkdir -p ~/.config
+  curl https://sh.rustup.rs -sSf | sh
+  brew install fzf git btop ripgrep jq asdf
+  brew install --cask font-jetbrains-mono-nerd-font
+
+#+end_src
+
+
+* Dotfiles
+#+begin_src bash
+
+  mkdir -p ~/workspaces
+  cd ~/workspaces && git clone https://github.com/johns1739/dotfiles.git
+
+#+end_src
+
+
+* Zsh
+
+** Zshrc
+#+begin_src bash
+
+  #!/bin/zsh
+
+  PROMPT='%~ %# '
+  autoload -U select-word-style
+  select-word-style bash
+  bindkey -e # emacs mode
+
+  alias reload="source ~/.zshrc"
+
+  alias ..='cd ..'
+  alias ...='cd ../..'
+  alias ....='cd ../../..'
+
+  # utilities
+  alias l="less"
+  alias ll="ls -lh --color"
+  alias grep="grep --line-buffered --color"
+  alias rgrep="grep --color -rnIi"
+
+  # emacs
+  alias emacs="emacs -nw"
+  alias e="emacs -nw --init-directory=~/.config/emacs/slim"
+  [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
+      source "$EAT_SHELL_INTEGRATION_DIR/zsh"
+
+  # docker
+  alias dc="docker container"
+  alias dcget="dc ls --format 'table {{.ID}}\t{{.Image}}\t{{.Names}}' | tail -n +2 | fzf | awk '{printf \$1}' | tee >(pbcopy)"
+  alias dcstop="docker stop $$(docker ps -a -q)"
+  alias dl="docker logs -fn0"
+
+  # fzf
+  source <(fzf --zsh)
+
+  # asdf
+  export ASDF_DIR="$HOME/.asdf"
+  export PATH="$ASDF_DIR/shims:$PATH"
+
+  # cargo
+  export PATH="$HOME/.cargo/bin:$PATH"
+
+  # local bin
+  export PATH="$HOME/.local/bin:$PATH"
+
+  # history
+  # https://postgresqlstan.github.io/cli/zsh-history-options/
+  HISTFILE="$HOME/.zsh_history"
+  HISTSIZE=100000
+  SAVEHIST=$HISTSIZE
+  # setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+  # setopt SHARE_HISTORY             # Share history between all sessions.
+  setopt APPEND_HISTORY            # append to history file
+  setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+  setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+  setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
+  setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
+  setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
+  setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+  setopt HIST_NO_STORE             # Don't store history commands
+  setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+  setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+  setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+  setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+
+#+end_src
+
+
+** Zshenv
+#+begin_src bash
+
+#!/bin/zsh
+
+export TERM="xterm"
+export EDITOR="emacs -nw --init-directory=~/.config/emacs/slim"
+export VISUAL="emacs -nw --init-directory=~/.config/emacs/slim"
+export SUDO_EDITOR="$EDITOR"
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+#+end_src
+
+
+* Ghostty
+#+begin_src bash
+
+  ln -s ~/workspaces/dotfiles/config/ghostty ~/.config/ghostty
+  brew install --cask ghostty
+
+#+end_src
+
+
+* Emacs
+#+begin_src bash
+
+  ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
+  cargo install emacs-lsp-booster
+  brew tap d12frosted/emacs-plus
+  brew install emacs-plus@31 \
+       --with-modern-black-dragon-icon \
+       --with-debug \
+       --with-imagemagick \
+       --with-mailutils \
+       --with-no-frame-refocus
+
+#+end_src

@@ -1,4 +1,0 @@
-#!/bin/bash
-
-export EDITOR="emacs" # or emacs-nw or emacs-nox
-export SUDO_EDITOR="$EDITOR"
