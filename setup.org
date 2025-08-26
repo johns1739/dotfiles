@@ -27,6 +27,193 @@
 #+end_src
 
 
+** Git
+
+*** git/config
+#+begin_src conf
+
+# Run this command in main repos
+# git maintenance start
+
+[core]
+    autocrlf = input
+
+[user]
+    name = Juan Banda
+    email = jubajr17@gmail.com
+
+[merge]
+    ff = only
+
+[alias]
+    p = push
+    st = status -sb
+    ll = log --oneline
+    last = log -1 HEAD --stat
+    cm = commit -m
+    rv = remote -v
+    d = diff
+    dv = difftool -t vimdiff -y
+    gl = config --global -l
+    se = !git rev-list --all | xargs git grep -F
+    cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
+
+[init]
+    defaultBranch = main
+
+[push]
+    default = current
+    autoSetupRemote = true
+
+[filter "lfs"]
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
+
+[rerere]
+    enabled = true
+
+[column]
+    ui = auto
+
+[branch]
+    sort = -committerdate
+
+#+end_src
+
+
+** Ghostty
+
+*** ~/config/ghostty/config
+#+begin_src conf
+
+# ghostty +help
+  # +version
+  # +help
+  # +list-fonts
+  # +list-keybinds --docs --default
+  # +list-themes
+  # +list-colors
+  # +list-actions --docs
+  # +show-config
+  # +validate-config
+  # +show-face
+  # +crash-report
+  
+background-opacity = 0.85
+font-size = 13
+theme = dark:Adventure,light:Desert
+unfocused-split-opacity = 0.6
+
+# behavior settings
+quit-after-last-window-closed = true
+scrollback-limit = 1073741824
+window-save-state = always
+copy-on-select = clipboard
+
+# window look & feel
+window-theme = dark
+window-decoration = auto
+window-height = 45
+window-width = 120
+window-padding-x = 2,4
+window-padding-y = 2,4
+window-padding-balance = true
+window-padding-color = background
+
+# cursor settings
+cursor-style = block
+cursor-style-blink = true
+mouse-hide-while-typing = true
+
+# disable ligatures
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+# Keybindings
+
+## Quick Terminal
+keybind = super+`=toggle_quick_terminal
+
+## window management
+keybind = super+d=new_split:auto
+keybind = super+,>0=close_surface
+keybind = super+,>1=toggle_split_zoom
+keybind = super+,>2=new_split:down
+keybind = super+,>3=new_split:right
+keybind = super+,>equal=equalize_splits
+keybind = super+,>f=toggle_maximize
+keybind = super+,>shift+f=toggle_fullscreen
+
+## window navigation
+keybind = super+h=goto_split:left
+keybind = super+j=goto_split:down
+keybind = super+k=goto_split:up
+keybind = super+l=goto_split:right
+keybind = super+o=goto_split:next
+keybind = super+shift+o=goto_split:previous
+
+## screen navigation
+keybind = page_up=jump_to_prompt:-1
+keybind = page_down=jump_to_prompt:1
+
+## saving screen output
+keybind = super+,>y=write_screen_file:paste
+keybind = super+,>shift+y=write_selection_file:paste
+keybind = super+,>super+y=write_scrollback_file:paste
+
+#+end_src
+
+
+
+** Sqlite
+
+*** ~/.sqliterc
+#+begin_src conf
+
+.headers on
+.mode table
+.timer on
+.changes on
+
+#+end_src
+
+** Tmux
+#+begin_src conf
+
+# mkdir -p ~/.config/tmux
+# curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/tmux/tmux.conf -o ~/.config/tmux/tmux.conf
+
+# tmux list-keys
+# tmux info
+
+# install plugins = prefix + I
+# update plugins = prefix + U
+
+unbind C-b
+bind C-Space send-prefix
+set -g prefix C-Space
+
+bind R source-file ~/.config/tmux/tmux.conf
+
+set -g mode-keys emacs
+set -g base-index 1
+set -g pane-base-index 1
+set -g automatic-rename off
+set -g renumber-windows on
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-pain-control'
+set -g @plugin 'catppuccin/tmux'
+
+run '~/.tmux/plugins/tpm/tpm'
+
+#+end_src
+
+
 * Zsh
 
 ** Zshrc

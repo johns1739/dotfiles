@@ -712,4 +712,4 @@
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
   :bind (:map global-leader-map
-              ("e y" . yas-new-snippet)))
+              ("x &" . yas-new-snippet)))
