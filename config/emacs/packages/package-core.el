@@ -285,7 +285,7 @@
               ("k T" . eat))
   :custom
   (eat-term-scrollback-size nil)
-  (read-process-output-max (* 4 1024 1024)) ;; 4MB
+  (read-process-output-max (* 32 1024 1024)) ;; 32MB
   :hook
   (eshell-load . eat-eshell-visual-command-mode)
   (eshell-load . eat-eshell-mode)
