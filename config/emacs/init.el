@@ -41,7 +41,7 @@
 
            ;; Settings
            ("; ," . open-init-file)
-           ("; <" . open-packages-file)
+           ("; <" . open-custom-file)
            ("; =" . set-font-size)
            ("; ;" . load-theme)
            ("; :" . customize-option)
@@ -286,9 +286,10 @@
   (interactive)
   (find-file user-init-file))
 
-(defun open-packages-file ()
+(defun open-custom-file ()
   (interactive)
-  (find-file (locate-user-emacs-file "packages/package-core.el")))
+  (if (boundp 'custom-file)
+      (find-file custom-file)))
 
 (defun set-font-size ()
   "Set the font size of Emacs"
