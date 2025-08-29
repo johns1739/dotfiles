@@ -49,7 +49,6 @@
            ;; Settings
            ("; ," . open-init-file)
            ("; <" . open-packages-file)
-           ("; $" . flyspell-mode)
            ("; =" . set-font-size)
            ("; ;" . load-theme)
            ("; :" . customize-option)
@@ -76,8 +75,9 @@
            ("?" . xref-find-references)
            ("/" . xref-find-apropos)
            ("'" . mode-line-other-buffer)
-           ("f" . find-file)
+           ("f" . find-file-at-point)
            ("d" . dired-jump)
+           ("D" . project-dired)
            ("h" . eldoc)
            ("i" . imenu)
            ("j" . jump-to-register)
@@ -85,8 +85,7 @@
            ("l" . goto-line)
            ("m" . bookmark-jump)
            ("M" . bookmark-set)
-           ("u" . find-file-at-point)
-           ("U" . goto-address-at-point)
+           ("u" . goto-address-at-point)
            ;; Window navigation
            ("w h" . windmove-left)
            ("w j" . windmove-down)
@@ -99,9 +98,7 @@
 
            :map search-map
            ("d" . project-find-dir)
-           ("D" . project-dired)
            ("f" . project-find-file)
-           ("F" . project-root-find-file)
            ("g" . rgrep)
            ("j" . list-registers)
            ("k" . keep-lines)
@@ -314,15 +311,19 @@
 (setq-default cursor-type 'bar)
 
 ;; ffap settings - find-file-at-point
-(string-split (string-trim-left ":123:34" ":") ":")
 (with-eval-after-load 'ffap
-  (defvar ffap-project-match-regexp " +\\([^/]+/[^:]+\\)\\(:[0-9]+\\)\\{0,2\\} ")
-  (defun ffap-project-match (name)
-    (let ((filename (match-string 1 name)))
-      (if (and (project-current) (not (string-prefix-p "./" filename)))
-          (expand-file-name filename (project-directory))
-        (expand-file-name filename default-directory))))
-  (add-to-list 'ffap-alist '(ffap-project-match-regexp . #'ffap-project-match)))
+  (require 'f)
+  (defun ffap-deep-match-file (filename)
+    (let ((project-dir (project-directory)))
+      (or (and project-dir (ffap-deep-match-file-string filename project-dir))
+          (ffap-deep-match-file-string filename default-directory))))
+  (defun ffap-deep-match-file-string (filename dir)
+    (let* ((deep-1 (f-join "**" filename))
+           (deep-2 (f-join "**" "**" filename))
+           (files  (or (file-expand-wildcards (expand-file-name deep-1 dir) t)
+                       (file-expand-wildcards (expand-file-name deep-2 dir) t))))
+      (and files (car files))))
+  (add-to-list 'ffap-alist '("" . ffap-project-match-file)))
 
 ;; project settings
 (setq project-switch-commands '((project-find-regexp "Search" "s")

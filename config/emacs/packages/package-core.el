@@ -38,7 +38,7 @@
          :map isearch-mode-map
          ("C-'" . avy-isearch)
          :map goto-map
-         ("g" . avy-goto-char-timer)))
+         ("g" . avy-goto-word-1)))
 
 (use-package beacon
   :if (display-graphic-p) ;; Not pretty in terminal
@@ -356,6 +356,19 @@
   :custom
   (flymake-fringe-indicator-position 'right-fringe))
 
+(use-package flyspell
+  :straight nil
+  ;; brew install aspell
+  ;; brew install ispell
+  ;; ispell fails to install due to compilation issues
+  :if (or (executable-find "aspell") (executable-find "ispell"))
+  :bind (:map global-leader-map
+              ("; $" . flyspell-mode))
+  :config
+  (if (executable-find "ispell")
+      (setq ispell-program-name "ispell")
+    (setq ispell-program-name "aspell")))
+
 (use-package git-link
   :bind (:map global-leader-map
               ("x j" . git-link)
@@ -560,6 +573,7 @@
               ("n v" . org-agenda-list)
               ("n W" . org-refile)
               :map org-mode-map
+              ("C-M-h" . org-babel-mark-block)
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading)
               ("M-N" . org-move-subtree-down)

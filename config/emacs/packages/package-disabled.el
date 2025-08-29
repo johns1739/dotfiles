@@ -132,8 +132,7 @@
   :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
 
 (use-package jinx
-  ;; never really used.
-  ;; Requires OS dependencies.
+  ;; never really used and there are compilation errors.
   :bind (("M-$" . jinx-correct)
          ([remap flyspell-mode] . jinx-mode)))
 
