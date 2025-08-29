@@ -571,7 +571,7 @@
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
-  (org-agenda-window-setup 'only-window)
+  (org-agenda-window-setup 'reorganize-frame)
   (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-cycle-hide-block-startup t)
   (org-hide-drawer-startup t)
