@@ -637,6 +637,7 @@
   (org-hide-leading-stars (display-graphic-p))
   (org-log-done 'time)
   (org-log-into-drawer t)
+  (org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 1)))
   (org-return-follows-link nil)
   (org-special-ctrl-a/e t)
   (org-startup-folded 'overview)
