@@ -745,6 +745,7 @@
               ("'" . tab-recent)
               ("T" . tab-bar-mode))
   :custom
+  (tab-bar-show 1)
   (tab-bar-select-tab-modifiers '(super))
   (tab-bar-close-button-show nil)
   (tab-bar-close-button nil)
