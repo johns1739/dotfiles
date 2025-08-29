@@ -66,6 +66,7 @@
          ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
          ;; #'cape-line ;; Kinda buggy
          )))
+
 (use-package compile
   :bind (:map global-leader-map
               ("k ." . compile)
@@ -349,6 +350,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package ffap
+  :straight nil
   :commands (find-file-at-point)
   :init
   (defun ffap-deep-match-file (filename)
@@ -416,6 +418,31 @@
          :map help-map
          ("." . helpful-at-point)
          ("F" . helpful-function)))
+
+(use-package hippie-exp
+  :straight nil
+  :bind (:map global-map ("M-I" . hippie-expand))
+  :custom
+  (hippie-expand-verbose t)
+  (hippie-expand-try-functions-list
+   '(try-expand-list
+     try-expand-line
+     try-expand-dabbrev-visible
+     try-expand-dabbrev
+     ;; try-expand-list-all-buffers
+     try-expand-line-all-buffers
+     try-expand-dabbrev-all-buffers
+     ;; try-expand-whole-kill ;; use M-y instead
+     ;; try-expand-dabbrev-from-kill
+     try-complete-file-name-partially
+     try-complete-file-name))
+  :init
+  (defadvice hippie-expand (around hippie-expand-case-fold)
+    "Try to do case-sensitive matching (not effective with all functions)."
+    (let ((case-fold-search nil))
+      ad-do-it))
+  :config
+  (ad-activate 'hippie-expand))
 
 (use-package indent-bars
   :bind (:map global-leader-map
@@ -705,6 +732,25 @@
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
 
+(use-package tab-bar
+  :straight nil
+  :if (display-graphic-p)
+  :bind (:map global-map
+              ("s-{" . tab-previous)
+              ("s-}" . tab-next)
+              ("s-t" . tab-bar-new-tab)
+              ("s-w" . tab-bar-close-tab)
+              :map tab-prefix-map
+              ("SPC" . tab-switch)
+              ("'" . tab-recent)
+              ("T" . tab-bar-mode))
+  :custom
+  (tab-bar-select-tab-modifiers '(super))
+  (tab-bar-close-button-show nil)
+  (tab-bar-close-button nil)
+  (tab-bar-new-button-show nil)
+  (tab-bar-new-button nil))
+
 (use-package trashed
   :bind (:map global-leader-map
               ("o z" . trashed))
@@ -713,6 +759,42 @@
   (setq trashed-use-header-line t)
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
+(use-package treesit
+  :straight nil
+  :init
+  (defun treesit-pull-languages ()
+    "Install all language grammars registered with Treesitter"
+    (interactive)
+    (require 'treesit)
+    (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
+  :commands (treesit-pull-languages)
+  :config
+  (setq treesit-language-source-alist
+        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+          (c "https://github.com/tree-sitter/tree-sitter-c")
+          (cmake "https://github.com/uyha/tree-sitter-cmake")
+          (css "https://github.com/tree-sitter/tree-sitter-css")
+          (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+          (gleam "https://github.com/gleam-lang/tree-sitter-gleam/")
+          (go "https://github.com/tree-sitter/tree-sitter-go")
+          (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+          (haskell "https://github.com/tree-sitter/tree-sitter-haskell")
+          (html "https://github.com/tree-sitter/tree-sitter-html")
+          (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+          (json "https://github.com/tree-sitter/tree-sitter-json")
+          (make "https://github.com/alemuller/tree-sitter-make")
+          (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+          (python "https://github.com/tree-sitter/tree-sitter-python")
+          (toml "https://github.com/tree-sitter/tree-sitter-toml")
+          (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+          (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+          (yaml "https://github.com/ikatyang/tree-sitter-yaml")
+          (erlang "https://github.com/WhatsApp/tree-sitter-erlang")
+          (elixir "https://github.com/elixir-lang/tree-sitter-elixir")
+          (heex "https://github.com/phoenixframework/tree-sitter-heex")
+          (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
+          (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
 
 (use-package vertico
   :hook (after-init . vertico-mode))

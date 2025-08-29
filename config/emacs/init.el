@@ -16,18 +16,11 @@
            ("C-x C-b" . ibuffer)
 
            ("M-i" . completion-at-point)
-           ("M-I" . hippie-expand)
            ("M-j" . join-line)
            ("M-L" . duplicate-dwim)
            ("M-n" . forward-paragraph)
            ("M-o" . other-window)
            ("M-p" . backward-paragraph)
-
-           ;; tab navigation (Works only in GUI)
-           ("s-{" . tab-previous)
-           ("s-}" . tab-next)
-           ("s-t" . tab-bar-new-tab)
-           ("s-w" . tab-bar-close-tab)
 
            ;; Global Leader Bindings
            :map global-leader-map
@@ -105,12 +98,7 @@
            ("K" . delete-matching-lines)
            ("o" . occur)
            ("s" . project-find-regexp)
-           ("r" . recentf-open)
-
-           :map tab-prefix-map
-           ("SPC" . tab-switch)
-           ("'" . tab-recent)
-           ("T" . tab-bar-mode))
+           ("r" . recentf-open))
 
 ;; isearch settings
 (setq isearch-wrap-pause 'no)
@@ -143,33 +131,6 @@
 ;; tab settings
 (setq tab-always-indent t)
 (setq-default tab-width 4)
-
-;; tab-bar settings
-(setq tab-bar-select-tab-modifiers '(super))
-(setq tab-bar-close-button-show nil)
-(setq tab-bar-close-button nil)
-(setq tab-bar-new-button-show nil)
-(setq tab-bar-new-button nil)
-
-;; hippie settings
-(setq hippie-expand-verbose t)
-(setq hippie-expand-try-functions-list
-      '(try-expand-list
-        try-expand-line
-        try-expand-dabbrev-visible
-        try-expand-dabbrev
-        ;; try-expand-list-all-buffers
-        try-expand-line-all-buffers
-        try-expand-dabbrev-all-buffers
-        ;; try-expand-whole-kill ;; use M-y instead
-        ;; try-expand-dabbrev-from-kill
-        try-complete-file-name-partially
-        try-complete-file-name))
-(defadvice hippie-expand (around hippie-expand-case-fold)
-  "Try to do case-sensitive matching (not effective with all functions)."
-  (let ((case-fold-search nil))
-    ad-do-it))
-(ad-activate 'hippie-expand)
 
 ;; column settings
 (setq-default display-fill-column-indicator-column 100)
@@ -319,35 +280,6 @@
 ;; vc settings
 (setq vc-handled-backends '(Git))
 
-;; treesit settings
-(with-eval-after-load 'treesit
-  (setq treesit-language-source-alist
-        '((bash "https://github.com/tree-sitter/tree-sitter-bash")
-          (c "https://github.com/tree-sitter/tree-sitter-c")
-          (cmake "https://github.com/uyha/tree-sitter-cmake")
-          (css "https://github.com/tree-sitter/tree-sitter-css")
-          (elisp "https://github.com/Wilfred/tree-sitter-elisp")
-          (gleam "https://github.com/gleam-lang/tree-sitter-gleam/")
-          (go "https://github.com/tree-sitter/tree-sitter-go")
-          (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
-          (haskell "https://github.com/tree-sitter/tree-sitter-haskell")
-          (html "https://github.com/tree-sitter/tree-sitter-html")
-          (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-          (json "https://github.com/tree-sitter/tree-sitter-json")
-          (make "https://github.com/alemuller/tree-sitter-make")
-          (markdown "https://github.com/ikatyang/tree-sitter-markdown")
-          (python "https://github.com/tree-sitter/tree-sitter-python")
-          (toml "https://github.com/tree-sitter/tree-sitter-toml")
-          (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-          (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-          (yaml "https://github.com/ikatyang/tree-sitter-yaml")
-          (erlang "https://github.com/WhatsApp/tree-sitter-erlang")
-          (elixir "https://github.com/elixir-lang/tree-sitter-elixir")
-          (heex "https://github.com/phoenixframework/tree-sitter-heex")
-          (ruby "https://github.com/tree-sitter/tree-sitter-ruby")
-          (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
-
-
 ;; commands & functions & definitions
 
 (defun open-init-file ()
@@ -378,8 +310,7 @@
 (defun project-directory ()
   "Current project directory."
   (let ((project (project-current)))
-    (if project
-        (project-root project))))
+    (and project (project-root project))))
 
 (defun indent-format-buffer ()
   (interactive)
@@ -391,16 +322,9 @@
   (interactive)
   (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
 
-(defun current-directory ()
-  "Current project directory or cwd."
-  (or (project-directory) default-directory))
-
-(defun current-directory-base ()
-  (f-base (current-directory)))
-
 (defun relative-file-name ()
   "Relative from project or cwd directory."
-  (file-relative-name (buffer-file-name) (current-directory)))
+  (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
 
 (defun absolute-file-name ()
   "Absolute path to file."
@@ -419,12 +343,6 @@
   (let ((afn (absolute-file-name)))
     (kill-new (absolute-file-name))
     (message "Copied %s" afn)))
-
-(defun treesit-pull-languages ()
-  "Install all language grammars registered with Treesitter"
-  (interactive)
-  (require 'treesit)
-  (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
 
 ;; Load packages
 (load (locate-user-emacs-file "packages/package-core.el") :no-error-if-file-is-missing)
