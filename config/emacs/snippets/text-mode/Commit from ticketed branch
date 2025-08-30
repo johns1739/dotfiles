@@ -1,13 +1,12 @@
 # -*- mode: snippet -*-
 # name: Commit from ticketed branch
-# key: orch
+# key: ,com
 # condition: (and (project-current) (magit-git-repo-p default-directory))
 # --
 `
 (let* ((branch (magit-get-current-branch))
-      (_ (string-match "ORCH-\\([^-]+\\)" branch))
-      (number (match-string 1 branch)))
-  (if number
-    (format "ORCH-%s: " number)
-    "fix: "))
+       (match-found (string-match "\\([A-Z]+\\)-\\([0-9]+\\)" branch)))
+  (if match-found
+      (format "%s-%s: " (match-string 1 branch) (match-string 2 branch))
+    ""))
 `$0
