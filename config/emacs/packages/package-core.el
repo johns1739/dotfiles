@@ -824,7 +824,10 @@
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
   :hook (after-init . yas-global-mode)
+  :bind (:map goto-map
+              ("&" . yas-visit-snippet-file)
+              :map global-leader-map
+              ("i &" . yas-insert-snippet)
+              ("x &" . yas-new-snippet))
   :custom
-  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
-  :bind (:map global-leader-map
-              ("x &" . yas-new-snippet)))
+  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets"))))
