@@ -1,21 +1,14 @@
 ;;-*- lexical-binding: t; -*-
 
-;; mkdir -p ~/.config/emacs && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim/init.el -o ~/.config/emacs/init.el
-
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message
-             "*** Emacs loaded in %s seconds with %d garbage collections."
-             (emacs-init-time "%.2f") gcs-done)))
-
-(global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key [remap backward-sentence] #'backward-sexp)
 (global-set-key [remap forward-sentence] #'forward-sexp)
-(global-set-key (kbd "M-n") #'forward-paragraph)
-(global-set-key (kbd "M-p") #'backward-paragraph)
-(global-set-key (kbd "M-o") #'other-window)
+(global-set-key (kbd "C-x C-b") #'ibuffer)
 (global-set-key (kbd "M-i") #'completion-at-point)
 (global-set-key (kbd "M-I") #'hippie-expand)
+(global-set-key (kbd "M-n") #'forward-paragraph)
+(global-set-key (kbd "M-o") #'other-window)
+(global-set-key (kbd "M-p") #'backward-paragraph)
+
 (define-key goto-map (kbd "SPC") #'switch-to-buffer)
 (define-key goto-map (kbd "f") #'find-file-at-point)
 (define-key goto-map (kbd "m") #'bookmark-jump)
@@ -25,8 +18,6 @@
 (setq use-short-answers t)
 (setq recentf-auto-cleanup 300)
 (setq recentf-max-saved-items 100)
-(setq gc-cons-percentage 0.1)
-(setq gc-cons-threshold (* 16 1024 1024)) ;; 16MB
 (setq history-delete-duplicates t)
 (setq isearch-wrap-pause 'no)
 (setq completion-styles '(basic substring partial-completion))
@@ -34,7 +25,6 @@
 (setq completion-cycle-threshold 3)
 (setq completions-detailed t)
 (setq xref-show-definitions-function #'xref-show-definitions-completing-read)
-(setq package-enable-at-startup nil)
 
 ;; hippie settings
 (setq hippie-expand-try-functions-list
@@ -56,12 +46,6 @@
   (setq backup-directory-alist `(("." . ,backup-dir))))
 
 ;; modes
-(menu-bar-mode -1)
-(with-eval-after-load 'tool-bar
-  (tool-bar-mode -1))
-(with-eval-after-load 'scroll-bar
-  (scroll-bar-mode -1))
-(tooltip-mode -1)
 (recentf-mode 1)
 (save-place-mode t)
 (savehist-mode t)
