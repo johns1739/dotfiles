@@ -1,7 +1,7 @@
 ;;-*- lexical-binding: t; -*-
 
 (defvar-keymap global-leader-map :doc "Global leader keymap.")
-(keymap-set ctl-x-map "SPC" global-leader-map)
+(keymap-set ctl-x-map "j" global-leader-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
 (keymap-set global-leader-map "p" project-prefix-map)
