@@ -348,7 +348,7 @@
 ;; Load packages
 (setq packages '("straight-setup.el" "builtins.el" "core.el" "langs.el" "color-themes.el"))
 (dolist (package packages)
-  (tt package
+  (tt (format ">> %s" package)
       (load (concat user-emacs-directory "packages/" package) :no-error-if-file-missing)))
 
 ;; custom settings
