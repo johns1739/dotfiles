@@ -346,10 +346,11 @@
     (message "Copied %s" afn)))
 
 ;; Load packages
-(load (locate-user-emacs-file "packages/package-core.el") :no-error-if-file-is-missing)
-(load (locate-user-emacs-file "packages/package-langs.el") :no-error-if-file-is-missing)
-(load (locate-user-emacs-file "packages/package-color-themes.el") :no-error-if-file-is-missing)
+(setq packages '("straight-setup.el" "builtins.el" "core.el" "langs.el" "color-themes.el"))
+(dolist (package packages)
+  (tt package
+      (load (concat user-emacs-directory "packages/" package) :no-error-if-file-missing)))
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file :no-error-if-file-is-missing)
+(load custom-file :no-error-if-file-missing)
