@@ -240,6 +240,11 @@
   :custom
   (dired-subtree-use-backgrounds nil))
 
+(use-package docker
+  :if (executable-find "docker")
+  :bind (:map global-leader-map
+              ("d d" . docker)))
+
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
   :custom
@@ -326,6 +331,13 @@
 (use-package indent-bars
   :bind (:map global-leader-map
               ("; g" . indent-bars-mode)))
+
+(use-package kubernetes
+  :if (executable-find "kubectl")
+  :commands (kubernetes-overview)
+  :config
+  (setq kubernetes-poll-frequency 3600
+        kubernetes-redraw-frequency 3600))
 
 (use-package magit
   :commands (magit-project-status)

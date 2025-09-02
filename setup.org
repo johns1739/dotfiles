@@ -2,6 +2,7 @@
 #+begin_src bash
 
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+  # Follow instructions before running update
   brew update
 
 #+end_src
@@ -101,9 +102,10 @@
   # +show-face
   # +crash-report
 
-  background-opacity = 0.85
+  background-opacity = 1
   font-size = 13
-  theme = dark:Adventure,light:Desert
+  # favorite dark themes: Adventure, Ayu, catpuccin-mocha, Desert, IC_Orange_PPL
+  theme = Ayu
   unfocused-split-opacity = 0.6
 
   # behavior settings
@@ -167,7 +169,6 @@
 #+end_src
 
 
-
 ** Sqlite
 
 *** ~/.sqliterc
@@ -213,9 +214,7 @@
 
 #+end_src
 
-
-* Zsh
-
+* Bash / Zsh / Home RC
 ** Zshrc
 #+begin_src bash
 
@@ -285,7 +284,6 @@
 
 #+end_src
 
-
 ** Zshenv
 #+begin_src bash
 
@@ -295,10 +293,8 @@
   export EDITOR="emacs -nw --init-directory=~/.config/emacs/slim"
   export VISUAL="emacs -nw --init-directory=~/.config/emacs/slim"
   export SUDO_EDITOR="$EDITOR"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
 
 #+end_src
-
 
 * Ghostty
 #+begin_src bash
@@ -307,7 +303,6 @@
   brew install --cask ghostty
 
 #+end_src
-
 
 * Emacs
 #+begin_src bash
@@ -358,6 +353,5 @@
 #+begin_src bash
 
   mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim -o ~/.config/emacs
-
 
 #+end_src

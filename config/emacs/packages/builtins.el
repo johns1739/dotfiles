@@ -138,7 +138,7 @@
               ("n v" . org-agenda-list)
               ("n W" . org-refile)
               :map org-mode-map
-              ("C-M-h" . org-babel-mark-block)
+              ("C-c M-h" . org-babel-mark-block)
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading)
               ("M-N" . org-move-subtree-down)
