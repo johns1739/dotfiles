@@ -160,8 +160,10 @@
   (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
 (use-package copilot
-  :if (executable-find "npm")
+  ;; Setup
   ;; M-x copilot-install-server
+  ;; M-x copilot-login
+  :if (executable-find "npm")
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind (:map copilot-completion-map
               ("M-f" . copilot-accept-completion-by-word)
@@ -312,7 +314,7 @@
 (use-package google-this
   :bind (:map global-leader-map ("o g" . google-this)))
 
-(use-package gptel
+(use-package gptel ;; llm copilot chat
   ;; Copilot settings:
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :straight (:nonrecursive t)
