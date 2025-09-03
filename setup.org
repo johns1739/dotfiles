@@ -346,6 +346,8 @@
       (load-theme 'modus-vivendi-tritanopia :no-confirm-loading)
       (set-face-background 'default "unspecified")))
 
+(setq gptel-model 'claude-sonnet-4)
+(setq gptel-backend (gptel-make-gh-copilot "Copilot"))
 
 #+end_src
 

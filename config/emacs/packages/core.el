@@ -316,6 +316,7 @@
 
 (use-package gptel ;; llm copilot chat
   ;; Copilot settings:
+  ;; (setq gptel-model 'claude-3.7-sonnet)
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :straight (:nonrecursive t)
   :bind (("C-c RET" . gptel-send)))
