@@ -304,7 +304,10 @@
   (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
+  ;; Ensure same SSH_ values for git repo access.
+  (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
 
 (use-package git-link
   :bind (:map global-leader-map
