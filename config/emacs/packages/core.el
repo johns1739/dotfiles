@@ -27,11 +27,11 @@
   ;; Cape provides Completion At Point Extensions
   :commands (cape-dict cape-elisp-symbol cape-file cape-history cape-dabbrev cape-line cape-keyword)
   :bind (:map global-leader-map
+              ("i /" . cape-dabbrev)
               ("i d" . cape-dict)
               ("i e" . cape-elisp-symbol)
               ("i f" . cape-file)
               ("i h" . cape-history)
-              ("i i" . cape-dabbrev)
               ("i l" . cape-line)
               ("i s" . cape-keyword))
   :custom
@@ -297,6 +297,10 @@
          (">" . embark-collect)
          ("E" . embark-export)))
 
+(use-package embark-consult
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+  
 (use-package exec-path-from-shell
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
   :demand
@@ -317,12 +321,16 @@
 (use-package google-this
   :bind (:map global-leader-map ("o g" . google-this)))
 
-(use-package gptel ;; llm copilot chat
+(use-package gptel
+  ;; llm copilot chat
   ;; Copilot settings:
   ;; (setq gptel-model 'claude-3.7-sonnet)
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :straight (:nonrecursive t)
-  :bind (("C-c RET" . gptel-send)))
+  :bind (("C-c RET" . gptel-send)
+         ("C-c C-RET" . gptel)
+         :map global-leader-map
+         ("I" . gptel-menu)))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)

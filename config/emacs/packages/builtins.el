@@ -104,6 +104,7 @@
   :straight nil
   :commands (org-todo-list
              org-agenda
+             org-agenda-list
              org-capture
              org-capture-goto-target
              org-search-view
@@ -127,11 +128,12 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
-              ("N" . org-capture)
+              ("N" . org-agenda)
               ("n ," . org-capture-goto-last-stored)
+              ("n /" . org-tags-view)
               ("n SPC" . org-search-view)
-              ("n a" . org-agenda)
               ("n f" . org-capture-goto-target)
+              ("n k" . org-capture)
               ("n L" . org-store-link)
               ("n s" . org-occur-in-agenda-files)
               ("n t" . org-todo-list)
