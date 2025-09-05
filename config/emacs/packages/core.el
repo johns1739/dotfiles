@@ -300,7 +300,7 @@
 (use-package embark-consult
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
-  
+
 (use-package exec-path-from-shell
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
   :demand
@@ -327,10 +327,19 @@
   ;; (setq gptel-model 'claude-3.7-sonnet)
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :straight (:nonrecursive t)
+  :custom
+  (gptel-default-mode 'org-mode)
   :bind (("C-c RET" . gptel-send)
+         ("C-c M-<return>" . gptel)
          :map global-leader-map
-         ("I" . gptel-menu)
-         ("i i" . gptel)))
+         ("i i" . gptel-menu)
+         ("i A" . gptel-add)
+         ("i F" . gptel-add-file)
+         ("i R" . gptel-rewrite))
+  :config
+  (with-eval-after-load 'org
+    (bind-keys :map org-mode-map
+               ("C-c M-<return>" . gptel))))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
