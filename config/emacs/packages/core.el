@@ -328,9 +328,9 @@
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :straight (:nonrecursive t)
   :bind (("C-c RET" . gptel-send)
-         ("C-c C-RET" . gptel)
          :map global-leader-map
-         ("I" . gptel-menu)))
+         ("I" . gptel-menu)
+         ("i i" . gptel)))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
