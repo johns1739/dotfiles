@@ -302,16 +302,16 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package exec-path-from-shell
+  ;; If issues with git read/write access:
+  ;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+  ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
   :demand
   :custom
   (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
-  (exec-path-from-shell-initialize)
-  ;; Ensure same SSH_ values for git repo access.
-  (exec-path-from-shell-copy-env "SSH_AGENT_PID")
-  (exec-path-from-shell-copy-env "SSH_AUTH_SOCK"))
+  (exec-path-from-shell-initialize))
 
 (use-package git-link
   :bind (:map global-leader-map
@@ -331,15 +331,16 @@
   (gptel-default-mode 'org-mode)
   :bind (("C-c RET" . gptel-send)
          ("C-c M-<return>" . gptel)
+         ("C-c I" . gptel-add)
          :map global-leader-map
+         ("I" . gptel-add)
          ("i i" . gptel-menu)
-         ("i A" . gptel-add)
          ("i F" . gptel-add-file)
          ("i R" . gptel-rewrite))
   :config
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
-               ("C-c M-<return>" . gptel))))
+               ("C-c I" . gptel-org-set-topic))))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)

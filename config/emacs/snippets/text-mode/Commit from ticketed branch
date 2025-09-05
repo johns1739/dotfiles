@@ -7,6 +7,6 @@
 (let* ((branch (magit-get-current-branch))
        (match-found (string-match "\\([A-Z]+\\)-\\([0-9]+\\)" branch)))
   (if match-found
-      (format "%s-%s: " (match-string 1 branch) (match-string 2 branch))
+      (format "%s-%s: " (upcase (match-string 1 branch)) (upcase (match-string 2 branch)))
     ""))
 `$0
