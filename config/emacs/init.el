@@ -4,7 +4,6 @@
 (keymap-set ctl-x-map "j" global-leader-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
-(keymap-set global-leader-map "p" project-prefix-map)
 (keymap-set global-leader-map "t" tab-prefix-map)
 
 (bind-keys :map global-map
@@ -34,10 +33,9 @@
 
            ;; Command Actions
            ("x c" . calc)
+           ("x C" . calendar)
            ("x d" . ediff-files)
            ("x r" . regexp-builder)
-           ("x y" . copy-relative-file-name)
-           ("x Y" . copy-absolute-file-name)
 
            ;; Settings
            ("; ," . open-init-file)
@@ -70,7 +68,6 @@
            ("'" . mode-line-other-buffer)
            ("f" . find-file-at-point)
            ("d" . dired-jump)
-           ("D" . project-dired)
            ("h" . eldoc)
            ("i" . imenu)
            ("j" . jump-to-register)
@@ -90,14 +87,11 @@
            ("w L" . windmove-swap-states-right)
 
            :map search-map
-           ("d" . project-find-dir)
-           ("f" . project-find-file)
            ("g" . rgrep)
            ("j" . list-registers)
            ("k" . keep-lines)
            ("K" . delete-matching-lines)
            ("o" . occur)
-           ("s" . project-find-regexp)
            ("r" . recentf-open))
 
 ;; isearch settings
@@ -271,12 +265,6 @@
 ;; cursor settings
 (setq-default cursor-type 'bar)
 
-;; project settings
-(setq project-switch-commands '((project-find-regexp "Search" "s")
-                                (project-find-file "Find file" "f")
-                                (project-find-dir "Find directory" "d")
-                                (project-kill-buffers "Kill buffers" "k")))
-
 ;; vc settings
 (setq vc-handled-backends '(Git))
 
@@ -308,11 +296,6 @@
   (interactive)
   (select-window (split-window-right)))
 
-(defun project-directory ()
-  "Current project directory."
-  (let ((project (project-current)))
-    (and project (project-root project))))
-
 (defun indent-format-buffer ()
   (interactive)
   (save-excursion
@@ -323,32 +306,10 @@
   (interactive)
   (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
 
-(defun relative-file-name ()
-  "Relative from project or cwd directory."
-  (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
-
-(defun absolute-file-name ()
-  "Absolute path to file."
-  (expand-file-name (buffer-file-name)))
-
-(defun copy-relative-file-name ()
-  "Copy file path of current buffer relative to project directory."
-  (interactive)
-  (let ((rfn (relative-file-name)))
-    (kill-new (relative-file-name))
-    (message "Copied %s" rfn)))
-
-(defun copy-absolute-file-name ()
-  "Copy absolute file path of current buffer."
-  (interactive)
-  (let ((afn (absolute-file-name)))
-    (kill-new (absolute-file-name))
-    (message "Copied %s" afn)))
-
 ;; Load packages
 (setq packages '("straight-setup.el" "builtins.el" "core.el" "langs.el" "color-themes.el"))
 (dolist (package packages)
-  (tt (format ">> %s" package)
+  (tt (format "*** %s" package)
       (load (concat user-emacs-directory "packages/" package) :no-error-if-file-missing)))
 
 ;; custom settings

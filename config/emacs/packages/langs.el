@@ -129,15 +129,20 @@
               ("C-c C-." . markdown-do)))
 
 (use-package python-mode
+  ;; setup
+  ;; pip install "pyright[nodejs]"
   :straight nil
-  :mode "\\.py\\'"
+  :mode "\\.py$"
   :init
+  ;; Run in init because :config does not execute
+  ;; for whatever reason.
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (defun python-setup ()
     (setq-local tab-width 4))
   :hook
   (python-ts-mode . python-setup)
   :custom
+  (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4))
 
 (use-package ruby-ts-mode
@@ -195,7 +200,7 @@
                        :folding t))))))
 
 (use-package terraform-mode
-  :mode "\\.tf\'"
+  :mode "\\.tf\\'"
   :custom
   (terraform-indent-level 2))
 

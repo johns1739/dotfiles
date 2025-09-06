@@ -194,6 +194,42 @@
   (proced-enable-color-flag t)
   (proced-format 'short))
 
+(use-package project
+  :straight nil
+  :bind (:map project-prefix-map
+              ("y" . copy-relative-file-name)
+              ("Y" . copy-absolute-file-name)
+              ("K" . project-forget-project))
+  :custom
+  (project-switch-commands '((project-find-regexp "Search" "s")
+                             (project-find-file "Find file" "f")
+                             (project-find-dir "Find directory" "d")
+                             (project-kill-buffers "Kill buffers" "k")))
+  :init
+  (keymap-set global-leader-map "p" project-prefix-map)
+  (defun absolute-file-name ()
+    "Absolute path to file."
+    (expand-file-name (buffer-file-name)))
+  (defun copy-absolute-file-name ()
+    "Copy absolute file path of current buffer."
+    (interactive)
+    (let ((afn (absolute-file-name)))
+      (kill-new (absolute-file-name))
+      (message "Copied %s" afn)))
+  (defun project-directory ()
+    "Current project directory."
+    (let ((project (project-current)))
+      (and project (project-root project))))
+  (defun relative-file-name ()
+    "Relative from project or cwd directory."
+    (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
+  (defun copy-relative-file-name ()
+    "Copy file path of current buffer relative to project directory."
+    (interactive)
+    (let ((rfn (relative-file-name)))
+      (kill-new (relative-file-name))
+      (message "Copied %s" rfn))))
+
 (use-package tab-bar
   :straight nil
   :if (display-graphic-p)

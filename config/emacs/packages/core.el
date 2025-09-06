@@ -245,7 +245,7 @@
 (use-package docker
   :if (executable-find "docker")
   :bind (:map global-leader-map
-              ("d d" . docker)))
+              ("k o" . docker)))
 
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
@@ -330,13 +330,17 @@
   :custom
   (gptel-default-mode 'org-mode)
   :bind (("C-c RET" . gptel-send)
-         ("C-c M-<return>" . gptel)
          ("C-c I" . gptel-add)
          :map global-leader-map
          ("I" . gptel-add)
-         ("i i" . gptel-menu)
+         ("i RET" . gptel-send)
+         ("i i" . gptel)
+         ("i m" . gptel-menu)
          ("i F" . gptel-add-file)
          ("i R" . gptel-rewrite))
+  :hook
+  ((gptel-post-stream . gptel-auto-scroll)
+   (gptel-post-response-hook . gptel-beginning-of-response))
   :config
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
@@ -486,6 +490,14 @@
 
 (use-package ob-http
   :after org)
+
+(use-package openapi-preview
+  ;; requirements:
+  ;; npm i -g redoc-cli
+  :if (executable-find "redoc-cli")
+  :straight (:host github :repo "merrickluo/openapi-preview")
+  :bind (:map yaml-ts-mode-map
+              ("C-c p" . openapi-preview)))
 
 (use-package orderless
   :custom
