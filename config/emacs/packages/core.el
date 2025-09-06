@@ -244,6 +244,7 @@
 
 (use-package docker
   :if (executable-find "docker")
+  :after (exec-path-from-shell)
   :bind (:map global-leader-map
               ("k o" . docker)))
 
@@ -300,18 +301,6 @@
 (use-package embark-consult
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
-
-(use-package exec-path-from-shell
-  ;; If issues with git read/write access:
-  ;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
-  ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-  :if (and (memq window-system '(mac ns x)) (display-graphic-p))
-  :demand
-  :custom
-  (exec-path-from-shell-debug t)
-  (exec-path-from-shell-warn-duration-millis 1000)
-  :config
-  (exec-path-from-shell-initialize))
 
 (use-package git-link
   :bind (:map global-leader-map
