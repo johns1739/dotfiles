@@ -315,9 +315,9 @@
   :bind (("C-c RET" . gptel-send)
          ("C-c I" . gptel-add)
          :map global-leader-map
+         ("I" . gptel-add)
          ("i RET" . gptel-send)
          ("i i" . gptel)
-         ("i I" . gptel-add)
          ("i F" . gptel-add-file)
          ("i m" . gptel-menu)
          ("i R" . gptel-rewrite))
@@ -480,7 +480,7 @@
   :if (executable-find "redoc-cli")
   :straight (:host github :repo "merrickluo/openapi-preview")
   :bind (:map yaml-ts-mode-map
-              ("C-c p" . openapi-preview)))
+              ("C-c C-c p" . openapi-preview)))
 
 (use-package orderless
   :custom
