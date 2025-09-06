@@ -201,10 +201,10 @@
               ("Y" . copy-absolute-file-name)
               ("K" . project-forget-project))
   :custom
-  (project-switch-commands '((project-find-regexp "Search" "s")
-                             (project-find-file "Find file" "f")
-                             (project-find-dir "Find directory" "d")
-                             (project-kill-buffers "Kill buffers" "k")))
+  (project-switch-commands '((project-find-regexp "Regexp" "g")
+                             (project-find-file "File" "f")
+                             (project-find-dir "Directory" "d")
+                             (project-kill-buffers "Kill" "k")))
   :init
   (keymap-set global-leader-map "p" project-prefix-map)
   (defun absolute-file-name ()

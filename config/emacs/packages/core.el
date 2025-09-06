@@ -168,10 +168,7 @@
   :bind (:map copilot-completion-map
               ("M-f" . copilot-accept-completion-by-word)
               ("M-e" . copilot-accept-completion-by-line)
-              ("M-n" . copilot-next-completion)
-              ("M-p" . copilot-previous-completion)
-              ("M-<tab>" . copilot-accept-completion)
-              ("C-M-i" . copilot-accept-completion))
+              ("M-<return>" . copilot-accept-completion))
   :custom
   (corfu-auto nil)
   (copilot-indent-offset-warning-disable t)
@@ -212,10 +209,7 @@
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
 (use-package deadgrep
-  :bind (:map search-map ("g" . deadgrep))
-  :init
-  (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(deadgrep "Deadgrep" "g"))))
+  :bind (:map search-map ("g" . deadgrep)))
 
 (use-package devdocs
   :bind (:map global-leader-map
@@ -321,11 +315,11 @@
   :bind (("C-c RET" . gptel-send)
          ("C-c I" . gptel-add)
          :map global-leader-map
-         ("I" . gptel-add)
          ("i RET" . gptel-send)
          ("i i" . gptel)
-         ("i m" . gptel-menu)
+         ("i I" . gptel-add)
          ("i F" . gptel-add-file)
+         ("i m" . gptel-menu)
          ("i R" . gptel-rewrite))
   :hook
   ((gptel-post-stream . gptel-auto-scroll)
