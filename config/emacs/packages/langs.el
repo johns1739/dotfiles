@@ -145,6 +145,11 @@
   (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4))
 
+(use-package python-black
+  :if (executable-find "black")
+  :after python
+  :hook (python-ts-mode . python-black-on-save-mode-enable-dwim))
+
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"
   :init

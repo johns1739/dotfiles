@@ -199,7 +199,12 @@
   :bind (:map project-prefix-map
               ("y" . copy-relative-file-name)
               ("Y" . copy-absolute-file-name)
-              ("K" . project-forget-project))
+              ("K" . project-forget-project)
+              :map global-leader-map
+              ("s f" . project-find-file)
+              ("s s" . project-find-regexp)
+              ("s d" . project-find-dir))
+
   :custom
   (project-switch-commands '((project-find-regexp "Regexp" "g")
                              (project-find-file "File" "f")
