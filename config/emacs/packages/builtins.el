@@ -141,7 +141,9 @@
               ("n v" . org-agenda-list)
               ("n W" . org-refile)
               :map org-mode-map
-              ("C-c M-h" . org-babel-mark-block)
+              ("C-M-h" . org-babel-mark-block)
+              ("C-M-n" . org-babel-next-src-block)
+              ("C-M-p" . org-babel-previous-src-block)
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading)
               ("M-N" . org-move-subtree-down)
@@ -187,7 +189,7 @@
 (use-package proced
   :straight nil
   :commands proced
-  :bind (("C-M-p" . proced))
+  :bind (:map global-leader-map ("x P" . proced))
   :custom
   (proced-auto-update-flag 'visible)
   (proced-goal-attribute nil)
@@ -207,9 +209,9 @@
               ("s d" . project-find-dir))
 
   :custom
-  (project-switch-commands '((project-find-regexp "Regexp" "g")
+  (project-switch-commands '((project-find-regexp "Regexp" "s")
                              (project-find-file "File" "f")
-                             (project-find-dir "Directory" "d")
+                             (project-find-dir "Dir" "d")
                              (project-kill-buffers "Kill" "k")))
   :init
   (keymap-set global-leader-map "p" project-prefix-map)
@@ -235,6 +237,11 @@
     (let ((rfn (relative-file-name)))
       (kill-new (relative-file-name))
       (message "Copied %s" rfn))))
+
+(use-package smerge-mode
+  :straight nil
+  :hook
+  (prog-mode . smerge-mode))
 
 (use-package tab-bar
   :straight nil

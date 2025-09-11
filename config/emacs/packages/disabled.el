@@ -120,12 +120,6 @@
   :hook
   (flycheck-mode . flycheck-set-bindings))
 
-(use-package forge
-  ;; a bit slow, not really used.
-  :commands (forge-dispatch)
-  :custom
-  (auth-sources '("~/.authinfo")))
-
 (use-package git-timemachine
   ;; never really used.
   ;; Magit tools are preferred.

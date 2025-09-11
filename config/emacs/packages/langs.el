@@ -148,7 +148,12 @@
 (use-package python-black
   :if (executable-find "black")
   :after python
-  :hook (python-ts-mode . python-black-on-save-mode-enable-dwim))
+  :init
+  (defun python-black-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-format-buffer] . python-black-buffer)))
+  :hook
+  (python-ts-mode . python-black-setup))
 
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"

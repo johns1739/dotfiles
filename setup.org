@@ -220,7 +220,7 @@
 
   #!/bin/zsh
 
-  PROMPT='%~ %# '
+  PROMPT='%2~ %# '
   autoload -U select-word-style
   select-word-style bash
   bindkey -e # emacs mode

@@ -26,14 +26,6 @@
 (use-package cape
   ;; Cape provides Completion At Point Extensions
   :commands (cape-dict cape-elisp-symbol cape-file cape-history cape-dabbrev cape-line cape-keyword)
-  :bind (:map global-leader-map
-              ("i /" . cape-dabbrev)
-              ("i d" . cape-dict)
-              ("i e" . cape-elisp-symbol)
-              ("i f" . cape-file)
-              ("i h" . cape-history)
-              ("i l" . cape-line)
-              ("i s" . cape-keyword))
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -171,8 +163,9 @@
               ("M-<return>" . copilot-accept-completion))
   :custom
   (corfu-auto nil)
-  (copilot-indent-offset-warning-disable t)
   (copilot-idle-delay 0.5)
+  (copilot-indent-offset-warning-disable t)
+  (copilot-max-char-warning-disable t)
   :custom-face
   (copilot-overlay-face ((t (:family "JetBrainsMonoNL Nerd Font Mono"
                                      :slant italic
@@ -267,6 +260,7 @@
   :custom
   (eat-term-scrollback-size nil)
   (read-process-output-max (* 32 1024 1024)) ;; 32MB
+  (eat-enable-auto-line-mode t)
   :hook
   (eshell-load . eat-eshell-visual-command-mode)
   (eshell-load . eat-eshell-mode)
@@ -285,6 +279,21 @@
   :config
   (eglot-booster-mode))
 
+(use-package elysium
+  :after (gptel)
+  :custom
+  (elysium-window-size 0.5)
+  (elysium-window-style 'vertical)
+  :bind (:map global-leader-map
+              ("I" . elysium-add-context)
+              ("i i" . elysium-query)
+              ("i I" . elysium-clear-buffer)
+              ("i k" . elysium-discard-all-suggested-changes)
+              ("i K" . elysium-keep-all-suggested-changes)
+              ("i o" . elysium-toggle-window))
+  :hook
+  (elysium-apply-changes . smerge-mode))
+
 (use-package embark
   :bind (([remap describe-bindings] . embark-bindings)
          :map mode-specific-map
@@ -301,33 +310,40 @@
               ("x j" . git-link)
               ("x J" . git-link-dispatch)))
 
-(use-package google-this
-  :bind (:map global-leader-map ("o g" . google-this)))
-
 (use-package gptel
   ;; llm copilot chat
   ;; Copilot settings:
   ;; (setq gptel-model 'claude-3.7-sonnet)
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
-  :straight (:nonrecursive t)
   :custom
   (gptel-default-mode 'org-mode)
-  :bind (("C-c RET" . gptel-send)
-         ("C-c I" . gptel-add)
-         :map global-leader-map
-         ("I" . gptel-add)
-         ("i RET" . gptel-send)
-         ("i i" . gptel)
+  :bind (:map global-leader-map
+         ("i SPC" . gptel)
+         ("i RET" . gptel-menu)
+         ("i A" . gptel-add)
          ("i F" . gptel-add-file)
-         ("i m" . gptel-menu)
-         ("i R" . gptel-rewrite))
+         ("i W" . gptel-rewrite))
   :hook
-  ((gptel-post-stream . gptel-auto-scroll)
+  ((gptel-mode . visual-line-mode)
+   (gptel-post-stream . gptel-auto-scroll)
    (gptel-post-response-hook . gptel-beginning-of-response))
   :config
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic))))
+
+(use-package forge
+  ;; setup:
+  ;; Create ~/.authinfo with content:
+  ;; machine api.github.com login USERNAME^forge password TOKEN
+  ;; where USERNAME: git config --global github.user jubajr17
+  ;; and TOKEN: from https://github.com/settings/tokens
+  ;;            in a browser to generate a new "classic" token using
+  ;;            the repo, user and read:org scopes
+  ;; Run M-x auth-source-forget-all-cached
+  :commands (forge-dispatch)
+  :custom
+  (auth-sources '("~/.authinfo")))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
@@ -346,6 +362,8 @@
 (use-package kubernetes
   :if (executable-find "kubectl")
   :commands (kubernetes-overview)
+  :bind (:map global-leader-map
+              ("k O" . kubernetes-overview))
   :config
   (setq kubernetes-poll-frequency 3600
         kubernetes-redraw-frequency 3600))
@@ -552,7 +570,7 @@
 
 (use-package trashed
   :bind (:map global-leader-map
-              ("o z" . trashed))
+              ("x z" . trashed))
   :config
   (setq trashed-action-confirmer 'y-or-n-p)
   (setq trashed-use-header-line t)
