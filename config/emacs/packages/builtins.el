@@ -8,6 +8,7 @@
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
+              ("l d" . eglot-find-declaration)
               ("l a" . eglot-code-actions))
   :init
   (defun eglot-setup ()
