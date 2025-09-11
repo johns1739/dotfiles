@@ -4,7 +4,6 @@
 (keymap-set ctl-x-map "j" global-leader-map)
 (keymap-set global-leader-map "g" goto-map)
 (keymap-set global-leader-map "s" search-map)
-(keymap-set global-leader-map "t" tab-prefix-map)
 
 (bind-keys :map global-map
            ([remap backward-sentence] . backward-sexp)

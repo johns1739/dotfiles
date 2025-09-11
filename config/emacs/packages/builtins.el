@@ -255,6 +255,8 @@
               ("SPC" . tab-switch)
               ("'" . tab-recent)
               ("T" . tab-bar-mode))
+  :init
+  (keymap-set goto-map "t" tab-prefix-map)
   :custom
   (tab-bar-show 1)
   (tab-bar-select-tab-modifiers '(super))
