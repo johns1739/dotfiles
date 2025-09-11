@@ -326,7 +326,7 @@
   :hook
   ((gptel-mode . visual-line-mode)
    (gptel-post-stream . gptel-auto-scroll)
-   (gptel-post-response-hook . gptel-beginning-of-response))
+   (gptel-post-response . gptel-beginning-of-response))
   :config
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
