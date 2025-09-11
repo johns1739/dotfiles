@@ -349,6 +349,8 @@
 (setq gptel-model 'claude-sonnet-4)
 (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
 
+(add-to-list 'exec-path "~/.local/elixir-ls")
+
 #+end_src
 
 ** slim emacs install
