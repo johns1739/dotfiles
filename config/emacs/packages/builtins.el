@@ -161,6 +161,7 @@
   (org-directory "~/.notes")
   (org-agenda-files (list org-directory))
   (org-agenda-restore-windows-after-quit t)
+  (org-agenda-start-on-weekday 0)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
