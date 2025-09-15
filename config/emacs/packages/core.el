@@ -256,7 +256,9 @@
                          (:exclude ".dir-locals.el" "*-tests.el")))
   :bind (:map global-leader-map
               ("k t" . eat-project)
-              ("k T" . eat))
+              ("k T" . eat)
+              :map eat-semi-char-mode-map
+              ("M-o" . other-window))
   :custom
   (eat-term-scrollback-size nil)
   (read-process-output-max (* 32 1024 1024)) ;; 32MB
@@ -364,9 +366,9 @@
   :commands (kubernetes-overview)
   :bind (:map global-leader-map
               ("k O" . kubernetes-overview))
-  :config
-  (setq kubernetes-poll-frequency 3600
-        kubernetes-redraw-frequency 3600))
+  :custom
+  (kubernetes-poll-frequency 3600)
+  (kubernetes-redraw-frequency 3600))
 
 (use-package magit
   :commands (magit-project-status)
