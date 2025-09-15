@@ -33,7 +33,6 @@
            ;; Command Actions
            ("x c" . calc)
            ("x C" . calendar)
-           ("x d" . ediff-files)
            ("x r" . regexp-builder)
 
            ;; Settings

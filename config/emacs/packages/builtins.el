@@ -1,5 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package ediff
+  :straight nil
+  :custom
+  (ediff-keep-variants nil)
+  (ediff-split-window-function #'split-window-horizontally)
+  (ediff-window-setup-function #'ediff-setup-windows-plain)
+  :bind (:map global-leader-map
+              ("x d" . ediff-files)))
+
 (use-package eglot
   :straight nil
   :bind (:map global-leader-map
