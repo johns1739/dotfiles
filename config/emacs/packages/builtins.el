@@ -150,9 +150,9 @@
               ("n v" . org-agenda-list)
               ("n W" . org-refile)
               :map org-mode-map
-              ("C-M-h" . org-babel-mark-block)
-              ("C-M-n" . org-babel-next-src-block)
-              ("C-M-p" . org-babel-previous-src-block)
+              ("M-H" . org-babel-mark-block)
+              ("M-N" . org-babel-next-src-block)
+              ("M-P" . org-babel-previous-src-block)
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading)
               ("M-N" . org-move-subtree-down)
@@ -179,8 +179,6 @@
   (org-startup-folded 'overview)
   (org-startup-indented t)
   ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
-  (org-todo-keywords
-   '((sequence "TODO(t!)" "ACTIVE(a!)" "|" "DONE(d!)" "CANCELED(c@)")))
   (org-todo-keyword-faces '(("TODO" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
                             ("DONE" . "dim gray")

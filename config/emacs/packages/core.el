@@ -10,12 +10,12 @@
 
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
-         ("C-'" . avy-resume)
          :map global-leader-map
          ("n w" . avy-org-refile-as-child)
          :map isearch-mode-map
-         ("C-'" . avy-isearch)
+         ("M-g" . avy-isearch)
          :map goto-map
+         ("G" . avy-resume)
          ("g" . avy-goto-word-1)))
 
 (use-package beacon
@@ -309,8 +309,8 @@
 
 (use-package git-link
   :bind (:map global-leader-map
-              ("x j" . git-link)
-              ("x J" . git-link-dispatch)))
+              ("j y" . git-link)
+              ("j Y" . git-link-dispatch)))
 
 (use-package gptel
   ;; llm copilot chat
@@ -373,8 +373,10 @@
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
-              ("j" . magit-file-dispatch)
-              ("J" . magit-dispatch))
+              ("J" . magit-status-here)
+              ("j j" . magit-status)
+              ("j ;" . magit-file-dispatch)
+              ("j :" . magit-dispatch))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
@@ -517,8 +519,8 @@
 
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
-  :bind ((:map global-leader-map)
-         ("; '" . show-font-tabulated)))
+  :bind (:map global-leader-map
+              ("; '" . show-font-tabulated)))
 
 (use-package simple-modeline
   :hook (after-init . simple-modeline-mode)
