@@ -359,7 +359,7 @@
 
 (use-package indent-bars
   :bind (:map global-leader-map
-              ("; g" . indent-bars-mode)))
+              (", g" . indent-bars-mode)))
 
 (use-package kubernetes
   :if (executable-find "kubectl")
@@ -520,7 +520,7 @@
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
   :bind (:map global-leader-map
-              ("; '" . show-font-tabulated)))
+              (", '" . show-font-tabulated)))
 
 (use-package simple-modeline
   :hook (after-init . simple-modeline-mode)

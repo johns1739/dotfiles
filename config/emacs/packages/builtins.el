@@ -66,7 +66,7 @@
   ;; ispell fails to install due to compilation issues
   :if (or (executable-find "aspell") (executable-find "ispell"))
   :bind (:map global-leader-map
-              ("; $" . flyspell-mode))
+              (", $" . flyspell-mode))
   :config
   (if (executable-find "ispell")
       (setq ispell-program-name "ispell")
