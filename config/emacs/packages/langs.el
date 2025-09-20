@@ -233,8 +233,8 @@
    ("\\.mustache\\'" . web-mode)
    ("\\.djhtml\\'" . web-mode)))
 
-(use-package yaml-ts-mode
-  :mode "\\(\\.yaml\\|.yml\\|\\.yaml\\..+\\)\\'")
+(use-package yaml-mode
+  :mode "\\(\\.ya?ml\\)\\'")
 
 (use-package zig-mode
   :mode "\\.zig\\'")

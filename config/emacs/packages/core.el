@@ -287,9 +287,9 @@
   (elysium-window-size 0.5)
   (elysium-window-style 'vertical)
   :bind (:map global-leader-map
-              ("I" . elysium-add-context)
               ("i i" . elysium-query)
-              ("i I" . elysium-clear-buffer)
+              ("i a" . elysium-add-context)
+              ("i n" . elysium-clear-buffer)
               ("i k" . elysium-discard-all-suggested-changes)
               ("i K" . elysium-keep-all-suggested-changes)
               ("i o" . elysium-toggle-window))
@@ -321,7 +321,7 @@
   (gptel-default-mode 'org-mode)
   :bind (:map global-leader-map
          ("i SPC" . gptel)
-         ("i RET" . gptel-menu)
+         ("i ;" . gptel-menu)
          ("i A" . gptel-add)
          ("i F" . gptel-add-file)
          ("i W" . gptel-rewrite))

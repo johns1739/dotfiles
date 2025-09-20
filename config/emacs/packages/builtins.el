@@ -13,18 +13,13 @@
   :straight nil
   :bind (:map global-leader-map
               ("L" . eglot)
+              ("l TAB" . eglot-format-buffer)
               ("l l" . eglot-reconnect)
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
               ("l d" . eglot-find-declaration)
-              ("l a" . eglot-code-actions))
-  :init
-  (defun eglot-setup ()
-    (bind-keys :map (current-local-map)
-               ([remap indent-format-buffer] . eglot-format-buffer)))
-  :hook
-  (eglot-managed-mode . eglot-setup))
+              ("l a" . eglot-code-actions)))
 
 (use-package eshell
   :straight nil
