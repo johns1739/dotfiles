@@ -30,9 +30,12 @@
            ("2" . split-window-below-and-jump)
            ("3" . split-window-right-and-jump)
 
-           ;; Command Actions
+           ;; Applications
+           ("x D" . delete-matching-lines)
+           ("x L" . keep-lines)
+           ("x S" . sort-lines)
            ("x c" . calc)
-           ("x C" . calendar)
+           ("x d" . calendar)
            ("x r" . regexp-builder)
 
            ;; Settings
@@ -87,8 +90,6 @@
            :map search-map
            ("g" . rgrep)
            ("j" . list-registers)
-           ("k" . keep-lines)
-           ("K" . delete-matching-lines)
            ("o" . occur)
            ("r" . recentf-open))
 

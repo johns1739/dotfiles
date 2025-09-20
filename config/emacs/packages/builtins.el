@@ -203,10 +203,12 @@
 (use-package project
   :straight nil
   :bind (:map project-prefix-map
+              ("K" . project-forget-project)
               ("y" . copy-relative-file-name)
               ("Y" . copy-absolute-file-name)
-              ("K" . project-forget-project)
               :map global-leader-map
+              ("x y" . copy-relative-file-name)
+              ("x Y" . copy-absolute-file-name)
               ("s f" . project-find-file)
               ("s s" . project-find-regexp)
               ("s d" . project-find-dir))

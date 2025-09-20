@@ -262,7 +262,7 @@
   :custom
   (eat-term-scrollback-size nil)
   (read-process-output-max (* 32 1024 1024)) ;; 32MB
-  (eat-enable-auto-line-mode t)
+  (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
   :hook
   (eshell-load . eat-eshell-visual-command-mode)
   (eshell-load . eat-eshell-mode)
@@ -288,8 +288,8 @@
   (elysium-window-style 'vertical)
   :bind (:map global-leader-map
               ("i i" . elysium-query)
+              ("i I" . elysium-clear-buffer)
               ("i a" . elysium-add-context)
-              ("i n" . elysium-clear-buffer)
               ("i k" . elysium-discard-all-suggested-changes)
               ("i K" . elysium-keep-all-suggested-changes)
               ("i o" . elysium-toggle-window))
@@ -320,11 +320,10 @@
   :custom
   (gptel-default-mode 'org-mode)
   :bind (:map global-leader-map
-         ("i SPC" . gptel)
-         ("i ;" . gptel-menu)
-         ("i A" . gptel-add)
-         ("i F" . gptel-add-file)
-         ("i W" . gptel-rewrite))
+              ("i SPC" . gptel)
+              ("i g" . gptel-menu)
+              ("i G" . gptel-add)
+              ("i R" . gptel-rewrite))
   :hook
   ((gptel-mode . visual-line-mode)
    (gptel-post-stream . gptel-auto-scroll)
@@ -598,7 +597,6 @@
   :bind (:map goto-map
               ("&" . yas-visit-snippet-file)
               :map global-leader-map
-              ("i &" . yas-insert-snippet)
               ("x &" . yas-new-snippet))
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets"))))
