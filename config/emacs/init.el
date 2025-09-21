@@ -30,13 +30,17 @@
            ("2" . split-window-below-and-jump)
            ("3" . split-window-right-and-jump)
 
-           ;; Applications
+           ;; Commands
            ("x D" . delete-matching-lines)
            ("x L" . keep-lines)
+           ("x U" . delete-duplicate-lines)
            ("x S" . sort-lines)
            ("x c" . calc)
            ("x d" . calendar)
            ("x r" . regexp-builder)
+           ("x o o" . outline-cycle)
+           ("x o O" . outline-show-only-headings)
+           ("x o q" . outline-show-all)
 
            ;; Settings
            (", ," . open-init-file)
