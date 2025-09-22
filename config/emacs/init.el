@@ -39,8 +39,10 @@
            ("x d" . calendar)
            ("x r" . regexp-builder)
            ("x o o" . outline-cycle)
-           ("x o O" . outline-show-only-headings)
-           ("x o q" . outline-show-all)
+           ("x o H" . outline-show-only-headings)
+           ("x o h" . outline-hide-entry)
+           ("x o W" . outline-show-all)
+           ("x o w" . outline-show-entry)
 
            ;; Settings
            (", ," . open-init-file)
