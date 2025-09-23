@@ -321,8 +321,9 @@
   (gptel-default-mode 'org-mode)
   :bind (:map global-leader-map
               ("i SPC" . gptel)
-              ("i g" . gptel-menu)
-              ("i G" . gptel-add)
+              ("i RET" . gptel-menu)
+              ("i A" . gptel-add)
+              ("i F" . gptel-add-file)
               ("i R" . gptel-rewrite))
   :hook
   ((gptel-mode . visual-line-mode)
@@ -358,7 +359,9 @@
 
 (use-package indent-bars
   :bind (:map global-leader-map
-              (", g" . indent-bars-mode)))
+              (", g" . indent-bars-mode))
+  :hook
+  (yaml-mode . indent-bars-mode))
 
 (use-package kubernetes
   :if (executable-find "kubectl")
@@ -373,7 +376,7 @@
   :commands (magit-project-status)
   :bind (:map global-leader-map
               ("J" . magit-status-here)
-              ("j j" . magit-status)
+              ("j g" . magit-status)
               ("j ;" . magit-file-dispatch)
               ("j :" . magit-dispatch))
   :init
