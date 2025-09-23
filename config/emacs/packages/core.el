@@ -129,9 +129,9 @@
          ([remap keep-lines] . consult-keep-lines)
          ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-         ([remap flymake-show-buffer-diagnostics] . consult-flymake) ;; Errors aren't verbose sometimes
          :map global-leader-map
          ("k SPC" . consult-compile-error)
+         ("d SPC" . consult-flymake)
          :map minibuffer-mode-map
          ("M-i" . consult-history)
          :map search-map
@@ -287,12 +287,10 @@
   (elysium-window-size 0.5)
   (elysium-window-style 'vertical)
   :bind (:map global-leader-map
-              ("i i" . elysium-query)
-              ("i I" . elysium-clear-buffer)
-              ("i a" . elysium-add-context)
-              ("i k" . elysium-discard-all-suggested-changes)
-              ("i K" . elysium-keep-all-suggested-changes)
-              ("i o" . elysium-toggle-window))
+              ("i ." . elysium-query)
+              ("i >" . elysium-add-context)
+              ("i ," . elysium-toggle-window)
+              ("i <" . elysium-clear-buffer))
   :hook
   (elysium-apply-changes . smerge-mode))
 
@@ -320,11 +318,11 @@
   :custom
   (gptel-default-mode 'org-mode)
   :bind (:map global-leader-map
-              ("i SPC" . gptel)
-              ("i RET" . gptel-menu)
-              ("i A" . gptel-add)
-              ("i F" . gptel-add-file)
-              ("i R" . gptel-rewrite))
+              ("I" . gptel-menu)
+              ("i i" . gptel)
+              ("i a" . gptel-add)
+              ("i f" . gptel-add-file)
+              ("i r" . gptel-rewrite))
   :hook
   ((gptel-mode . visual-line-mode)
    (gptel-post-stream . gptel-auto-scroll)

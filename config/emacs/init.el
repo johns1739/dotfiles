@@ -43,6 +43,7 @@
            ("x o h" . outline-hide-entry)
            ("x o W" . outline-show-all)
            ("x o w" . outline-show-entry)
+           ("x w" . whitespace-cleanup)
 
            ;; Settings
            (", ," . open-init-file)
