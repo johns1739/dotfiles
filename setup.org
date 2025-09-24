@@ -307,15 +307,17 @@
 * Emacs
 #+begin_src bash
 
-  ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
-  cargo install emacs-lsp-booster
-  brew tap d12frosted/emacs-plus
-  brew install emacs-plus@31 \
-       --with-modern-black-dragon-icon \
-       --with-debug \
-       --with-imagemagick \
-       --with-mailutils \
-       --with-no-frame-refocus
+    ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
+    cargo install emacs-lsp-booster
+    brew tap d12frosted/emacs-plus
+    # brew uninstall emacs-plus@31
+    # brew reinstall gcc libgccjit
+    brew install emacs-plus@31 \
+         --with-modern-black-dragon-icon \
+         --with-debug \
+         --with-imagemagick \
+         --with-mailutils \
+         --with-no-frame-refocus
 
 #+end_src
 

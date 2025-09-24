@@ -352,6 +352,7 @@
          ([remap describe-symbol] . helpful-symbol)
          ([remap describe-key] . helpful-key)
          :map help-map
+         ("k" . helpful-key) ;; overshadowed by meow
          ("." . helpful-at-point)
          ("F" . helpful-function)))
 

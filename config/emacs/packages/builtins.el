@@ -19,7 +19,13 @@
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
               ("l d" . eglot-find-declaration)
-              ("l a" . eglot-code-actions)))
+              ("l a" . eglot-code-actions))
+  :init
+  (defun eglot-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-format-buffer] . eglot-format-buffer)))
+  :hook
+  (eglot-managed-mode . eglot-setup))
 
 (use-package eshell
   :straight nil

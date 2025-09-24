@@ -192,6 +192,17 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
+(use-package python-black
+  ;; eglot formatter is good enough
+  :if (executable-find "black")
+  :after python
+  :init
+  (defun python-black-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-format-buffer] . python-black-buffer)))
+  :hook
+  (python-ts-mode . python-black-setup))
+
 (use-package treemacs
   ;; Prefer emacs dired.
   :bind (:map treemacs-mode-map
