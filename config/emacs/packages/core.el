@@ -153,7 +153,8 @@
 
 (use-package consult-eglot
   :after (eglot consult)
-  :bind (([remap consult-imenu-multi] . consult-eglot-symbols)))
+  :bind (:map global-leader-map
+              ("l i" . consult-eglot-symbols)))
 
 (use-package copilot
   ;; Setup
