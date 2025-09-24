@@ -1,3 +1,5 @@
+;;-*- lexical-binding: t; -*-
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message

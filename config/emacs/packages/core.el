@@ -151,6 +151,10 @@
   (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
   (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
+(use-package consult-eglot
+  :after (eglot consult)
+  :bind (([remap consult-imenu-multi] . consult-eglot-symbols)))
+
 (use-package copilot
   ;; Setup
   ;; M-x copilot-install-server
