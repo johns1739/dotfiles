@@ -136,11 +136,13 @@
   :init
   ;; Run in init because :config does not execute
   ;; for whatever reason.
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  ;; Disabled ts because of gcc/libgccjit issues in emacs.
+  ;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (defun python-setup ()
     (setq-local tab-width 4))
   :hook
   (python-ts-mode . python-setup)
+  (python-mode . python-setup)
   :custom
   (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4))
