@@ -206,6 +206,15 @@
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
+(use-package dashboard
+  :demand
+  :if (display-graphic-p)
+  :custom
+  (dashboard-center-content t)
+  (dashboard-vertically-center-content t)
+  :config
+  (dashboard-setup-startup-hook))
+
 (use-package deadgrep
   :bind (:map search-map ("g" . deadgrep)))
 
