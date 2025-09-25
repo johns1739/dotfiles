@@ -361,6 +361,15 @@
          ("." . helpful-at-point)
          ("F" . helpful-function)))
 
+(use-package imenu-list
+  :bind (:map global-leader-map
+              ("g O" . imenu-list-smart-toggle))
+  :custom
+  (imenu-list-focus-after-activation t)
+  (imenu-list-auto-resize t)
+  :hook
+  (imenu-list-mode . hl-line-mode))
+
 (use-package indent-bars
   :bind (:map global-leader-map
               (", g" . indent-bars-mode))
