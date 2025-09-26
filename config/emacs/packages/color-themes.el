@@ -6,6 +6,7 @@
 (use-package gruber-darker-theme :defer t)
 (use-package gruvbox-theme :defer t)
 (use-package modus-themes :defer t)
+(use-package nano-theme :defer t)
 (use-package solarized-theme :defer t)
 (use-package kuronami-theme :defer t)
 (use-package timu-rouge-theme :defer t)

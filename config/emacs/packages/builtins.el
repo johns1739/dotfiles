@@ -121,9 +121,6 @@
              org-occur-in-agenda-files)
   :init
   (defun org-mode-setup ()
-    (bind-keys :map (current-local-map)
-               ([remap goto-address-at-point] . org-open-at-point)
-               ([remap kill-sentence] . org-cut-subtree))
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((C . t)
@@ -150,6 +147,8 @@
               ("n v" . org-agenda-list)
               ("n W" . org-refile)
               :map org-mode-map
+              ([remap goto-address-at-point] . org-open-at-point)
+              ([remap kill-sentence] . org-cut-subtree)
               ("M-H" . org-babel-mark-block)
               ("M-N" . org-babel-next-src-block)
               ("M-P" . org-babel-previous-src-block)
@@ -192,7 +191,8 @@
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
       :prepend t :tree-type week)))
   :config
-  (require 'org-capture))
+  (require 'org-capture)
+  (require 'org-crypt))
 
 (use-package proced
   :straight nil
