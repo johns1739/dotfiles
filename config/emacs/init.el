@@ -313,10 +313,10 @@
   (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
 
 ;; Load packages
-(setq packages '("setup.el" "builtins.el" "core.el" "langs.el" "color-themes.el"))
+(setq packages '("setup.el" "builtins.el" "packages.el" "langs.el" "color-themes.el"))
 (dolist (package packages)
   (tt (format "*** %s" package)
-      (load (concat user-emacs-directory "packages/" package) :no-error-if-file-missing)))
+      (load (concat user-emacs-directory "packages/" package))))
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))

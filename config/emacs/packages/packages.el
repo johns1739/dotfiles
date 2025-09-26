@@ -347,6 +347,11 @@
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic))))
 
+(use-package find-file-in-project
+  :bind (:map project-prefix-map
+              ("u" . find-file-in-project-at-point)
+              ("U" . find-file-in-project-by-selected)))
+
 (use-package forge
   ;; setup:
   ;; Create ~/.authinfo with content:
