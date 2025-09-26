@@ -367,9 +367,12 @@
 *** File Keyword Configuration
 #+begin_src verbatim
 
-  #+TODO: TODO(t!) ACTIVE(a!) | DONE(d!)
-  #+TODO: DESIGN(s!) CODE(c!) REVIEW(r!) | DONE(d!)
-  #+TODO: | CANCELED(k@)
+#+STARTUP: content logdone hidestars indent logdrawer
+#+CATEGORY: tasks
+#+TAGS: doc(d) epic(e) initiative(i) story(s)
+#+TODO: TODO(t!) ACTIVE(a!) | DONE(d!)
+#+TODO: DESIGN(s!) CODE(c!) REVIEW(r!) | DONE(d!)
+#+TODO: | CANCELED(k@)
 
 #+end_src
 
