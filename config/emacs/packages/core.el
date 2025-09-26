@@ -333,7 +333,7 @@
   :custom
   (gptel-default-mode 'org-mode)
   :bind (:map global-leader-map
-              ("I" . gptel-menu)
+              ("i g" . gptel-menu)
               ("i i" . gptel)
               ("i a" . gptel-add)
               ("i f" . gptel-add-file)
