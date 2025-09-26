@@ -127,7 +127,6 @@
          ([remap jump-to-register] . consult-register-load)
          ([remap point-to-register] . consult-register-store)
          ([remap keep-lines] . consult-keep-lines)
-         ([remap project-find-regexp] . consult-ripgrep)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          :map global-leader-map
          ("k SPC" . consult-compile-error)
@@ -135,8 +134,10 @@
          :map minibuffer-mode-map
          ("M-i" . consult-history)
          :map search-map
+         ("f" . consult-fd) ;; works even if not in a project
          ("l" . consult-line)
          ("L" . consult-focus-lines)
+         ("s" . consult-ripgrep)
          :map goto-map
          ("I" . consult-imenu-multi)
          ("o" . consult-outline))

@@ -208,45 +208,14 @@
 (use-package project
   :straight nil
   :bind (:map project-prefix-map
-              ("K" . project-forget-project)
-              ("y" . copy-relative-file-name)
-              ("Y" . copy-absolute-file-name)
-              :map global-leader-map
-              ("x y" . copy-relative-file-name)
-              ("x Y" . copy-absolute-file-name)
-              ("s f" . project-find-file)
-              ("s s" . project-find-regexp)
-              ("s d" . project-find-dir))
-
+              ("K" . project-forget-project))
   :custom
   (project-switch-commands '((project-find-regexp "Regexp" "s")
                              (project-find-file "File" "f")
                              (project-find-dir "Dir" "d")
                              (project-kill-buffers "Kill" "k")))
   :init
-  (keymap-set global-leader-map "p" project-prefix-map)
-  (defun absolute-file-name ()
-    "Absolute path to file."
-    (expand-file-name (buffer-file-name)))
-  (defun copy-absolute-file-name ()
-    "Copy absolute file path of current buffer."
-    (interactive)
-    (let ((afn (absolute-file-name)))
-      (kill-new (absolute-file-name))
-      (message "Copied %s" afn)))
-  (defun project-directory ()
-    "Current project directory."
-    (let ((project (project-current)))
-      (and project (project-root project))))
-  (defun relative-file-name ()
-    "Relative from project or cwd directory."
-    (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
-  (defun copy-relative-file-name ()
-    "Copy file path of current buffer relative to project directory."
-    (interactive)
-    (let ((rfn (relative-file-name)))
-      (kill-new (relative-file-name))
-      (message "Copied %s" rfn))))
+  (keymap-set global-leader-map "p" project-prefix-map))
 
 (use-package smerge-mode
   :straight nil
@@ -322,3 +291,32 @@
   (xref-after-return-hook '(recenter xref-pulse-momentarily))
   (xref-search-program 'ripgrep)
   (xref-show-definitions-function #'xref-show-definitions-completing-read))
+
+(use-package custom
+  :straight nil
+  :bind (:map global-leader-map
+              ("x y" . copy-relative-file-name)
+              ("x Y" . copy-absolute-file-name))
+  :init
+  (defun absolute-file-name ()
+    "Absolute path to file."
+    (expand-file-name (buffer-file-name)))
+  (defun copy-absolute-file-name ()
+    "Copy absolute file path of current buffer."
+    (interactive)
+    (let ((afn (absolute-file-name)))
+      (kill-new (absolute-file-name))
+      (message "Copied %s" afn)))
+  (defun project-directory ()
+    "Current project directory."
+    (let ((project (project-current)))
+      (and project (project-root project))))
+  (defun relative-file-name ()
+    "Relative from project or cwd directory."
+    (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
+  (defun copy-relative-file-name ()
+    "Copy file path of current buffer relative to project directory."
+    (interactive)
+    (let ((rfn (relative-file-name)))
+      (kill-new (relative-file-name))
+      (message "Copied %s" rfn))))
