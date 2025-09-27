@@ -13,11 +13,10 @@
 
   mkdir -p ~/.config
   curl https://sh.rustup.rs -sSf | sh
-  brew install fzf git btop ripgrep jq asdf
+  brew install fd fzf git btop ripgrep jq asdf
   brew install --cask font-jetbrains-mono-nerd-font
 
 #+end_src
-
 
 * Dotfiles
 #+begin_src bash

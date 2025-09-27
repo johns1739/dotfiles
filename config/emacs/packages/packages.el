@@ -134,7 +134,7 @@
          :map minibuffer-mode-map
          ("M-i" . consult-history)
          :map search-map
-         ("f" . consult-fd) ;; works even if not in a project
+         ("f" . consult-find) ;; works even if not in a project
          ("l" . consult-line)
          ("L" . consult-focus-lines)
          ("s" . consult-ripgrep)
@@ -149,6 +149,9 @@
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
   :config
+  (if (executable-find "fd")
+      (bind-keys :map search-map
+                 ("f" . consult-fd)))
   (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
   (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
 
@@ -286,7 +289,7 @@
   (eshell-load . eat-eshell-mode)
   :config
   (add-to-list 'display-buffer-alist
-               '("\\*.*eat\\*"
+               '("\\*.*-eat\\*"
                  (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
                  (inhibit-same-window . t)
                  (window-min-height . 25))))
