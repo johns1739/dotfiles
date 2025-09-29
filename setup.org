@@ -1,9 +1,9 @@
 * Brew
 #+begin_src bash
 
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  # Follow instructions before running update
-  brew update
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Follow instructions before running update
+brew update
 
 #+end_src
 
@@ -11,18 +11,18 @@
 * Developer Tools
 #+begin_src bash
 
-  mkdir -p ~/.config
-  curl https://sh.rustup.rs -sSf | sh
-  brew install fd fzf git btop ripgrep jq asdf
-  brew install --cask font-jetbrains-mono-nerd-font
+mkdir -p ~/.config
+curl https://sh.rustup.rs -sSf | sh
+brew install fd fzf git btop ripgrep jq asdf
+brew install --cask font-jetbrains-mono-nerd-font
 
 #+end_src
 
 * Dotfiles
 #+begin_src bash
 
-  mkdir -p ~/workspaces
-  cd ~/workspaces && git clone https://github.com/johns1739/dotfiles.git
+mkdir -p ~/workspaces
+cd ~/workspaces && git clone https://github.com/johns1739/dotfiles.git
 
 #+end_src
 
@@ -32,53 +32,53 @@
 *** git/config
 #+begin_src conf
 
-  # Run this command in main repos
-  # git maintenance start
+# Run this command in main repos
+# git maintenance start
 
-  [user]
-  name = Juan Banda
-  email = jubajr17@gmail.com
+[user]
+name = Juan Banda
+email = jubajr17@gmail.com
 
-  [core]
-  autocrlf = input
+[core]
+autocrlf = input
 
-  [merge]
-  ff = only
+[merge]
+ff = only
 
-  [alias]
-  p = push
-  st = status -sb
-  ll = log --oneline
-  last = log -1 HEAD --stat
-  cm = commit -m
-  rv = remote -v
-  d = diff
-  dv = difftool -t vimdiff -y
-  gl = config --global -l
-  se = !git rev-list --all | xargs git grep -F
-  cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
+[alias]
+p = push
+st = status -sb
+ll = log --oneline
+last = log -1 HEAD --stat
+cm = commit -m
+rv = remote -v
+d = diff
+dv = difftool -t vimdiff -y
+gl = config --global -l
+se = !git rev-list --all | xargs git grep -F
+cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
 
-  [init]
-  defaultBranch = main
+[init]
+defaultBranch = main
 
-  [push]
-  default = current
-  autoSetupRemote = true
+[push]
+default = current
+autoSetupRemote = true
 
-  [filter "lfs"]
-  smudge = git-lfs smudge -- %f
-  process = git-lfs filter-process
-  required = true
-  clean = git-lfs clean -- %f
+[filter "lfs"]
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+clean = git-lfs clean -- %f
 
-  [rerere]
-  enabled = true
+[rerere]
+enabled = true
 
-  [column]
-  ui = auto
+[column]
+ui = auto
 
-  [branch]
-  sort = -committerdate
+[branch]
+sort = -committerdate
 
 #+end_src
 
@@ -88,82 +88,82 @@
 *** ~/config/ghostty/config
 #+begin_src conf
 
-  # ghostty +help
-  # +version
-  # +help
-  # +list-fonts
-  # +list-keybinds --docs --default
-  # +list-themes
-  # +list-colors
-  # +list-actions --docs
-  # +show-config
-  # +validate-config
-  # +show-face
-  # +crash-report
+# ghostty +help
+# +version
+# +help
+# +list-fonts
+# +list-keybinds --docs --default
+# +list-themes
+# +list-colors
+# +list-actions --docs
+# +show-config
+# +validate-config
+# +show-face
+# +crash-report
 
-  background-opacity = 1
-  font-size = 13
-  # favorite dark themes: Adventure, Ayu, catpuccin-mocha, Desert, IC_Orange_PPL
-  theme = Ayu
-  unfocused-split-opacity = 0.6
+background-opacity = 1
+font-size = 13
+# favorite dark themes: Adventure, Ayu, catpuccin-mocha, Desert, IC_Orange_PPL
+theme = Ayu
+unfocused-split-opacity = 0.6
 
-  # behavior settings
-  quit-after-last-window-closed = true
-  scrollback-limit = 1073741824
-  window-save-state = always
-  copy-on-select = clipboard
+# behavior settings
+quit-after-last-window-closed = true
+scrollback-limit = 1073741824
+window-save-state = always
+copy-on-select = clipboard
 
-  # window look & feel
-  window-theme = dark
-  window-decoration = auto
-  window-height = 45
-  window-width = 120
-  window-padding-x = 2,4
-  window-padding-y = 2,4
-  window-padding-balance = true
-  window-padding-color = background
+# window look & feel
+window-theme = dark
+window-decoration = auto
+window-height = 45
+window-width = 120
+window-padding-x = 2,4
+window-padding-y = 2,4
+window-padding-balance = true
+window-padding-color = background
 
-  # cursor settings
-  cursor-style = block
-  cursor-style-blink = true
-  mouse-hide-while-typing = true
+# cursor settings
+cursor-style = block
+cursor-style-blink = true
+mouse-hide-while-typing = true
 
-  # disable ligatures
-  font-feature = -calt
-  font-feature = -liga
-  font-feature = -dlig
+# disable ligatures
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
 
-  # Keybindings
+# Keybindings
 
-  ## Quick Terminal
-  keybind = super+`=toggle_quick_terminal
+## Quick Terminal
+keybind = super+`=toggle_quick_terminal
 
-  ## window management
-  keybind = super+d=new_split:auto
-  keybind = super+,>0=close_surface
-  keybind = super+,>1=toggle_split_zoom
-  keybind = super+,>2=new_split:down
-  keybind = super+,>3=new_split:right
-  keybind = super+,>equal=equalize_splits
-  keybind = super+,>f=toggle_maximize
-  keybind = super+,>shift+f=toggle_fullscreen
+## window management
+keybind = super+d=new_split:auto
+keybind = super+,>0=close_surface
+keybind = super+,>1=toggle_split_zoom
+keybind = super+,>2=new_split:down
+keybind = super+,>3=new_split:right
+keybind = super+,>equal=equalize_splits
+keybind = super+,>f=toggle_maximize
+keybind = super+,>shift+f=toggle_fullscreen
 
-  ## window navigation
-  keybind = super+h=goto_split:left
-  keybind = super+j=goto_split:down
-  keybind = super+k=goto_split:up
-  keybind = super+l=goto_split:right
-  keybind = super+o=goto_split:next
-  keybind = super+shift+o=goto_split:previous
+## window navigation
+keybind = super+h=goto_split:left
+keybind = super+j=goto_split:down
+keybind = super+k=goto_split:up
+keybind = super+l=goto_split:right
+keybind = super+o=goto_split:next
+keybind = super+shift+o=goto_split:previous
 
-  ## screen navigation
-  keybind = page_up=jump_to_prompt:-1
-  keybind = page_down=jump_to_prompt:1
+## screen navigation
+keybind = page_up=jump_to_prompt:-1
+keybind = page_down=jump_to_prompt:1
 
-  ## saving screen output
-  keybind = super+,>y=write_screen_file:paste
-  keybind = super+,>shift+y=write_selection_file:paste
-  keybind = super+,>super+y=write_scrollback_file:paste
+## saving screen output
+keybind = super+,>y=write_screen_file:paste
+keybind = super+,>shift+y=write_selection_file:paste
+keybind = super+,>super+y=write_scrollback_file:paste
 
 #+end_src
 
@@ -173,43 +173,43 @@
 *** ~/.sqliterc
 #+begin_src conf
 
-  .headers on
-  .mode table
-  .timer on
-  .changes on
+.headers on
+.mode table
+.timer on
+.changes on
 
 #+end_src
 
 ** Tmux
 #+begin_src conf
 
-  # mkdir -p ~/.config/tmux
-  # curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/tmux/tmux.conf -o ~/.config/tmux/tmux.conf
+# mkdir -p ~/.config/tmux
+# curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/tmux/tmux.conf -o ~/.config/tmux/tmux.conf
 
-  # tmux list-keys
-  # tmux info
+# tmux list-keys
+# tmux info
 
-  # install plugins = prefix + I
-  # update plugins = prefix + U
+# install plugins = prefix + I
+# update plugins = prefix + U
 
-  unbind C-b
-  bind C-Space send-prefix
-  set -g prefix C-Space
+unbind C-b
+bind C-Space send-prefix
+set -g prefix C-Space
 
-  bind R source-file ~/.config/tmux/tmux.conf
+bind R source-file ~/.config/tmux/tmux.conf
 
-  set -g mode-keys emacs
-  set -g base-index 1
-  set -g pane-base-index 1
-  set -g automatic-rename off
-  set -g renumber-windows on
+set -g mode-keys emacs
+set -g base-index 1
+set -g pane-base-index 1
+set -g automatic-rename off
+set -g renumber-windows on
 
-  set -g @plugin 'tmux-plugins/tpm'
-  set -g @plugin 'tmux-plugins/tmux-sensible'
-  set -g @plugin 'tmux-plugins/tmux-pain-control'
-  set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-pain-control'
+set -g @plugin 'catppuccin/tmux'
 
-  run '~/.tmux/plugins/tpm/tpm'
+run '~/.tmux/plugins/tpm/tpm'
 
 #+end_src
 
@@ -217,147 +217,147 @@
 ** Zshrc
 #+begin_src bash
 
-  #!/bin/zsh
+#!/bin/zsh
 
-  PROMPT='%2~ %# '
-  autoload -U select-word-style
-  select-word-style bash
-  bindkey -e # emacs mode
+PROMPT='%2~ %# '
+autoload -U select-word-style
+select-word-style bash
+bindkey -e # emacs mode
 
-  alias reload="source ~/.zshrc"
+alias reload="source ~/.zshrc"
 
-  alias ..='cd ..'
-  alias ...='cd ../..'
-  alias ....='cd ../../..'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 
-  # utilities
-  alias l="less"
-  alias ll="ls -lh --color"
-  alias grep="grep --line-buffered --color"
-  alias rgrep="grep --color -rnIi"
+# utilities
+alias l="less"
+alias ll="ls -lh --color"
+alias grep="grep --line-buffered --color"
+alias rgrep="grep --color -rnIi"
 
-  # emacs
-  alias emacs="emacs -nw"
-  alias e="emacs -nw --init-directory=~/.config/emacs/slim"
-  [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
-      source "$EAT_SHELL_INTEGRATION_DIR/zsh"
+# emacs
+alias emacs="emacs -nw"
+alias e="emacs -nw --init-directory=~/.config/emacs/slim"
+[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
+    source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 
-  # docker
-  alias dc="docker container"
-  alias dcget="dc ls --format 'table {{.ID}}\t{{.Image}}\t{{.Names}}' | tail -n +2 | fzf | awk '{printf \$1}' | tee >(pbcopy)"
-  alias dcstop="docker stop $$(docker ps -a -q)"
-  alias dl="docker logs -fn0"
+# docker
+alias dc="docker container"
+alias dcget="dc ls --format 'table {{.ID}}\t{{.Image}}\t{{.Names}}' | tail -n +2 | fzf | awk '{printf \$1}' | tee >(pbcopy)"
+alias dcstop="docker stop $$(docker ps -a -q)"
+alias dl="docker logs -fn0"
 
-  # fzf
-  source <(fzf --zsh)
+# fzf
+source <(fzf --zsh)
 
-  # asdf
-  export ASDF_DIR="$HOME/.asdf"
-  export PATH="$ASDF_DIR/shims:$PATH"
+# asdf
+export ASDF_DIR="$HOME/.asdf"
+export PATH="$ASDF_DIR/shims:$PATH"
 
-  # cargo
-  export PATH="$HOME/.cargo/bin:$PATH"
+# cargo
+export PATH="$HOME/.cargo/bin:$PATH"
 
-  # local bin
-  export PATH="$HOME/.local/bin:$PATH"
+# local bin
+export PATH="$HOME/.local/bin:$PATH"
 
-  # history
-  # https://postgresqlstan.github.io/cli/zsh-history-options/
-  HISTFILE="$HOME/.zsh_history"
-  HISTSIZE=100000
-  SAVEHIST=$HISTSIZE
-  # setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
-  # setopt SHARE_HISTORY             # Share history between all sessions.
-  setopt APPEND_HISTORY            # append to history file
-  setopt HIST_BEEP                 # Beep when accessing nonexistent history.
-  setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
-  setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
-  setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
-  setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
-  setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
-  setopt HIST_NO_STORE             # Don't store history commands
-  setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
-  setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
-  setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
-  setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+# history
+# https://postgresqlstan.github.io/cli/zsh-history-options/
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+# setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+# setopt SHARE_HISTORY             # Share history between all sessions.
+setopt APPEND_HISTORY            # append to history file
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
+setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+setopt HIST_NO_STORE             # Don't store history commands
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
 
 #+end_src
 
 ** Zshenv
 #+begin_src bash
 
-  #!/bin/zsh
+#!/bin/zsh
 
-  export TERM="xterm"
-  export EDITOR="emacs -nw --init-directory=~/.config/emacs/slim"
-  export VISUAL="emacs -nw --init-directory=~/.config/emacs/slim"
-  export SUDO_EDITOR="$EDITOR"
+export TERM="xterm"
+export EDITOR="emacs -nw --init-directory=~/.config/emacs/slim"
+export VISUAL="emacs -nw --init-directory=~/.config/emacs/slim"
+export SUDO_EDITOR="$EDITOR"
 
 #+end_src
 
 * Ghostty
 #+begin_src bash
 
-  ln -s ~/workspaces/dotfiles/config/ghostty ~/.config/ghostty
-  brew install --cask ghostty
+ln -s ~/workspaces/dotfiles/config/ghostty ~/.config/ghostty
+brew install --cask ghostty
 
 #+end_src
 
 * Emacs
 #+begin_src bash
 
-    ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
-    cargo install emacs-lsp-booster
-    brew tap d12frosted/emacs-plus
-    # brew uninstall emacs-plus@31
-    # brew reinstall gcc libgccjit
-    brew install emacs-plus@31 \
-         --with-modern-black-dragon-icon \
-         --with-debug \
-         --with-imagemagick \
-         --with-mailutils \
-         --with-no-frame-refocus
+ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
+cargo install emacs-lsp-booster
+brew tap d12frosted/emacs-plus
+# brew uninstall emacs-plus@31
+# brew reinstall gcc libgccjit
+brew install emacs-plus@31 \
+     --with-modern-black-dragon-icon \
+     --with-debug \
+     --with-imagemagick \
+     --with-mailutils \
+     --with-no-frame-refocus
 
 #+end_src
 
 ** ~/.config/emacs/custom.el
 #+begin_src elisp
 
-  ;; -*- lexical-binding: t; -*-
+;; -*- lexical-binding: t; -*-
 
-  (custom-set-variables
-   ;; custom-set-variables was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
-  (custom-set-faces
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-   '(default ((t (:family "JetBrainsMonoNL Nerd Font Mono" :foundry "nil" :slant normal :weight light :height 130 :width normal)))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "JetBrainsMonoNL Nerd Font Mono" :foundry "nil" :slant normal :weight light :height 130 :width normal)))))
 
-  ;; Color theme
+;; Color theme
 
-  (if (display-graphic-p)
-      (load-theme 'gruvbox-dark-hard :no-confirm-loading)
-    (progn
-      (load-theme 'modus-vivendi-tritanopia :no-confirm-loading)
-      (set-face-background 'default "unspecified")))
+(if (display-graphic-p)
+    (load-theme 'gruvbox-dark-hard :no-confirm-loading)
+  (progn
+    (load-theme 'modus-vivendi-tritanopia :no-confirm-loading)
+    (set-face-background 'default "unspecified")))
 
-  (setq gptel-model 'claude-sonnet-4)
-  (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
+(setq gptel-model 'claude-sonnet-4)
+(setq gptel-backend (gptel-make-gh-copilot "Copilot"))
 
-  (add-to-list 'exec-path "~/.local/elixir-ls")
+(add-to-list 'exec-path "~/.local/elixir-ls")
 
 #+end_src
 
 ** slim emacs install
 #+begin_src bash
 
-  mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim -o ~/.config/emacs
+mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim -o ~/.config/emacs
 
 #+end_src
 
@@ -378,12 +378,12 @@
 *** Faces for TODO keywords
 #+begin_src emacs-lisp
 
-  (setq org-todo-keyword-faces '(("TODO" . "steel blue")
-                                 ("ACTIVE" . "light goldenrod")
-                                 ("DESIGN" . "goldenrod")
-                                 ("CODE" . "goldenrod")
-                                 ("REVIEW" . "goldenrod")
-                                 ("DONE" . "dim gray")
-                                 ("CANCELED" . "dim gray")))
+(setq org-todo-keyword-faces '(("TODO" . "steel blue")
+                               ("ACTIVE" . "light goldenrod")
+                               ("DESIGN" . "goldenrod")
+                               ("CODE" . "goldenrod")
+                               ("REVIEW" . "goldenrod")
+                               ("DONE" . "dim gray")
+                               ("CANCELED" . "dim gray")))
 
 #+end_src

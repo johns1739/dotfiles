@@ -167,6 +167,7 @@
   (org-agenda-window-setup 'reorganize-frame)
   (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-cycle-hide-block-startup t)
+  (org-edit-src-content-indentation 0)
   (org-hide-drawer-startup t)
   (org-hide-emphasis-markers t)
   (org-hide-leading-stars (display-graphic-p))
