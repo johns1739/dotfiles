@@ -1,4 +1,5 @@
-* Brew
+* Install Dependencies
+** Brew
 #+begin_src bash
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -7,8 +8,7 @@ brew update
 
 #+end_src
 
-
-* Developer Tools
+** Developer Tools
 #+begin_src bash
 
 mkdir -p ~/.config
@@ -18,23 +18,9 @@ brew install --cask font-jetbrains-mono-nerd-font
 
 #+end_src
 
-* Dotfiles
-#+begin_src bash
-
-mkdir -p ~/workspaces
-cd ~/workspaces && git clone https://github.com/johns1739/dotfiles.git
-
-#+end_src
-
-
-** Git
-
-*** git/config
+* Git
+** git/config
 #+begin_src conf
-
-# Run this command in main repos
-# git maintenance start
-
 [user]
 name = Juan Banda
 email = jubajr17@gmail.com
@@ -82,95 +68,16 @@ sort = -committerdate
 
 #+end_src
 
+** Maintenance
+Run this command in main repos
+#+begin_src shell
 
-** Ghostty
-
-*** ~/config/ghostty/config
-#+begin_src conf
-
-# ghostty +help
-# +version
-# +help
-# +list-fonts
-# +list-keybinds --docs --default
-# +list-themes
-# +list-colors
-# +list-actions --docs
-# +show-config
-# +validate-config
-# +show-face
-# +crash-report
-
-background-opacity = 1
-font-size = 13
-# favorite dark themes: Adventure, Ayu, catpuccin-mocha, Desert, IC_Orange_PPL
-theme = Ayu
-unfocused-split-opacity = 0.6
-
-# behavior settings
-quit-after-last-window-closed = true
-scrollback-limit = 1073741824
-window-save-state = always
-copy-on-select = clipboard
-
-# window look & feel
-window-theme = dark
-window-decoration = auto
-window-height = 45
-window-width = 120
-window-padding-x = 2,4
-window-padding-y = 2,4
-window-padding-balance = true
-window-padding-color = background
-
-# cursor settings
-cursor-style = block
-cursor-style-blink = true
-mouse-hide-while-typing = true
-
-# disable ligatures
-font-feature = -calt
-font-feature = -liga
-font-feature = -dlig
-
-# Keybindings
-
-## Quick Terminal
-keybind = super+`=toggle_quick_terminal
-
-## window management
-keybind = super+d=new_split:auto
-keybind = super+,>0=close_surface
-keybind = super+,>1=toggle_split_zoom
-keybind = super+,>2=new_split:down
-keybind = super+,>3=new_split:right
-keybind = super+,>equal=equalize_splits
-keybind = super+,>f=toggle_maximize
-keybind = super+,>shift+f=toggle_fullscreen
-
-## window navigation
-keybind = super+h=goto_split:left
-keybind = super+j=goto_split:down
-keybind = super+k=goto_split:up
-keybind = super+l=goto_split:right
-keybind = super+o=goto_split:next
-keybind = super+shift+o=goto_split:previous
-
-## screen navigation
-keybind = page_up=jump_to_prompt:-1
-keybind = page_down=jump_to_prompt:1
-
-## saving screen output
-keybind = super+,>y=write_screen_file:paste
-keybind = super+,>shift+y=write_selection_file:paste
-keybind = super+,>super+y=write_scrollback_file:paste
+git maintenance start
 
 #+end_src
 
-
-** Sqlite
-
-*** ~/.sqliterc
+* Sqlite
+** ~/.sqliterc
 #+begin_src conf
 
 .headers on
@@ -180,7 +87,7 @@ keybind = super+,>super+y=write_scrollback_file:paste
 
 #+end_src
 
-** Tmux
+* Tmux
 #+begin_src conf
 
 # mkdir -p ~/.config/tmux
@@ -296,6 +203,7 @@ export SUDO_EDITOR="$EDITOR"
 #+end_src
 
 * Ghostty
+** Installation
 #+begin_src bash
 
 ln -s ~/workspaces/dotfiles/config/ghostty ~/.config/ghostty
@@ -303,20 +211,113 @@ brew install --cask ghostty
 
 #+end_src
 
+** ~/.config/ghostty/config
+#+begin_src conf
+
+# ghostty +help
+# +version
+# +help
+# +list-fonts
+# +list-keybinds --docs --default
+# +list-themes
+# +list-colors
+# +list-actions --docs
+# +show-config
+# +validate-config
+# +show-face
+# +crash-report
+
+background-opacity = 1
+font-size = 13
+# favorite dark themes: Adventure, Ayu, catpuccin-mocha, Desert, IC_Orange_PPL
+theme = Ayu
+unfocused-split-opacity = 0.6
+
+# behavior settings
+quit-after-last-window-closed = true
+scrollback-limit = 1073741824
+window-save-state = always
+copy-on-select = clipboard
+
+# window look & feel
+window-theme = dark
+window-decoration = auto
+window-height = 45
+window-width = 120
+window-padding-x = 2,4
+window-padding-y = 2,4
+window-padding-balance = true
+window-padding-color = background
+
+# cursor settings
+cursor-style = block
+cursor-style-blink = true
+mouse-hide-while-typing = true
+
+# disable ligatures
+font-feature = -calt
+font-feature = -liga
+font-feature = -dlig
+
+# Keybindings
+
+## Quick Terminal
+keybind = super+`=toggle_quick_terminal
+
+## window management
+keybind = super+d=new_split:auto
+keybind = super+,>0=close_surface
+keybind = super+,>1=toggle_split_zoom
+keybind = super+,>2=new_split:down
+keybind = super+,>3=new_split:right
+keybind = super+,>equal=equalize_splits
+keybind = super+,>f=toggle_maximize
+keybind = super+,>shift+f=toggle_fullscreen
+
+## window navigation
+keybind = super+h=goto_split:left
+keybind = super+j=goto_split:down
+keybind = super+k=goto_split:up
+keybind = super+l=goto_split:right
+keybind = super+o=goto_split:next
+keybind = super+shift+o=goto_split:previous
+
+## screen navigation
+keybind = page_up=jump_to_prompt:-1
+keybind = page_down=jump_to_prompt:1
+
+## saving screen output
+keybind = super+,>y=write_screen_file:paste
+keybind = super+,>shift+y=write_selection_file:paste
+keybind = super+,>super+y=write_scrollback_file:paste
+
+#+end_src
+
 * Emacs
+** Installation
 #+begin_src bash
 
 ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
+
 cargo install emacs-lsp-booster
+
 brew tap d12frosted/emacs-plus
-# brew uninstall emacs-plus@31
-# brew reinstall gcc libgccjit
+
+# brew uninstall emacs-plus@31 && brew reinstall gcc libgccjit
+
 brew install emacs-plus@31 \
      --with-modern-black-dragon-icon \
      --with-debug \
      --with-imagemagick \
      --with-mailutils \
      --with-no-frame-refocus
+
+#+end_src
+
+** Minimal Installation
+#+begin_src bash
+
+mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim -o ~/.config/emacs
 
 #+end_src
 
@@ -354,15 +355,7 @@ brew install emacs-plus@31 \
 
 #+end_src
 
-** slim emacs install
-#+begin_src bash
-
-mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim -o ~/.config/emacs
-
-#+end_src
-
 ** Org
-
 *** File Keyword Configuration
 #+begin_src verbatim
 
