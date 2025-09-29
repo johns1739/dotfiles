@@ -410,9 +410,8 @@
   :commands (magit-project-status)
   :bind (:map global-leader-map
               ("J" . magit-status-here)
-              ("j g" . magit-status)
-              ("j ;" . magit-file-dispatch)
-              ("j :" . magit-dispatch))
+              ("j j" . magit-file-dispatch)
+              ("j J" . magit-dispatch))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))

@@ -46,10 +46,10 @@
            ("x w" . whitespace-cleanup)
 
            ;; Settings
+           (", SPC" . load-theme)
            (", ," . open-init-file)
            (", <" . open-custom-file)
            (", =" . set-font-size)
-           (", ;" . load-theme)
            (", :" . customize-option)
            (", c" . display-fill-column-indicator-mode)
            (", C" . global-display-fill-column-indicator-mode)
