@@ -275,9 +275,6 @@
   :bind (:map global-leader-map
               ("k t" . eat-project)
               ("k T" . eat)
-              :map eat-mode-map
-              ("M-n" . eat-next-shell-prompt)
-              ("M-p" . eat-previous-shell-prompt)
               :map eat-semi-char-mode-map
               ("M-o" . other-window))
   :custom
