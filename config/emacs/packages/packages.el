@@ -16,7 +16,7 @@
          ("M-g" . avy-isearch)
          :map goto-map
          ("G" . avy-resume)
-         ("g" . avy-goto-word-1)))
+         ("g" . avy-goto-char-2)))
 
 (use-package beacon
   :if (display-graphic-p) ;; Not pretty in terminal
