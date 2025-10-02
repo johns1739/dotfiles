@@ -50,6 +50,7 @@
            (", ," . open-init-file)
            (", <" . open-custom-file)
            (", =" . set-font-size)
+           (", '" . describe-font)
            (", :" . customize-option)
            (", c" . display-fill-column-indicator-mode)
            (", C" . global-display-fill-column-indicator-mode)

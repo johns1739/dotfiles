@@ -15,6 +15,7 @@ mkdir -p ~/.config
 curl https://sh.rustup.rs -sSf | sh
 brew install fd fzf git btop ripgrep jq asdf
 brew install --cask font-jetbrains-mono-nerd-font
+brew install --cask font-iosevka-comfy
 
 #+end_src
 
