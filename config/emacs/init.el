@@ -13,6 +13,7 @@
            ([remap downcase-word] . downcase-dwim)
            ([remap upcase-word] . upcase-dwim)
 
+           ("C-j" . comment-indent-new-line)
            ("M-i" . completion-at-point)
            ("M-j" . join-line)
            ("M-L" . duplicate-dwim)
