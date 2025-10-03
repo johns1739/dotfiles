@@ -147,6 +147,7 @@ alias rgrep="grep --color -rnIi"
 # emacs
 alias emacs="emacs -nw"
 alias e="emacs -nw --init-directory=~/.config/emacs/slim"
+# NOTE: Do not set TERM, conflicts with Eat-Integration
 [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
     source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 
@@ -196,7 +197,7 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 
 #!/bin/zsh
 
-export TERM="xterm"
+# NOTE: Do not set TERM, conflicts with Eat-Integration
 export EDITOR="emacs -nw --init-directory=~/.config/emacs/slim"
 export VISUAL="emacs -nw --init-directory=~/.config/emacs/slim"
 export SUDO_EDITOR="$EDITOR"
@@ -351,6 +352,10 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 
 (setq gptel-model 'claude-sonnet-4)
 (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
+
+;; ;; If issues with git read/write access:
+;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
+;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
 (add-to-list 'exec-path "~/.local/elixir-ls")
 

@@ -55,12 +55,10 @@
   :straight nil
   :bind (:map global-leader-map
               ("D" . flymake-mode)
-              ("d d" . flymake-start)
               ("d n" . flymake-goto-next-error)
               ("d p" . flymake-goto-prev-error)
-              ("d l" . flymake-show-buffer-diagnostics)
-              ("d l" . flymake-show-buffer-diagnostics)
-              ("d L" . flymake-show-project-diagnostics))
+              ("d d" . flymake-show-buffer-diagnostics)
+              ("d D" . flymake-show-project-diagnostics))
   :custom
   (flymake-fringe-indicator-position 'right-fringe))
 
@@ -135,13 +133,13 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind (:map global-leader-map
+              ("N" . org-agenda)
               ("n ," . org-capture-goto-last-stored)
               ("n /" . org-tags-view)
               ("n SPC" . org-search-view)
               ("n f" . org-capture-goto-target)
               ("n k" . org-capture)
               ("n L" . org-store-link)
-              ("n n" . org-agenda)
               ("n s" . org-occur-in-agenda-files)
               ("n t" . org-todo-list)
               ("n v" . org-agenda-list)

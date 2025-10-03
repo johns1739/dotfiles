@@ -10,8 +10,8 @@
            ([remap forward-sentence] . forward-sexp)
            ([remap split-window-below] . split-window-below-and-jump)
            ([remap split-window-right] . split-window-right-and-jump)
-
-           ("C-x C-b" . ibuffer)
+           ([remap downcase-word] . downcase-dwim)
+           ([remap upcase-word] . upcase-dwim)
 
            ("M-i" . completion-at-point)
            ("M-j" . join-line)
@@ -96,8 +96,10 @@
            ("w L" . windmove-swap-states-right)
 
            :map search-map
+           ("b" . ibuffer)
            ("g" . rgrep)
            ("j" . list-registers)
+           ("m" . list-bookmarks)
            ("o" . occur)
            ("r" . recentf-open))
 

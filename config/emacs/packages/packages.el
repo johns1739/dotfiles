@@ -278,8 +278,9 @@
               :map eat-semi-char-mode-map
               ("M-o" . other-window))
   :custom
-  (eat-term-scrollback-size nil)
   (read-process-output-max (* 32 1024 1024)) ;; 32MB
+  (process-adaptive-read-buffering t)
+  (eat-term-scrollback-size nil)
   (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
   :hook
   (eshell-load . eat-eshell-visual-command-mode)
@@ -325,8 +326,8 @@
 
 (use-package git-link
   :bind (:map global-leader-map
-              ("j y" . git-link)
-              ("j Y" . git-link-dispatch)))
+              ("x y" . git-link)
+              ("x Y" . git-link-dispatch)))
 
 (use-package gptel
   ;; llm copilot chat
@@ -406,9 +407,8 @@
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
-              ("J" . magit-status-here)
-              ("j j" . magit-file-dispatch)
-              ("j J" . magit-dispatch))
+              ("j" . magit-file-dispatch)
+              ("J" . magit-dispatch))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
