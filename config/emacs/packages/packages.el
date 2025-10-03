@@ -382,10 +382,11 @@
 
 (use-package imenu-list
   :bind (:map global-leader-map
-              ("g O" . imenu-list-smart-toggle))
+              ("x i" . imenu-list)
+              ("x I" . imenu-list-smart-toggle))
   :custom
   (imenu-list-focus-after-activation t)
-  (imenu-list-auto-resize t)
+  (imenu-list-auto-resize nil)
   :hook
   (imenu-list-mode . hl-line-mode))
 
