@@ -605,9 +605,16 @@
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
 
+(use-package tmr
+  :bind (:map global-leader-map
+              ("m t" . tmr-tabulated-view))
+  :custom
+  (tmr-timer-finished-functions
+   '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer)))
+
 (use-package trashed
   :bind (:map global-leader-map
-              ("x z" . trashed))
+              ("m z" . trashed))
   :config
   (setq trashed-action-confirmer 'y-or-n-p)
   (setq trashed-use-header-line t)
