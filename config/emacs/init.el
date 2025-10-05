@@ -246,7 +246,7 @@
 (setq dired-recursive-copies 'always)
 (setq dired-recursive-deletes 'always)
 (setq dired-dwim-target t)
-(add-hook 'dired-mode-hook #'dired-hide-details-mode)
+;; (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (add-hook 'dired-mode-hook #'hl-line-mode)
 
 ;; mouse settings
