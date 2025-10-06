@@ -50,6 +50,13 @@
   :config
   (denote-rename-buffer-mode))
 
+(use-package devdocs
+  ;; rarely used, clunky
+  :bind (:map global-leader-map
+              ("m h I" . devdocs-install)
+              ("m h h" . devdocs-lookup)
+              ("m h s" . devdocs-search)))
+
 (use-package diff-hl
   ;; not really used, better to use magit-diff.
   :bind (:map global-leader-map

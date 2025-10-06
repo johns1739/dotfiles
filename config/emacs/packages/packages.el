@@ -222,12 +222,6 @@
 (use-package deadgrep
   :bind (:map search-map ("g" . deadgrep)))
 
-(use-package devdocs
-  :bind (:map global-leader-map
-              ("x h I" . devdocs-install)
-              ("x h h" . devdocs-lookup)
-              ("x hunquote s" . devdocs-search)))
-
 (use-package dimmer
   :if (display-graphic-p) ;; Only works in GUI
   :config
