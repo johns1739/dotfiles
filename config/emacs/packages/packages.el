@@ -340,6 +340,7 @@
               ("i g" . gptel-menu)
               ("i i" . gptel)
               ("i a" . gptel-add)
+              ("i q" . gptel-context-remove-all)
               ("i f" . gptel-add-file)
               ("i r" . gptel-rewrite))
   :hook

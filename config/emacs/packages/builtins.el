@@ -150,6 +150,9 @@
               ("M-H" . org-babel-mark-block)
               ("M-n" . org-next-visible-heading)
               ("M-p" . org-previous-visible-heading)
+              ("M-N" . org-babel-next-src-block)
+              ("M-P" . org-babel-previous-src-block)
+              ("M-P" . org-previous-visible-heading)
               ("C-M-N" . org-move-subtree-down)
               ("C-M-P" . org-move-subtree-up))
   :custom
