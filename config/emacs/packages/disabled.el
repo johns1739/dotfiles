@@ -53,7 +53,7 @@
 (use-package diff-hl
   ;; not really used, better to use magit-diff.
   :bind (:map global-leader-map
-              ("j D" . diff-hl-show-hunk))
+              ("m d" . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
