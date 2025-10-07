@@ -166,7 +166,9 @@
   ;; M-x copilot-login
   :if (executable-find "npm")
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :bind (:map copilot-completion-map
+  :bind (:map global-leader-map
+              ("m c" . copilot-mode)
+              :map copilot-completion-map
               ("M-f" . copilot-accept-completion-by-word)
               ("M-e" . copilot-accept-completion-by-line)
               ("M-<return>" . copilot-accept-completion))
@@ -390,8 +392,8 @@
 
 (use-package imenu-list
   :bind (:map global-leader-map
-              ("x i" . imenu-list)
-              ("x I" . imenu-list-smart-toggle))
+              ("m i" . imenu-list)
+              ("m I" . imenu-list-smart-toggle))
   :custom
   (imenu-list-focus-after-activation t)
   (imenu-list-auto-resize nil)
