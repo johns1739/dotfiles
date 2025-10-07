@@ -57,18 +57,6 @@
               ("m h h" . devdocs-lookup)
               ("m h s" . devdocs-search)))
 
-(use-package diff-hl
-  ;; not really used, better to use magit-diff.
-  :bind (:map global-leader-map
-              ("m d" . diff-hl-show-hunk))
-  :hook
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh)
-  :config
-  ;; Terminal does not have a fringe, so use margin instead.
-  (unless (display-graphic-p)
-    (diff-hl-margin-mode))
-  (global-diff-hl-mode))
 
 (use-package eldoc-box
   ;; Annoying GUI
@@ -209,11 +197,6 @@
                ([remap indent-format-buffer] . python-black-buffer)))
   :hook
   (python-ts-mode . python-black-setup))
-
-(use-package spacious-padding
-  :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("m p" . spacious-padding-mode)))
 
 (use-package treemacs
   ;; Prefer emacs dired.

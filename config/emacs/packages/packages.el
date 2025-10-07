@@ -222,6 +222,19 @@
 (use-package deadgrep
   :bind (:map search-map ("g" . deadgrep)))
 
+(use-package diff-hl
+  ;; not really used, better to use magit-diff.
+  :bind (:map global-leader-map
+              ("m d" . diff-hl-show-hunk))
+  :hook
+  (magit-pre-refresh . diff-hl-magit-pre-refresh)
+  (magit-post-refresh . diff-hl-magit-post-refresh)
+  :config
+  ;; Terminal does not have a fringe, so use margin instead.
+  (unless (display-graphic-p)
+    (diff-hl-margin-mode))
+  (global-diff-hl-mode))
+
 (use-package dimmer
   :if (display-graphic-p) ;; Only works in GUI
   :config
@@ -599,6 +612,11 @@
   :config
   (setq sqlformat-command 'pgformatter)
   (setq sqlformat-args '("-s2" "-g")))
+
+(use-package spacious-padding
+  :if (display-graphic-p)
+  :bind (:map global-leader-map
+              ("m p" . spacious-padding-mode)))
 
 (use-package tmr
   :bind (:map global-leader-map
