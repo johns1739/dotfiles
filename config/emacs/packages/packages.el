@@ -335,8 +335,8 @@
 
 (use-package git-link
   :bind (:map global-leader-map
-              ("x y" . git-link)
-              ("x Y" . git-link-dispatch)))
+              ("x j" . git-link)
+              ("x J" . git-link-dispatch)))
 
 (use-package gptel
   ;; llm copilot chat
