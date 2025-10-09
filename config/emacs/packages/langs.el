@@ -127,6 +127,8 @@
   :init (setq markdown-command "multimarkdown")
   :bind (:map markdown-mode-map
               ("M-H" . markdown-mark-block)
+              ("M-n" . markdown-outline-next)
+              ("M-p" . markdown-outline-previous)
               ("C-c C-." . markdown-do)))
 
 (use-package openapi-preview
