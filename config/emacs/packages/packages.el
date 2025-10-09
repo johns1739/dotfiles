@@ -105,7 +105,6 @@
                '(simple-spaced-target
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
 
-
 (use-package consult
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
@@ -273,6 +272,7 @@
 (use-package eat
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
+  :if (display-graphic-p)
   :straight (eat :type git
                  :host codeberg
                  :repo "akib/emacs-eat"
@@ -300,7 +300,6 @@
                  (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
                  (inhibit-same-window . t)
                  (window-min-height . 25))))
-
 
 (use-package eglot-booster
   ;; cargo install emacs-lsp-booster
@@ -346,12 +345,12 @@
   :custom
   (gptel-default-mode 'org-mode)
   :bind (:map global-leader-map
-              ("i g" . gptel-menu)
+              ("i I" . gptel-menu)
               ("i i" . gptel)
-              ("i a" . gptel-add)
-              ("i q" . gptel-context-remove-all)
-              ("i f" . gptel-add-file)
-              ("i r" . gptel-rewrite))
+              ("i A" . gptel-add)
+              ("i Q" . gptel-context-remove-all)
+              ("i F" . gptel-add-file)
+              ("i R" . gptel-rewrite))
   :hook
   ((gptel-mode . visual-line-mode)
    (gptel-post-stream . gptel-auto-scroll)
@@ -539,14 +538,6 @@
 (use-package ob-http
   :after org)
 
-(use-package openapi-preview
-  ;; requirements:
-  ;; npm i -g redoc-cli
-  :if (executable-find "redoc-cli")
-  :straight (:host github :repo "merrickluo/openapi-preview")
-  :bind (:map yaml-ts-mode-map
-              ("C-c C-c p" . openapi-preview)))
-
 (use-package orderless
   :custom
   (completion-styles '(substring partial-completion orderless basic))
@@ -604,7 +595,7 @@
 
 (use-package sqlformat
   :if (executable-find "pg_format")
-  :commands (sqlformat)
+  :commands (sqlformat sqlformat-buffer)
   :init
   (defun sql-set-bindings ()
     (bind-keys :map (current-local-map)
@@ -618,7 +609,7 @@
 (use-package spacious-padding
   :if (display-graphic-p)
   :bind (:map global-leader-map
-              ("m p" . spacious-padding-mode)))
+              (", p" . spacious-padding-mode)))
 
 (use-package tmr
   :bind (:map global-leader-map

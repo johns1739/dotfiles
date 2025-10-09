@@ -197,7 +197,7 @@
 (use-package proced
   :straight nil
   :commands proced
-  :bind (:map global-leader-map ("x P" . proced))
+  :bind (:map global-leader-map ("k P" . proced))
   :custom
   (proced-auto-update-flag 'visible)
   (proced-goal-attribute nil)
@@ -281,8 +281,8 @@
           (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
 
 (use-package which-key
-  :hook (after-init . which-key-mode)
-  :straight nil)
+  :straight nil
+  :hook (after-init . which-key-mode))
 
 (use-package xref
   :straight nil

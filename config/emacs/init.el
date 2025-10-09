@@ -32,41 +32,33 @@
            ("2" . split-window-below-and-jump)
            ("3" . split-window-right-and-jump)
 
-           ;; Commands
-           ("x D" . delete-matching-lines)
-           ("x L" . keep-lines)
-           ("x U" . delete-duplicate-lines)
-           ("x S" . sort-lines)
-           ("x c" . calc)
-           ("x d" . calendar)
-           ("x r" . regexp-builder)
-           ("x o o" . outline-cycle)
-           ("x o H" . outline-show-only-headings)
-           ("x o h" . outline-hide-entry)
-           ("x o W" . outline-show-all)
-           ("x o w" . outline-show-entry)
+           ;; Copy/Paste/Edits
+           ("x l" . keep-lines)
+           ("x k" . delete-matching-lines)
+           ("x u" . delete-duplicate-lines)
+           ("x s" . sort-lines)
            ("x w" . whitespace-cleanup)
 
-           ;; Settings
+           ;; Package Modes - prefixed @ "m"
+
+           ;; Compilation & Computation
+           ("k c" . calc)
+           ("k r" . regexp-builder)
+           
+           ;; Settings (Look & Feel)
            (", SPC" . load-theme)
-           (", ," . open-init-file)
-           (", <" . open-custom-file)
+           (", ," . open-custom-file)
            (", =" . set-font-size)
            (", '" . describe-font)
-           (", :" . customize-option)
            (", c" . display-fill-column-indicator-mode)
-           (", C" . global-display-fill-column-indicator-mode)
            (", f" . toggle-frame-maximized)
            (", F" . toggle-frame-fullscreen)
            (", h" . hl-line-mode)
-           (", H" . global-hl-line-mode)
            (", n" . display-line-numbers-mode)
-           (", N" . global-display-line-numbers-mode)
            (", r" . reload-emacs)
            (", R" . restart-emacs)
            (", t" . toggle-truncate-lines)
            (", v" . visual-line-mode)
-           (", V" . global-visual-line-mode)
 
            :map goto-map
            ("SPC" . switch-to-buffer)

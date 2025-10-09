@@ -126,7 +126,16 @@
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "multimarkdown")
   :bind (:map markdown-mode-map
+              ("M-H" . markdown-mark-block)
               ("C-c C-." . markdown-do)))
+
+(use-package openapi-preview
+  ;; requirements:
+  ;; npm i -g redoc-cli
+  :if (executable-find "redoc-cli")
+  :straight (:host github :repo "merrickluo/openapi-preview")
+  :bind (:map yaml-ts-mode-map
+              ("C-c C-c p" . openapi-preview)))
 
 (use-package python-mode
   ;; setup
