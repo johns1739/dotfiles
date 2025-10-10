@@ -20,7 +20,6 @@
   (load bootstrap-file nil 'nomessage))
 
 (setopt straight-use-package-by-default t)
-(setopt package-install-upgrade-built-in t)
 
 ;; Install early for downstream dependencies
 
