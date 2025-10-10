@@ -229,9 +229,8 @@ brew install --cask ghostty
 # +crash-report
 
 background-opacity = 1
-font-size = 13
-# favorite dark themes: Adventure, Ayu, catpuccin-mocha, Desert, IC_Orange_PPL
-theme = Ayu
+font-size = 14
+theme = dark:Arthur,light:Desert
 unfocused-split-opacity = 0.6
 
 # behavior settings
