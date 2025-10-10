@@ -2,6 +2,7 @@
 
 (use-package color-theme-sanityinc-tomorrow :defer t)
 (use-package creamsody-theme :defer t)
+(use-package darktooth-theme :defer t)
 (use-package doric-themes :defer t)
 (use-package ef-themes :defer t)
 (use-package gruber-darker-theme :defer t)
