@@ -44,7 +44,7 @@
            ;; Compilation & Computation
            ("k c" . calc)
            ("k r" . regexp-builder)
-           
+
            ;; Settings (Look & Feel)
            (", SPC" . load-theme)
            (", ," . open-custom-file)
@@ -59,6 +59,9 @@
            (", R" . restart-emacs)
            (", t" . toggle-truncate-lines)
            (", v" . visual-line-mode)
+
+           :map mode-specific-map
+           ("C-o" . goto-address-at-point)
 
            :map goto-map
            ("SPC" . switch-to-buffer)
@@ -78,7 +81,6 @@
            ("l" . goto-line)
            ("m" . bookmark-jump)
            ("M" . bookmark-set)
-           ("u" . goto-address-at-point)
            ;; Window navigation
            ("w h" . windmove-left)
            ("w j" . windmove-down)
