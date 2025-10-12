@@ -228,7 +228,7 @@ brew install --cask ghostty
 # +show-face
 # +crash-report
 
-background-opacity = 1
+background-opacity = 0.95
 font-size = 14
 theme = dark:Arthur,light:Desert
 unfocused-split-opacity = 0.6
@@ -261,30 +261,13 @@ font-feature = -dlig
 
 # Keybindings
 
-## Quick Terminal
+## Quick Terminal Prompt
 keybind = super+`=toggle_quick_terminal
-
-## window management
-keybind = super+d=new_split:auto
-keybind = super+,>0=close_surface
-keybind = super+,>1=toggle_split_zoom
-keybind = super+,>2=new_split:down
-keybind = super+,>3=new_split:right
-keybind = super+,>equal=equalize_splits
-keybind = super+,>f=toggle_maximize
-keybind = super+,>shift+f=toggle_fullscreen
-
-## window navigation
-keybind = super+h=goto_split:left
-keybind = super+j=goto_split:down
-keybind = super+k=goto_split:up
-keybind = super+l=goto_split:right
-keybind = super+o=goto_split:next
-keybind = super+shift+o=goto_split:previous
+keybind = super+shift+;=toggle_command_palette
 
 ## screen navigation
-keybind = page_up=jump_to_prompt:-1
-keybind = page_down=jump_to_prompt:1
+keybind = super+shift+p=jump_to_prompt:-1
+keybind = super+shift+n=jump_to_prompt:1
 
 ## saving screen output
 keybind = super+,>y=write_screen_file:paste
