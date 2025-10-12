@@ -257,7 +257,6 @@
 
 (use-package docker
   :if (executable-find "docker")
-  :after (exec-path-from-shell)
   :bind (:map global-leader-map
               ("k o" . docker)))
 
