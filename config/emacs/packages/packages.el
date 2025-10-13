@@ -11,7 +11,7 @@
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
-         ("n w" . avy-org-refile-as-child)
+         ("n r g" . avy-org-refile-as-child)
          :map isearch-mode-map
          ("M-g" . avy-isearch)
          :map goto-map

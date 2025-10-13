@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-(use-package diff
+(use-package diff-mode
   :straight nil
   :bind (:map diff-mode-map
               ("M-o" . nil)))

@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
-# name: emacs-source
+# name: source-emacs
 # key: ,elisp
 # --
 #+begin_src emacs-lisp
