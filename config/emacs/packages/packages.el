@@ -513,7 +513,8 @@
      '("t" . nil)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)
-     '("U" . meow-undo-in-selection)
+     ;; '("U" . meow-undo-in-selection)
+     '("U" . undo-tree-redo)
      '("v" . meow-page-down)
      '("V" . meow-page-up)
      '("w" . meow-mark-word)
@@ -625,6 +626,18 @@
   (setq trashed-use-header-line t)
   (setq trashed-sort-key '("Date deleted" . t))
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
+(use-package undo-tree
+  :custom
+  (undo-tree-visualizer-diff t)
+  (undo-tree-visualizer-timestamps t)
+  :hook
+  (after-init . global-undo-tree-mode)
+  :config
+  (let ((undo-tree-dir (locate-user-emacs-file "undo-tree-history")))
+    (unless (file-exists-p undo-tree-dir)
+      (make-directory undo-tree-dir))
+    (setq undo-tree-history-directory-alist `(("." . ,undo-tree-dir)))))
 
 (use-package vertico
   :hook (after-init . vertico-mode))

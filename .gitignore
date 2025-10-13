@@ -25,6 +25,7 @@
 /config/emacs/tramp
 /config/emacs/transient/
 /config/emacs/tree-sitter/
+/config/emacs/undo-tree-history/
 backups
 custom.el
 history

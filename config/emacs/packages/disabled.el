@@ -2,7 +2,7 @@
 
 (use-package command-log-mode
   :bind (:map global-leader-map
-              ("o l" . clm/toggle-command-log-buffer))
+              ("m l" . clm/toggle-command-log-buffer))
   :config
   (global-command-log-mode))
 
@@ -24,15 +24,6 @@
   :if (display-graphic-p)
   :requires copilot
   :after (request org markdown-mode copilot))
-
-(use-package dashboard
-  :demand
-  :if (display-graphic-p)
-  :custom
-  (dashboard-center-content t)
-  (dashboard-vertically-center-content t)
-  :config
-  (dashboard-setup-startup-hook))
 
 (use-package denote
   ;; prefer org default setup
@@ -56,7 +47,6 @@
               ("m h I" . devdocs-install)
               ("m h h" . devdocs-lookup)
               ("m h s" . devdocs-search)))
-
 
 (use-package eldoc-box
   ;; Annoying GUI
@@ -91,11 +81,6 @@
                            :embedding-model "nomic-embed-text"
                            :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (ellama-context-header-line-global-mode 1))
-
-(use-package embark-consult
-  ;; Not sure when this is helpful. What's the use case?
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package flycheck
   ;; only used with lsp-mode
@@ -204,8 +189,8 @@
               ("j" . treemacs-next-line)
               ("k" . treemacs-previous-line)
               :map global-leader-map
-              ("o p" . treemacs-select-window)
-              ("o P" . treemacs))
+              ("m p" . treemacs-select-window)
+              ("m P" . treemacs))
   :custom
   (treemacs-no-png-images t)
   (treemacs-hide-dot-git-directory t)
