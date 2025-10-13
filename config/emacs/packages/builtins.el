@@ -1,5 +1,10 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package diff
+  :straight nil
+  :bind (:map diff-mode-map
+              ("M-o" . nil)))
+
 (use-package ediff
   :straight nil
   :custom
@@ -143,7 +148,9 @@
               ("n s" . org-occur-in-agenda-files)
               ("n t" . org-todo-list)
               ("n v" . org-agenda-list)
-              ("n W" . org-refile)
+              ("n r r" . org-refile-copy)
+              ("n r R" . org-refile)
+              ("n r ," . org-refile-goto-last-stored)
               :map org-mode-map
               ([remap goto-address-at-point] . org-open-at-point)
               ([remap kill-sentence] . org-cut-subtree)
