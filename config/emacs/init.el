@@ -221,10 +221,10 @@
 (setq kept-old-versions 2)
 (setq version-control t)
 (setq vc-make-backup-files t)
-(let ((backup-dir (locate-user-emacs-file "backups")))
-  (unless (file-exists-p backup-dir)
-    (make-directory backup-dir))
-  (setq backup-directory-alist `(("." . ,backup-dir))))
+(let ((backup-directory (locate-user-emacs-file "backup-versions")))
+  (unless (file-exists-p backup-directory)
+    (make-directory backup-directory))
+  (setq backup-directory-alist `(("." . ,backup-directory))))
 
 ;; scroll settings
 (setq scroll-margin 2)
