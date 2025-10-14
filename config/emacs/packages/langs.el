@@ -78,6 +78,15 @@
                  `((elixir-ts-mode heex-ts-mode) .
                    ,(eglot-alternatives '("language_server.sh" "start_lexical.sh"))))))
 
+(use-package erlang-mode
+  :straight nil
+  :mode "\\.erl\\'"
+  :config
+  ;; (add-to-list 'load-path "/path/to/erlang/emacs")
+  ;; (setq erlang-root-dir "/path/to/erlang")
+  ;; (add-to-list 'exec-path "/path/to/erlang/bin")
+  (require 'erlang-start))
+
 (use-package geiser-guile
   :commands (geiser geiser-mode)
   :custom

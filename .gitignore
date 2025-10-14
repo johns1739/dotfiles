@@ -9,6 +9,7 @@
 /config/emacs/auto-save-list/
 /config/emacs/backup-versions/
 /config/emacs/bookmarks
+/config/emacs/cache/
 /config/emacs/devdocs/
 /config/emacs/eln-cache/
 /config/emacs/elpa/
