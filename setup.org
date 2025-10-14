@@ -126,7 +126,10 @@ run '~/.tmux/plugins/tpm/tpm'
 
 #!/bin/zsh
 
-PROMPT='%2~ %# '
+autoload -U colors && colors
+NEWLINE=$'\n'
+PROMPT="%{$fg[yellow]%}[%D{%y/%m/%f} %D{%L:%M:%S}] %~$NEWLINE\$ "
+
 autoload -U select-word-style
 select-word-style bash
 bindkey -e # emacs mode
