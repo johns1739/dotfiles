@@ -288,8 +288,10 @@
           (scheme "https://github.com/6cdh/tree-sitter-scheme"))))
 
 (use-package which-key
+  :demand
   :straight nil
-  :hook (after-init . which-key-mode))
+  :config
+  (which-key-mode))
 
 (use-package xref
   :straight nil

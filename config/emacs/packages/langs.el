@@ -78,14 +78,24 @@
                  `((elixir-ts-mode heex-ts-mode) .
                    ,(eglot-alternatives '("language_server.sh" "start_lexical.sh"))))))
 
-(use-package erlang-mode
-  :straight nil
-  :mode "\\.erl\\'"
+(use-package erlang
+  :disabled
+  ;; https://adoptingerlang.org/docs/development/setup/#emacs
+  :load-path "/Users/juan/.asdf/installs/erlang/27.3/lib/tools-4.1.1/emacs"
+  :mode (("\\.erl?$" . erlang-mode)
+         ("rebar\\.config$" . erlang-mode)
+         ("relx\\.config$" . erlang-mode)
+         ("sys\\.config\\.src$" . erlang-mode)
+         ("sys\\.config$" . erlang-mode)
+         ("\\.config\\.src?$" . erlang-mode)
+         ("\\.config\\.script?$" . erlang-mode)
+         ("\\.hrl?$" . erlang-mode)
+         ("\\.app?$" . erlang-mode)
+         ("\\.app.src?$" . erlang-mode)
+         ("\\Emakefile" . erlang-mode))
   :config
-  ;; (add-to-list 'load-path "/path/to/erlang/emacs")
-  ;; (setq erlang-root-dir "/path/to/erlang")
-  ;; (add-to-list 'exec-path "/path/to/erlang/bin")
-  (require 'erlang-start))
+  (add-to-list 'eglot-server-programs
+               '(erlang-mode "elp" "server")))
 
 (use-package geiser-guile
   :commands (geiser geiser-mode)

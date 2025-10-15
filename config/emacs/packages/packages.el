@@ -428,14 +428,14 @@
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package marginalia
-  :hook (after-init . marginalia-mode)
+  :demand
   :custom
-  (completions-detailed nil))
+  (completions-detailed nil)
+  :config
+  (marginalia-mode))
 
 (use-package meow
-  :hook
-  ((after-init . meow-setup)
-   (after-init . meow-global-mode))
+  :demand
   :custom
   (meow-use-clipboard t)
   (meow-keypad--self-insert-undefined nil)
@@ -533,7 +533,10 @@
      '("." . meow-bounds-of-thing)
      '(">" . meow-end-of-thing)
      '("<backspace>" . meow-backward-delete)
-     '("<escape>" . meow-cancel-selection))))
+     '("<escape>" . meow-cancel-selection)))
+  :config
+  (meow-setup)
+  (meow-global-mode))
 
 (use-package ob-http
   :after org)
@@ -557,7 +560,7 @@
               (", \"" . show-font-tabulated)))
 
 (use-package simple-modeline
-  :hook (after-init . simple-modeline-mode)
+  :demand
   :init
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
@@ -591,7 +594,9 @@
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
-      simple-modeline-segment-spaces))))
+      simple-modeline-segment-spaces)))
+  :config
+  (simple-modeline-mode))
 
 (use-package sqlformat
   :if (executable-find "pg_format")
@@ -628,34 +633,41 @@
   (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 (use-package undo-tree
+  :demand
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t)
-  :hook
-  (after-init . global-undo-tree-mode)
   :config
   (let ((undo-tree-dir (locate-user-emacs-file "undo-tree-history")))
     (unless (file-exists-p undo-tree-dir)
       (make-directory undo-tree-dir))
-    (setq undo-tree-history-directory-alist `(("." . ,undo-tree-dir)))))
+    (setq undo-tree-history-directory-alist `(("." . ,undo-tree-dir))))
+  (global-undo-tree-mode 1))
 
 (use-package vertico
-  :hook (after-init . vertico-mode))
+  :demand
+  :config
+  (vertico-mode))
 
 (use-package visual-replace
-  :hook
-  (after-init . visual-replace-global-mode))
+  :demand
+  :config
+  (visual-replace-global-mode))
 
 (use-package xclip
+  :demand
   :unless (display-graphic-p)
-  :hook (after-init . xclip-mode))
+  :config
+  (xclip-mode))
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
-  :hook (after-init . yas-global-mode)
+  :demand
   :bind (:map goto-map
               ("&" . yas-visit-snippet-file)
               :map global-leader-map
               ("x &" . yas-new-snippet))
   :custom
-  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets"))))
+  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
+  :config
+  (yas-global-mode))
