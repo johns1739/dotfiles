@@ -48,7 +48,7 @@
            ;; Settings (Look & Feel)
            (", SPC" . load-theme)
            (", ," . open-custom-file)
-           (", =" . set-font-size)
+           (", =" . global-text-scale-adjust)
            (", '" . describe-font)
            (", c" . display-fill-column-indicator-mode)
            (", f" . toggle-frame-maximized)
@@ -283,13 +283,6 @@
   (interactive)
   (if (boundp 'custom-file)
       (find-file custom-file)))
-
-(defun set-font-size ()
-  "Set the font size of Emacs"
-  (interactive)
-  (let ((font-size (min (max (read-number "Font size: " 12) 10) 24)))
-    (set-face-attribute 'default nil :height (* 10 font-size))
-    (message "Font size set to %s" font-size)))
 
 (defun split-window-below-and-jump ()
   "Split window below and jump to it."
