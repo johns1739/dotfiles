@@ -128,7 +128,7 @@ run '~/.tmux/plugins/tpm/tpm'
 
 autoload -U colors && colors
 NEWLINE=$'\n'
-PROMPT="%B%F{yellow}# %n @ %~ [%D{%y/%m/%f} %D{%L:%M:%S}]$NEWLINE\$%b%f "
+PROMPT="%B%F{yellow}>>> [%D{%y/%m/%f} %D{%L:%M:%S}] %n @ %~ <<< $NEWLINE\$%b%f "
 
 autoload -U select-word-style
 select-word-style bash

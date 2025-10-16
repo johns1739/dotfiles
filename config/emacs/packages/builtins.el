@@ -290,6 +290,8 @@
 (use-package which-key
   :demand
   :straight nil
+  :custom
+  (which-key-side-window-location 'right)
   :config
   (which-key-mode))
 
