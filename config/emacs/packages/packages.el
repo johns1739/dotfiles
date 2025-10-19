@@ -166,7 +166,7 @@
   :if (executable-find "npm")
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind (:map global-leader-map
-              ("m c" . copilot-mode)
+              ("i c" . copilot-mode)
               :map copilot-completion-map
               ("M-f" . copilot-accept-completion-by-word)
               ("M-e" . copilot-accept-completion-by-line)
@@ -400,7 +400,7 @@
 
 (use-package indent-bars
   :bind (:map global-leader-map
-              (", g" . indent-bars-mode))
+              ("m g" . indent-bars-mode))
   :hook
   (yaml-mode . indent-bars-mode))
 
@@ -557,7 +557,7 @@
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
   :bind (:map global-leader-map
-              (", \"" . show-font-tabulated)))
+              (", X" . show-font-tabulated)))
 
 (use-package simple-modeline
   :demand
@@ -614,7 +614,7 @@
 (use-package spacious-padding
   :if (display-graphic-p)
   :bind (:map global-leader-map
-              (", p" . spacious-padding-mode)))
+              ("m p" . spacious-padding-mode)))
 
 (use-package tmr
   :bind (:map global-leader-map
@@ -625,7 +625,7 @@
 
 (use-package trashed
   :bind (:map global-leader-map
-              ("m z" . trashed))
+              ("m _" . trashed))
   :config
   (setq trashed-action-confirmer 'y-or-n-p)
   (setq trashed-use-header-line t)

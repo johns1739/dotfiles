@@ -39,26 +39,28 @@
            ("x s" . sort-lines)
            ("x w" . whitespace-cleanup)
 
-           ;; Package Modes - prefixed @ "m"
+           ;; Package Modes
+           ("m <tab>" . toggle-truncate-lines)
+           ("m c" . display-fill-column-indicator-mode)
+           ("m C" . global-display-fill-column-indicator-mode)
+           ("m h" . hl-line-mode)
+           ("m H" . global-hl-line-mode)
+           ("m n" . display-line-numbers-mode)
+           ("m N" . global-display-line-numbers-mode)
 
            ;; Compilation & Computation
            ("k c" . calc)
            ("k r" . regexp-builder)
 
            ;; Settings (Look & Feel)
-           (", SPC" . load-theme)
            (", ," . open-custom-file)
+           (", SPC" . load-theme)
            (", =" . global-text-scale-adjust)
-           (", '" . describe-font)
-           (", c" . display-fill-column-indicator-mode)
+           (", x" . describe-font)
            (", f" . toggle-frame-maximized)
            (", F" . toggle-frame-fullscreen)
-           (", h" . hl-line-mode)
-           (", n" . display-line-numbers-mode)
            (", r" . reload-emacs)
            (", R" . restart-emacs)
-           (", t" . toggle-truncate-lines)
-           (", v" . visual-line-mode)
 
            :map mode-specific-map
            ("C-o" . goto-address-at-point)
@@ -159,7 +161,6 @@
 (add-hook 'special-mode-hook #'hl-line-mode)
 
 ;; line settings
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (line-number-mode t)
 (global-so-long-mode t)
 

@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
+(setopt straight-check-for-modifications nil)
+
 (defvar bootstrap-version)
 
 (let ((bootstrap-file
@@ -17,7 +19,6 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setopt straight-check-for-modifications nil)
 (setopt straight-use-package-by-default t)
 
 ;; Install early for downstream dependencies
