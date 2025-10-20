@@ -26,109 +26,6 @@ brew install ripgrep
 
 #+end_src
 
-* Git
-** git/config
-#+begin_src conf
-[user]
-name = Juan Banda
-email = jubajr17@gmail.com
-
-[core]
-autocrlf = input
-
-[merge]
-ff = only
-
-[alias]
-p = push
-st = status -sb
-ll = log --oneline
-last = log -1 HEAD --stat
-cm = commit -m
-rv = remote -v
-d = diff
-dv = difftool -t vimdiff -y
-gl = config --global -l
-se = !git rev-list --all | xargs git grep -F
-cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
-
-[init]
-defaultBranch = main
-
-[push]
-default = current
-autoSetupRemote = true
-
-[filter "lfs"]
-smudge = git-lfs smudge -- %f
-process = git-lfs filter-process
-required = true
-clean = git-lfs clean -- %f
-
-[rerere]
-enabled = true
-
-[column]
-ui = auto
-
-[branch]
-sort = -committerdate
-
-#+end_src
-
-** Maintenance
-Run this command in main repos
-#+begin_src shell
-
-git maintenance start
-
-#+end_src
-
-* Sqlite
-** ~/.sqliterc
-#+begin_src conf
-
-.headers on
-.mode table
-.timer on
-.changes on
-
-#+end_src
-
-* Tmux
-#+begin_src conf
-
-# mkdir -p ~/.config/tmux
-# curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/tmux/tmux.conf -o ~/.config/tmux/tmux.conf
-
-# tmux list-keys
-# tmux info
-
-# install plugins = prefix + I
-# update plugins = prefix + U
-
-unbind C-b
-bind C-Space send-prefix
-set -g prefix C-Space
-
-bind R source-file ~/.config/tmux/tmux.conf
-
-set -g mode-keys emacs
-set -g base-index 1
-set -g pane-base-index 1
-set -g automatic-rename off
-set -g renumber-windows on
-
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-pain-control'
-set -g @plugin 'catppuccin/tmux'
-
-run '~/.tmux/plugins/tpm/tpm'
-
-#+end_src
-
-* Bash / Zsh / Home RC
 ** Zshrc
 #+begin_src bash
 
@@ -215,6 +112,64 @@ export EDITOR="emacs -nw --init-directory=~/.config/emacs/slim"
 export VISUAL="emacs -nw --init-directory=~/.config/emacs/slim"
 export SUDO_EDITOR="$EDITOR"
 export TIMEFMT=$'%J\n%U user\n%S system\n%P cpu\n%*E total'
+
+#+end_src
+
+* Git
+** git/config
+#+begin_src conf
+[user]
+name = Juan Banda
+email = jubajr17@gmail.com
+
+[core]
+autocrlf = input
+
+[merge]
+ff = only
+
+[alias]
+p = push
+st = status -sb
+ll = log --oneline
+last = log -1 HEAD --stat
+cm = commit -m
+rv = remote -v
+d = diff
+dv = difftool -t vimdiff -y
+gl = config --global -l
+se = !git rev-list --all | xargs git grep -F
+cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
+
+[init]
+defaultBranch = main
+
+[push]
+default = current
+autoSetupRemote = true
+
+[filter "lfs"]
+smudge = git-lfs smudge -- %f
+process = git-lfs filter-process
+required = true
+clean = git-lfs clean -- %f
+
+[rerere]
+enabled = true
+
+[column]
+ui = auto
+
+[branch]
+sort = -committerdate
+
+#+end_src
+
+** Maintenance
+Run this command in main repos
+#+begin_src shell
+
+git maintenance start
 
 #+end_src
 
@@ -385,3 +340,45 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
                                ("CANCELED" . "dim gray")))
 
 #+end_src
+* Sqlite
+** ~/.sqliterc
+#+begin_src conf
+
+.headers on
+.mode table
+.timer on
+.changes on
+
+#+end_src
+
+* Tmux
+** ~/.config/tmux/config
+#+begin_src conf
+
+# tmux list-keys
+# tmux info
+
+# install plugins = prefix + I
+# update plugins = prefix + U
+
+unbind C-b
+bind C-Space send-prefix
+set -g prefix C-Space
+
+bind R source-file ~/.config/tmux/tmux.conf
+
+set -g mode-keys emacs
+set -g base-index 1
+set -g pane-base-index 1
+set -g automatic-rename off
+set -g renumber-windows on
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-pain-control'
+set -g @plugin 'catppuccin/tmux'
+
+run '~/.tmux/plugins/tpm/tpm'
+
+#+end_src
+
