@@ -1,20 +1,28 @@
-* Install Dependencies
-** Brew
+* OS Setup
+** Install Brew
 #+begin_src bash
 
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
 # Follow instructions before running update
 brew update
 
 #+end_src
 
-** Developer Tools
+** Install Dependencies
 #+begin_src bash
 
-mkdir -p ~/.config
 curl https://sh.rustup.rs -sSf | sh
-brew install fd fzf git btop ripgrep jq asdf
+
 brew install --cask font-jetbrains-mono-nerd-font
+brew install asdf
+brew install btop
+brew install fd 
+brew install fzf 
+brew install git 
+brew install jq
+brew install lazygit
+brew install ripgrep
 
 #+end_src
 
@@ -145,6 +153,9 @@ alias l="less"
 alias ll="ls -lh --color"
 alias grep="grep --line-buffered --color"
 alias rgrep="grep --color -rnIi"
+
+# lazygit
+alias lg="lazygit"
 
 # emacs
 alias emacs="emacs -nw"
