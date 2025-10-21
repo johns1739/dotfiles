@@ -74,6 +74,10 @@ source <(fzf --zsh)
 export ASDF_DIR="$HOME/.asdf"
 export PATH="$ASDF_DIR/shims:$PATH"
 
+# golang
+export GOPATH="$HOME/go"
+export PATH="$GOPATH/bin:$PATH"
+
 # cargo
 export PATH="$HOME/.cargo/bin:$PATH"
 

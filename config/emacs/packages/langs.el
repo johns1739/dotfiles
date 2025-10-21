@@ -113,6 +113,7 @@
                  '(gleam-ts-mode "gleam" "lsp"))))
 
 (use-package go-ts-mode
+  ;; go install golang.org/x/tools/gopls@latest
   :mode "\\.go\\'"
   :custom
   (go-ts-mode-indent-offset 4))

@@ -165,12 +165,13 @@
   ;; M-x copilot-login
   :if (executable-find "npm")
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :bind (:map global-leader-map
-              ("i c" . copilot-mode)
-              :map copilot-completion-map
-              ("M-f" . copilot-accept-completion-by-word)
-              ("M-e" . copilot-accept-completion-by-line)
-              ("M-<return>" . copilot-accept-completion))
+  :bind (("C-M-i" . copilot-complete)
+         :map global-leader-map
+         ("i c" . copilot-mode)
+         :map copilot-completion-map
+         ("M-f" . copilot-accept-completion-by-word)
+         ("M-e" . copilot-accept-completion-by-line)
+         ("M-<return>" . copilot-accept-completion))
   :custom
   (corfu-auto nil)
   (copilot-idle-delay 0.5)
@@ -180,9 +181,7 @@
   (copilot-overlay-face ((t (:family "JetBrainsMonoNL Nerd Font Mono"
                                      :slant italic
                                      :weight ultra-light
-                                     :inherit completions-annotations))))
-  :hook
-  (prog-mode . copilot-mode))
+                                     :inherit completions-annotations)))))
 
 (use-package corfu
   :demand
