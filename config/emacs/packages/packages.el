@@ -623,6 +623,8 @@
   (tmr-timer-finished-functions
    '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer)))
 
+(use-package transient) ;; needed by magit and forge
+
 (use-package trashed
   :bind (:map global-leader-map
               ("m _" . trashed))

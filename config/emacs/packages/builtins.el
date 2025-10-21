@@ -1,5 +1,24 @@
 ;;; -*- lexical-binding: t -*-
 
+;; Catch-all
+(use-package emacs
+  :straight nil
+  :bind (:map global-leader-map
+              (", U" . emacs-upgrade))
+  :init
+  (defvar emacs-upgrade-alist
+    '(straight-pull-all
+      straight-rebuild-all
+      treesit-pull-all
+      eglot-upgrade-eglot)
+    "List of functions to run on upgrade action.")
+  (defun emacs-upgrade ()
+    "Run upgrade functions in `emacs-upgrade-alist`."
+    (interactive)
+    (dolist (fn emacs-upgrade-alist)
+      (funcall fn))
+    (message "Emacs upgrade complete.")))
+
 (use-package diff-mode
   :straight nil
   :bind (:map diff-mode-map
@@ -18,7 +37,7 @@
   :straight nil
   :bind (:map global-leader-map
               ("L" . eglot)
-              ("l TAB" . eglot-format-buffer)
+              ("l TAB" . eglot-format)
               ("l l" . eglot-reconnect)
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
@@ -255,12 +274,12 @@
 (use-package treesit
   :straight nil
   :init
-  (defun treesit-pull-languages ()
+  (defun treesit-pull-all ()
     "Install all language grammars registered with Treesitter"
     (interactive)
     (require 'treesit)
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
-  :commands (treesit-pull-languages)
+  :commands (treesit-pull-all)
   :config
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
