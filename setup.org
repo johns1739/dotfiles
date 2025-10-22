@@ -308,14 +308,14 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 (setq gptel-model 'claude-sonnet-4)
 (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
 
+(add-hook 'prog-mode-hook #'copilot-mode)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'indent-bars-mode)
 
-;; ;; If issues with git read/write access:
-;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
-;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-
 (add-to-list 'exec-path "~/.local/elixir-ls")
+
+(exec-path-from-shell-copy-env "SSH_AGENT_PID")
+(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
 
 #+end_src
 

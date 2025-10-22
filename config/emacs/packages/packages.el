@@ -165,8 +165,7 @@
   ;; M-x copilot-login
   :if (executable-find "npm")
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :bind (("C-M-i" . copilot-complete)
-         :map global-leader-map
+  :bind (:map global-leader-map
          ("i c" . copilot-mode)
          :map copilot-completion-map
          ("M-f" . copilot-accept-completion-by-word)
@@ -545,6 +544,11 @@
   (completion-styles '(substring partial-completion orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides nil))
+
+(use-package persistent-scratch
+  :demand
+  :config
+  (persistent-scratch-setup-default))
 
 (use-package pinentry
   ;; allows for secure entry of passphrases requested by GnuPG
