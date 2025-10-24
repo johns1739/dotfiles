@@ -121,6 +121,7 @@
 (use-package janet-mode
   :mode "\\.janet$"
   :config
+  (exec-path-from-shell-copy-env "JANET_PATH")
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(janet-mode "janet-lsp"))))
