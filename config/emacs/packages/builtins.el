@@ -38,6 +38,8 @@
   :bind (:map global-leader-map
               ("L" . eglot)
               ("l TAB" . eglot-format)
+              ("l e" . eglot-events-buffer)
+              ("l E" . eglot-stderr-buffer)
               ("l l" . eglot-reconnect)
               ("l q" . eglot-shutdown)
               ("l Q" . eglot-shutdown-all)
