@@ -179,6 +179,14 @@
   (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4))
 
+(use-package pyvenv
+  ;; Add to .envrc the virtualenv folder to load per project (example):
+  ;; echo 'export WORKON_HOME="$HOME/pathToProj/.venv"' >> .envrc
+  :config
+  ;; mode line is not a custom option
+  (setq pyvenv-mode-line-indicator '(pyvenv-virtual-env-name ("[" "venv:" pyvenv-virtual-env-name "] ")))
+  (pyvenv-tracking-mode t))
+
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"
   :init

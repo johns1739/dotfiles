@@ -17,6 +17,7 @@ curl https://sh.rustup.rs -sSf | sh
 brew install --cask font-jetbrains-mono-nerd-font
 brew install asdf
 brew install btop
+brew install direnv
 brew install fd 
 brew install fzf 
 brew install git 
@@ -60,6 +61,9 @@ alias e="emacs -nw --init-directory=~/.config/emacs/slim"
 # NOTE: Do not set TERM, conflicts with Eat-Integration
 [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
     source "$EAT_SHELL_INTEGRATION_DIR/zsh"
+
+# direnv
+eval "$(direnv hook zsh)"
 
 # docker
 alias dc="docker container"
@@ -261,7 +265,6 @@ cargo install emacs-lsp-booster
 brew tap d12frosted/emacs-plus
 
 # brew uninstall emacs-plus@31 && brew reinstall gcc libgccjit
-
 brew install emacs-plus@31 \
      --with-modern-black-dragon-icon \
      --with-debug \

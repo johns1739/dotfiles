@@ -253,6 +253,11 @@
   :custom
   (dired-subtree-use-backgrounds nil))
 
+(use-package direnv
+  ;; https://direnv.net/
+  :config
+  (direnv-mode))
+
 (use-package docker
   :if (executable-find "docker")
   :bind (:map global-leader-map
@@ -355,7 +360,8 @@
   :config
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
-               ("C-c I" . gptel-org-set-topic))))
+               ("C-c I" . gptel-org-set-topic)
+               ("C-c C-<return>" . gptel-send))))
 
 (use-package find-file-in-project
   :bind (:map goto-map
@@ -527,9 +533,9 @@
      '(":" . goto-line)
      '("/" . meow-visit)
      '("," . meow-inner-of-thing)
-     '("<" . meow-beginning-of-thing)
+     '("<" . previous-buffer)
      '("." . meow-bounds-of-thing)
-     '(">" . meow-end-of-thing)
+     '(">" . next-buffer)
      '("<backspace>" . meow-backward-delete)
      '("<escape>" . meow-cancel-selection)))
   :config
