@@ -253,10 +253,9 @@
   :custom
   (dired-subtree-use-backgrounds nil))
 
-(use-package direnv
-  ;; https://direnv.net/
-  :config
-  (direnv-mode))
+(use-package envrc
+  ;; Must activate at the end
+  :hook (after-init . envrc-global-mode))
 
 (use-package docker
   :if (executable-find "docker")
