@@ -473,8 +473,8 @@
      '("1" . meow-expand-1)
      '("-" . negative-argument)
      '("_" . meow-reverse)
-     '("(" . kmacro-start-macro)
-     '(")" . meow-end-or-call-kmacro)
+     '("(" . nil)
+     '(")" . nil)
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("b" . meow-back-word)
@@ -532,9 +532,9 @@
      '(":" . goto-line)
      '("/" . meow-visit)
      '("," . meow-inner-of-thing)
-     '("<" . previous-buffer)
+     '("<" . nil)
      '("." . meow-bounds-of-thing)
-     '(">" . next-buffer)
+     '(">" . nil)
      '("<backspace>" . meow-backward-delete)
      '("<escape>" . meow-cancel-selection)))
   :config
@@ -549,6 +549,13 @@
   (completion-styles '(substring partial-completion orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides nil))
+
+(use-package paredit
+  :hook
+  (emacs-lisp-mode . enable-paredit-mode)
+  (lisp-mode . enable-paredit-mode)
+  (lisp-interaction-mode . enable-paredit-mode)
+  (scheme-mode . enable-paredit-mode))
 
 (use-package persistent-scratch
   :demand
