@@ -56,6 +56,7 @@
            (", ," . open-custom-file)
            (", SPC" . load-theme)
            (", =" . global-text-scale-adjust)
+           (", D" . toggle-debug-on-error)
            (", x" . describe-font)
            (", f" . toggle-frame-maximized)
            (", F" . toggle-frame-fullscreen)
