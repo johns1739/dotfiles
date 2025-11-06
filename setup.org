@@ -415,7 +415,8 @@ source ./venv/bin/activate
 #+end_src
 
 ** LSP Workspace Configuration Example
-
+ 
+*** .dir-locals.el
 #+begin_src emacs-lisp
 
 ((nil . ((eglot-workspace-configuration
