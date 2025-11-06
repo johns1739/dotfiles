@@ -405,4 +405,24 @@ set -g @plugin 'catppuccin/tmux'
 run '~/.tmux/plugins/tpm/tpm'
 
 #+end_src
+* Python
+** Auto Activate Venv
+*** .envrc @ project-dir
+#+begin_src bash
 
+source ./venv/bin/activate
+
+#+end_src
+
+** LSP Workspace Configuration Example
+
+#+begin_src emacs-lisp
+
+((nil . ((eglot-workspace-configuration
+          . (:pylsp (:plugins (:pycodestyle (:enabled :json-false)
+                                            :mccabe (:enabled :json-false)
+                                            :pyflakes (:enabled :json-false)
+                                            :flake8 (:enabled t))
+                              :configurationSources ["flake8"]))))))
+
+#+end_src
