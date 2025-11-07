@@ -350,17 +350,16 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 
 ** eglot workspace configurations
 
-
 *** Pylsp + Flake8
 =.dir-locals.el=
-#+begin_src emacs-lisp
+#+begin_src lisp-data
 
 ((nil . ((eglot-workspace-configuration
-          . (:pylsp (:plugins (:pycodestyle (:enabled :json-false)
-                                            :mccabe (:enabled :json-false)
-                                            :pyflakes (:enabled :json-false)
-                                            :flake8 (:enabled t))
-                              :configurationSources ["flake8"]))))))
+          . ( :pylsp ( :plugins ( :pycodestyle (:enabled :json-false)
+                                  :mccabe (:enabled :json-false)
+                                  :pyflakes (:enabled :json-false)
+                                  :flake8 (:enabled t))
+                       :configurationSources ["flake8"]))))))
 
 #+end_src
 

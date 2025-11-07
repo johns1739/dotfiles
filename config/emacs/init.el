@@ -245,6 +245,7 @@
 (setq dired-dwim-target t)
 ;; (add-hook 'dired-mode-hook #'dired-hide-details-mode)
 (add-hook 'dired-mode-hook #'hl-line-mode)
+(add-hook 'compilation-mode-hook #'hl-line-mode)
 
 ;; mouse settings
 (unless (display-graphic-p)
