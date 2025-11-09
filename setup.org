@@ -52,6 +52,9 @@ alias ll="ls -lh --color"
 alias grep="grep --line-buffered --color"
 alias rgrep="grep --color -rnIi"
 
+# btop
+alias top="btop"
+
 # lazygit
 alias lg="lazygit"
 
@@ -207,7 +210,7 @@ brew install --cask ghostty
 # +crash-report
 
 background-opacity = 0.95
-font-size = 14
+font-size = 13
 theme = dark:Arthur,light:Desert
 unfocused-split-opacity = 0.6
 

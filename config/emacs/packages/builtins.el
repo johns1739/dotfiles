@@ -35,8 +35,6 @@
 
 (use-package eglot
   :straight nil
-  :custom
-  (eglot-mode-line-session nil) ;; hide project name
   :bind (:map global-leader-map
               ("L" . eglot)
               ("l TAB" . eglot-format)
@@ -47,7 +45,9 @@
               ("l Q" . eglot-shutdown-all)
               ("l r" . eglot-rename)
               ("l d" . eglot-find-declaration)
-              ("l a" . eglot-code-actions)))
+              ("l a" . eglot-code-actions))
+  :config
+  (setq eglot-mode-line-session nil))
 
 (use-package eshell
   :straight nil
