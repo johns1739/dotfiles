@@ -61,7 +61,7 @@
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          :map global-leader-map
          ("k SPC" . consult-compile-error)
-         ("k d" . consult-flymake)
+         ("d SPC" . consult-flymake)
          :map minibuffer-mode-map
          ("M-i" . consult-history)
          :map search-map
@@ -156,7 +156,7 @@
 (use-package diff-hl
   ;; not really used, better to use magit-diff.
   :bind (:map global-leader-map
-              ("m J" . diff-hl-show-hunk))
+              ("m d" . diff-hl-show-hunk))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -435,9 +435,8 @@
      '("M" . meow-unpop-to-mark)
      '("n" . meow-search)
      '("N" . meow-search-reverse)
-     ;; '("o" . meow-block)
-     ;; '("O" . meow-to-block)
-     '("o" . other-window)
+     '("o" . meow-block)
+     '("O" . meow-to-block)
      '("p" . meow-yank)
      '("P" . meow-yank-pop)
      '("q" . nil) ;; Keep q unbound for other apps to bind.
@@ -562,11 +561,11 @@
 (use-package spacious-padding
   :if (display-graphic-p)
   :bind (:map global-leader-map
-              ("m =" . spacious-padding-mode)))
+              ("m p" . spacious-padding-mode)))
 
 (use-package tmr
   :bind (:map global-leader-map
-              ("m !" . tmr-tabulated-view))
+              ("m t" . tmr-tabulated-view))
   :custom
   (tmr-timer-finished-functions
    '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer)))
