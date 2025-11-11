@@ -120,6 +120,8 @@
 
 (use-package janet-mode
   :mode "\\.janet$"
+  :hook
+  (janet-mode . enable-paredit-mode)
   :config
   (exec-path-from-shell-copy-env "JANET_PATH")
   (with-eval-after-load 'eglot
