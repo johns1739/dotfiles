@@ -82,11 +82,7 @@
 (use-package flymake
   :straight nil
   :bind (:map global-leader-map
-              ("D" . flymake-mode)
-              ("d n" . flymake-goto-next-error)
-              ("d p" . flymake-goto-prev-error)
-              ("d d" . flymake-show-buffer-diagnostics)
-              ("d D" . flymake-show-project-diagnostics))
+              ("k d" . flymake-show-buffer-diagnostics))
   :custom
   (flymake-fringe-indicator-position 'right-fringe))
 

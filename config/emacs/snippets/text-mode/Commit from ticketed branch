@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: Commit from ticketed branch
 # key: ,com
-# condition: (and (project-current) (magit-git-repo-p default-directory))
+# condition: (and (project-current) (magit-get-current-branch))
 # --
 `
 (let* ((branch (magit-get-current-branch))
