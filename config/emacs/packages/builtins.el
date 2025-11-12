@@ -19,6 +19,74 @@
       (funcall fn))
     (message "Emacs upgrade complete.")))
 
+(use-package compile
+  :bind (:map global-leader-map
+              ("k ." . compile)
+              ("k >" . comint)
+              ("k ," . compilation-goto-in-progress-buffer)
+              ("k b" . eval-buffer)
+              ("k g" . recompile)
+              ("k k" . compile-dwim)
+              ("k K" . comint-dwim)
+              ("k n" . next-error)
+              ("k p" . previous-error)
+              ("k w" . send-region-to-process))
+  :custom
+  (compile-command nil)
+  (compilation-window-height 20)
+  (compilation-context-lines 10)
+  (compilation-always-kill t)
+  (compilation-scroll-output t)
+  (compilation-max-output-line-length 200)
+  (compilation-error-regexp-alist '())
+  (compilation-error-regexp-alist-alist '())
+  :hook
+  (compilation-filter . ansi-color-compilation-filter)
+  :init
+  (defun comint ()
+    (interactive)
+    (universal-argument)
+    (command-execute #'compile))
+  (defun compile-dwim ()
+    (interactive)
+    (if (project-current)
+        (call-interactively #'project-compile)
+      (call-interactively #'compile)))
+  (defun comint-dwim ()
+    (interactive)
+    (universal-argument)
+    (command-execute #'compile-dwim))
+  (defun send-region-to-process (arg beg end)
+    """
+    Send the current region to a process buffer.
+    The first time it's called, will prompt for the buffer to
+    send to. Subsequent calls send to the same buffer, unless a
+    prefix argument is used (C-u), or the buffer no longer has an
+    active process.
+    """
+    (interactive "P\nr")
+    (if (or arg ;; user asks for selection
+            (not (boundp 'send-region-to-process-target)) ;; target not set
+            ;; or target is not set to an active process:
+            (not (process-live-p (get-buffer-process
+                                  send-region-to-process-target))))
+        (setq send-region-to-process-target
+              (completing-read
+               "Process: "
+               (seq-map (lambda (el) (buffer-name (process-buffer el)))
+                        (process-list)))))
+    (process-send-region send-region-to-process-target beg end))
+  :config
+  ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(failure-newline-target
+                 "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]" 1 2 nil nil 1))
+  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(simple-spaced-target
+                 "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
+
 (use-package diff-mode
   :straight nil
   :bind (:map diff-mode-map
@@ -82,7 +150,8 @@
 (use-package flymake
   :straight nil
   :bind (:map global-leader-map
-              ("k d" . flymake-show-buffer-diagnostics))
+              ("k d" . flymake-show-buffer-diagnostics)
+              ("k D" . flymake-show-project-diagnostics)))
   :custom
   (flymake-fringe-indicator-position 'right-fringe))
 
@@ -234,8 +303,12 @@
 
 (use-package project
   :straight nil
-  :bind (:map project-prefix-map
-              ("K" . project-forget-project))
+  :bind ( :map goto-map
+          ("D" . project-dired)
+          :map search-map
+          ("d" . project-find-dir)
+          :map project-prefix-map
+          ("K" . project-forget-project))
   :custom
   (project-switch-commands '((project-find-regexp "Regexp" "s")
                              (project-find-file "File" "f")
