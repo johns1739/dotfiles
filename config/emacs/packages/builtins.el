@@ -151,7 +151,7 @@
   :straight nil
   :bind (:map global-leader-map
               ("k d" . flymake-show-buffer-diagnostics)
-              ("k D" . flymake-show-project-diagnostics)))
+              ("k D" . flymake-show-project-diagnostics))
   :custom
   (flymake-fringe-indicator-position 'right-fringe))
 
