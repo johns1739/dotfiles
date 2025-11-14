@@ -61,7 +61,7 @@
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          :map global-leader-map
          ("k SPC" . consult-compile-error)
-         ("d SPC" . consult-flymake)
+         ("k d" . consult-flymake)
          :map minibuffer-mode-map
          ("M-i" . consult-history)
          :map search-map
