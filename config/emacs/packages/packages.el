@@ -482,13 +482,6 @@
   (completion-category-defaults nil)
   (completion-category-overrides nil))
 
-(use-package paredit
-  :hook
-  (emacs-lisp-mode . enable-paredit-mode)
-  (lisp-mode . enable-paredit-mode)
-  (lisp-interaction-mode . enable-paredit-mode)
-  (scheme-mode . enable-paredit-mode))
-
 (use-package persistent-scratch
   :demand
   :config

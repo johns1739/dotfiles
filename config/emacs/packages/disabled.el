@@ -133,6 +133,14 @@
   :config
   (magit-todos-mode 1))
 
+(use-package paredit
+  ;; Gets in the way, difficult to fix a broken parens mat
+  :hook
+  (emacs-lisp-mode . enable-paredit-mode)
+  (lisp-mode . enable-paredit-mode)
+  (lisp-interaction-mode . enable-paredit-mode)
+  (scheme-mode . enable-paredit-mode))
+
 (use-package popper
   :demand
   :if (display-graphic-p)
