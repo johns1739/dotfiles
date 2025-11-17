@@ -179,7 +179,12 @@
   (python-mode . python-setup)
   :custom
   (python-indent-guess-indent-offset-verbose nil)
-  (python-indent-offset 4))
+  (python-indent-offset 4)
+  :config
+  (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
+  (add-to-list 'compilation-error-regexp-alist-alist
+               '(python-pytest-target
+                 "^\\([A-Za-z0-9/][^ (]*\\.py\\):\\([1-9][0-9]*\\): " 1 2 nil nil 1)))
 
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"
