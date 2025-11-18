@@ -141,6 +141,12 @@
   (lisp-interaction-mode . enable-paredit-mode)
   (scheme-mode . enable-paredit-mode))
 
+(use-package persistent-scratch
+  ;; too slow to load up
+  :demand
+  :config
+  (persistent-scratch-setup-default))
+
 (use-package popper
   :demand
   :if (display-graphic-p)

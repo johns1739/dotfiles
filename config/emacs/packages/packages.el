@@ -482,11 +482,6 @@
   (completion-category-defaults nil)
   (completion-category-overrides nil))
 
-(use-package persistent-scratch
-  :demand
-  :config
-  (persistent-scratch-setup-default))
-
 (use-package pinentry
   ;; allows for secure entry of passphrases requested by GnuPG
   :commands (pinentry-start)
