@@ -34,7 +34,7 @@ brew install ripgrep
 
 autoload -U colors && colors
 NEWLINE=$'\n'
-PROMPT="%B%F{yellow}### [%D{%y/%m/%f} %D{%L:%M:%S}] %n @ %~ $NEWLINE\$%b%f "
+PROMPT="%B%{$(tput setaf 220)%}%n @ %~$NEWLINE\$%b "
 
 autoload -U select-word-style
 select-word-style bash
