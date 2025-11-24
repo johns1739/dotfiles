@@ -60,8 +60,7 @@
          ([remap keep-lines] . consult-keep-lines)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          :map global-leader-map
-         ("k SPC" . consult-compile-error)
-         ("k d" . consult-flymake)
+         ("k SPC" . consult-flymake)
          :map minibuffer-mode-map
          ("M-i" . consult-history)
          :map search-map
@@ -270,7 +269,7 @@
               ("x j" . git-link)
               ("x J" . git-link-dispatch)))
 
-(use-package gptel
+(use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
   ;; Copilot settings:
   ;; (setq gptel-model 'claude-3.7-sonnet)
