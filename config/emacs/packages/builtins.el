@@ -153,7 +153,7 @@
               ("k d" . flymake-show-buffer-diagnostics)
               ("k D" . flymake-show-project-diagnostics))
   :custom
-  (flymake-fringe-indicator-position 'right-fringe))
+  (flymake-fringe-indicator-position 'left-fringe))
 
 (use-package flyspell
   :straight nil
