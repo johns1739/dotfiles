@@ -161,8 +161,6 @@
               ("C-c C-c p" . openapi-preview)))
 
 (use-package python-mode
-  ;; setup
-  ;; pip install "pyright[nodejs]"
   :straight nil
   :mode "\\.py$"
   :init
