@@ -82,6 +82,19 @@
                            :default-chat-non-standard-params '(("num_ctx" . 32768))))
   (ellama-context-header-line-global-mode 1))
 
+(use-package elysium
+  :after (gptel)
+  :custom
+  (elysium-window-size 0.5)
+  (elysium-window-style 'vertical)
+  :bind (:map global-leader-map
+              ("i ." . elysium-query)
+              ("i >" . elysium-add-context)
+              ("i ," . elysium-toggle-window)
+              ("i <" . elysium-clear-buffer))
+  :hook
+  (elysium-apply-changes . smerge-mode))
+
 (use-package flycheck
   ;; only used with lsp-mode
   ;; https://www.flycheck.org/en/latest/
