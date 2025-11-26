@@ -256,6 +256,8 @@
               ("x j" . git-link)
               ("x J" . git-link-dispatch)))
 
+(use-package git-modes)
+
 (use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
   ;; Copilot settings:
