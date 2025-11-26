@@ -572,6 +572,12 @@
   :config
   (vertico-mode))
 
+(use-package vertico-posframe
+  :after vertico
+  :if (display-graphic-p)
+  :config
+  (vertico-posframe-mode 1))
+
 (use-package visual-replace
   :demand
   :config
