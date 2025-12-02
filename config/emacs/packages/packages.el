@@ -274,9 +274,11 @@
               ("i R" . gptel-rewrite))
   :hook
   ((gptel-mode . visual-line-mode)
-   (gptel-post-stream . gptel-auto-scroll)
-   (gptel-post-response . gptel-beginning-of-response))
+   ;; (gptel-post-stream . gptel-auto-scroll) ;; Annoying.
+   ;; (gptel-post-response . gptel-beginning-of-response)) ;; Doesn't always work.
   :config
+  (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "* @user: ")
+  (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic)
@@ -578,10 +580,11 @@
   (vertico-mode))
 
 (use-package vertico-posframe
+  :defer
   :after vertico
   :if (display-graphic-p)
-  :config
-  (vertico-posframe-mode 1))
+  :custom
+  (vertico-posframe-min-width 70))
 
 (use-package visual-replace
   :demand
