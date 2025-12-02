@@ -113,6 +113,8 @@
   :hook
   (flycheck-mode . flycheck-set-bindings))
 
+(use-package git-modes) ;; Long load time.
+
 (use-package git-timemachine
   ;; never really used.
   ;; Magit tools are preferred.

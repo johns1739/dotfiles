@@ -256,8 +256,6 @@
               ("x j" . git-link)
               ("x J" . git-link-dispatch)))
 
-(use-package git-modes)
-
 (use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
   ;; Copilot settings:
@@ -583,6 +581,8 @@
   :defer
   :after vertico
   :if (display-graphic-p)
+  :bind (:map global-leader-map
+              ("m SPC" . vertico-posframe-mode))
   :custom
   (vertico-posframe-min-width 70))
 
