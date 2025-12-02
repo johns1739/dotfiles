@@ -78,12 +78,13 @@
   (setq register-preview-function #'consult-register-format)
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
+    (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))  
   :config
   (if (executable-find "fd")
       (bind-keys :map search-map
-                 ("f" . consult-fd)))
-  (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
-  (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
+                 ("f" . consult-fd))))
 
 (use-package consult-eglot
   :after (eglot consult)
@@ -267,13 +268,14 @@
               ("i I" . gptel-menu)
               ("i i" . gptel)
               ("i A" . gptel-add)
-              ("i Q" . gptel-context-remove-all)
+              ("i K" . gptel-context-remove-all)
               ("i F" . gptel-add-file)
               ("i R" . gptel-rewrite))
   :hook
-  ((gptel-mode . visual-line-mode)
+  (gptel-mode . visual-line-mode)
+  (gptel-mode . gptel-highlight-mode)
    ;; (gptel-post-stream . gptel-auto-scroll) ;; Annoying.
-   ;; (gptel-post-response . gptel-beginning-of-response)) ;; Doesn't always work.
+   ;; (gptel-post-response . gptel-beginning-of-response) ;; Doesn't always work.
   :config
   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "* @user: ")
   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
