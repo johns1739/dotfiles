@@ -16,7 +16,7 @@
          ("M-g" . avy-isearch)
          :map goto-map
          ("G" . avy-resume)
-         ("g" . avy-goto-char-2)))
+         ("g" . avy-goto-char)))
 
 (use-package beacon
   :if (display-graphic-p) ;; Not pretty in terminal
@@ -273,7 +273,7 @@
               ("i R" . gptel-rewrite))
   :hook
   (gptel-mode . visual-line-mode)
-  (gptel-mode . gptel-highlight-mode)
+  ;; (gptel-mode . gptel-highlight-mode) ;; Not available for some reason.
    ;; (gptel-post-stream . gptel-auto-scroll) ;; Annoying.
    ;; (gptel-post-response . gptel-beginning-of-response) ;; Doesn't always work.
   :config
