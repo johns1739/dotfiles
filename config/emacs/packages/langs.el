@@ -72,11 +72,15 @@
   :config
   ;; TODO: Enable more features
   ;; https://joaotavora.github.io/eglot/#User_002dspecific-configuration-1
-  ;; https://github.com/elixir-lsp/elixir-ls?tab=readme-ov-file#elixirls-configuration-settings
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((elixir-ts-mode heex-ts-mode) .
-                   ,(eglot-alternatives '("language_server.sh" "start_lexical.sh"))))))
+    (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode)
+                     eglot-server-programs
+                     nil nil #'equal)
+          (if (and (fboundp 'w32-shell-dos-semantics)
+                   (w32-shell-dos-semantics))
+              '("expert_windows_amd64")
+            (eglot-alternatives
+             '("expert_linux_arm64" "expert_linux_amd64" "start_lexical.sh"))))))
 
 (use-package erlang
   :disabled
