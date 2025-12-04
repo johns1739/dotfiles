@@ -260,6 +260,7 @@
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
+  (org-agenda-todo-list-sublevels nil)
   (org-agenda-window-setup 'reorganize-frame)
   (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-cycle-hide-block-startup t)
@@ -267,7 +268,7 @@
   (org-hide-drawer-startup t)
   (org-hide-emphasis-markers t)
   (org-hide-leading-stars (display-graphic-p))
-  (org-log-done 'time)
+  (org-log-done nil)
   (org-log-into-drawer t)
   (org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 1)))
   (org-return-follows-link nil)
@@ -278,6 +279,7 @@
   (org-todo-keyword-faces '(("TODO" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
                             ("DONE" . "dim gray")
+                            ("BACKLOG" . "dim gray")
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
