@@ -80,7 +80,7 @@
                    (w32-shell-dos-semantics))
               '("expert_windows_amd64")
             (eglot-alternatives
-             '("expert_linux_arm64" "expert_linux_amd64" "start_lexical.sh"))))))
+             '("language_server.sh" "expert_linux_arm64" "expert_linux_amd64" "start_lexical.sh"))))))
 
 (use-package erlang
   :disabled

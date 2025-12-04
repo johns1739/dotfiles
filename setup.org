@@ -15,6 +15,7 @@ brew update
 curl https://sh.rustup.rs -sSf | sh
 
 brew install --cask font-jetbrains-mono-nerd-font
+
 brew install asdf
 brew install btop
 brew install direnv
@@ -24,6 +25,7 @@ brew install git
 brew install jq
 brew install lazygit
 brew install ripgrep
+brew install tlrc
 
 #+end_src
 
