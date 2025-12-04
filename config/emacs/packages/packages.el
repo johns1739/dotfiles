@@ -265,7 +265,7 @@
   :custom
   (gptel-default-mode 'org-mode)
   :bind (:map global-leader-map
-              ("i I" . gptel-menu)
+              ("I" . gptel-menu)
               ("i i" . gptel)
               ("i A" . gptel-add)
               ("i K" . gptel-context-remove-all)

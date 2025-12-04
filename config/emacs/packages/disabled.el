@@ -247,6 +247,18 @@
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 100000))
 
+(use-package web-mode
+  ;; Mode not very good.
+  :mode
+  (("\\.phtml\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.tpl\\'" . web-mode)
+   ("\\.[agj]sp\\'" . web-mode)
+   ("\\.as[cp]x\\'" . web-mode)
+   ("\\.erb\\'" . web-mode)
+   ("\\.mustache\\'" . web-mode)
+   ("\\.djhtml\\'" . web-mode)))
+
 (use-package yasnippet-snippets
   ;; Better to rely on custom built templates over externals.
   :after yasnippet)
