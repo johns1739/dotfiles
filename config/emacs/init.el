@@ -315,4 +315,5 @@
 
 ;; custom settings
 (setq custom-file (concat user-emacs-directory "custom.el"))
-(load custom-file :no-error-if-file-missing)
+(tt (format "*** %s" custom-file)
+    (load custom-file :no-error-if-file-missing))

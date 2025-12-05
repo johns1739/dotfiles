@@ -48,6 +48,21 @@
               ("m h h" . devdocs-lookup)
               ("m h s" . devdocs-search)))
 
+(use-package dired-subtree
+  ;; Not really used.
+  :init
+  (defun dired-subtree-setup ()
+    (require 'dired-subtree))
+  :bind (:map dired-mode-map
+              ("<tab>" . dired-subtree-toggle)
+              ("TAB" . dired-subtree-toggle)
+              ("<backtab>" . dired-subtree-remove)
+              ("S-TAB" . dired-subtree-remove))
+  :hook
+  (dired-mode . dired-subtree-setup)
+  :custom
+  (dired-subtree-use-backgrounds nil))
+
 (use-package eldoc-box
   ;; Annoying GUI
   :if (display-graphic-p)
@@ -211,6 +226,16 @@
                ([remap indent-format-buffer] . python-black-buffer)))
   :hook
   (python-ts-mode . python-black-setup))
+
+(use-package trashed
+  ;; Never used.
+  :bind (:map global-leader-map
+              ("m _" . trashed))
+  :config
+  (setq trashed-action-confirmer 'y-or-n-p)
+  (setq trashed-use-header-line t)
+  (setq trashed-sort-key '("Date deleted" . t))
+  (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 (use-package treemacs
   ;; Prefer emacs dired.

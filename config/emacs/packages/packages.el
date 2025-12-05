@@ -171,26 +171,12 @@
   :config
   (dimmer-mode))
 
-(use-package dired-subtree
-  :init
-  (defun dired-subtree-setup ()
-    (require 'dired-subtree))
-  :bind (:map dired-mode-map
-              ("<tab>" . dired-subtree-toggle)
-              ("TAB" . dired-subtree-toggle)
-              ("<backtab>" . dired-subtree-remove)
-              ("S-TAB" . dired-subtree-remove))
-  :hook
-  (dired-mode . dired-subtree-setup)
-  :custom
-  (dired-subtree-use-backgrounds nil))
-
 (use-package envrc
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))
 
 (use-package docker
-  :if (executable-find "docker")
+  :if (and (display-graphic-p) (executable-find "docker"))
   :bind (:map global-leader-map
               ("k o" . docker)))
 
@@ -330,7 +316,7 @@
   (yaml-mode . indent-bars-mode))
 
 (use-package kubernetes
-  :if (executable-find "kubectl")
+  :if (and (display-graphic-p) (executable-find "kubectl"))
   :commands (kubernetes-overview)
   :bind (:map global-leader-map
               ("k O" . kubernetes-overview))
@@ -552,15 +538,6 @@
    '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer)))
 
 (use-package transient) ;; needed by magit and forge
-
-(use-package trashed
-  :bind (:map global-leader-map
-              ("m _" . trashed))
-  :config
-  (setq trashed-action-confirmer 'y-or-n-p)
-  (setq trashed-use-header-line t)
-  (setq trashed-sort-key '("Date deleted" . t))
-  (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
 
 (use-package undo-tree
   :demand

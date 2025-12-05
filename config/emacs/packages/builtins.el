@@ -278,6 +278,8 @@
   ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
   (org-todo-keyword-faces '(("TODO" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
+                            ("REVIEW" . "goldenrod")
+                            ("BLOCKED" . "goldenrod")
                             ("DONE" . "dim gray")
                             ("BACKLOG" . "dim gray")
                             ("CANCELED" . "dim gray")))
