@@ -349,6 +349,7 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
                                ("CODE" . "goldenrod")
                                ("REVIEW" . "goldenrod")
                                ("DONE" . "dim gray")
+                               ("BACKLOG" . "dim gray")
                                ("CANCELED" . "dim gray")))
 
 #+end_src
