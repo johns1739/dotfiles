@@ -250,18 +250,20 @@
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :custom
   (gptel-default-mode 'org-mode)
-  :bind (:map global-leader-map
-              ("I" . gptel-menu)
-              ("i i" . gptel)
-              ("i A" . gptel-add)
-              ("i K" . gptel-context-remove-all)
-              ("i F" . gptel-add-file)
-              ("i R" . gptel-rewrite))
+  :bind ( :map global-leader-map
+          ("I" . gptel-menu)
+          ("i i" . gptel)
+          ("i A" . gptel-add)
+          ("i K" . gptel-context-remove-all)
+          ("i F" . gptel-add-file)
+          ("i R" . gptel-rewrite)
+          :map dired-mode-map
+          ("I" . gptel-add))
   :hook
   (gptel-mode . visual-line-mode)
   ;; (gptel-mode . gptel-highlight-mode) ;; Not available for some reason.
-   ;; (gptel-post-stream . gptel-auto-scroll) ;; Annoying.
-   ;; (gptel-post-response . gptel-beginning-of-response) ;; Doesn't always work.
+  ;; (gptel-post-stream . gptel-auto-scroll) ;; Annoying.
+  ;; (gptel-post-response . gptel-beginning-of-response) ;; Doesn't always work.
   :config
   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "* @user: ")
   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
