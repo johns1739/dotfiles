@@ -256,9 +256,7 @@
           ("i A" . gptel-add)
           ("i K" . gptel-context-remove-all)
           ("i F" . gptel-add-file)
-          ("i R" . gptel-rewrite)
-          :map dired-mode-map
-          ("I" . gptel-add))
+          ("i R" . gptel-rewrite))
   :hook
   (gptel-mode . visual-line-mode)
   ;; (gptel-mode . gptel-highlight-mode) ;; Not available for some reason.
@@ -267,6 +265,9 @@
   :config
   (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "* @user: ")
   (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
+  (with-eval-after-load 'dired-mode
+    (bind-keys :map dired-mode-map
+               ("I" . gptel-add)))
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic)
