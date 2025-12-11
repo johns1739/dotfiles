@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t -*-
 
-(setopt straight-check-for-modifications nil)
+(setopt straight-check-for-modifications '(check-on-save find-when-checking))
 
 (defvar bootstrap-version)
 
