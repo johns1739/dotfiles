@@ -530,9 +530,6 @@
   :bind (:map global-leader-map
               ("m p" . spacious-padding-mode)))
 
-;; TODO: If read-permission in magit persist, try using with ssh-agency
-;; (use-package ssh-agency)
-
 (use-package tmr
   :bind (:map global-leader-map
               ("m t" . tmr-tabulated-view))
