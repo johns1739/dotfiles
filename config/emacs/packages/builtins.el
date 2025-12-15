@@ -186,9 +186,9 @@
      try-expand-list
      try-expand-line
      try-expand-dabbrev
+     try-expand-dabbrev-all-buffers
      ;; try-expand-list-all-buffers
      ;; try-expand-line-all-buffers
-     ;; try-expand-dabbrev-all-buffers
      ;; try-expand-whole-kill ;; use M-y instead
      ;; try-expand-dabbrev-from-kill
      try-complete-file-name-partially
