@@ -175,11 +175,6 @@
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))
 
-(use-package docker
-  :if (and (display-graphic-p) (executable-find "docker"))
-  :bind (:map global-leader-map
-              ("k o" . docker)))
-
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
   :custom
@@ -318,15 +313,6 @@
   :hook
   (yaml-mode . indent-bars-mode))
 
-(use-package kubernetes
-  :if (and (display-graphic-p) (executable-find "kubectl"))
-  :commands (kubernetes-overview)
-  :bind (:map global-leader-map
-              ("k O" . kubernetes-overview))
-  :custom
-  (kubernetes-poll-frequency 3600)
-  (kubernetes-redraw-frequency 3600))
-
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
@@ -427,8 +413,8 @@
      '("t" . nil)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)
-     ;; '("U" . meow-undo-in-selection)
-     '("U" . undo-tree-redo)
+     '("U" . meow-undo-in-selection)
+     ;; '("U" . undo-tree-redo)
      '("v" . meow-page-down)
      '("V" . meow-page-up)
      '("w" . meow-mark-word)
@@ -512,19 +498,6 @@
   :config
   (simple-modeline-mode))
 
-(use-package sqlformat
-  :if (executable-find "pg_format")
-  :commands (sqlformat sqlformat-buffer)
-  :init
-  (defun sql-set-bindings ()
-    (bind-keys :map (current-local-map)
-               ([remap indent-format-buffer] . sqlformat-buffer)))
-  :hook
-  (sql-mode . sql-set-bindings)
-  :config
-  (setq sqlformat-command 'pgformatter)
-  (setq sqlformat-args '("-s2" "-g")))
-
 (use-package spacious-padding
   :if (display-graphic-p)
   :bind (:map global-leader-map
@@ -538,18 +511,6 @@
    '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer)))
 
 (use-package transient) ;; needed by magit and forge
-
-(use-package undo-tree
-  :demand
-  :custom
-  (undo-tree-visualizer-diff t)
-  (undo-tree-visualizer-timestamps t)
-  :config
-  (let ((undo-tree-dir (locate-user-emacs-file "undo-tree-history")))
-    (unless (file-exists-p undo-tree-dir)
-      (make-directory undo-tree-dir))
-    (setq undo-tree-history-directory-alist `(("." . ,undo-tree-dir))))
-  (global-undo-tree-mode 1))
 
 (use-package vertico
   :demand

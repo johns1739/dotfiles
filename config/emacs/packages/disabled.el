@@ -63,6 +63,11 @@
   :custom
   (dired-subtree-use-backgrounds nil))
 
+(use-package docker
+  :if (and (display-graphic-p) (executable-find "docker"))
+  :bind (:map global-leader-map
+              ("k o" . docker)))
+
 (use-package eldoc-box
   ;; Annoying GUI
   :if (display-graphic-p)
@@ -139,6 +144,15 @@
   ;; never really used and there are compilation errors.
   :bind (("M-$" . jinx-correct)
          ([remap flyspell-mode] . jinx-mode)))
+
+(use-package kubernetes
+  :if (and (display-graphic-p) (executable-find "kubectl"))
+  :commands (kubernetes-overview)
+  :bind (:map global-leader-map
+              ("k O" . kubernetes-overview))
+  :custom
+  (kubernetes-poll-frequency 3600)
+  (kubernetes-redraw-frequency 3600))
 
 (use-package lsp-mode
   ;; preferred eglot
@@ -253,6 +267,18 @@
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-project-follow-mode t))
+
+(use-package undo-tree
+  :demand
+  :custom
+  (undo-tree-visualizer-diff t)
+  (undo-tree-visualizer-timestamps t)
+  :config
+  (let ((undo-tree-dir (locate-user-emacs-file "undo-tree-history")))
+    (unless (file-exists-p undo-tree-dir)
+      (make-directory undo-tree-dir))
+    (setq undo-tree-history-directory-alist `(("." . ,undo-tree-dir))))
+  (global-undo-tree-mode 1))
 
 (use-package vterm
   ;; Eat is a better termianl emulator.

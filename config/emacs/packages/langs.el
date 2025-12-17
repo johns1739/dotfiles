@@ -240,6 +240,19 @@
                        :references t
                        :folding t))))))
 
+(use-package sqlformat
+  :if (executable-find "pg_format")
+  :commands (sqlformat sqlformat-buffer)
+  :init
+  (defun sql-set-bindings ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-format-buffer] . sqlformat-buffer)))
+  :hook
+  (sql-mode . sql-set-bindings)
+  :config
+  (setq sqlformat-command 'pgformatter)
+  (setq sqlformat-args '("-s2" "-g")))
+
 (use-package terraform-mode
   :mode "\\.tf\\'"
   :custom
