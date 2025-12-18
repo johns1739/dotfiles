@@ -223,7 +223,7 @@
 (setq kept-old-versions 2)
 (setq version-control t)
 (setq vc-make-backup-files t)
-(let ((backup-directory (locate-user-emacs-file "backup-versions")))
+(let ((backup-directory (expand-file-name "~/.backups")))
   (unless (file-exists-p backup-directory)
     (make-directory backup-directory))
   (setq backup-directory-alist `(("." . ,backup-directory))))
