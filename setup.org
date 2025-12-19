@@ -62,19 +62,13 @@ alias lg="lazygit"
 
 # emacs
 alias emacs="emacs -nw"
-alias e="emacs -nw --init-directory=~/.config/emacs/slim"
+alias e="emacs -nw"
 # NOTE: Do not set TERM, conflicts with Eat-Integration
 [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
     source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 
 # direnv
 eval "$(direnv hook zsh)"
-
-# docker
-alias dc="docker container"
-alias dcget="dc ls --format 'table {{.ID}}\t{{.Image}}\t{{.Names}}' | tail -n +2 | fzf | awk '{printf \$1}' | tee >(pbcopy)"
-alias dcstop="docker stop $$(docker ps -a -q)"
-alias dl="docker logs -fn0"
 
 # fzf
 source <(fzf --zsh)
@@ -308,9 +302,9 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 ;; Color theme
 
 (if (display-graphic-p)
-    (load-theme 'gruvbox-dark-hard :no-confirm-loading)
+    (load-theme 'darktooth :no-confirm-loading)
   (progn
-    (load-theme 'modus-vivendi-tritanopia :no-confirm-loading)
+    (load-theme 'creamsody :no-confirm-loading)
     (set-face-background 'default "unspecified")))
 
 (setq gptel-model 'claude-sonnet-4)

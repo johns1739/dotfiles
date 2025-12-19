@@ -24,11 +24,11 @@
 ;; Install early for downstream dependencies
 
 (use-package exec-path-from-shell
+  :demand
   ;; If issues with git read/write access:
   ;; (exec-path-from-shell-copy-env "SSH_AGENT_PID")
   ;; (exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
-  :demand
   :custom
   (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
