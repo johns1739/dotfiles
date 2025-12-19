@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package ace-window
+  :if (display-graphic-p)
   :bind  (([remap other-window] . ace-window)
           :map goto-map
           ("w 0" . ace-delete-window)
@@ -80,7 +81,7 @@
   (setq xref-show-definitions-function #'consult-xref)
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
-    (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))  
+    (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
   :config
   (if (executable-find "fd")
       (bind-keys :map search-map
@@ -97,22 +98,23 @@
   ;; M-x copilot-login
   :if (executable-find "npm")
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :bind (:map global-leader-map
-         ("i c" . copilot-mode)
-         :map copilot-completion-map
-         ("M-f" . copilot-accept-completion-by-word)
-         ("M-e" . copilot-accept-completion-by-line)
-         ("M-<return>" . copilot-accept-completion))
+  :bind ( :map global-leader-map
+          ("i c" . copilot-mode)
+          :map copilot-completion-map
+          ("M-f" . copilot-accept-completion-by-word)
+          ("M-e" . copilot-accept-completion-by-line)
+          ("M-<return>" . copilot-accept-completion))
   :custom
   (corfu-auto nil)
   (copilot-idle-delay 0.5)
   (copilot-indent-offset-warning-disable t)
   (copilot-max-char-warning-disable t)
   :custom-face
-  (copilot-overlay-face ((t (:family "JetBrainsMonoNL Nerd Font Mono"
-                                     :slant italic
-                                     :weight ultra-light
-                                     :inherit completions-annotations)))))
+  (copilot-overlay-face
+   ((t ( :family "JetBrainsMonoNL Nerd Font Mono"
+         :slant italic
+         :weight ultra-light
+         :inherit completions-annotations)))))
 
 (use-package corfu
   :demand
@@ -154,6 +156,7 @@
   :bind (:map search-map ("g" . deadgrep)))
 
 (use-package diff-hl
+  :if (display-graphic-p)
   ;; not really used, better to use magit-diff.
   :bind (:map global-leader-map
               ("m d" . diff-hl-show-hunk))
@@ -284,6 +287,9 @@
   ;; Run M-x auth-source-forget-all-cached
   :commands (forge-dispatch)
   :custom
+  ;; password authentication service
+  ;; To reload authinfo:
+  ;; (auth-source-forget-all-cached)
   (auth-sources '("~/.authinfo")))
 
 (use-package helpful

@@ -208,11 +208,6 @@
 (setq recentf-max-saved-items 100)
 (recentf-mode 1)
 
-;; password authentication service
-;; To reload authinfo:
-;; (auth-source-forget-all-cached)
-(setq auth-sources '("~/.authinfo"))
-
 ;; backup settings
 (setq create-lockfiles nil)
 (setq make-backup-files t)
