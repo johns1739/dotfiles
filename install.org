@@ -1,21 +1,17 @@
-* OS Setup
-** Install Brew
+#+STARTUP: show2levels content
+
+* Install
+** Brew & Packages
+*** Install
 #+begin_src bash
-
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
 # Follow instructions before running update
 brew update
-
 #+end_src
 
-** Install Dependencies
+*** Dependencies
 #+begin_src bash
-
-curl https://sh.rustup.rs -sSf | sh
-
 brew install --cask font-jetbrains-mono-nerd-font
-
 brew install asdf
 brew install btop
 brew install direnv
@@ -26,10 +22,11 @@ brew install jq
 brew install lazygit
 brew install ripgrep
 brew install tlrc
-
+curl https://sh.rustup.rs -sSf | sh
 #+end_src
 
-** Zshrc
+** Zsh
+*** zshrc
 #+begin_src bash
 
 #!/bin/zsh
@@ -109,9 +106,8 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 
 #+end_src
 
-** Zshenv
+*** zshenv
 #+begin_src bash
-
 #!/bin/zsh
 
 # NOTE: Do not set TERM, conflicts with Eat-Integration
@@ -122,8 +118,8 @@ export TIMEFMT=$'%J\n%U user\n%S system\n%P cpu\n%*E total'
 
 #+end_src
 
-* Git
-** git/config
+** Git
+*** git/config
 #+begin_src conf
 [user]
 name = Juan Banda
@@ -172,7 +168,7 @@ sort = -committerdate
 
 #+end_src
 
-** Maintenance
+*** Maintenance
 Run this command in main repos
 #+begin_src shell
 
@@ -180,8 +176,8 @@ git maintenance start
 
 #+end_src
 
-* Ghostty
-** Installation
+** Ghostty
+*** Installation
 #+begin_src bash
 
 ln -s ~/workspaces/dotfiles/config/ghostty ~/.config/ghostty
@@ -189,7 +185,7 @@ brew install --cask ghostty
 
 #+end_src
 
-** ~/.config/ghostty/config
+*** ~/.config/ghostty/config
 #+begin_src conf
 
 # ghostty +help
@@ -253,8 +249,8 @@ keybind = super+,>super+y=write_scrollback_file:paste
 
 #+end_src
 
-* Emacs
-** Installation
+** Emacs
+*** Installation
 #+begin_src bash
 
 ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
@@ -273,59 +269,19 @@ brew install emacs-plus@31 \
 
 #+end_src
 
-** Minimal Installation
+*** Minimal Installation
 #+begin_src bash
 
 mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim -o ~/.config/emacs
 
 #+end_src
 
-** ~/.config/emacs/custom.el
-#+begin_src elisp
-
-;; -*- lexical-binding: t; -*-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "JetBrainsMonoNL Nerd Font Mono" :foundry "nil" :slant normal :weight light :height 130 :width normal)))))
-
-;; Color theme
-
-(if (display-graphic-p)
-    (load-theme 'darktooth :no-confirm-loading)
-  (progn
-    (load-theme 'creamsody :no-confirm-loading)
-    (set-face-background 'default "unspecified")))
-
-(setq gptel-model 'claude-sonnet-4)
-(setq gptel-backend (gptel-make-gh-copilot "Copilot"))
-
-(add-hook 'prog-mode-hook #'copilot-mode)
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(add-hook 'prog-mode-hook #'indent-bars-mode)
-
-(add-to-list 'exec-path "~/.local/elixir-ls")
-
-(exec-path-from-shell-copy-env "SSH_AGENT_PID")
-(exec-path-from-shell-copy-env "SSH_AUTH_SOCK")
-
-#+end_src
-
-** Org
-*** File Keyword Configuration
+*** Custom.el
+*** Org
+**** File Keyword Configuration
 #+begin_src verbatim
 
-#+STARTUP: content logdone hidestars indent logdrawer
+#+STARTUP: show2levels content logdone hidestars indent logdrawer
 #+CATEGORY: tasks
 #+TAGS: doc(d) epic(e) initiative(i) story(s)
 #+TODO: TODO(t!) ACTIVE(a!) | DONE(d!)
@@ -334,7 +290,7 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 
 #+end_src
 
-*** Faces for TODO keywords
+**** Faces for TODO keywords
 #+begin_src emacs-lisp
 
 (setq org-todo-keyword-faces '(("TODO" . "steel blue")
@@ -348,9 +304,9 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 
 #+end_src
 
-** eglot workspace configurations
+*** eglot workspace configurations
 
-*** Pylsp + Flake8
+**** Pylsp + Flake8
 =.dir-locals.el=
 #+begin_src lisp-data
 
@@ -363,8 +319,8 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 
 #+end_src
 
-* Sqlite
-** ~/.sqliterc
+** Sqlite
+*** ~/.sqliterc
 #+begin_src conf
 
 .headers on
@@ -374,8 +330,8 @@ mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dot
 
 #+end_src
 
-* Tmux
-** ~/.config/tmux/config
+** Tmux
+*** ~/.config/tmux/config
 #+begin_src conf
 
 # tmux list-keys
@@ -404,18 +360,18 @@ set -g @plugin 'catppuccin/tmux'
 run '~/.tmux/plugins/tpm/tpm'
 
 #+end_src
-* Python
-** Auto Activate Venv
-*** .envrc @ project-dir
+** Python
+*** Auto Activate Venv
+**** .envrc @ project-dir
 #+begin_src bash
 
 source ./venv/bin/activate
 
 #+end_src
 
-** LSP Workspace Configuration Example
+*** LSP Workspace Configuration Example
  
-*** .dir-locals.el
+**** .dir-locals.el
 #+begin_src emacs-lisp
 
 ((nil . ((eglot-workspace-configuration
