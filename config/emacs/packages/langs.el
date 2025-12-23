@@ -166,10 +166,8 @@
 
 (use-package python-mode
   :straight nil
-  :mode "\\.py$"
+  :mode "\\.py\\'"
   :init
-  ;; Run in init because :config does not execute
-  ;; for whatever reason.
   ;; Disabled ts because of gcc/libgccjit issues in emacs.
   ;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   (defun python-setup ()

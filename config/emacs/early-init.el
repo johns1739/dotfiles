@@ -19,20 +19,20 @@
 (setq gc-cons-threshold (* 64 1024 1024)) ;; 64MB
 
 ;; Silence logs
-(setq byte-compile-warnings '(not obsolete))
-(setq warning-suppress-log-types '((comp) (bytecomp)))
-(setq native-comp-async-report-warnings-errors 'silent)
-(setq inhibit-startup-echo-area-message 't)
+;; (setopt byte-compile-warnings '())
+(setopt warning-suppress-log-types '((comp) (bytecomp)))
+(setopt native-comp-async-report-warnings-errors 'silent)
+(setopt inhibit-startup-echo-area-message "")
 
 ;; package configuration, using straight instead.
-(setq package-enable-at-startup nil)
+(setopt package-enable-at-startup nil)
 
 ;; GUI Elements
-(setq frame-resize-pixelwise t)
-(setq frame-inhibit-implied-resize t)
-(setq frame-title-format '("Emacs"))
-(setq mode-line-format nil)
-(setq inhibit-compacting-font-caches t)
+(setopt frame-resize-pixelwise t)
+(setopt frame-inhibit-implied-resize t)
+(setopt frame-title-format '("Emacs"))
+(setopt mode-line-format nil)
+(setopt inhibit-compacting-font-caches t)
 
 (menu-bar-mode -1)
 (tooltip-mode -1)

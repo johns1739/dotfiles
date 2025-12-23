@@ -178,7 +178,8 @@
 (setq require-final-newline t)
 
 ;; window settings
-(window-divider-mode -1)
+(unless (display-graphic-p)
+  (window-divider-mode -1))
 (setq auto-window-vscroll nil)
 
 ;; minibuffer settings

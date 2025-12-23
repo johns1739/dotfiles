@@ -9,7 +9,7 @@
   (defvar emacs-upgrade-alist
     '(straight-pull-all
       straight-rebuild-all
-      treesit-pull-all
+      treesit-install-all
       eglot-upgrade-eglot)
     "List of functions to run on upgrade action.")
   (defun emacs-upgrade ()
@@ -352,12 +352,12 @@
 (use-package treesit
   :straight nil
   :init
-  (defun treesit-pull-all ()
+  (defun treesit-install-all ()
     "Install all language grammars registered with Treesitter"
     (interactive)
     (require 'treesit)
     (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
-  :commands (treesit-pull-all)
+  :commands (treesit-install-all)
   :config
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
