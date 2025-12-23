@@ -63,11 +63,6 @@
   :custom
   (dired-subtree-use-backgrounds nil))
 
-(use-package docker
-  :if (and (display-graphic-p) (executable-find "docker"))
-  :bind (:map global-leader-map
-              ("k o" . docker)))
-
 (use-package eldoc-box
   ;; Annoying GUI
   :if (display-graphic-p)

@@ -174,6 +174,15 @@
   :config
   (dimmer-mode))
 
+(use-package docker
+  :if (and (display-graphic-p) (executable-find "docker"))
+  :bind (:map global-leader-map
+              ("k o" . docker))
+  :config
+  (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
+                          docker-container-columns)))
+    (plist-put column :width 62)))
+
 (use-package envrc
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))
