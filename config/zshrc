@@ -1,0 +1,61 @@
+#!/bin/zsh
+
+autoload -U colors && colors
+autoload -U select-word-style
+
+select-word-style bash
+bindkey -e # emacs mode
+
+# NOTE: Do not set TERM, conflicts with Eat-Integration
+
+EDITOR="emacs"
+NEWLINE=$'\n'
+PROMPT="%B%{$(tput setaf 220)%}%n @ %~$NEWLINE\$%b "
+SUDO_EDITOR="$EDITOR"
+TIMEFMT=$'%J\n%U user\n%S system\n%P cpu\n%*E total'
+VISUAL="emacs"
+
+export ASDF_DIR="$HOME/.asdf"
+export GPG_TTY=$(tty)
+export GOPATH="$HOME/go"
+export PATH="$ASDF_DIR/shims:$PATH"
+export PATH="$GOPATH/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+
+alias ....='cd ../../..'
+alias ...='cd ../..'
+alias ..='cd ..'
+alias e="emacs -nw"
+alias emacs="emacs -nw"
+alias grep="grep --line-buffered --color"
+alias l="less"
+alias lg="lazygit"
+alias ll="ls -lh --color"
+alias reload="source ~/.zshrc"
+alias rgrep="grep --color -rnIi"
+alias top="btop"
+
+# history
+# https://postgresqlstan.github.io/cli/zsh-history-options/
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+# setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+# setopt SHARE_HISTORY             # Share history between all sessions.
+setopt APPEND_HISTORY            # append to history file
+setopt HIST_BEEP                 # Beep when accessing nonexistent history.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
+setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+setopt HIST_NO_STORE             # Don't store history commands
+setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+
+[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/zsh"
+eval "$(direnv hook zsh)"
+source <(fzf --zsh)

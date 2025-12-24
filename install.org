@@ -1,384 +1,137 @@
 #+STARTUP: show2levels content
 
 * Install
-** Brew & Packages
-*** Install
+** Dependencies
 #+begin_src bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#+end_src
+
+#+begin_src bash
 # Follow instructions before running update
 brew update
 #+end_src
 
-*** Dependencies
+#+begin_src bash
+brew install -v --quiet \
+     asdf \
+     btop \
+     direnv \
+     fd  \
+     fzf  \
+     gcc \
+     git  \
+     gnupg  \
+     jq \
+     libgccjit \
+     lazygit \
+     ripgrep \
+     tlrc 
+#+end_src
+
+#+begin_src bash
+brew install --cask ghostty
+#+end_src
+
 #+begin_src bash
 brew install --cask font-jetbrains-mono-nerd-font
-brew install asdf
-brew install btop
-brew install direnv
-brew install fd 
-brew install fzf 
-brew install git 
-brew install jq
-brew install lazygit
-brew install ripgrep
-brew install tlrc
+#+end_src
+
+#+begin_src bash
 curl https://sh.rustup.rs -sSf | sh
 #+end_src
 
-** Zsh
-*** zshrc
 #+begin_src bash
-
-#!/bin/zsh
-
-autoload -U colors && colors
-NEWLINE=$'\n'
-PROMPT="%B%{$(tput setaf 220)%}%n @ %~$NEWLINE\$%b "
-
-autoload -U select-word-style
-select-word-style bash
-bindkey -e # emacs mode
-
-alias reload="source ~/.zshrc"
-
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-
-# utilities
-alias l="less"
-alias ll="ls -lh --color"
-alias grep="grep --line-buffered --color"
-alias rgrep="grep --color -rnIi"
-
-# btop
-alias top="btop"
-
-# lazygit
-alias lg="lazygit"
-
-# emacs
-alias emacs="emacs -nw"
-alias e="emacs -nw"
-# NOTE: Do not set TERM, conflicts with Eat-Integration
-[ -n "$EAT_SHELL_INTEGRATION_DIR" ] && \
-    source "$EAT_SHELL_INTEGRATION_DIR/zsh"
-
-# direnv
-eval "$(direnv hook zsh)"
-
-# fzf
-source <(fzf --zsh)
-
-# asdf
-export ASDF_DIR="$HOME/.asdf"
-export PATH="$ASDF_DIR/shims:$PATH"
-
-# golang
-export GOPATH="$HOME/go"
-export PATH="$GOPATH/bin:$PATH"
-
-# cargo
-export PATH="$HOME/.cargo/bin:$PATH"
-
-# local bin
-export PATH="$HOME/.local/bin:$PATH"
-
-# history
-# https://postgresqlstan.github.io/cli/zsh-history-options/
-HISTFILE="$HOME/.zsh_history"
-HISTSIZE=100000
-SAVEHIST=$HISTSIZE
-# setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
-# setopt SHARE_HISTORY             # Share history between all sessions.
-setopt APPEND_HISTORY            # append to history file
-setopt HIST_BEEP                 # Beep when accessing nonexistent history.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
-setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
-setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
-setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
-setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
-setopt HIST_NO_STORE             # Don't store history commands
-setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
-setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
-setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-
-#+end_src
-
-*** zshenv
-#+begin_src bash
-#!/bin/zsh
-
-# NOTE: Do not set TERM, conflicts with Eat-Integration
-export EDITOR="emacs -nw --init-directory=~/.config/emacs/slim"
-export VISUAL="emacs -nw --init-directory=~/.config/emacs/slim"
-export SUDO_EDITOR="$EDITOR"
-export TIMEFMT=$'%J\n%U user\n%S system\n%P cpu\n%*E total'
-
-#+end_src
-
-** Git
-*** git/config
-#+begin_src conf
-[user]
-name = Juan Banda
-email = jubajr17@gmail.com
-
-[core]
-autocrlf = input
-
-[merge]
-ff = only
-
-[alias]
-p = push
-st = status -sb
-ll = log --oneline
-last = log -1 HEAD --stat
-cm = commit -m
-rv = remote -v
-d = diff
-dv = difftool -t vimdiff -y
-gl = config --global -l
-se = !git rev-list --all | xargs git grep -F
-cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
-
-[init]
-defaultBranch = main
-
-[push]
-default = current
-autoSetupRemote = true
-
-[filter "lfs"]
-smudge = git-lfs smudge -- %f
-process = git-lfs filter-process
-required = true
-clean = git-lfs clean -- %f
-
-[rerere]
-enabled = true
-
-[column]
-ui = auto
-
-[branch]
-sort = -committerdate
-
-#+end_src
-
-*** Maintenance
-Run this command in main repos
-#+begin_src shell
-
-git maintenance start
-
-#+end_src
-
-** Ghostty
-*** Installation
-#+begin_src bash
-
-ln -s ~/workspaces/dotfiles/config/ghostty ~/.config/ghostty
-brew install --cask ghostty
-
-#+end_src
-
-*** ~/.config/ghostty/config
-#+begin_src conf
-
-# ghostty +help
-# +version
-# +help
-# +list-fonts
-# +list-keybinds --docs --default
-# +list-themes
-# +list-colors
-# +list-actions --docs
-# +show-config
-# +validate-config
-# +show-face
-# +crash-report
-
-background-opacity = 0.95
-font-size = 13
-theme = dark:Arthur,light:Desert
-unfocused-split-opacity = 0.6
-
-# behavior settings
-quit-after-last-window-closed = true
-scrollback-limit = 1073741824
-window-save-state = always
-copy-on-select = clipboard
-
-# window look & feel
-window-theme = dark
-window-decoration = auto
-window-height = 45
-window-width = 120
-window-padding-x = 2,4
-window-padding-y = 2,4
-window-padding-balance = true
-window-padding-color = background
-
-# cursor settings
-cursor-style = block
-cursor-style-blink = true
-mouse-hide-while-typing = true
-
-# disable ligatures
-font-feature = -calt
-font-feature = -liga
-font-feature = -dlig
-
-# Keybindings
-
-## Quick Terminal Prompt
-keybind = super+`=toggle_quick_terminal
-keybind = super+shift+;=toggle_command_palette
-
-## screen navigation
-keybind = super+shift+p=jump_to_prompt:-1
-keybind = super+shift+n=jump_to_prompt:1
-
-## saving screen output
-keybind = super+,>y=write_screen_file:paste
-keybind = super+,>shift+y=write_selection_file:paste
-keybind = super+,>super+y=write_scrollback_file:paste
-
-#+end_src
-
-** Emacs
-*** Installation
-#+begin_src bash
-
-ln -s ~/workspaces/dotfiles/config/emacs ~/.config/emacs
-
 cargo install emacs-lsp-booster
+#+end_src
 
+#+begin_src bash
 brew tap d12frosted/emacs-plus
-
+brew update
 # brew uninstall emacs-plus@31 && brew reinstall gcc libgccjit
 brew install emacs-plus@31 \
      --with-modern-black-dragon-icon \
      --with-debug \
      --with-imagemagick \
      --with-mailutils \
-     --with-no-frame-refocus
-
+     --with-no-frame-refocus \
+     --with-dbus
 #+end_src
 
-*** Minimal Installation
+** Configs
+*** Zsh
+#+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+ln -s $current_dirpath/config/zshrc ~/.zshrc
+#+end_src
+
+*** Git
+#+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+mkdir -p ~/.config/git
+ln -s $current_dirpath/config/gitconfig ~/.config/git/config
+#+end_src
+
+Run command in main repos
 #+begin_src bash
-
-mkdir -p ~/.config && curl -XGET https://raw.githubusercontent.com/johns1739/dotfiles/refs/heads/main/config/emacs/slim -o ~/.config/emacs
-
+git maintenance start
 #+end_src
 
-*** Custom.el
-*** Org
-**** File Keyword Configuration
-#+begin_src verbatim
+*** Ghostty
+#+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+mkdir -p ~/.config/ghostty
+ln -s $current_dirpath/config/ghosttyconfig ~/.config/ghostty/config
+#+end_src
 
+*** Emacs
+#+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+mkdir -p ~/.config/emacs
+ln -s $current_dirpath/config/emacs/early-init.el ~/.config/emacs/early-init.el
+ln -s $current_dirpath/config/emacs/init.el ~/.config/emacs/init.el
+ln -s $current_dirpath/config/emacs/packages ~/.config/emacs/packages
+ln -s $current_dirpath/config/emacs/snippets ~/.config/emacs/snippets
+#+end_src
+
+**** Example Custom.el
+**** Example ORG
+File Keyword Configuration
+#+begin_src verbatim
 #+STARTUP: show2levels content logdone hidestars indent logdrawer
 #+CATEGORY: tasks
 #+TAGS: doc(d) epic(e) initiative(i) story(s)
 #+TODO: TODO(t!) ACTIVE(a!) | DONE(d!)
 #+TODO: DESIGN(s!) CODE(c!) REVIEW(r!) | DONE(d!)
 #+TODO: | CANCELED(k@)
-
 #+end_src
 
-**** Faces for TODO keywords
+Faces for TODO Keywords
 #+begin_src emacs-lisp
-
-(setq org-todo-keyword-faces '(("TODO" . "steel blue")
-                               ("ACTIVE" . "light goldenrod")
-                               ("DESIGN" . "goldenrod")
-                               ("CODE" . "goldenrod")
-                               ("REVIEW" . "goldenrod")
-                               ("DONE" . "dim gray")
-                               ("BACKLOG" . "dim gray")
-                               ("CANCELED" . "dim gray")))
-
+(setq org-todo-keyword-faces 
+      '(("TODO" . "steel blue")
+        ("ACTIVE" . "light goldenrod")
+        ("DESIGN" . "goldenrod")
+        ("CODE" . "goldenrod")
+        ("REVIEW" . "goldenrod")
+        ("DONE" . "dim gray")
+        ("BACKLOG" . "dim gray")
+        ("CANCELED" . "dim gray")))
 #+end_src
 
-*** eglot workspace configurations
-
-**** Pylsp + Flake8
+**** Example Eglot
 =.dir-locals.el=
 #+begin_src lisp-data
-
 ((nil . ((eglot-workspace-configuration
           . ( :pylsp ( :plugins ( :pycodestyle (:enabled :json-false)
                                   :mccabe (:enabled :json-false)
                                   :pyflakes (:enabled :json-false)
                                   :flake8 (:enabled t))
                        :configurationSources ["flake8"]))))))
-
 #+end_src
 
-** Sqlite
-*** ~/.sqliterc
-#+begin_src conf
-
-.headers on
-.mode table
-.timer on
-.changes on
-
+*** Sqlite
+#+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+ln -s $current_dirpath/config/sqliterc ~/.sqliterc
 #+end_src
 
-** Tmux
-*** ~/.config/tmux/config
-#+begin_src conf
-
-# tmux list-keys
-# tmux info
-
-# install plugins = prefix + I
-# update plugins = prefix + U
-
-unbind C-b
-bind C-Space send-prefix
-set -g prefix C-Space
-
-bind R source-file ~/.config/tmux/tmux.conf
-
-set -g mode-keys emacs
-set -g base-index 1
-set -g pane-base-index 1
-set -g automatic-rename off
-set -g renumber-windows on
-
-set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-sensible'
-set -g @plugin 'tmux-plugins/tmux-pain-control'
-set -g @plugin 'catppuccin/tmux'
-
-run '~/.tmux/plugins/tpm/tpm'
-
-#+end_src
-** Python
-*** Auto Activate Venv
-**** .envrc @ project-dir
-#+begin_src bash
-
-source ./venv/bin/activate
-
-#+end_src
-
-*** LSP Workspace Configuration Example
- 
-**** .dir-locals.el
-#+begin_src emacs-lisp
-
-((nil . ((eglot-workspace-configuration
-          . (:pylsp (:plugins (:pycodestyle (:enabled :json-false)
-                                            :mccabe (:enabled :json-false)
-                                            :pyflakes (:enabled :json-false)
-                                            :flake8 (:enabled t))
-                              :configurationSources ["flake8"]))))))
-
+*** Tmux
+#+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+mkdir -p ~/.config/tmux
+ln -s $current_dirpath/config/tmuxconfig ~/.config/tmux/config
 #+end_src
