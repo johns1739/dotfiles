@@ -54,6 +54,7 @@
 
            ;; Settings (Look & Feel)
            (", ," . open-custom-file)
+           (", <" . open-init-file)
            (", SPC" . load-theme)
            (", =" . global-text-scale-adjust)
            (", D" . toggle-debug-on-error)

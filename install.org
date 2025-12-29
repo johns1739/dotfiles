@@ -71,11 +71,15 @@ ln -s $current_dirpath/config/zshrc ~/.zshrc
 #+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
 mkdir -p ~/.config/git
 ln -s $current_dirpath/config/gitconfig ~/.config/git/config
+ln -s $current_dirpath/config/gitignore ~/.config/git/ignore
 #+end_src
 
-Run command in main repos
 #+begin_src bash
-git maintenance start
+touch ~/.gitconfig-company
+cat <<EOF > ~/.gitconfig
+[includeIf "gitdir:~/company/"]
+	path = ~/.gitconfig-company
+EOF
 #+end_src
 
 *** Ghostty

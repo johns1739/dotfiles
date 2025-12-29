@@ -1,7 +1,6 @@
 # Run command in repos:
 # git maintenance start
 
-
 [core]
 autocrlf = input
 
@@ -42,4 +41,3 @@ ui = auto
 
 [branch]
 sort = -committerdate
-

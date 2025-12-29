@@ -2,21 +2,6 @@
 
 (use-package emacs
   :straight nil
-  :bind (:map global-leader-map
-              (", U" . emacs-upgrade))
-  :init
-  (defvar emacs-upgrade-alist
-    '(straight-pull-all
-      straight-rebuild-all
-      treesit-install-all
-      eglot-upgrade-eglot)
-    "List of functions to run on upgrade action.")
-  (defun emacs-upgrade ()
-    "Run upgrade functions in `emacs-upgrade-alist`."
-    (interactive)
-    (dolist (fn emacs-upgrade-alist)
-      (funcall fn))
-    (message "Emacs upgrade complete."))
   :custom
   (auto-revert-avoid-polling t)
   (auto-window-vscroll nil)
