@@ -3,6 +3,5 @@
 # key: ,json
 # --
 #+begin_src json-ts
-
 $0
 #+end_src

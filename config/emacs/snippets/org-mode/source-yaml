@@ -3,6 +3,5 @@
 # key: ,yaml
 # --
 #+begin_src yaml
-
 $0
 #+end_src

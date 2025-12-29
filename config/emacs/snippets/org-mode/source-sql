@@ -3,6 +3,5 @@
 # key: ,sql
 # --
 #+begin_src sql :results output table
-
 $0
 #+end_src

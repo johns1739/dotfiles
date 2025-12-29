@@ -3,6 +3,5 @@
 # key: ,diff
 # --
 #+begin_src diff
-
 $0
 #+end_src
