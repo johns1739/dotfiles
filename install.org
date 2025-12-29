@@ -82,6 +82,7 @@ ln -s $current_dirpath/config/ghosttyconfig ~/.config/ghostty/config
 
 *** Emacs
 #+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+export current_dirpath=${current_dirpath:=pwd}
 mkdir -p ~/.config/emacs
 ln -s $current_dirpath/config/emacs/early-init.el ~/.config/emacs/early-init.el
 ln -s $current_dirpath/config/emacs/init.el ~/.config/emacs/init.el
@@ -90,6 +91,41 @@ ln -s $current_dirpath/config/emacs/snippets ~/.config/emacs/snippets
 #+end_src
 
 **** Example Custom.el
+#+begin_src elisp
+;; -*- lexical-binding: t; -*-
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "JetBrainsMonoNL Nerd Font Mono" :foundry "nil" :slant normal :weight light :height 130 :width normal)))))
+
+(if (display-graphic-p)
+    (load-theme 'darktooth :no-confirm-loading)
+  (progn
+    (load-theme 'creamsody :no-confirm-loading)
+    (set-face-background 'default "unspecified")))
+
+(setq gptel-model 'claude-sonnet-4)
+(setq gptel-backend (gptel-make-gh-copilot "Copilot"))
+
+(add-hook 'prog-mode-hook #'copilot-mode)
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(add-hook 'prog-mode-hook #'indent-bars-mode)
+
+(add-to-list 'exec-path "~/.local/elixir-ls")
+
+#+end_src
+
+
 **** Example ORG
 File Keyword Configuration
 #+begin_src verbatim
