@@ -71,7 +71,7 @@
          ("s" . consult-ripgrep)
          :map goto-map
          ("I" . consult-imenu-multi)
-         ("o" . consult-outline))
+         ("h" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :init
