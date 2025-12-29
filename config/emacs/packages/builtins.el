@@ -1,6 +1,5 @@
 ;;; -*- lexical-binding: t -*-
 
-;; Catch-all
 (use-package emacs
   :straight nil
   :bind (:map global-leader-map
@@ -17,7 +16,106 @@
     (interactive)
     (dolist (fn emacs-upgrade-alist)
       (funcall fn))
-    (message "Emacs upgrade complete.")))
+    (message "Emacs upgrade complete."))
+  :custom
+  (auto-revert-avoid-polling t)
+  (auto-window-vscroll nil)
+  (backup-by-copying t)
+  (backup-directory-alist '(("." . "~/.backups")))
+  (completion-auto-help 'always)
+  (completion-auto-select 'second-tab)
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles . (basic partial-completion)))))
+  (completion-cycle-threshold 3)
+  (completion-ignore-case t)
+  (completion-styles '(basic substring partial-completion))
+  (completions-detailed t)
+  (completions-format 'one-column)
+  (completions-max-height 20)
+  (confirm-kill-emacs 'y-or-n-p)
+  (create-lockfiles nil)
+  (delete-by-moving-to-trash t)
+  (delete-old-versions t)
+  (dired-auto-revert-buffer t)
+  (dired-dwim-target t)
+  (dired-dwim-target t)
+  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-listing-switches "-alh")
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'always)
+  (display-time-default-load-average nil)
+  (duplicate-line-final-position 1)
+  (eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
+  (enable-recursive-minibuffers t) ;; Might be confusing
+  (fast-but-imprecise-scrolling t)
+  (global-auto-revert-non-file-buffers t)
+  (history-delete-duplicates t)
+  (history-length 1000)
+  (imenu-max-item-length 80)
+  (inhibit-startup-message t)
+  (initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
+  (isearch-wrap-pause 'no)
+  (kept-new-versions 6)
+  (kept-old-versions 2)
+  (kill-do-not-save-duplicates t)
+  (make-backup-files t)
+  (max-mini-window-height 0.2)
+  (next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
+  (next-error-highlight 1.0)
+  (next-error-highlight-no-select 1.0)
+  (next-error-message-highlight t)
+  (next-error-recenter '(4))
+  (recentf-auto-cleanup 300)
+  (recentf-max-saved-items 100)
+  (register-preview-delay 0.5)
+  (require-final-newline t)
+  (ring-bell-function 'ignore)
+  (scroll-conservatively most-positive-fixnum)
+  (scroll-margin 2)
+  (scroll-preserve-screen-position t)
+  (show-paren-context-when-offscreen 'show-paren-context-when-offscreen)
+  (tab-always-indent t)
+  (use-dialog-box nil)
+  (use-short-answers t)
+  (vc-handled-backends '(Git))
+  (vc-make-backup-files t)
+  (version-control t)
+  :hook
+  (compilation-mode . hl-line-mode)
+  (dired-mode . hl-line-mode)
+  (special-mode . hl-line-mode)
+  :config
+  (unless (display-graphic-p)
+    ;; activate mouse-based scrolling
+    (xterm-mouse-mode 1)
+    (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+    (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+  ;; frame settings
+  (when (display-graphic-p)
+    (add-to-list 'default-frame-alist '(height . 45))
+    (add-to-list 'default-frame-alist '(width . 120)))
+  (setq-default cursor-type 'bar)
+  (setq-default display-fill-column-indicator-column 100)
+  (setq-default fill-column 80)
+  (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
+  (setq-default tab-width 4)
+  (auto-save-visited-mode -1) ;; auto-format constantly triggers, annoying
+  (column-number-mode -1)
+  (delete-selection-mode -1)
+  (desktop-save-mode -1) ;; CPU heavy when loading many buffers under LSP
+  (electric-indent-mode t)
+  (electric-pair-mode -1)
+  (global-auto-revert-mode t)
+  (global-eldoc-mode t)
+  (global-so-long-mode t)
+  (line-number-mode t)
+  (pixel-scroll-precision-mode t)
+  (recentf-mode 1)
+  (repeat-mode -1) ;; Sometimes gets in the way.
+  (save-place-mode t)
+  (savehist-mode t)
+  (window-divider-mode (display-graphic-p)))
+
 
 (use-package compile
   :bind (:map global-leader-map
