@@ -30,7 +30,7 @@
 ;; GUI Elements
 (setopt frame-resize-pixelwise t)
 (setopt frame-inhibit-implied-resize t)
-(setopt frame-title-format '("Emacs"))
+(setopt frame-title-format '("%b"))
 (setopt mode-line-format nil)
 (setopt inhibit-compacting-font-caches t)
 
