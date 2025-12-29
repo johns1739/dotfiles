@@ -70,6 +70,7 @@
            :map goto-map
            ("SPC" . switch-to-buffer)
            ("." . xref-find-definitions)
+           (">" . eldoc)
            ("," . xref-go-back)
            (";" . scratch-buffer)
            (":" . goto-line)
@@ -78,7 +79,6 @@
            ("'" . mode-line-other-buffer)
            ("f" . find-file-at-point)
            ("d" . dired-jump)
-           ("h" . eldoc)
            ("i" . imenu)
            ("j" . jump-to-register)
            ("J" . point-to-register)
@@ -135,7 +135,7 @@
   (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
 
 ;; Load packages
-(setq packages '("setup.el" "builtins.el" "packages.el" "langs.el" "color-themes.el"))
+(setq packages '("setup.el" "emacs.el" "packages.el" "langs.el" "color-themes.el"))
 (dolist (package packages)
   (tt (format "*** %s" package)
       (load (concat user-emacs-directory "packages/" package))))
