@@ -67,6 +67,13 @@ brew install emacs-plus@31 \
 ln -s $current_dirpath/config/zshrc ~/.zshrc
 #+end_src
 
+#+begin_src bash :results silent
+cat <<EOF >> ~/.zprofile
+eval "$(ssh-agent -s)"
+EOF
+#+end_src
+
+
 *** Git
 #+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
 mkdir -p ~/.config/git
@@ -76,7 +83,7 @@ ln -s $current_dirpath/config/gitignore ~/.config/git/ignore
 
 #+begin_src bash
 touch ~/.gitconfig-company
-cat <<EOF > ~/.gitconfig
+cat <<EOF >> ~/.gitconfig
 [includeIf "gitdir:~/company/"]
 	path = ~/.gitconfig-company
 EOF
