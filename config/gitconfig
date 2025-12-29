@@ -1,3 +1,7 @@
+# Run command in repos:
+# git maintenance start
+
+
 [core]
 autocrlf = input
 
