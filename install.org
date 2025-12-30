@@ -19,6 +19,7 @@ brew install -v --quiet \
      btop \
      direnv \
      fd  \
+     fish \
      fzf  \
      gcc \
      git  \
@@ -27,7 +28,8 @@ brew install -v --quiet \
      libgccjit \
      lazygit \
      ripgrep \
-     tlrc 
+     tlrc \
+     zoxide
 #+end_src
 
 #+RESULTS:
@@ -62,6 +64,20 @@ brew install emacs-plus@31 \
 #+end_src
 
 ** Configs
+
+*** Fish
+#+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
+mkdir -p ~/.config/fish/conf.d
+touch ~/.config/fish/conf.d/custom.fish
+ln -s $current_dirpath/config/config.fish ~/.config/fish/config.fish
+#+end_src
+
+Set default shell to fish.
+#+begin_src text :results silent
+command -v fish | sudo tee -a /etc/shells
+chsh -s "$(command -v fish)"
+#+end_src
+
 *** Zsh
 #+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
 ln -s $current_dirpath/config/zshrc ~/.zshrc

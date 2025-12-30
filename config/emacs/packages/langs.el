@@ -29,12 +29,15 @@
   :mode (("\\Dockerfile\\'" . dockerfile-mode)
          ("\\.dockerfile\\'" . dockerfile-mode)))
 
+(use-package fish-mode
+  :mode ("\\.fish\\'" . fish-mode))
+
 (use-package elixir-ts-mode
   ;; Setup
   ;; (add-to-list 'exec-path "~/.local/elixir-ls")
-  :mode (("\\.ex$" . elixir-ts-mode)
-         ("\\.exs$" . elixir-ts-mode)
-         ("\\.heex$" . heex-ts-mode))
+  :mode (("\\.ex\\'" . elixir-ts-mode)
+         ("\\.exs\\'" . elixir-ts-mode)
+         ("\\.heex\\'" . heex-ts-mode))
   :init
   (with-eval-after-load 'compile
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink

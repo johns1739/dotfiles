@@ -59,3 +59,4 @@ setopt INC_APPEND_HISTORY        # Write to the history file immediately, not wh
 [ -n "$EAT_SHELL_INTEGRATION_DIR" ] && source "$EAT_SHELL_INTEGRATION_DIR/zsh"
 eval "$(direnv hook zsh)"
 source <(fzf --zsh)
+eval "$(zoxide init zsh)"
