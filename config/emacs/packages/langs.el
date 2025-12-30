@@ -30,7 +30,7 @@
          ("\\.dockerfile\\'" . dockerfile-mode)))
 
 (use-package fish-mode
-  :mode ("\\.fish\\'" . fish-mode))
+  :mode "\\.fish\\'")
 
 (use-package elixir-ts-mode
   ;; Setup
