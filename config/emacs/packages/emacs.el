@@ -261,7 +261,7 @@
 
 (use-package hippie-exp
   :straight nil
-  :bind (:map global-map ("M-I" . hippie-expand))
+  :bind (:map global-map ("M-i" . hippie-expand))
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
@@ -269,20 +269,20 @@
      try-expand-list
      try-expand-line
      try-expand-dabbrev
-     try-expand-dabbrev-all-buffers
-     ;; try-expand-list-all-buffers
-     ;; try-expand-line-all-buffers
+     try-expand-list-all-buffers
+     try-expand-line-all-buffers
+     ;; try-expand-dabbrev-all-buffers
      ;; try-expand-whole-kill ;; use M-y instead
      ;; try-expand-dabbrev-from-kill
      try-complete-file-name-partially
      try-complete-file-name))
   :init
-  (defadvice hippie-expand (around hippie-expand-case-fold)
+  (defun hippie-expand-case-fold-advice (orig-fun &rest args)
     "Try to do case-sensitive matching (not effective with all functions)."
     (let ((case-fold-search nil))
-      ad-do-it))
+      (apply orig-fun args)))
   :config
-  (ad-activate 'hippie-expand))
+  (advice-add 'hippie-expand :around #'hippie-expand-case-fold-advice))
 
 (use-package org
   ;; Useful documentation: https://orgmode.org/worg/org-syntax.html

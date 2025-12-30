@@ -15,7 +15,7 @@
 
            ("C-M-;" . comment-indent)
            ("C-j" . comment-indent-new-line)
-           ("M-i" . completion-at-point)
+           ("M-I" . completion-at-point)
            ("M-j" . join-line)
            ("M-L" . duplicate-dwim)
            ("M-n" . forward-paragraph)
