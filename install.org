@@ -137,9 +137,7 @@ ln -s $current_dirpath/config/emacs/snippets ~/.config/emacs/snippets
 (add-hook 'prog-mode-hook #'indent-bars-mode)
 
 (add-to-list 'exec-path "~/.local/elixir-ls")
-
 #+end_src
-
 
 **** Example ORG
 File Keyword Configuration
