@@ -298,13 +298,9 @@
   (defun org-mode-setup ()
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '((C . t)
-       (emacs-lisp . t)
-       (http . t)
+     '((emacs-lisp . t)
        (shell . t)
-       (scheme . t)
-       (sql . t)
-       (python . t)))
+       (sql . t)))
     (electric-indent-local-mode -1))
   :hook
   (org-mode . org-mode-setup)

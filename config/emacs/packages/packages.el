@@ -10,6 +10,7 @@
           ("w O" . ace-swap-window)))
 
 (use-package aidermacs
+  :if (display-graphic-p)
   :bind ( :map global-leader-map
           ("a" . aidermacs-transient-menu))
   :custom
@@ -467,9 +468,6 @@
   :config
   (meow-setup)
   (meow-global-mode))
-
-(use-package ob-http
-  :after org)
 
 (use-package orderless
   :custom

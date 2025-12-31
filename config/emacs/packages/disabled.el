@@ -172,6 +172,10 @@
   :config
   (magit-todos-mode 1))
 
+(use-package ob-http
+  ;; Better to use curl in shell blocks.
+  :after org)
+
 (use-package paredit
   ;; Gets in the way, difficult to fix a broken parens mat
   :hook

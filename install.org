@@ -45,14 +45,7 @@ brew install --cask font-jetbrains-mono-nerd-font
 Emacs
 #+begin_src bash :async :session *install*
 brew tap d12frosted/emacs-plus
-# brew uninstall emacs-plus@31 && brew reinstall gcc libgccjit
-brew install emacs-plus@31 \
-     --with-modern-black-dragon-icon \
-     --with-debug \
-     --with-imagemagick \
-     --with-mailutils \
-     --with-no-frame-refocus \
-     --with-dbus
+brew install emacs-plus@31
 #+end_src
 
 *** Rust / Cargo Dependencies
