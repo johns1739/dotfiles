@@ -263,18 +263,6 @@
   (treemacs-filewatch-mode t)
   (treemacs-project-follow-mode t))
 
-(use-package undo-tree
-  :demand
-  :custom
-  (undo-tree-visualizer-diff t)
-  (undo-tree-visualizer-timestamps t)
-  :config
-  (let ((undo-tree-dir (locate-user-emacs-file "undo-tree-history")))
-    (unless (file-exists-p undo-tree-dir)
-      (make-directory undo-tree-dir))
-    (setq undo-tree-history-directory-alist `(("." . ,undo-tree-dir))))
-  (global-undo-tree-mode 1))
-
 (use-package vterm
   ;; Eat is a better termianl emulator.
   :if (display-graphic-p)

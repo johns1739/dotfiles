@@ -13,6 +13,14 @@
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
          ("n r g" . avy-org-refile-as-child)
+         ("x g p" . avy-copy-line)
+         ("x g P" . avy-copy-region)
+         ("x g g" . avy-move-line)
+         ("x g G" . avy-move-region)
+         ("x g k" . avy-kill-whole-line)
+         ("x g K" . avy-kill-region)
+         ("x g y" . avy-kill-ring-save-whole-line)
+         ("x g Y" . avy-kill-ring-save-region)
          :map isearch-mode-map
          ("M-g" . avy-isearch)
          :map goto-map
@@ -428,8 +436,8 @@
      '("t" . nil)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)
-     '("U" . meow-undo-in-selection)
-     ;; '("U" . undo-tree-redo)
+     ;; '("U" . meow-undo-in-selection)
+     '("U" . undo-tree-redo)
      '("v" . meow-page-down)
      '("V" . meow-page-up)
      '("w" . meow-mark-word)
@@ -526,6 +534,16 @@
    '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer)))
 
 (use-package transient) ;; needed by magit and forge
+
+(use-package undo-tree
+  :if (display-graphic-p)
+  :demand
+  :custom
+  (undo-tree-visualizer-diff t)
+  (undo-tree-visualizer-timestamps t)
+  (undo-tree-history-directory-alist `(("." . ,(locate-user-emacs-file "undo-tree-history"))))
+  :config
+  (global-undo-tree-mode 1))
 
 (use-package vertico
   :demand

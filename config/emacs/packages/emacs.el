@@ -6,7 +6,7 @@
   (auto-revert-avoid-polling t)
   (auto-window-vscroll nil)
   (backup-by-copying t)
-  (backup-directory-alist '(("." . "~/.backups")))
+  (backup-directory-alist `(("." . ,(locate-user-emacs-file "backups"))))
   (completion-auto-help 'always)
   (completion-auto-select 'second-tab)
   (completion-category-defaults nil)
@@ -39,6 +39,7 @@
   (imenu-max-item-length 80)
   (inhibit-startup-message t)
   (initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
+  (initial-scratch-message nil)
   (isearch-wrap-pause 'no)
   (kept-new-versions 6)
   (kept-old-versions 2)
