@@ -2,18 +2,17 @@
 
 * Install
 ** Dependencies
-#+begin_src bash :async :session *install*
+*** Brew
+#+begin_src bash :async :session *install* :results silent
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 #+end_src
 
-#+begin_src bash :async :session *install*
+#+begin_src bash :async :session *install* :results silent
 # Follow instructions before running update
 brew update
 #+end_src
 
-#+RESULTS:
-
-#+begin_src bash :async :session *install*
+#+begin_src bash :async :session *install* :results silent
 brew install -v --quiet \
      asdf \
      btop \
@@ -29,36 +28,23 @@ brew install -v --quiet \
      lazygit \
      ripgrep \
      tlrc \
+     tree-sitter \
      zoxide
 #+end_src
 
-#+RESULTS:
-
-#+begin_src bash :async :session *install*
+Ghostty
+#+begin_src bash :async :session *install* :results silent
 brew install --cask ghostty
 #+end_src
 
-#+begin_src bash :async :session *install*
+Fonts
+#+begin_src bash :async :session *install* :results silent
 brew install --cask font-jetbrains-mono-nerd-font
 #+end_src
 
-#+begin_src bash :async :session *install* :results silent
-asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
-asdf install nodejs latest
-asdf set -u nodejs latest
-#+end_src
-
-#+begin_src bash :async :session *install*
-curl https://sh.rustup.rs -sSf | sh
-#+end_src
-
-#+begin_src bash :async :session *install*
-cargo install emacs-lsp-booster
-#+end_src
-
+Emacs
 #+begin_src bash :async :session *install*
 brew tap d12frosted/emacs-plus
-brew update
 # brew uninstall emacs-plus@31 && brew reinstall gcc libgccjit
 brew install emacs-plus@31 \
      --with-modern-black-dragon-icon \
@@ -67,6 +53,40 @@ brew install emacs-plus@31 \
      --with-mailutils \
      --with-no-frame-refocus \
      --with-dbus
+#+end_src
+
+*** Rust / Cargo Dependencies
+#+begin_src bash :async :session *install* :results silent
+curl https://sh.rustup.rs -sSf | sh
+#+end_src
+
+#+begin_src bash :async :session *install* :results silent
+cargo install emacs-lsp-booster
+#+end_src
+
+*** ASDF
+**** Nodejs / NPM
+#+begin_src bash :async :session *install* :results silent
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf install nodejs latest
+asdf set -u nodejs latest
+#+end_src
+**** Python 3.12 / Aider
+#+begin_src bash :async :session *install* :results silent
+asdf plugin add python https://github.com/asdf-community/asdf-python.git
+# asdf list all python | grep 3.12
+
+asdf install python 3.12.12
+asdf set -u python 3.12.12
+
+python -m pip install aider-install
+aider-install 
+#+end_src
+
+If aider-install didn't work.
+#+begin_src bash :async :session *install* :results silent
+python -m pip install uv
+uv tool install --force --python python3.12 --with pip aider-chat@latest --index-strategy unsafe-best-match
 #+end_src
 
 ** Configs
