@@ -9,6 +9,14 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window)))
 
+(use-package aidermacs
+  :bind ( :map global-leader-map
+          ("a" . aidermacs-transient-menu))
+  :custom
+  ;; (aidermacs-default-model "gpt-5.2")
+  ;; (aidermacs-default-model "gemini-2.5-pro"))
+  (aidermacs-default-chat-mode 'architect))
+
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -468,6 +476,11 @@
   (completion-styles '(substring partial-completion orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides nil))
+
+(use-package persistent-scratch
+  :if (display-graphic-p)
+  :config
+  (persistent-scratch-setup-default))
 
 (use-package pinentry
   ;; allows for secure entry of passphrases requested by GnuPG
