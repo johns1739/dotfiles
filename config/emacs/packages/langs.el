@@ -39,12 +39,6 @@
          ("\\.exs\\'" . elixir-ts-mode)
          ("\\.heex\\'" . heex-ts-mode))
   :init
-  (with-eval-after-load 'compile
-    ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(elixir-warning-target
-                   "└─ \\([^:]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
   (defun elixir-compile ()
     (interactive)
     (setq compile-command
@@ -73,8 +67,12 @@
   :hook
   (elixir-ts-mode . elixir-setup)
   :config
-  ;; TODO: Enable more features
-  ;; https://joaotavora.github.io/eglot/#User_002dspecific-configuration-1
+  (with-eval-after-load 'compile
+    ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(elixir-warning-target
+                   "└─ \\([^:]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
   (with-eval-after-load 'eglot
     (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode)
                      eglot-server-programs
@@ -167,25 +165,19 @@
   :bind (:map yaml-ts-mode-map
               ("C-c C-c p" . openapi-preview)))
 
-(use-package python-mode
+(use-package python
   :straight nil
-  :mode "\\.py\\'"
-  :init
-  ;; Disabled ts because of gcc/libgccjit issues in emacs.
-  ;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  (defun python-setup ()
-    (setq-local tab-width 4))
-  :hook
-  (python-ts-mode . python-setup)
-  (python-mode . python-setup)
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode)
   :custom
   (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4)
   :config
-  (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
-  (add-to-list 'compilation-error-regexp-alist-alist
-               '(python-pytest-target
-                 "^\\([A-Za-z0-9/][^ (]*\\.py\\):\\([1-9][0-9]*\\): " 1 2 nil nil 1)))
+  (with-eval-after-load 'compile
+    (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(python-pytest-target
+                   "^\\([A-Za-z0-9/][^ (]*\\.py\\):\\([1-9][0-9]*\\): " 1 2 nil nil 1))))
 
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"
