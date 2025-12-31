@@ -101,7 +101,6 @@
               ("l i" . consult-eglot-symbols)))
 
 (use-package copilot
-  ;; Setup
   ;; M-x copilot-install-server
   ;; M-x copilot-login
   :if (executable-find "npm")

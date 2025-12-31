@@ -42,6 +42,12 @@ brew install --cask ghostty
 brew install --cask font-jetbrains-mono-nerd-font
 #+end_src
 
+#+begin_src bash :async :session *install* :results silent
+asdf plugin add nodejs https://github.com/asdf-vm/asdf-nodejs.git
+asdf install nodejs latest
+asdf set -u nodejs latest
+#+end_src
+
 #+begin_src bash :async :session *install*
 curl https://sh.rustup.rs -sSf | sh
 #+end_src
@@ -88,7 +94,6 @@ cat <<EOF >> ~/.zprofile
 eval "$(ssh-agent -s)"
 EOF
 #+end_src
-
 
 *** Git
 #+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent

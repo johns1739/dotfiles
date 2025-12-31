@@ -3,11 +3,9 @@
 set -gx EDITOR "emacs"
 set -gx SUDO_EDITOR "$EDITOR"
 set -gx VISUAL "emacs"
-set -gx ASDF_DIR "$HOME/.asdf"
 set -gx GPG_TTY (tty)
 set -gx GOPATH "$HOME/go"
 
-fish_add_path "$ASDF_DIR/shims"
 fish_add_path "$GOPATH/bin"
 fish_add_path "$HOME/.cargo/bin"
 fish_add_path "$HOME/.local/bin"
@@ -26,4 +24,19 @@ if status --is-interactive
     alias reload="source ~/.config/fish/config.fish"
     alias rgrep="grep --color -rnIi"
     alias top="btop"
+
 end
+
+# ASDF configuration code
+if test -z $ASDF_DATA_DIR
+    set _asdf_shims "$HOME/.asdf/shims"
+else
+    set _asdf_shims "$ASDF_DATA_DIR/shims"
+end
+
+# Do not use fish_add_path (added in Fish 3.2) because it
+# potentially changes the order of items in PATH
+if not contains $_asdf_shims $PATH
+    set -gx --prepend PATH $_asdf_shims
+end
+set --erase _asdf_shims

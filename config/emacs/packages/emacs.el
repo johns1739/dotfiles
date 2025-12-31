@@ -222,13 +222,12 @@
       (or (and project-dir (ffap-deep-match-file-string filename project-dir))
           (ffap-deep-match-file-string filename default-directory))))
   (defun ffap-deep-match-file-string (filename dir)
-    (let* ((deep-1 (f-join "**" filename))
-           (deep-2 (f-join "**" "**" filename))
+    (let* ((deep-1 (file-name-concat "**" filename))
+           (deep-2 (file-name-concat "**" "**" filename))
            (files  (or (file-expand-wildcards (expand-file-name deep-1 dir) t)
                        (file-expand-wildcards (expand-file-name deep-2 dir) t))))
       (and files (car files))))
   :config
-  (require 'f)
   (add-to-list 'ffap-alist '("" . ffap-deep-match-file)))
 
 (use-package flymake
