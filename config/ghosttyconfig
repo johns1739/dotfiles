@@ -11,7 +11,7 @@
 # +show-face
 # +crash-report
 
-background-opacity = 0.8
+background-opacity = 1
 font-size = 13
 theme = dark:Arthur,light:Desert
 unfocused-split-opacity = 0.6
