@@ -10,7 +10,7 @@
           ("w O" . ace-swap-window)))
 
 (use-package aidermacs
-  :if (display-graphic-p)
+  :if (and (display-graphic-p) (executable-find "aider"))
   :bind ( :map global-leader-map
           ("a" . aidermacs-transient-menu))
   :custom
