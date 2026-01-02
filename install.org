@@ -82,6 +82,11 @@ python -m pip install uv
 uv tool install --force --python python3.12 --with pip aider-chat@latest --index-strategy unsafe-best-match
 #+end_src
 
+*** OhMyZsh
+#+begin_src bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+#+end_src
+
 ** Configs
 
 *** Fish
