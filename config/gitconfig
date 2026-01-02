@@ -17,6 +17,7 @@ cm = commit -m
 rv = remote -v
 d = diff
 dv = difftool -t vimdiff -y
+f = fetch
 gl = config --global -l
 se = !git rev-list --all | xargs git grep -F
 cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"

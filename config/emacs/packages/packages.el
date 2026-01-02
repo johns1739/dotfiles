@@ -113,6 +113,7 @@
   ;; M-x copilot-install-server
   ;; M-x copilot-login
   :if (executable-find "npm")
+  :commands (copilot-mode)
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :bind ( :map global-leader-map
           ("i c" . copilot-mode)
@@ -477,6 +478,7 @@
 
 (use-package persistent-scratch
   :if (display-graphic-p)
+  :defer 2
   :config
   (persistent-scratch-setup-default))
 
