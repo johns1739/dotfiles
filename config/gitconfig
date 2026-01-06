@@ -1,47 +1,54 @@
 # Run command in repos:
 # git maintenance start
 
+[user]
+    name = Juan Banda
+    email = jubajr17@gmail.com
+
 [core]
-autocrlf = input
+    autocrlf = input
 
 [merge]
-ff = only
+    ff = only
 
 [alias]
-P = push
-p = pull
-f = fetch
-st = status -sb
-ll = log --oneline
-l = log -1 HEAD --stat
-co = checkout
-cm = commit -m
-rv = remote -v
-d = diff
-dv = difftool -t vimdiff -y
-f = fetch
-gl = config --global -l
-se = !git rev-list --all | xargs git grep -F
-cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
+    p = pull
+    P = push
+    f = fetch
+    st = status -sb
+    ll = log --oneline
+    l = log -1 HEAD --stat
+    co = checkout
+    cm = commit -m
+    rv = remote -v
+    d = diff
+    dv = difftool -t vimdiff -y
+    f = fetch
+    gl = config --global -l
+    se = !git rev-list --all | xargs git grep -F
+    cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
 
 [init]
-defaultBranch = main
+    defaultBranch = main
 
 [push]
-default = current
-autoSetupRemote = true
+    default = current
+    autoSetupRemote = true
 
 [filter "lfs"]
-smudge = git-lfs smudge -- %f
-process = git-lfs filter-process
-required = true
-clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+    clean = git-lfs clean -- %f
 
 [rerere]
-enabled = true
+    enabled = true
 
 [column]
-ui = auto
+    ui = auto
 
 [branch]
-sort = -committerdate
+    sort = -committerdate
+
+[submodule]
+    recurse = true

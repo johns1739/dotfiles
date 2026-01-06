@@ -78,8 +78,8 @@
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
   ;; frame settings
   (when (display-graphic-p)
-    (add-to-list 'default-frame-alist '(height . 45))
-    (add-to-list 'default-frame-alist '(width . 120)))
+    (add-to-list 'default-frame-alist '(height . 50))
+    (add-to-list 'default-frame-alist '(width . 125)))
   (setq-default cursor-type 'bar)
   (setq-default display-fill-column-indicator-column 100)
   (setq-default fill-column 80)
