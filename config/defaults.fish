@@ -24,7 +24,6 @@ if status --is-interactive
     alias reload="source ~/.config/fish/config.fish"
     alias rgrep="grep --color -rnIi"
     alias top="btop"
-
 end
 
 # ASDF configuration code

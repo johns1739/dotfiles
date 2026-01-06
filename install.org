@@ -92,8 +92,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 *** Fish
 #+begin_src bash :var current_dirpath=(file-name-directory (or buffer-file-name default-directory)) :results silent
 mkdir -p ~/.config/fish/conf.d
-touch ~/.config/fish/conf.d/custom.fish
-ln -s $current_dirpath/config/config.fish ~/.config/fish/config.fish
+touch ~/.config/fish/config.fish
+ln -s $current_dirpath/config/defaults.fish ~/.config/fish/conf.d/defaults.fish
 #+end_src
 
 Set default shell to fish.
