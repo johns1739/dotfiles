@@ -8,7 +8,9 @@ autocrlf = input
 ff = only
 
 [alias]
-p = push
+P = push
+p = pull
+f = fetch
 st = status -sb
 ll = log --oneline
 l = log -1 HEAD --stat

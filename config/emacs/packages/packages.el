@@ -172,6 +172,7 @@
 (use-package deadgrep
   :bind (:map search-map ("g" . deadgrep)))
 
+;; TODO: Make it work nice with meow normal
 (use-package diff-hl
   :if (display-graphic-p)
   ;; not really used, better to use magit-diff.
@@ -543,9 +544,11 @@
               ("m t" . tmr-tabulated-view))
   :custom
   (tmr-timer-finished-functions
-   '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer)))
+   '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer))
+  :config
+  (tmr-mode-line-mode t))
 
-(use-package transient) ;; needed by magit and forge
+(use-package transient) ;; needed by magit, forge, and others
 
 (use-package undo-tree
   :if (display-graphic-p)

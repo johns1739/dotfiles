@@ -15,6 +15,7 @@ brew update
 #+begin_src bash :async :session *install* :results silent
 brew install -v --quiet \
      asdf \
+     autoconf \
      btop \
      direnv \
      fd  \
