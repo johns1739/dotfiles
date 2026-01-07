@@ -72,7 +72,7 @@
     (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-warning-target
-                   "└─ \\([^:]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
+                   "└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
   (with-eval-after-load 'eglot
     (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode)
                      eglot-server-programs
@@ -81,7 +81,10 @@
                    (w32-shell-dos-semantics))
               '("expert_windows_amd64")
             (eglot-alternatives
-             '("language_server.sh" "expert_linux_arm64" "expert_linux_amd64" "start_lexical.sh"))))))
+             '("language_server.sh"
+               ("expert_linux_arm64" "--stdio")
+               ("expert_linux_amd64" "--stdio")
+               "start_lexical.sh"))))))
 
 (use-package erlang
   :disabled
