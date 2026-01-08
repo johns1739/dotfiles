@@ -176,6 +176,7 @@
   (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4)
   :config
+  ;; TODO compilation-next-error doesn't past first error
   (with-eval-after-load 'compile
     (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
     (add-to-list 'compilation-error-regexp-alist-alist

@@ -23,7 +23,6 @@
   (delete-old-versions t)
   (dired-auto-revert-buffer t)
   (dired-dwim-target t)
-  (dired-dwim-target t)
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-alh")
   (dired-recursive-copies 'always)
@@ -175,6 +174,17 @@
   :straight nil
   :bind (:map diff-mode-map
               ("M-o" . nil)))
+
+(use-package dired
+  :straight nil
+  :custom
+  (dired-dwim-target t)
+  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-listing-switches "-alh")
+  (dired-recursive-copies 'always)
+  (dired-recursive-deletes 'always)
+  :hook
+  (dired-mode . hl-line-mode))
 
 (use-package ediff
   :straight nil
