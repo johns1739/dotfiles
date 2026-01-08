@@ -180,7 +180,7 @@
     (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(python-pytest-target
-                   "^\\([A-Za-z0-9/][^ (]*\\.py\\):\\([1-9][0-9]*\\): " 1 2 nil nil 1))))
+                   "^\\([A-Za-z0-9/][^ (]+\\.py\\):\\([1-9][0-9]*\\): " 1 2 nil nil 1))))
 
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"

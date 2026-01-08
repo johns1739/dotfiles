@@ -121,7 +121,7 @@
   (compilation-context-lines 10)
   (compilation-always-kill t)
   (compilation-scroll-output t)
-  (compilation-max-output-line-length 200)
+  (compilation-max-output-line-length nil)
   (compilation-error-regexp-alist '())
   (compilation-error-regexp-alist-alist '())
   :hook
@@ -162,11 +162,11 @@
     (process-send-region send-region-to-process-target beg end))
   :config
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-  (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
+  ;; (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
   (add-to-list 'compilation-error-regexp-alist-alist
                '(failure-newline-target
                  "^Failure:\n.*\\[\\([^:]+\\):\\([0-9]+\\)?\\]" 1 2 nil nil 1))
-  (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
+  ;; (add-to-list 'compilation-error-regexp-alist 'simple-spaced-target)
   (add-to-list 'compilation-error-regexp-alist-alist
                '(simple-spaced-target
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
