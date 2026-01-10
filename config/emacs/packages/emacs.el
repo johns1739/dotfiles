@@ -1,7 +1,100 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package emacs
+  :demand
   :straight nil
+  :init
+  (defvar-keymap global-leader-map :doc "Global leader keymap.")
+  (keymap-set ctl-x-map "SPC" global-leader-map)
+  (keymap-set global-leader-map "g" goto-map)
+  (keymap-set global-leader-map "s" search-map)
+  :bind ( :map global-map
+          ([remap backward-sentence] . backward-sexp)
+          ([remap forward-sentence] . forward-sexp)
+          ([remap split-window-below] . split-window-below-and-jump)
+          ([remap split-window-right] . split-window-right-and-jump)
+          ([remap downcase-word] . downcase-dwim)
+          ([remap upcase-word] . upcase-dwim)
+          ("C-M-;" . comment-indent)
+          ("C-j" . comment-indent-new-line)
+          ("M-I" . completion-at-point)
+          ("M-j" . join-line)
+          ("M-L" . duplicate-dwim)
+          ("M-n" . forward-paragraph)
+          ("M-o" . other-window)
+          ("M-p" . backward-paragraph)
+          :map global-leader-map
+          ("TAB" . indent-format-buffer)
+          ("SPC" . project-switch-to-buffer)
+          ("=" . balance-windows-area)
+          ("0" . delete-window)
+          ("1" . delete-other-windows)
+          ("2" . split-window-below-and-jump)
+          ("3" . split-window-right-and-jump)
+          ;; Copy/Paste/Edits
+          ("x l" . keep-lines)
+          ("x k" . delete-matching-lines)
+          ("x u" . delete-duplicate-lines)
+          ("x s" . sort-lines)
+          ("x w" . whitespace-cleanup)
+          ;; Package Modes
+          ("m <tab>" . toggle-truncate-lines)
+          ("m c" . display-fill-column-indicator-mode)
+          ("m C" . global-display-fill-column-indicator-mode)
+          ("m h" . hl-line-mode)
+          ("m H" . global-hl-line-mode)
+          ("m n" . display-line-numbers-mode)
+          ("m N" . global-display-line-numbers-mode)
+          ;; Compilation & Computation
+          ("k c" . calc)
+          ("k r" . regexp-builder)
+          ;; Settings (Look & Feel)
+          (", ," . open-custom-file)
+          (", <" . open-init-file)
+          (", SPC" . load-theme)
+          (", =" . global-text-scale-adjust)
+          (", D" . toggle-debug-on-error)
+          (", x" . describe-font)
+          (", f" . toggle-frame-maximized)
+          (", F" . toggle-frame-fullscreen)
+          (", r" . reload-emacs)
+          (", R" . restart-emacs)
+          :map mode-specific-map
+          ("C-o" . goto-address-at-point)
+          :map goto-map
+          ("SPC" . switch-to-buffer)
+          ("." . xref-find-definitions)
+          (">" . eldoc)
+          ("," . xref-go-back)
+          (";" . scratch-buffer)
+          (":" . goto-line)
+          ("?" . xref-find-references)
+          ("/" . xref-find-apropos)
+          ("'" . mode-line-other-buffer)
+          ("f" . find-file-at-point)
+          ("d" . dired-jump)
+          ("i" . imenu)
+          ("j" . jump-to-register)
+          ("J" . point-to-register)
+          ("l" . goto-line)
+          ("m" . bookmark-jump)
+          ("M" . bookmark-set)
+          ;; Window navigation
+          ("w h" . windmove-left)
+          ("w j" . windmove-down)
+          ("w k" . windmove-up)
+          ("w l" . windmove-right)
+          ("w H" . windmove-swap-states-left)
+          ("w J" . windmove-swap-states-down)
+          ("w K" . windmove-swap-states-up)
+          ("w L" . windmove-swap-states-right)
+          :map search-map
+          ("b" . ibuffer)
+          ("g" . rgrep)
+          ("j" . list-registers)
+          ("m" . list-bookmarks)
+          ("o" . occur)
+          ("r" . recentf-open))
   :custom
   (auto-revert-avoid-polling t)
   (auto-window-vscroll nil)
@@ -70,15 +163,6 @@
   (dired-mode . hl-line-mode)
   (special-mode . hl-line-mode)
   :config
-  (unless (display-graphic-p)
-    ;; activate mouse-based scrolling
-    (xterm-mouse-mode 1)
-    (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-    (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-  ;; frame settings
-  (when (display-graphic-p)
-    (add-to-list 'default-frame-alist '(height . 50))
-    (add-to-list 'default-frame-alist '(width . 125)))
   (setq-default cursor-type 'bar)
   (setq-default display-fill-column-indicator-column 100)
   (setq-default fill-column 80)
@@ -99,8 +183,39 @@
   (repeat-mode -1) ;; Sometimes gets in the way.
   (save-place-mode t)
   (savehist-mode t)
-  (window-divider-mode (display-graphic-p)))
-
+  (window-divider-mode (display-graphic-p))
+  (defun open-init-file ()
+    (interactive)
+    (find-file user-init-file))
+  (defun open-custom-file ()
+    (interactive)
+    (if (boundp 'custom-file)
+        (find-file custom-file)))
+  (defun split-window-below-and-jump ()
+    "Split window below and jump to it."
+    (interactive)
+    (select-window (split-window-below)))
+  (defun split-window-right-and-jump ()
+    "Split window right and jump to it."
+    (interactive)
+    (select-window (split-window-right)))
+  (defun indent-format-buffer ()
+    (interactive)
+    (save-excursion
+      (whitespace-cleanup)
+      (indent-region (point-min) (point-max) nil)))
+  (defun reload-emacs ()
+    (interactive)
+    (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
+  (unless (display-graphic-p)
+    ;; activate mouse-based scrolling
+    (xterm-mouse-mode 1)
+    (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+    (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+  ;; frame settings
+  (when (display-graphic-p)
+    (add-to-list 'default-frame-alist '(height . 40))
+    (add-to-list 'default-frame-alist '(width . 120))))
 
 (use-package compile
   :bind (:map global-leader-map
