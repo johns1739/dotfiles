@@ -231,7 +231,6 @@
               :map eat-semi-char-mode-map
               ("M-o" . other-window))
   :custom
-  (read-process-output-max (* 32 1024 1024)) ;; 32MB
   (process-adaptive-read-buffering t)
   (eat-term-scrollback-size nil)
   (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode

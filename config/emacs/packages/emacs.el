@@ -134,7 +134,7 @@
   (initial-scratch-message nil)
   (isearch-wrap-pause 'no)
   (kept-new-versions 6)
-  (kept-old-versions 2)
+  (kept-old-versions 3)
   (kill-do-not-save-duplicates t)
   (make-backup-files t)
   (max-mini-window-height 0.2)
@@ -162,6 +162,7 @@
   (compilation-mode . hl-line-mode)
   (dired-mode . hl-line-mode)
   (special-mode . hl-line-mode)
+  (before-save . delete-trailing-whitespace)
   :config
   (setq-default cursor-type 'bar)
   (setq-default display-fill-column-indicator-column 100)
@@ -522,6 +523,7 @@
   (project-switch-commands '((project-find-regexp "Regexp" "s")
                              (project-find-file "File" "f")
                              (project-find-dir "Dir" "d")
+                             (project-eshell "Eshell" "e")
                              (project-kill-buffers "Kill" "k")))
   :init
   (keymap-set global-leader-map "p" project-prefix-map))
