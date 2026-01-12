@@ -22,7 +22,6 @@
 (setopt straight-use-package-by-default t)
 
 ;; Install early for downstream dependencies
-
 (use-package exec-path-from-shell
   :demand
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))

@@ -9,7 +9,7 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window)))
 
-(use-package aidermacs
+(use-package aidermacs ;; too expensive
   :if (and (display-graphic-p) (executable-find "aider"))
   :bind ( :map global-leader-map
           ("a" . aidermacs-transient-menu))

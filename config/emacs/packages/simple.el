@@ -1,7 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (setopt completion-auto-help 'always)
-(setopt completion-auto-select t)
+(setopt completion-auto-select 'second-tab)
 (setopt completion-category-defaults nil)
 (setopt completion-category-overrides '((file (styles . (basic partial-completion)))))
 (setopt completion-cycle-threshold 3)
@@ -9,8 +9,6 @@
 (setopt completion-styles '(basic substring partial-completion))
 (setopt completions-detailed t)
 (setopt completions-format 'one-column)
-(setopt completions-max-height 20)
-(setopt duplicate-line-final-position 1)
 (setopt inhibit-startup-message t)
 (setopt ring-bell-function 'ignore)
 (setopt tab-always-indent t)
