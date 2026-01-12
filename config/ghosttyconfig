@@ -12,8 +12,7 @@
 # +crash-report
 
 background-opacity = 1
-font-size = 13
-theme = dark:Arthur,light:Desert
+font-size = 14
 unfocused-split-opacity = 0.6
 
 # behavior settings

@@ -1,5 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
+;; TODO break up settings to: emacs/emacs-grahpics/emacs-terminal
+
 (use-package emacs
   :demand
   :straight nil

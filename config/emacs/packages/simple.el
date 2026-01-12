@@ -41,3 +41,5 @@
       (apply orig-fun args)))
   :config
   (advice-add 'hippie-expand :around #'hippie-expand-case-fold-advice))
+
+(load-theme 'wheatgrass :no-confirm)
