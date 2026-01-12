@@ -246,6 +246,7 @@
 
 (use-package eglot-booster
   ;; cargo install emacs-lsp-booster
+  :if (executable-find "emacs-lsp-booster")
   :after eglot
   :straight (:host github :repo "jdtsmith/eglot-booster")
   :config
