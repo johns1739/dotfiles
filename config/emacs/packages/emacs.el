@@ -99,7 +99,7 @@
   (auto-revert-avoid-polling t)
   (auto-window-vscroll nil)
   (backup-by-copying t)
-  (backup-directory-alist (("." . "~/.backups" )))
+  (backup-directory-alist `(("." . ,(locate-user-emacs-file "backups"))))
   (completion-auto-help 'always)
   (completion-auto-select 'second-tab)
   (completion-category-defaults nil)
@@ -497,8 +497,6 @@
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
       :prepend t :tree-type week)))
   :config
-  (unless (file-exists-p "~/.notes")
-    (make-directory "~/.notes"))
   (require 'org-capture)
   (require 'org-crypt))
 
