@@ -41,3 +41,4 @@
   (advice-add 'hippie-expand :around #'hippie-expand-case-fold-advice))
 
 (load-theme 'wheatgrass :no-confirm)
+(set-face-background 'default "unspecified")

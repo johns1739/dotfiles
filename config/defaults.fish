@@ -2,9 +2,9 @@
 
 set fish_greeting # turn off welcome message
 
-set -gx EDITOR "env SIMPLE=t emacs"
+set -gx EDITOR "env SIMPLE=t emacs -nw"
 set -gx SUDO_EDITOR "$EDITOR"
-set -gx VISUAL "emacs"
+set -gx VISUAL "$EDITOR"
 set -gx GPG_TTY (tty)
 
 alias ....='cd ../../..'
