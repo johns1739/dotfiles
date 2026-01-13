@@ -98,8 +98,6 @@
   :custom
   (auto-revert-avoid-polling t)
   (auto-window-vscroll nil)
-  (backup-by-copying t)
-  (backup-directory-alist `(("." . "~/.backups")))
   (completion-auto-help 'always)
   (completion-auto-select 'second-tab)
   (completion-category-defaults nil)
@@ -111,9 +109,7 @@
   (completions-format 'one-column)
   (completions-max-height 20)
   (confirm-kill-emacs 'y-or-n-p)
-  (create-lockfiles nil)
   (delete-by-moving-to-trash t)
-  (delete-old-versions t)
   (dired-auto-revert-buffer t)
   (dired-dwim-target t)
   (dired-kill-when-opening-new-dired-buffer t)
@@ -133,10 +129,7 @@
   (initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
   (initial-scratch-message nil)
   (isearch-wrap-pause 'no)
-  (kept-new-versions 6)
-  (kept-old-versions 3)
   (kill-do-not-save-duplicates t)
-  (make-backup-files t)
   (max-mini-window-height 0.2)
   (next-error-find-buffer-function 'next-error-buffer-unnavigated-current)
   (next-error-highlight 1.0)
@@ -156,8 +149,6 @@
   (use-dialog-box nil)
   (use-short-answers t)
   (vc-handled-backends '(Git))
-  (vc-make-backup-files t)
-  (version-control t)
   :hook
   (compilation-mode . hl-line-mode)
   (dired-mode . hl-line-mode)
@@ -220,6 +211,35 @@
   (when (display-graphic-p)
     (add-to-list 'default-frame-alist '(height . 40))
     (add-to-list 'default-frame-alist '(width . 120))))
+
+(use-package emacs ;; backups
+  :straight nil
+  :custom
+  (backup-by-copying t)
+  (backup-directory-alist `(("." . "~/.backups")))
+  (create-lockfiles nil)
+  (delete-old-versions t)
+  (kept-new-versions 6)
+  (kept-old-versions 3)
+  (make-backup-files t)
+  (vc-make-backup-files t)
+  (version-control t)
+  :config
+  (defun buffer-backed-up-set-to-time ()
+    "Set the buffer-backed-up variable to the current time if t."
+    (if (eq buffer-backed-up t)
+        (setq buffer-backed-up (current-time))))
+  (defun buffer-backed-up-reset-advice (orig-fun &rest args)
+    "Try to do case-sensitive matching (not effective with all functions)."
+    (buffer-backed-up-set-to-time)
+    (if (and buffer-backed-up
+             (time-less-p (time-add (buffer-backed-up) (* 60 60 24))
+                          (current-time)))
+        (setq buffer-backed-up nil))
+    (let ((orig-fun-result (apply orig-fun args)))
+      (buffer-backed-up-set-to-time)
+      orig-fun-result))
+  (advice-add 'backup-buffer :around #'buffer-backed-up-reset-advice))
 
 (use-package compile
   :bind (:map global-leader-map
