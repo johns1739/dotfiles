@@ -9,15 +9,6 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window)))
 
-(use-package aidermacs ;; too expensive
-  :if (and (display-graphic-p) (executable-find "aider"))
-  :bind ( :map global-leader-map
-          ("a" . aidermacs-transient-menu))
-  :custom
-  ;; (aidermacs-default-model "gpt-5.2")
-  ;; (aidermacs-default-model "gemini-2.5-pro"))
-  (aidermacs-default-chat-mode 'architect))
-
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -43,7 +34,7 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
-  :commands (cape-dict cape-elisp-symbol cape-file cape-history cape-dabbrev cape-line cape-keyword)
+  :commands (cape-abbrev cape-dict cape-elisp-symbol cape-file cape-history cape-dabbrev cape-line cape-keyword)
   :custom
   (completion-at-point-functions
    (list #'cape-dabbrev
@@ -172,12 +163,12 @@
 (use-package deadgrep
   :bind (:map search-map ("g" . deadgrep)))
 
-;; TODO: Make it work nice with meow normal
 (use-package diff-hl
-  :if (display-graphic-p)
+  ;; TODO: Make it work nice with meow normal
   ;; not really used, better to use magit-diff.
-  :bind (:map global-leader-map
-              ("m d" . diff-hl-show-hunk))
+  ;; :bind (:map global-leader-map
+  ;;             ("m d" . diff-hl-show-hunk))
+  :after magit
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -192,15 +183,6 @@
   :config
   (dimmer-mode))
 
-(use-package docker
-  :if (and (display-graphic-p) (executable-find "docker"))
-  :bind (:map global-leader-map
-              ("k o" . docker))
-  :config
-  (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
-                          docker-container-columns)))
-    (plist-put column :width 62)))
-
 (use-package envrc
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))
@@ -212,37 +194,6 @@
   (dumb-jump-prefer-searcher 'rg)
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
-
-(use-package eat
-  ;; When eat-terminal input is acting weird, try re-compiling with command:
-  ;; (eat-compile-terminfo)
-  :if (display-graphic-p)
-  :straight (eat :type git
-                 :host codeberg
-                 :repo "akib/emacs-eat"
-                 :files ("*.el" ("term" "term/*.el") "*.texi"
-                         "*.ti" ("terminfo/e" "terminfo/e/*")
-                         ("terminfo/65" "terminfo/65/*")
-                         ("integration" "integration/*")
-                         (:exclude ".dir-locals.el" "*-tests.el")))
-  :bind (:map global-leader-map
-              ("k t" . eat-project)
-              ("k T" . eat)
-              :map eat-semi-char-mode-map
-              ("M-o" . other-window))
-  :custom
-  (process-adaptive-read-buffering t)
-  (eat-term-scrollback-size nil)
-  (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
-  :hook
-  (eshell-load . eat-eshell-visual-command-mode)
-  (eshell-load . eat-eshell-mode)
-  :config
-  (add-to-list 'display-buffer-alist
-               '("\\*.*-eat\\*"
-                 (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
-                 (inhibit-same-window . t)
-                 (window-min-height . 25))))
 
 (use-package eglot-booster
   ;; cargo install emacs-lsp-booster
@@ -532,11 +483,6 @@
       simple-modeline-segment-spaces)))
   :config
   (simple-modeline-mode))
-
-(use-package spacious-padding
-  :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("m p" . spacious-padding-mode)))
 
 (use-package tmr
   :bind (:map global-leader-map

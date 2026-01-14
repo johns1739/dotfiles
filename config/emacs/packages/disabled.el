@@ -1,5 +1,14 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package aidermacs ;; too expensive
+  :if (and (display-graphic-p) (executable-find "aider"))
+  :bind ( :map global-leader-map
+          ("a" . aidermacs-transient-menu))
+  :custom
+  ;; (aidermacs-default-model "gpt-5.2")
+  ;; (aidermacs-default-model "gemini-2.5-pro"))
+  (aidermacs-default-chat-mode 'architect))
+
 (use-package command-log-mode
   :bind (:map global-leader-map
               ("m l" . clm/toggle-command-log-buffer))
@@ -62,6 +71,46 @@
   (dired-mode . dired-subtree-setup)
   :custom
   (dired-subtree-use-backgrounds nil))
+
+(use-package docker
+  :if (and (display-graphic-p) (executable-find "docker"))
+  :bind (:map global-leader-map
+              ("k o" . docker))
+  :config
+  (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
+                          docker-container-columns)))
+    (plist-put column :width 62)))
+
+(use-package eat
+  ;; When eat-terminal input is acting weird, try re-compiling with command:
+  ;; (eat-compile-terminfo)
+  :if (display-graphic-p)
+  :straight (eat :type git
+                 :host codeberg
+                 :repo "akib/emacs-eat"
+                 :files ("*.el" ("term" "term/*.el") "*.texi"
+                         "*.ti" ("terminfo/e" "terminfo/e/*")
+                         ("terminfo/65" "terminfo/65/*")
+                         ("integration" "integration/*")
+                         (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind (:map global-leader-map
+              ("k t" . eat-project)
+              ("k T" . eat)
+              :map eat-semi-char-mode-map
+              ("M-o" . other-window))
+  :custom
+  (process-adaptive-read-buffering t)
+  (eat-term-scrollback-size nil)
+  (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
+  :hook
+  (eshell-load . eat-eshell-visual-command-mode)
+  (eshell-load . eat-eshell-mode)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\*.*-eat\\*"
+                 (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
+                 (inhibit-same-window . t)
+                 (window-min-height . 25))))
 
 (use-package eldoc-box
   ;; Annoying GUI
@@ -239,6 +288,11 @@
                ([remap indent-format-buffer] . python-black-buffer)))
   :hook
   (python-ts-mode . python-black-setup))
+
+(use-package spacious-padding
+  :if (display-graphic-p)
+  :bind (:map global-leader-map
+              ("m p" . spacious-padding-mode)))
 
 (use-package trashed
   ;; Never used.
