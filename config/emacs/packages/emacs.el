@@ -520,6 +520,8 @@
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
       :prepend t :tree-type week)))
   :config
+  (unless (file-exists-p "~/.notes")
+    (make-directory "~/.notes"))
   (require 'org-capture)
   (require 'org-crypt))
 
