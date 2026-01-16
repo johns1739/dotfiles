@@ -7,6 +7,8 @@ set -gx SUDO_EDITOR "$EDITOR"
 set -gx VISUAL "$EDITOR"
 set -gx GPG_TTY (tty)
 
+fish_add_path "$HOME/.local/bin"
+
 alias ....='cd ../../..'
 alias ...='cd ../..'
 alias ..='cd ..'
