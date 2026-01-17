@@ -582,13 +582,6 @@
 
 (use-package treesit
   :straight nil
-  :init
-  (defun treesit-install-all ()
-    "Install all language grammars registered with Treesitter"
-    (interactive)
-    (require 'treesit)
-    (mapc #'treesit-install-language-grammar (mapcar #'car treesit-language-source-alist)))
-  :commands (treesit-install-all)
   :config
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")

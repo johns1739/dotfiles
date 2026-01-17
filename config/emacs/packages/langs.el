@@ -82,6 +82,7 @@
               '("expert_windows_amd64")
             (eglot-alternatives
              '("language_server.sh"
+               ("expert" "--stdio")
                ("expert_linux_arm64" "--stdio")
                ("expert_linux_amd64" "--stdio")
                "start_lexical.sh"))))))
