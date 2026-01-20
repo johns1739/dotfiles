@@ -130,20 +130,18 @@
   :straight (corfu :files (:defaults "extensions/*.el")
                    :includes (corfu-echo corfu-history corfu-popupinfo))
   ;; When corfu-auto is off, better to not modify bindings.
-  ;; :bind (:map corfu-map
-  ;;             ("TAB" . nil)
-  ;;             ("RET" . nil)
-  ;;             ("SPC" . nil))
+  :bind ( :map corfu-map
+          ("RET" . nil))
   :custom
-  (corfu-auto nil)
-  (corfu-auto-delay 0.3)
+  (corfu-auto t)
+  (corfu-auto-delay 0.2)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-preview-current 'insert)
   (corfu-preselect 'prompt)
   (corfu-separator ?\s)
-  (corfu-echo-delay 0.3)
-  (corfu-popupinfo-delay '(1.25 . 0.2))
+  (corfu-echo-delay 0.2)
+  (corfu-popupinfo-delay '(2.0 . 0.5))
   (corfu-min-width 20)
   :config
   (global-corfu-mode 1)
