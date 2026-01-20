@@ -414,6 +414,7 @@
      '("<" . nil)
      '("." . meow-bounds-of-thing)
      '(">" . nil)
+     '("<escape>" . meow-cancel-selection)
      '("<backspace>" . meow-backward-delete)))
   :config
   (meow-setup)
