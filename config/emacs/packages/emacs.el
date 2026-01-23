@@ -488,7 +488,7 @@
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
-  (org-agenda-todo-list-sublevels nil)
+  (org-agenda-todo-list-sublevels t)
   (org-agenda-window-setup 'reorganize-frame)
   (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-cycle-hide-block-startup t)
