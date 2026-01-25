@@ -12,21 +12,17 @@
     ff = only
 
 [alias]
-    p = pull
-    P = push
-    f = fetch
-    st = status -sb
-    ll = log --oneline
-    l = log -1 HEAD --stat
-    co = checkout
     cm = commit -m
-    rv = remote -v
+    co = checkout
     d = diff
     dv = difftool -t vimdiff -y
     f = fetch
     gl = config --global -l
+    l = log -1 HEAD --stat
+    ll = log --oneline
+    rv = remote -v
     se = !git rev-list --all | xargs git grep -F
-    cleanup = "!git branch --merged | grep  -v '^\\*\\|master\\|dev\\|main' | xargs git branch -d"
+    st = status -sb
 
 [init]
     defaultBranch = main
