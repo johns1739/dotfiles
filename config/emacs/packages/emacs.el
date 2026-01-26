@@ -153,7 +153,7 @@
   (compilation-mode . hl-line-mode)
   (dired-mode . hl-line-mode)
   (special-mode . hl-line-mode)
-  (before-save . delete-trailing-whitespace)
+  (before-save . nuke-trailing-whitespace)
   :config
   (setq-default cursor-type 'bar)
   (setq-default display-fill-column-indicator-column 100)
@@ -202,6 +202,11 @@
   (defun reload-emacs ()
     (interactive)
     (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
+  (defun nuke-trailing-whitespace ()
+    ;; Running delete-trailing-whitespace on certain special modes can cause issues.
+    ;; So only run in prog-mode.
+    (when (derived-mode-p 'prog-mode)
+      (delete-trailing-whitespace)))
   (unless (display-graphic-p)
     ;; activate mouse-based scrolling
     (xterm-mouse-mode 1)
