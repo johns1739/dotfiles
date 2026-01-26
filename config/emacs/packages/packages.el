@@ -9,6 +9,9 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window)))
 
+(use-package agent-shell
+  :if (display-graphic-p))
+
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map

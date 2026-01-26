@@ -169,6 +169,15 @@
   :bind (:map yaml-ts-mode-map
               ("C-c C-c p" . openapi-preview)))
 
+(use-package pg
+  :if (executable-find "psql"))
+
+(use-package pgmacs
+  :straight (:host github :repo "emarsden/pgmacs")
+  :if (and (display-graphic-p) (executable-find "psql"))
+  :requires (pg)
+  :commands (pgmacs pgmacs-open-uri pgmacs-open-string))
+
 (use-package python
   :straight nil
   :mode ("\\.py\\'" . python-mode)
