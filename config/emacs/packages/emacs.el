@@ -476,7 +476,7 @@
           ("n r ," . org-refile-goto-last-stored)
           :map org-mode-map
           ([remap goto-address-at-point] . org-open-at-point)
-          ([remap kill-sentence] . org-cut-subtree)
+          ;; ([remap kill-sentence] . org-cut-subtree)
           ("M-H" . org-babel-mark-block)
           ("M-n" . org-next-visible-heading)
           ("M-p" . org-previous-visible-heading)
