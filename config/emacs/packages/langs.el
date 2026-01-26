@@ -34,7 +34,7 @@
 
 (use-package elixir-ts-mode
   ;; Setup
-  ;; (add-to-list 'exec-path "~/.local/elixir-ls")
+  ;; (add-to-list 'exec-path "~/.local/elixirls")
   :mode (("\\.ex\\'" . elixir-ts-mode)
          ("\\.exs\\'" . elixir-ts-mode)
          ("\\.heex\\'" . heex-ts-mode))
@@ -69,10 +69,14 @@
   :config
   (with-eval-after-load 'compile
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
-    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
+    (add-to-list 'compilation-error-regexp-alist 'elixir-unit-test-target)
     (add-to-list 'compilation-error-regexp-alist-alist
-                 '(elixir-warning-target
-                   "└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
+                 '(elixir-unit-test-target
+                   "\s+\\(test/.+\\.exs\\):\\([0-9]+\\)" 1 2 nil 1 1)))
+    ;; (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
+    ;; (add-to-list 'compilation-error-regexp-alist-alist
+    ;;              '(elixir-warning-target
+    ;;                "└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
   (with-eval-after-load 'eglot
     (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode)
                      eglot-server-programs
