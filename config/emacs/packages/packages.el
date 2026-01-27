@@ -113,7 +113,6 @@
           ("M-e" . copilot-accept-completion-by-line)
           ("M-<return>" . copilot-accept-completion))
   :custom
-  (corfu-auto nil)
   (copilot-idle-delay 0.5)
   (copilot-indent-offset-warning-disable t)
   (copilot-max-char-warning-disable t)

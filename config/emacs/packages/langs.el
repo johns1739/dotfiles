@@ -174,6 +174,7 @@
               ("C-c C-c p" . openapi-preview)))
 
 (use-package pg
+  :defer
   :if (executable-find "psql"))
 
 (use-package pgmacs
