@@ -1,5 +1,9 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package agent-shell
+  ;; Loading error with project.el
+  :if (display-graphic-p))
+
 (use-package aidermacs ;; too expensive
   :if (and (display-graphic-p) (executable-find "aider"))
   :bind ( :map global-leader-map
