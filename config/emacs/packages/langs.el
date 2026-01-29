@@ -72,7 +72,7 @@
     (add-to-list 'compilation-error-regexp-alist 'elixir-unit-test-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-unit-test-target
-                   "\s+\\(test/.+\\.exs\\):\\([0-9]+\\)" 1 2 nil 1 1)))
+                   "     \\([^ ]+\\.exs\\):\\([0-9]+\\)" 1 2 nil 1 1)))
     ;; (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
     ;; (add-to-list 'compilation-error-regexp-alist-alist
     ;;              '(elixir-warning-target
