@@ -133,7 +133,7 @@
           ("RET" . nil))
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0.2)
+  (corfu-auto-delay 0.3)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-preview-current 'insert)
