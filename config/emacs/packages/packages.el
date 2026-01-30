@@ -229,7 +229,10 @@
           ("i A" . gptel-add)
           ("i K" . gptel-context-remove-all)
           ("i F" . gptel-add-file)
-          ("i R" . gptel-rewrite))
+          ("i R" . gptel-rewrite)
+          :map dired-mode-map
+          ("A" . gptel-add)
+          ("K" . gptel-context-remove-all))
   :hook
   (gptel-mode . visual-line-mode)
   ;; (gptel-mode . gptel-highlight-mode) ;; Not available for some reason.
