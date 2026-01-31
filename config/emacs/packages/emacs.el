@@ -259,14 +259,15 @@
               ("k p" . previous-error)
               ("k w" . send-region-to-process))
   :custom
-  (compile-command nil)
-  (compilation-window-height 20)
-  (compilation-context-lines 10)
   (compilation-always-kill t)
-  (compilation-scroll-output t)
-  (compilation-max-output-line-length nil)
+  (compilation-context-lines 10)
   (compilation-error-regexp-alist '())
   (compilation-error-regexp-alist-alist '())
+  (compilation-max-output-line-length 121)
+  (compilation-scroll-output t)
+  (compilation-search-path '(nil)) ;; directories to search for files
+  (compilation-window-height 20)
+  (compile-command "make ")
   :hook
   (compilation-filter . ansi-color-compilation-filter)
   :init
@@ -304,6 +305,8 @@
                         (process-list)))))
     (process-send-region send-region-to-process-target beg end))
   :config
+  ;; Make dir local variables work in compilation buffers
+  (add-hook 'compilation-mode-hook 'hack-dir-local-variables-non-file-buffer)
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   ;; (add-to-list 'compilation-error-regexp-alist 'failure-newline-target)
   (add-to-list 'compilation-error-regexp-alist-alist
