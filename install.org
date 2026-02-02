@@ -166,7 +166,7 @@ ln -s $current_dirpath/config/emacs/snippets ~/.config/emacs/snippets
     (load-theme 'darktooth :no-confirm-loading)
   (progn
     (load-theme 'creamsody :no-confirm-loading)
-    (set-face-background 'default "unspecified")))
+    (set-face-background 'default "unspecified-bg")))
 
 (setq gptel-model 'claude-sonnet-4)
 (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
