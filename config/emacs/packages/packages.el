@@ -461,7 +461,7 @@
     (propertize "  "))
   (defun mode-line-buffer-name ()
     (if (buffer-file-name)
-        (string-truncate-left (relative-file-name) 70)
+        (string-truncate-left (relative-file-name) 50)
       (buffer-name)))
   :custom
   (simple-modeline-segments
