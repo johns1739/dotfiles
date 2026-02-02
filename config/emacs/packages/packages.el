@@ -149,16 +149,17 @@
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
 (use-package dashboard
-  :demand
+  ;; Set in custom if you like dashboard.
+  ;; (dashboard-setup-startup-hook)
   :if (display-graphic-p)
   :custom
   (dashboard-center-content t)
-  (dashboard-vertically-center-content t)
-  :config
-  (dashboard-setup-startup-hook))
+  (dashboard-vertically-center-content t))
 
 (use-package deadgrep
-  :bind (:map search-map ("g" . deadgrep)))
+  :bind ( :map search-map
+          ("g" . deadgrep)
+          ("G" . rgrep)))
 
 (use-package diff-hl
   ;; TODO: Make it work nice with meow normal
@@ -430,7 +431,7 @@
 
 (use-package persistent-scratch
   :if (display-graphic-p)
-  :defer 2
+  :defer 5
   :config
   (persistent-scratch-setup-default))
 
@@ -477,7 +478,7 @@
       ;; simple-modeline-segment-input-method
       ;; simple-modeline-segment-eol
       ;; simple-modeline-segment-encoding
-      ;; simple-modeline-segment-vc
+      simple-modeline-segment-vc
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode

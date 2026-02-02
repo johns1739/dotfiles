@@ -22,7 +22,7 @@ window-save-state = always
 copy-on-select = clipboard
 
 # window look & feel
-theme = Gruber Darker
+theme = Desert
 window-theme = dark
 window-decoration = auto
 window-height = 45

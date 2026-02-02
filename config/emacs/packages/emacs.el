@@ -553,7 +553,7 @@
           :map project-prefix-map
           ("K" . project-forget-project))
   :custom
-  (project-switch-commands '((project-find-regexp "Regexp" "s")
+  (project-switch-commands '((project-find-regexp "Regexp" "g")
                              (project-find-file "File" "f")
                              (project-find-dir "Dir" "d")
                              (project-eshell "Eshell" "e")
