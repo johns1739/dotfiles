@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: Commit from ticketed branch
-# key: ,com
+# key: ,cm
 # condition: (and (project-current) (magit-get-current-branch))
 # --
 `

@@ -521,6 +521,8 @@
 
 (use-package visual-replace
   :demand
+  :bind ( :map search-map
+          ("%" . visual-replace-selected))
   :config
   (visual-replace-global-mode))
 
