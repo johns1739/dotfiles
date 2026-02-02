@@ -497,7 +497,6 @@
 (use-package transient) ;; needed by magit, forge, and others
 
 (use-package undo-tree
-  :if (display-graphic-p)
   :demand
   :custom
   (undo-tree-visualizer-diff t)
@@ -512,9 +511,9 @@
   (vertico-mode))
 
 (use-package vertico-posframe
+  :if (display-graphic-p)
   :defer
   :after vertico
-  :if (display-graphic-p)
   :bind (:map global-leader-map
               ("m SPC" . vertico-posframe-mode))
   :custom
