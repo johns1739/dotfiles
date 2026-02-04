@@ -511,6 +511,7 @@
   (org-special-ctrl-a/e t)
   (org-startup-folded 'overview)
   (org-startup-indented t)
+  (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
   ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
   (org-todo-keyword-faces '(("TODO" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
@@ -560,6 +561,27 @@
                              (project-kill-buffers "Kill" "k")))
   :init
   (keymap-set global-leader-map "p" project-prefix-map))
+
+(use-package prog-mode
+  ;; (add-hook 'elixir-ts-mode-hook #'prettify-symbols-mode)
+  :straight nil
+  :custom
+  (prettify-symbols-alist '(("!=" . ?≠)
+                            ("&&" . ?∧)
+                            ("->" . ?→)
+                            ("->>" . ?↠)
+                            ("<-" . ?←)
+                            ("<<" . ?«)
+                            ("<=" . ?≤)
+                            ("<>" . ?◇)
+                            ("<|" . ?◁)
+                            ;; ("==" . ?≡)
+                            ("=>" . ?⇒)
+                            (">=" . ?≥)
+                            (">>" . ?»)
+                            ("not" . ?¬)
+                            ("|>" . ?▷)
+                            ("||" . ?∨))))
 
 (use-package smerge-mode
   :straight nil
