@@ -450,6 +450,11 @@
 (use-package simple-modeline
   :demand
   :init
+  (defun simple-modeline-segment-branch ()
+    "Display current git branch in mode line."
+    (when vc-mode
+      (let ((branch (s-truncate 30 (vc-git--current-branch))))
+        (propertize (format " %s" branch) 'face 'font-lock-keyword-face))))
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
     (if (project-current)
@@ -478,7 +483,8 @@
       ;; simple-modeline-segment-input-method
       ;; simple-modeline-segment-eol
       ;; simple-modeline-segment-encoding
-      simple-modeline-segment-vc
+      ;; simple-modeline-segment-vc
+      simple-modeline-segment-branch
       simple-modeline-segment-misc-info
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
