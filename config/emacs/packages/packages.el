@@ -9,11 +9,10 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window)))
 
-;; TODO: Better bindings for agent-shell
 (use-package agent-shell
   :if (display-graphic-p)
   :bind ( :map global-leader-map
-          ("i a" . agent-shell)))
+          ("I" . agent-shell)))
 
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
@@ -112,9 +111,7 @@
   :if (executable-find "npm")
   :commands (copilot-mode)
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :bind ( :map global-leader-map
-          ("i c" . copilot-mode)
-          :map copilot-completion-map
+  :bind ( :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)
           ("M-<return>" . copilot-accept-completion))
@@ -231,11 +228,10 @@
   :custom
   (gptel-default-mode 'org-mode)
   :bind ( :map global-leader-map
-          ("I" . gptel-menu)
           ("i i" . gptel)
+          ("i m" . gptel-menu)
           ("i A" . gptel-add)
           ("i K" . gptel-context-remove-all)
-          ("i F" . gptel-add-file)
           ("i R" . gptel-rewrite)
           :map dired-mode-map
           ("A" . gptel-add)
@@ -316,7 +312,9 @@
   (magit-blame-echo-style 'headings)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate")
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :config
+  (transient-append-suffix 'magit-file-dispatch "G" '("j" "Goto Status Here" magit-status-here)))
 
 (use-package marginalia
   :demand

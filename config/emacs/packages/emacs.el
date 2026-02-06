@@ -1,7 +1,5 @@
 ;;; -*- lexical-binding: t -*-
 
-;; TODO: magit status here bind to j j
-
 (use-package emacs
   :demand
   :straight nil
