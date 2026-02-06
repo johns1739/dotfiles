@@ -9,6 +9,12 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window)))
 
+;; TODO: Better bindings for agent-shell
+(use-package agent-shell
+  :if (display-graphic-p)
+  :bind ( :map global-leader-map
+          ("i a" . agent-shell)))
+
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
