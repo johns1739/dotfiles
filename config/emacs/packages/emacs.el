@@ -46,8 +46,8 @@
           ("m n" . display-line-numbers-mode)
           ("m N" . global-display-line-numbers-mode)
           ;; Compilation & Computation
-          ("k c" . calc)
-          ("k r" . regexp-builder)
+          ("k *" . calc)
+          ("k r" . ielm)
           ;; Settings (Look & Feel)
           (", ," . open-custom-file)
           (", <" . open-emacs-file)
