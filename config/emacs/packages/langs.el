@@ -190,6 +190,8 @@
   :custom
   (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4)
+  :hook
+  (python-mode . indent-bars-mode)
   :config
   ;; TODO compilation-next-error doesn't past first error
   (with-eval-after-load 'compile

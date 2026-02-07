@@ -1,5 +1,25 @@
 ;;; -*- lexical-binding: t -*-
 
+(use-package emacs ;; graphics only
+  :demand
+  :straight nil
+  :if (display-graphic-p)
+  :hook
+  ((text-mode prog-mode) . display-line-numbers-mode)
+  :init
+  (add-to-list 'default-frame-alist '(height . 40))
+  (add-to-list 'default-frame-alist '(width . 120)))
+
+(use-package emacs ;; terminal only
+  :demand
+  :straight nil
+  :unless (display-graphic-p)
+  :config
+  ;; activate mouse-based scrolling
+  (xterm-mouse-mode 1)
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+
 (use-package emacs
   :demand
   :straight nil
@@ -202,45 +222,9 @@
     ;; Running delete-trailing-whitespace on certain special modes can cause issues.
     ;; So only run in prog-mode.
     (when (derived-mode-p 'prog-mode)
-      (delete-trailing-whitespace)))
-  (unless (display-graphic-p)
-    ;; activate mouse-based scrolling
-    (xterm-mouse-mode 1)
-    (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-    (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-  ;; frame settings
-  (when (display-graphic-p)
-    (add-to-list 'default-frame-alist '(height . 40))
-    (add-to-list 'default-frame-alist '(width . 120))))
+      (delete-trailing-whitespace))))
 
-(use-package emacs ;; backups
-  :straight nil
-  :custom
-  (backup-by-copying t)
-  (backup-directory-alist `(("." . "~/.backups")))
-  (create-lockfiles nil)
-  (delete-old-versions t)
-  (kept-new-versions 6)
-  (kept-old-versions 3)
-  (make-backup-files t)
-  (vc-make-backup-files t)
-  (version-control t)
-  :config
-  (defun buffer-backed-up-set-to-time ()
-    "Set the buffer-backed-up variable to the current time if t."
-    (if (eq buffer-backed-up t)
-        (setq buffer-backed-up (current-time))))
-  (defun buffer-backed-up-reset-advice (orig-fun &rest args)
-    "Try to do case-sensitive matching (not effective with all functions)."
-    (buffer-backed-up-set-to-time)
-    (if (and buffer-backed-up
-             (time-less-p (time-add (buffer-backed-up) (* 60 60 24))
-                          (current-time)))
-        (setq buffer-backed-up nil))
-    (let ((orig-fun-result (apply orig-fun args)))
-      (buffer-backed-up-set-to-time)
-      orig-fun-result))
-  (advice-add 'backup-buffer :around #'buffer-backed-up-reset-advice))
+(use-package calc)
 
 (use-package compile
   :bind (:map global-leader-map
@@ -382,6 +366,35 @@
       (and files (car files))))
   :config
   (add-to-list 'ffap-alist '("" . ffap-deep-match-file)))
+
+(use-package files ;; backups
+  :straight nil
+  :custom
+  (backup-by-copying t)
+  (backup-directory-alist `(("." . "~/.backups")))
+  (create-lockfiles nil)
+  (delete-old-versions t)
+  (kept-new-versions 6)
+  (kept-old-versions 3)
+  (make-backup-files t)
+  (vc-make-backup-files t)
+  (version-control t)
+  :config
+  (defun buffer-backed-up-set-to-time ()
+    "Set the buffer-backed-up variable to the current time if t."
+    (if (eq buffer-backed-up t)
+        (setq buffer-backed-up (current-time))))
+  (defun buffer-backed-up-reset-advice (orig-fun &rest args)
+    "Try to do case-sensitive matching (not effective with all functions)."
+    (buffer-backed-up-set-to-time)
+    (if (and buffer-backed-up
+             (time-less-p (time-add (buffer-backed-up) (* 60 60 24))
+                          (current-time)))
+        (setq buffer-backed-up nil))
+    (let ((orig-fun-result (apply orig-fun args)))
+      (buffer-backed-up-set-to-time)
+      orig-fun-result))
+  (advice-add 'backup-buffer :around #'buffer-backed-up-reset-advice))
 
 (use-package flymake
   :straight nil

@@ -109,8 +109,9 @@
   ;; M-x copilot-install-server
   ;; M-x copilot-login
   :if (executable-find "npm")
-  :commands (copilot-mode)
+  :defer 5
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :commands (copilot-mode)
   :bind ( :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)
@@ -124,7 +125,9 @@
    ((t ( :family "JetBrainsMonoNL Nerd Font Mono"
          :slant italic
          :weight ultra-light
-         :inherit completions-annotations)))))
+         :inherit completions-annotations))))
+  :config
+  (add-hook 'prog-mode-hook #'copilot-mode))
 
 (use-package corfu
   :demand
@@ -152,12 +155,12 @@
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
 (use-package dashboard
-  ;; Set in custom if you like dashboard.
-  ;; (dashboard-setup-startup-hook)
   :if (display-graphic-p)
   :custom
   (dashboard-center-content t)
-  (dashboard-vertically-center-content t))
+  (dashboard-vertically-center-content t)
+  :config
+  (dashboard-setup-startup-hook))
 
 (use-package deadgrep
   :bind ( :map search-map
