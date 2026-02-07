@@ -37,28 +37,24 @@
           ("x u" . delete-duplicate-lines)
           ("x s" . sort-lines)
           ("x w" . whitespace-cleanup)
-          ;; Package Modes
-          ("m <tab>" . toggle-truncate-lines)
-          ("m c" . display-fill-column-indicator-mode)
-          ("m C" . global-display-fill-column-indicator-mode)
-          ("m h" . hl-line-mode)
-          ("m H" . global-hl-line-mode)
-          ("m n" . display-line-numbers-mode)
-          ("m N" . global-display-line-numbers-mode)
           ;; Compilation & Computation
           ("k *" . calc)
           ("k r" . ielm)
           ;; Settings (Look & Feel)
           (", ," . open-custom-file)
           (", <" . open-emacs-file)
-          (", SPC" . load-theme)
           (", =" . global-text-scale-adjust)
           (", D" . toggle-debug-on-error)
-          (", x" . describe-font)
-          (", f" . toggle-frame-maximized)
           (", F" . toggle-frame-fullscreen)
-          (", r" . reload-emacs)
           (", R" . restart-emacs)
+          (", SPC" . load-theme)
+          (", c" . display-fill-column-indicator-mode)
+          (", f" . toggle-frame-maximized)
+          (", h" . hl-line-mode)
+          (", n" . display-line-numbers-mode)
+          (", r" . reload-emacs)
+          (", t" . toggle-truncate-lines)
+          (", x" . describe-font)
           :map mode-specific-map
           ("C-o" . goto-address-at-point)
           :map goto-map
@@ -401,9 +397,6 @@
   ;; brew install ispell
   ;; ispell fails to install due to compilation issues
   :if (or (executable-find "aspell") (executable-find "ispell"))
-  :bind (:map global-leader-map
-              ("m 4" . flyspell-prog-mode)
-              ("m $" . flyspell-mode))
   :config
   (if (executable-find "ispell")
       (setq ispell-program-name "ispell")

@@ -184,6 +184,17 @@
   :config
   (dimmer-mode))
 
+(use-package elfeed
+  :bind ( :map global-leader-map
+          ("m f" . elfeed))
+  :custom
+  (elfeed-feeds
+   '(("http://nullprogram.com/feed/" emacs)
+     ("https://planet.emacslife.com/atom.xml" emacs)
+     ("https://hnrss.org/jobs" jobs)
+     "https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month"
+     "https://hnrss.org/frontpage")))
+
 (use-package envrc
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))
