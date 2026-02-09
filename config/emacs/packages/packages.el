@@ -188,6 +188,7 @@
   (dimmer-mode))
 
 (use-package elfeed
+  :commands (elfeed)
   :bind ( :map global-leader-map
           ("m f" . elfeed))
   :custom
@@ -196,6 +197,7 @@
      ("https://planet.emacslife.com/atom.xml" emacs)
      ("https://hnrss.org/jobs" jobs)
      "https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month"
+     "https://lobste.rs/rss"
      "https://hnrss.org/frontpage")))
 
 (use-package envrc
