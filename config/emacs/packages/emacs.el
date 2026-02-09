@@ -8,7 +8,25 @@
   ((text-mode prog-mode) . display-line-numbers-mode)
   :init
   (add-to-list 'default-frame-alist '(height . 40))
-  (add-to-list 'default-frame-alist '(width . 120)))
+  (add-to-list 'default-frame-alist '(width . 120))
+  :custom
+  (prettify-symbols-alist '(("!=" . ?≠)
+                            ;; ("&&" . ?∧)
+                            ("->" . ?→)
+                            ("->>" . ?↠)
+                            ("<-" . ?←)
+                            ("<<" . ?«)
+                            ("<=" . ?≤)
+                            ("<>" . ?◇)
+                            ("<|" . ?◁)
+                            ;; ("==" . ?≡)
+                            ("=>" . ?⇒)
+                            (">=" . ?≥)
+                            (">>" . ?»)
+                            ;; ("not" . ?¬)
+                            ("|>" . ?▷)
+                            ;; ("||" . ?∨)
+                            )))
 
 (use-package emacs ;; terminal only
   :demand
@@ -568,27 +586,6 @@
   :init
   (keymap-set global-leader-map "p" project-prefix-map))
 
-(use-package prog-mode
-  ;; (add-hook 'elixir-ts-mode-hook #'prettify-symbols-mode)
-  :straight nil
-  :custom
-  (prettify-symbols-alist '(("!=" . ?≠)
-                            ;; ("&&" . ?∧)
-                            ("->" . ?→)
-                            ("->>" . ?↠)
-                            ("<-" . ?←)
-                            ("<<" . ?«)
-                            ("<=" . ?≤)
-                            ("<>" . ?◇)
-                            ("<|" . ?◁)
-                            ;; ("==" . ?≡)
-                            ("=>" . ?⇒)
-                            (">=" . ?≥)
-                            (">>" . ?»)
-                            ;; ("not" . ?¬)
-                            ("|>" . ?▷)
-                            ;; ("||" . ?∨)
-                            )))
 (use-package smerge-mode
   :straight nil
   :hook
