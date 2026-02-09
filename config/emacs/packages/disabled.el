@@ -9,6 +9,11 @@
   ;; (aidermacs-default-model "gemini-2.5-pro"))
   (aidermacs-default-chat-mode 'architect))
 
+(use-package casual
+  ;; Too much configuration for different modes.
+  :bind ( :map org-agenda-mode-map
+          ("C-o" . casual-agenda-tmenu)))
+
 (use-package command-log-mode
   :bind (:map global-leader-map
               ("m l" . clm/toggle-command-log-buffer))
