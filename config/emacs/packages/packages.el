@@ -12,7 +12,10 @@
 (use-package agent-shell
   :if (display-graphic-p)
   :bind ( :map global-leader-map
-          ("I" . agent-shell)))
+          ("I" . agent-shell))
+  :custom
+  (agent-shell-display-action
+   '(display-buffer-in-side-window (side . right) (window-width . 0.50))))
 
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)

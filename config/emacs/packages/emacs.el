@@ -81,7 +81,8 @@
           ;; Settings (Look & Feel)
           (", ," . open-custom-file)
           (", <" . open-emacs-file)
-          (", =" . global-text-scale-adjust)
+          (", +" . global-text-scale-adjust)
+          (", =" . balance-windows-area)
           (", D" . toggle-debug-on-error)
           (", F" . toggle-frame-fullscreen)
           (", R" . restart-emacs)
@@ -242,8 +243,6 @@
     (when (derived-mode-p 'prog-mode)
       (delete-trailing-whitespace))))
 
-(use-package calc)
-
 (use-package compile
   :bind (:map global-leader-map
               ("k ." . compile)
@@ -317,8 +316,9 @@
 
 (use-package diff-mode
   :straight nil
-  :bind (:map diff-mode-map
-              ("M-o" . nil)))
+  :commands (diff diff-mode)
+  :bind ( :map diff-mode-map
+          ("M-o" . nil)))
 
 (use-package dired
   :straight nil
@@ -362,11 +362,7 @@
               ("k e" . project-eshell)
               ("k E" . eshell))
   :config
-  (add-to-list 'display-buffer-alist
-               '("\\*.*eshell\\*"
-                 (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
-                 (inhibit-same-window . t)
-                 (window-min-height . 25))))
+  (add-to-list 'display-buffer-alist '("\\*.*eshell\\*" (display-buffer-in-side-window))))
 
 (use-package ffap
   :straight nil
