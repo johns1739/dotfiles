@@ -281,7 +281,9 @@
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
 (use-package yaml-mode
-  :mode "\\(\\.ya?ml\\)\\'")
+  :mode "\\(\\.ya?ml\\)\\'"
+  :hook
+  (yaml-mode . indent-bars-mode))
 
 (use-package zig-mode
   :mode "\\.zig\\'")
