@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: source-fish
+# key: ,fish
+# --
+#+begin_src fish
+$0
+#+end_src
