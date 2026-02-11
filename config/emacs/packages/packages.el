@@ -516,6 +516,11 @@
   :config
   (simple-modeline-mode))
 
+(use-package spacious-padding
+  :if (display-graphic-p)
+  :bind (:map global-leader-map
+              ("m p" . spacious-padding-mode)))
+
 (use-package tmr
   :bind (:map global-leader-map
               ("m t" . tmr-tabulated-view))
@@ -546,9 +551,9 @@
   :defer
   :after vertico
   :bind (:map global-leader-map
-              ("m SPC" . vertico-posframe-mode))
+              ("m v" . vertico-posframe-mode))
   :custom
-  (vertico-posframe-min-width 70))
+  (vertico-posframe-min-width 80))
 
 (use-package visual-replace
   :demand
@@ -556,6 +561,15 @@
           ("%" . visual-replace-selected))
   :config
   (visual-replace-global-mode))
+
+(use-package writeroom-mode
+  :if (display-graphic-p)
+  :bind ( :map global-leader-map
+          ("m w" . writeroom-mode)
+          ("m W" . global-writeroom-mode))
+  :custom
+  (writeroom-fullscreen-effect 'maximized)
+  (writeroom-width 120))
 
 (use-package xclip
   :demand

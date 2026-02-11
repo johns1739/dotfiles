@@ -308,11 +308,6 @@
   :hook
   (python-ts-mode . python-black-setup))
 
-(use-package spacious-padding
-  :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("m p" . spacious-padding-mode)))
-
 (use-package trashed
   ;; Never used.
   :bind (:map global-leader-map
