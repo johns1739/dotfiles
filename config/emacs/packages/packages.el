@@ -198,7 +198,7 @@
   (elfeed-feeds
    '(("http://nullprogram.com/feed/" emacs)
      ("https://planet.emacslife.com/atom.xml" emacs)
-     ("https://hnrss.org/jobs" jobs)
+     ;; ("https://hnrss.org/jobs" jobs)
      "https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month"
      "https://modern-sql.com/feed"
      "https://lobste.rs/rss"
