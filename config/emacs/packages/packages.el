@@ -202,7 +202,7 @@
      ("https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month" reddit)
      ("https://modern-sql.com/feed" sql)
      ("https://lobste.rs/rss" lobste)
-     ("https://hnrss.org/frontpage" hackernews)))
+     ("https://hnrss.org/frontpage" hackernews))))
 
 (use-package envrc
   ;; Must activate at the end
