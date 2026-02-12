@@ -86,37 +86,6 @@
                           docker-container-columns)))
     (plist-put column :width 62)))
 
-(use-package eat
-  ;; When eat-terminal input is acting weird, try re-compiling with command:
-  ;; (eat-compile-terminfo)
-  :if (display-graphic-p)
-  :straight (eat :type git
-                 :host codeberg
-                 :repo "akib/emacs-eat"
-                 :files ("*.el" ("term" "term/*.el") "*.texi"
-                         "*.ti" ("terminfo/e" "terminfo/e/*")
-                         ("terminfo/65" "terminfo/65/*")
-                         ("integration" "integration/*")
-                         (:exclude ".dir-locals.el" "*-tests.el")))
-  :bind (:map global-leader-map
-              ("k t" . eat-project)
-              ("k T" . eat)
-              :map eat-semi-char-mode-map
-              ("M-o" . other-window))
-  :custom
-  (process-adaptive-read-buffering t)
-  (eat-term-scrollback-size nil)
-  (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
-  :hook
-  (eshell-load . eat-eshell-visual-command-mode)
-  (eshell-load . eat-eshell-mode)
-  :config
-  (add-to-list 'display-buffer-alist
-               '("\\*.*-eat\\*"
-                 (display-buffer-reuse-mode-window display-buffer-below-selected display-buffer-at-bottom)
-                 (inhibit-same-window . t)
-                 (window-min-height . 25))))
-
 (use-package eldoc-box
   ;; Annoying GUI
   :if (display-graphic-p)

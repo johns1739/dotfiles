@@ -190,6 +190,36 @@
   :config
   (dimmer-mode))
 
+(use-package eat
+  ;; When eat-terminal input is acting weird, try re-compiling with command:
+  ;; (eat-compile-terminfo)
+  :if (display-graphic-p)
+  :straight (eat :type git
+                 :host codeberg
+                 :repo "akib/emacs-eat"
+                 :files ("*.el" ("term" "term/*.el") "*.texi"
+                         "*.ti" ("terminfo/e" "terminfo/e/*")
+                         ("terminfo/65" "terminfo/65/*")
+                         ("integration" "integration/*")
+                         (:exclude ".dir-locals.el" "*-tests.el")))
+  :bind ( :map global-leader-map
+          ("k t" . eat-project)
+          ("k T" . eat)
+          :map eat-semi-char-mode-map
+          ("M-o" . other-window))
+  :init
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(eat-project "Eat" "t")))
+  :custom
+  (process-adaptive-read-buffering t)
+  (eat-term-scrollback-size nil)
+  (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
+  :hook
+  (eshell-load . eat-eshell-visual-command-mode)
+  (eshell-load . eat-eshell-mode)
+  :config
+  (add-to-list 'display-buffer-alist '("\\*.*eat\\*" (display-buffer-in-side-window))))
+
 (use-package elfeed
   :commands (elfeed)
   :bind ( :map global-leader-map

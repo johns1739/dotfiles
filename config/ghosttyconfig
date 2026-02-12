@@ -11,6 +11,7 @@
 # +show-face
 # +crash-report
 
+theme = dark:Tomorrow Night,light:Selenized Light
 background-opacity = 1
 font-size = 14
 unfocused-split-opacity = 0.6
@@ -23,8 +24,7 @@ copy-on-select = clipboard
 clipboard-paste-protection = false
 
 # window look & feel
-theme = Desert
-window-theme = dark
+window-theme = auto
 window-decoration = auto
 window-height = 45
 window-width = 120
