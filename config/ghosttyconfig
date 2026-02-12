@@ -11,7 +11,7 @@
 # +show-face
 # +crash-report
 
-theme = dark:Desert,light:Light Owl
+theme = dark:Desert,light:Flexoki Light
 background-opacity = 1
 font-size = 14
 unfocused-split-opacity = 0.6
