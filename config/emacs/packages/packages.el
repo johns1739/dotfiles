@@ -518,8 +518,8 @@
 
 (use-package spacious-padding
   :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("m p" . spacious-padding-mode)))
+  :bind ( :map global-leader-map
+          ("m p" . spacious-padding-mode)))
 
 (use-package tmr
   :bind (:map global-leader-map
@@ -553,6 +553,7 @@
   :bind (:map global-leader-map
               ("m v" . vertico-posframe-mode))
   :custom
+  (vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
   (vertico-posframe-min-width 80))
 
 (use-package visual-replace

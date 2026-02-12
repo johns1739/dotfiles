@@ -20,6 +20,7 @@ quit-after-last-window-closed = true
 scrollback-limit = 1073741824
 window-save-state = always
 copy-on-select = clipboard
+clipboard-paste-protection = false
 
 # window look & feel
 theme = Desert
