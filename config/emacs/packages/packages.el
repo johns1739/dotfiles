@@ -17,6 +17,12 @@
   (agent-shell-display-action
    '(display-buffer-in-side-window (side . right) (window-width . 0.50))))
 
+(use-package auto-dark
+  ;; (setopt auto-dark-themes '((wombat) (leuven)))
+  :demand
+  :config
+  (auto-dark-mode))
+
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -112,10 +118,11 @@
   ;; M-x copilot-install-server
   ;; M-x copilot-login
   :if (executable-find "npm")
-  :defer 5
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :commands (copilot-mode)
-  :bind ( :map copilot-completion-map
+  :bind ( :map global-leader-map
+          ("m c" . copilot-mode)
+          :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)
           ("M-<return>" . copilot-accept-completion))
@@ -128,9 +135,7 @@
    ((t ( :family "JetBrainsMonoNL Nerd Font Mono"
          :slant italic
          :weight ultra-light
-         :inherit completions-annotations))))
-  :config
-  (add-hook 'prog-mode-hook #'copilot-mode))
+         :inherit completions-annotations)))))
 
 (use-package corfu
   :demand
@@ -504,6 +509,7 @@
 (use-package simple-modeline
   :demand
   :init
+  (require 's)
   (defun simple-modeline-segment-branch ()
     "Display current git branch in mode line."
     (when vc-mode
