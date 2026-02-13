@@ -1,6 +1,7 @@
 ;;; -*- lexical-binding: t -*-
 
 (use-package aidermacs ;; too expensive
+  :disabled
   :if (and (display-graphic-p) (executable-find "aider"))
   :bind ( :map global-leader-map
           ("a" . aidermacs-transient-menu))
@@ -9,8 +10,14 @@
   ;; (aidermacs-default-model "gemini-2.5-pro"))
   (aidermacs-default-chat-mode 'architect))
 
+(use-package auto-dark
+  :disabled ;; better to manually select
+  ;; (setopt auto-dark-themes '((wombat) (leuven)))
+  ;; (auto-dark-mode)
+  :commands (auto-dark-mode))
+
 (use-package casual
-  ;; Too much configuration for different modes.
+  :disabled ;; Too much configuration for different modes.
   :bind ( :map org-agenda-mode-map
           ("C-o" . casual-agenda-tmenu)))
 
@@ -33,7 +40,7 @@
   (consult-denote-mode))
 
 (use-package copilot-chat
-  ;; too slow
+  :disabled ;; too slow
   :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
   :if (display-graphic-p)
   :requires copilot
@@ -56,7 +63,7 @@
   (denote-rename-buffer-mode))
 
 (use-package devdocs
-  ;; rarely used, clunky
+  :disabled ;; rarely used, clunky
   :bind (:map global-leader-map
               ("m h I" . devdocs-install)
               ("m h h" . devdocs-lookup)
@@ -173,6 +180,7 @@
   (kubernetes-redraw-frequency 3600))
 
 (use-package ligature
+  :disabled ;; too much setup
   :straight (:host github :repo "mickeynp/ligature.el")
   :config
   (ligature-set-ligatures 'prog-mode '("--" "---" "==" "===" "!=" "!==" "=!=" "=:=" "=/=" "<=" ">=" "&&" "&&&" "&=" "++" "+++"
@@ -210,8 +218,9 @@
   (magit-todos-mode 1))
 
 (use-package ob-http
-  ;; Better to use curl in shell blocks.
+  :disabled ;; Better to use curl in shell blocks.
   :after org)
+
 
 (use-package paredit
   ;; Gets in the way, difficult to fix a broken parens mat
@@ -221,13 +230,8 @@
   (lisp-interaction-mode . enable-paredit-mode)
   (scheme-mode . enable-paredit-mode))
 
-(use-package persistent-scratch
-  ;; too slow to load up
-  :demand
-  :config
-  (persistent-scratch-setup-default))
-
 (use-package popper
+  :disabled ;; prefer display-buffer-alist
   :demand
   :if (display-graphic-p)
   :bind (:map global-leader-map

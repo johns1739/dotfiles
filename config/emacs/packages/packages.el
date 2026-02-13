@@ -17,12 +17,6 @@
   (agent-shell-display-action
    '(display-buffer-in-side-window (side . right) (window-width . 0.50))))
 
-(use-package auto-dark
-  ;; (setopt auto-dark-themes '((wombat) (leuven)))
-  :demand
-  :config
-  (auto-dark-mode))
-
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -216,9 +210,10 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(eat-project "Eat" "t")))
   :custom
-  (process-adaptive-read-buffering t)
-  (eat-term-scrollback-size nil)
   (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
+  (eat-kill-buffer-on-exit t)
+  (eat-term-scrollback-size nil)
+  (process-adaptive-read-buffering t)
   :hook
   (eshell-load . eat-eshell-visual-command-mode)
   (eshell-load . eat-eshell-mode)

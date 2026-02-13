@@ -1,11 +1,5 @@
 ;;; -*- lexical-binding: t -*-
 
-;; TODO: EAT exit should call remaining buffer.
-;; TODO: EAT doesn't work with fish after auto-completing a command.
-;; TODO: Remove disabled, include back with general public.
-;; TODO: Consider creating more package files by category.
-;; TODO: Bind to packages folder isntead of emacs.el
-
 (use-package emacs ;; graphics only
   :demand
   :straight nil
