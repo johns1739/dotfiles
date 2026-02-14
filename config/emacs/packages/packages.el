@@ -11,6 +11,10 @@
 
 (use-package agent-shell
   :if (display-graphic-p)
+  :commands (agent-shell)
+  :init
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(agent-shell "Agent" "I")))
   :bind ( :map global-leader-map
           ("I" . agent-shell))
   :custom
