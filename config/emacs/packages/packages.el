@@ -196,7 +196,8 @@
 (use-package eat
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
-  :if (display-graphic-p)
+  :if (and (display-graphic-p)
+           (not (string-suffix-p "/bin/fish" (getenv "SHELL"))))
   :straight (eat :type git
                  :host codeberg
                  :repo "akib/emacs-eat"
@@ -597,6 +598,32 @@
           ("%" . visual-replace-selected))
   :config
   (visual-replace-global-mode))
+
+(use-package vterm
+  ;; if test "$INSIDE_EMACS" = 'vterm'
+  ;;   and test -n "$EMACS_VTERM_PATH"
+  ;;   and test -f "$EMACS_VTERM_PATH"
+  ;;   source "$EMACS_VTERM_PATH/etc/emacs-verm.fish"
+  ;; end
+  :if (and (display-graphic-p)
+           (string-suffix-p "/bin/fish" (getenv "SHELL")))
+  :bind (:map global-leader-map
+              ("k t" . vterm-project)
+              ("k T" . vterm))
+  :init
+  (defun vterm-project ()
+    (interactive)
+    (let ((vterm-buffer-name (or (and (project-current)
+                                      (format "*%s-vterm*" (project-name (project-current))))
+                                 "*vterm*"))
+          (default-directory (or (project-directory) default-directory)))
+      (vterm)))
+  :custom
+  (vterm-copy-mode-remove-fake-newlines t)
+  (vterm-max-scrollback 100000)
+  :config
+  (add-to-list 'display-buffer-alist '("\\*.*vterm\\*" (display-buffer-in-side-window))))
+
 
 (use-package writeroom-mode
   :if (display-graphic-p)

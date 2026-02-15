@@ -308,24 +308,6 @@
   (treemacs-filewatch-mode t)
   (treemacs-project-follow-mode t))
 
-(use-package vterm
-  ;; Eat is a better termianl emulator.
-  :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("o t" . vterm-project)
-              ("o T" . vterm-named))
-  :init
-  (defun vterm-project ()
-    (interactive)
-    (let ((default-directory (or (project-directory) default-directory)))
-      (vterm-other-window)))
-  (defun vterm-named ()
-    (interactive)
-    (vterm (read-string "Session name: ")))
-  :custom
-  (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000))
-
 (use-package web-mode
   ;; Mode not very good.
   :mode
