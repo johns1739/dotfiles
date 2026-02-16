@@ -200,6 +200,17 @@
                  '(python-pytest-target
                    "^\\([A-Za-z0-9/][^ (]+\\.py\\):\\([1-9][0-9]*\\): " 1 2 nil nil 1))))
 
+(use-package python-black
+  :disabled ;; python-lsp formatter is good enough
+  :if (executable-find "black")
+  :after python
+  :init
+  (defun python-black-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-format-buffer] . python-black-buffer)))
+  :hook
+  (python-ts-mode . python-black-setup))
+
 (use-package ruby-ts-mode
   :mode "\\.rb\\'"
   :init
@@ -279,6 +290,18 @@
   :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
+
+(use-package web-mode
+  :disabled ;; Mode not very good.
+  :mode
+  (("\\.phtml\\'" . web-mode)
+   ("\\.php\\'" . web-mode)
+   ("\\.tpl\\'" . web-mode)
+   ("\\.[agj]sp\\'" . web-mode)
+   ("\\.as[cp]x\\'" . web-mode)
+   ("\\.erb\\'" . web-mode)
+   ("\\.mustache\\'" . web-mode)
+   ("\\.djhtml\\'" . web-mode)))
 
 (use-package yaml-mode
   :mode "\\(\\.ya?ml\\)\\'"

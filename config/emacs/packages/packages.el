@@ -21,6 +21,22 @@
   (agent-shell-display-action
    '(display-buffer-in-side-window (side . right) (window-width . 0.50))))
 
+(use-package aidermacs
+  :disabled ;; too expensive, requires python dependency aider
+  :if (and (display-graphic-p) (executable-find "aider"))
+  :bind ( :map global-leader-map
+          ("a" . aidermacs-transient-menu))
+  :custom
+  ;; (aidermacs-default-model "gpt-5.2")
+  ;; (aidermacs-default-model "gemini-2.5-pro"))
+  (aidermacs-default-chat-mode 'architect))
+
+(use-package auto-dark ;; auto switching dark / light color themes
+  :disabled ;; better to manually select
+  ;; (setopt auto-dark-themes '((wombat) (leuven)))
+  ;; (auto-dark-mode)
+  :commands (auto-dark-mode))
+
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -57,6 +73,18 @@
          ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
          ;; #'cape-line ;; Kinda buggy
          )))
+
+(use-package casual ;; Better transient menu
+  :disabled ;; Too much configuration for different modes.
+  :bind ( :map org-agenda-mode-map
+          ("C-o" . casual-agenda-tmenu)))
+
+(use-package command-log-mode
+  :disabled ;; Use C-h l
+  :bind (:map global-leader-map
+              ("m l" . clm/toggle-command-log-buffer))
+  :config
+  (global-command-log-mode))
 
 (use-package consult
   :bind (([remap Info-search] . consult-info)
@@ -107,6 +135,21 @@
       (bind-keys :map search-map
                  ("f" . consult-fd))))
 
+(use-package consult-flycheck
+  :disabled ;; not using flycheck
+  :after (consult flycheck)
+  :commands (consult-flycheck))
+
+(use-package consult-denote ;; Prot's note-taking with org
+  :disabled ;; not using denote
+  :bind (:map global-leader-map
+              ("n d f" . consult-denote-find)
+              ("n d s" . consult-denote-grep))
+  :custom
+  (consult-denote-grep-command 'consult-ripgrep)
+  :config
+  (consult-denote-mode))
+
 (use-package consult-eglot
   :after (eglot consult)
   :bind (:map global-leader-map
@@ -134,6 +177,13 @@
          :slant italic
          :weight ultra-light
          :inherit completions-annotations)))))
+
+(use-package copilot-chat
+  :disabled ;; too slow, better to use gptel
+  :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
+  :if (display-graphic-p)
+  :requires copilot
+  :after (request org markdown-mode copilot))
 
 (use-package corfu
   :demand
@@ -173,7 +223,30 @@
           ("g" . deadgrep)
           ("G" . rgrep)))
 
-(use-package diff-hl
+(use-package denote
+  :disabled ;; prefer org-mode note taking
+  :bind (:map global-leader-map
+              ("n d SPC" . denote-open-or-create)
+              ("n d n" . denote)
+              ("n d j" . denote-journal-extras-new-or-existing-entry)
+              ("n d l" . denote-link-or-create)
+              ("n d k" . denote-find-link)
+              ("n d K" . denote-find-backlink)
+              ("n d r" . denote-rename-file-using-front-matter))
+  :custom
+  (denote-directory "~/workspaces/notes")
+  (denote-date-prompt-use-org-read-date t)
+  :config
+  (denote-rename-buffer-mode))
+
+(use-package devdocs
+  :disabled ;; clunky and difficult to keep updated.
+  :bind (:map global-leader-map
+              ("m h I" . devdocs-install)
+              ("m h h" . devdocs-lookup)
+              ("m h s" . devdocs-search)))
+
+(use-package diff-hl ;; git diff changes in fringe
   ;; TODO: Make it work nice with meow normal
   ;; not really used, better to use magit-diff.
   ;; :bind (:map global-leader-map
@@ -192,6 +265,29 @@
   :if (display-graphic-p) ;; Only works in GUI
   :config
   (dimmer-mode))
+
+(use-package dired-subtree
+  ;; :disabled ;; Not really used.
+  :init
+  (with-eval-after-load 'dired-mode
+    (require 'dired-subtree))
+  :bind (:map dired-mode-map
+              ("<tab>" . dired-subtree-toggle)
+              ("TAB" . dired-subtree-toggle)
+              ("<backtab>" . dired-subtree-remove)
+              ("S-TAB" . dired-subtree-remove))
+  :custom
+  (dired-subtree-use-backgrounds nil))
+
+(use-package docker
+  :disabled ;; rarely used
+  :if (and (display-graphic-p) (executable-find "docker"))
+  :bind (:map global-leader-map
+              ("k o" . docker))
+  :config
+  (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
+                          docker-container-columns)))
+    (plist-put column :width 62)))
 
 (use-package eat
   ;; When eat-terminal input is acting weird, try re-compiling with command:
@@ -225,6 +321,12 @@
   :config
   (add-to-list 'display-buffer-alist '("\\*.*eat\\*" (display-buffer-in-side-window))))
 
+(use-package eldoc-box
+  :disabled ;; annoying GUI
+  :if (display-graphic-p)
+  :hook
+  (prog-mode . eldoc-box-hover-at-point-mode))
+
 (use-package elfeed
   :commands (elfeed)
   :bind ( :map global-leader-map
@@ -239,9 +341,71 @@
      ("https://lobste.rs/rss" lobste)
      ("https://hnrss.org/frontpage" hackernews))))
 
+(use-package ellama
+  :disabled ;; prefer gptel
+  :custom
+  (ellama-user-nick "Juan")
+  (ellama-assistant-nick "Cody")
+  (ellama-language "English")
+  (ellama-spinner-enabled t)
+  ;; (ellama-chat-display-action-function #'display-buffer-full-frame)
+  ;; (ellama-instant-display-action-function #'display-buffer-at-bottom)
+  (ellama-keymap-prefix "C-;")
+  (ellama-auto-scroll t)
+  :hook
+  (org-ctrl-c-ctrl-c . ellama-chat-send-last-message)
+  :config
+  (require 'llm-ollama)
+  (setopt ellama-provider
+          (make-llm-ollama :chat-model "qwen2.5:7b"
+                           :embedding-model "nomic-embed-text"
+                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  (setopt ellama-coding-provider
+          (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                           :embedding-model "nomic-embed-text"
+                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  (setopt ellama-summarization-provider
+          (make-llm-ollama :chat-model "qwen2.5-coder:7b"
+                           :embedding-model "nomic-embed-text"
+                           :default-chat-non-standard-params '(("num_ctx" . 32768))))
+  (ellama-context-header-line-global-mode 1))
+
+(use-package elysium
+  :disabled ;; doesn't work very well, buggy.
+  :after (gptel)
+  :custom
+  (elysium-window-size 0.5)
+  (elysium-window-style 'vertical)
+  :bind (:map global-leader-map
+              ("i ." . elysium-query)
+              ("i >" . elysium-add-context)
+              ("i ," . elysium-toggle-window)
+              ("i <" . elysium-clear-buffer))
+  :hook
+  (elysium-apply-changes . smerge-mode))
+
 (use-package envrc
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))
+
+(use-package flycheck
+  :disabled ;; prefer flymake
+  ;; only used with lsp-mode
+  ;; https://www.flycheck.org/en/latest/
+  :commands (global-flycheck-mode flycheck-mode)
+  :init
+  (defun flycheck-set-bindings ()
+    (bind-keys :map (current-local-map)
+               ([remap consult-flymake] . consult-flycheck)
+               ([remap flymake-show-buffer-diagnostics] . consult-flycheck)
+               ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
+               ([remap flymake-show-project-diagnostics] . nil)
+               ([remap flymake-goto-next-error] . flycheck-next-error)
+               ([remap flymake-goto-prev-error] . flycheck-previous-error)))
+  :custom
+  (flycheck-indication-mode 'right-fringe)
+  :hook
+  (flycheck-mode . flycheck-set-bindings))
 
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
@@ -274,6 +438,13 @@
   :bind (:map global-leader-map
               ("x j" . git-link)
               ("x J" . git-link-dispatch)))
+
+(use-package git-modes
+  :disabled) ;; Long load time.
+
+(use-package git-timemachine
+  :disabled ;; never really used. ;; Magit tools are preferred.
+  :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
 
 (use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
@@ -355,6 +526,53 @@
   :hook
   (yaml-mode . indent-bars-mode))
 
+(use-package jinx
+  :disabled ;; never really used and there are compilation errors.
+  :bind (("M-$" . jinx-correct)
+         ([remap flyspell-mode] . jinx-mode)))
+
+(use-package kubernetes
+  :disabled ;; rarely used
+  :if (and (display-graphic-p) (executable-find "kubectl"))
+  :commands (kubernetes-overview)
+  :bind (:map global-leader-map
+              ("k O" . kubernetes-overview))
+  :custom
+  (kubernetes-poll-frequency 3600)
+  (kubernetes-redraw-frequency 3600))
+
+(use-package ligature
+  :disabled ;; too much setup
+  :straight (:host github :repo "mickeynp/ligature.el")
+  :config
+  (ligature-set-ligatures 'prog-mode '("--" "---" "==" "===" "!=" "!==" "=!=" "=:=" "=/=" "<=" ">=" "&&" "&&&" "&=" "++" "+++"
+   "***" ";;" "!!" "??" "?:" "?." "?=" "<:" ":<" ":>" ">:" "<>" "<<<" ">>>" "<<" ">>" "||" "-|"
+   "_|_" "|-" "||-" "|=" "||=" "##" "###" "####" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:"
+   "#!" "#=" "^=" "<$>" "<$" "$>" "<+>" "<+ +>" "<*>" "<* *>" "</" "</>" "/>" "<!--"
+   "<#--" "-->" "->" "->>" "<<-" "<-" "<=<" "=<<" "<<=" "<==" "<=>" "<==>" "==>" "=>"
+   "=>>" ">=>" ">>=" ">>-" ">-" ">--" "-<" "-<<" ">->" "<-<" "<-|" "<=|" "|=>" "|->" "<-"
+   "<~~" "<~" "<~>" "~~" "~~>" "~>" "~-" "-~" "~@" "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
+   "|>" "<|" "||>" "<||" "|||>" "|||>" "<|>" "..." ".." ".=" ".-" "..<" ".?" "::" ":::"
+   ":=" "::=" ":?" ":?>" "//" "///" "/*" "*/" "/=" "//=" "/==" "@_" "__"))
+  (global-ligature-mode t))
+
+(use-package lsp-mode
+  :disabled ;; preferred eglot
+  :commands (lsp lsp-deferred)
+  :custom
+  (lsp-keymap-prefix "s-l")
+  (lsp-idle-delay 0.500)
+  (lsp-headerline-breadcrumb-enable nil)
+  :init
+  (defun lsp-set-bindings ()
+    (bind-keys :map (current-local-map)
+               ([remap indent-format-buffer] . lsp-format-buffer)
+               ([remap xref-find-references] . lsp-find-references)
+               ([remap eldoc] . lsp-describe-thing-at-point)))
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  (lsp-mode . lsp-set-bindings))
+
 (use-package magit
   :commands (magit-project-status)
   :bind (:map global-leader-map
@@ -370,6 +588,12 @@
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   :config
   (transient-append-suffix 'magit-file-dispatch "G" '("j" "Goto Status Here" magit-status-here)))
+
+(use-package magit-todos
+  :disabled ;; not really used, slow startup if project too big
+  :bind (:map project-prefix-map ("t" . magit-todos-list))
+  :config
+  (magit-todos-mode 1))
 
 (use-package marginalia
   :demand
@@ -482,11 +706,23 @@
   (meow-setup)
   (meow-global-mode))
 
+(use-package ob-http
+  :disabled ;; Better to use curl in org-source blocks.
+  :after org)
+
 (use-package orderless
   :custom
   (completion-styles '(substring partial-completion orderless basic))
   (completion-category-defaults nil)
   (completion-category-overrides nil))
+
+(use-package paredit
+  :disabled ;; Gets in the way, difficult to fix a broken parens mat
+  :hook
+  (emacs-lisp-mode . enable-paredit-mode)
+  (lisp-mode . enable-paredit-mode)
+  (lisp-interaction-mode . enable-paredit-mode)
+  (scheme-mode . enable-paredit-mode))
 
 (use-package persistent-scratch
   :if (display-graphic-p)
@@ -500,6 +736,73 @@
   :init
   (with-eval-after-load 'magit
     (pinentry-start)))
+
+(use-package popper
+  :disabled ;; prefer display-buffer-alist
+  :demand
+  :if (display-graphic-p)
+  :bind (:map global-leader-map
+              ("o o" . popper-toggle)
+              ("o O" . popper-toggle-type))
+  :init
+  (defun popper-setup ()
+    (bind-keys :map (current-local-map)
+               ("Q" . popper-kill-latest-popup)))
+  (setq popper-reference-buffers
+        '(("Output\\*$" . hide)
+          occur-mode
+          "\\*Messages\\*"
+          "\\*Warnings\\*"
+          "errors\\*$"
+          "\\*Async Shell Command\\*"
+          special-mode
+          help-mode
+          flymake-diagnostics-buffer-mode
+          compilation-mode
+          comint-mode))
+  ;; Match eshell, shell, term, etc
+  (setq popper-reference-buffers
+        (append popper-reference-buffers
+                '("^\\*.*eshell.*\\*$" eshell-mode
+                  "^\\*shell.*\\*$"  shell-mode
+                  "^\\*term.*\\*$"   term-mode
+                  "^\\*vterm.*\\*$"  vterm-mode
+                  "^\\*.*eat.*\\*$"  eat-mode)))
+  (setq popper-window-height
+        (lambda (win)
+          (fit-window-to-buffer win (floor (frame-height) 3) 15)))
+  :hook
+  (popper-open-popup . popper-setup)
+  :config
+  (popper-mode +1)
+  (popper-echo-mode +1))
+
+(use-package trashed
+  :disabled ;; Never used.
+  :bind (:map global-leader-map
+              ("m _" . trashed))
+  :config
+  (setq trashed-action-confirmer 'y-or-n-p)
+  (setq trashed-use-header-line t)
+  (setq trashed-sort-key '("Date deleted" . t))
+  (setq trashed-date-format "%Y-%m-%d %H:%M:%S"))
+
+(use-package treemacs
+  :disabled ;; Prefer builtin dired.
+  :bind (:map treemacs-mode-map
+              ("j" . treemacs-next-line)
+              ("k" . treemacs-previous-line)
+              :map global-leader-map
+              ("m p" . treemacs-select-window)
+              ("m P" . treemacs))
+  :custom
+  (treemacs-no-png-images t)
+  (treemacs-hide-dot-git-directory t)
+  :config
+  (treemacs-hide-gitignored-files-mode t)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-project-follow-mode t))
 
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
@@ -651,3 +954,7 @@
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
   :config
   (yas-global-mode))
+
+(use-package yasnippet-snippets
+  :disabled ;; Better to rely on custom built templates over externals.
+  :after yasnippet)
