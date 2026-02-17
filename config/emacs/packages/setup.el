@@ -20,6 +20,7 @@
   (load bootstrap-file nil 'nomessage))
 
 (setopt straight-use-package-by-default t)
+(setopt straight-log (not is-simple-editor))
 
 ;; Install early for downstream dependencies
 (use-package exec-path-from-shell
