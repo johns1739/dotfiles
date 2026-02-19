@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: source-elixir
-# key: ,elixir
-# --
-#+begin_src elixir-ts
-$0
-#+end_src

@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: source-ruby
-# key: ,ruby
-# --
-#+begin_src ruby
-$0
-#+end_src

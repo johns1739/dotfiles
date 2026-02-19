@@ -362,7 +362,9 @@
               ("k e" . project-eshell)
               ("k E" . eshell))
   :config
-  (add-to-list 'display-buffer-alist '("\\*.*eshell\\*" (display-buffer-in-side-window))))
+  (add-to-list 'display-buffer-alist
+               '("\\*.*eshell\\*" (display-buffer-in-side-window)
+                 (window-height . 0.3))))
 
 (use-package ffap
   :straight nil
@@ -461,6 +463,20 @@
   :config
   (advice-add 'hippie-expand :around #'hippie-expand-case-fold-advice))
 
+(use-package ibuffer
+  :bind ( :map global-map
+          ("C-x C-b" . ibuffer))
+  :custom
+  (ibuffer-human-readable-size t)
+  (ibuffer-expert t)
+  (ibuffer-display-summary t)
+  (ibuffer-use-other-window nil)
+  (ibuffer-show-empty-filter-groups nil)
+  (ibuffer-default-sorting-mode 'filename/process)
+  (ibuffer-title-face 'font-lock-doc-face)
+  (ibuffer-use-header-line t)
+  (ibuffer-default-shrink-to-minimum-size nil))
+
 (use-package org
   ;; Useful documentation: https://orgmode.org/worg/org-syntax.html
   :straight nil
@@ -477,7 +493,7 @@
      'org-babel-load-languages
      '((emacs-lisp . t)
        (shell . t)
-       (sql . t)))
+       (sql . t))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
     (electric-indent-local-mode -1))
   :hook
   (org-mode . org-mode-setup)
@@ -590,24 +606,30 @@
 (use-package tab-bar
   :straight nil
   :if (display-graphic-p)
-  :bind (:map global-map
-              ("s-{" . tab-previous)
-              ("s-}" . tab-next)
-              ("s-t" . tab-bar-new-tab)
-              ("s-w" . tab-bar-close-tab)
-              :map tab-prefix-map
-              ("SPC" . tab-switch)
-              ("'" . tab-recent)
-              ("T" . tab-bar-mode))
+  :bind ( :map global-map
+          ("s-{" . tab-previous)
+          ("s-}" . tab-next)
+          ("s-t" . tab-bar-new-tab)
+          ("s-w" . tab-bar-close-tab)
+          :map global-leader-map
+          ("T" . tab-bar-mode)
+          :map tab-prefix-map
+          ("SPC" . tab-switch)
+          ("'" . tab-recent))
   :init
   (keymap-set goto-map "t" tab-prefix-map)
+  (defun tab-bar-tab-name-project ()
+    (if (project-current)
+        (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)
+      (tab-bar-tab-name-current)))
   :custom
   (tab-bar-show 1)
   (tab-bar-select-tab-modifiers '(super))
   (tab-bar-close-button-show nil)
   (tab-bar-close-button nil)
   (tab-bar-new-button-show nil)
-  (tab-bar-new-button nil))
+  (tab-bar-new-button nil)
+  (tab-bar-tab-name-function 'tab-bar-tab-name-project))
 
 (use-package treesit
   :straight nil

@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: source-output
-# key: ,out
-# --
-#+begin_output
-$0
-#+end_output

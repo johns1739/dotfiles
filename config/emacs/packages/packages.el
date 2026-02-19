@@ -19,7 +19,7 @@
           ("I" . agent-shell))
   :custom
   (agent-shell-display-action
-   '(display-buffer-in-side-window (side . right) (window-width . 0.50))))
+   '(display-buffer-in-side-window (side . right) (window-width . 0.5))))
 
 (use-package aidermacs
   :disabled ;; too expensive, requires python dependency aider
@@ -319,7 +319,10 @@
   (eshell-load . eat-eshell-visual-command-mode)
   (eshell-load . eat-eshell-mode)
   :config
-  (add-to-list 'display-buffer-alist '("\\*.*eat\\*" (display-buffer-in-side-window))))
+  (add-to-list 'display-buffer-alist
+               '("\\*.*eat\\*"
+                 (display-buffer-in-side-window)
+                 (window-height . 0.3))))
 
 (use-package eldoc-box
   :disabled ;; annoying GUI
@@ -738,44 +741,27 @@
     (pinentry-start)))
 
 (use-package popper
-  :disabled ;; prefer display-buffer-alist
   :demand
   :if (display-graphic-p)
-  :bind (:map global-leader-map
-              ("o o" . popper-toggle)
-              ("o O" . popper-toggle-type))
-  :init
-  (defun popper-setup ()
-    (bind-keys :map (current-local-map)
-               ("Q" . popper-kill-latest-popup)))
-  (setq popper-reference-buffers
-        '(("Output\\*$" . hide)
-          occur-mode
-          "\\*Messages\\*"
-          "\\*Warnings\\*"
-          "errors\\*$"
-          "\\*Async Shell Command\\*"
-          special-mode
-          help-mode
-          flymake-diagnostics-buffer-mode
-          compilation-mode
-          comint-mode))
-  ;; Match eshell, shell, term, etc
-  (setq popper-reference-buffers
-        (append popper-reference-buffers
-                '("^\\*.*eshell.*\\*$" eshell-mode
-                  "^\\*shell.*\\*$"  shell-mode
-                  "^\\*term.*\\*$"   term-mode
-                  "^\\*vterm.*\\*$"  vterm-mode
-                  "^\\*.*eat.*\\*$"  eat-mode)))
-  (setq popper-window-height
-        (lambda (win)
-          (fit-window-to-buffer win (floor (frame-height) 3) 15)))
-  :hook
-  (popper-open-popup . popper-setup)
+  :bind ( :map popper-mode-map
+          ("M-`" . popper-cycle))
+  :custom
+  (popper-reference-buffers
+   '("^\\*eshell.*\\*$" eshell-mode
+     "^\\*shell.*\\*$"  shell-mode
+     "^\\*term.*\\*$"   term-mode
+     "^\\*vterm.*\\*$"  vterm-mode
+     "^\\*eat.*\\*$"  eat-mode
+     ))
   :config
-  (popper-mode +1)
-  (popper-echo-mode +1))
+  (popper-mode 1)
+  (popper-echo-mode 1))
+
+:hook
+(popper-open-popup . popper-setup)
+:config
+(popper-mode +1)
+(popper-echo-mode +1))
 
 (use-package trashed
   :disabled ;; Never used.
@@ -903,6 +889,7 @@
   (visual-replace-global-mode))
 
 (use-package vterm
+  ;; In config.fish
   ;; if test "$INSIDE_EMACS" = 'vterm'
   ;;   and test -n "$EMACS_VTERM_PATH"
   ;;   and test -f "$EMACS_VTERM_PATH"
@@ -916,16 +903,19 @@
   :init
   (defun vterm-project ()
     (interactive)
-    (let ((vterm-buffer-name (or (and (project-current)
-                                      (format "*%s-vterm*" (project-name (project-current))))
-                                 "*vterm*"))
+    (require 'vterm) ;; resolves: Defining as dynamic an already lexical var: vterm-buffer-name
+    (let ((vterm-buffer-name
+           (or (and (project-current)
+                    (format "*%s-vterm*" (project-name (project-current))))
+               "*vterm*"))
           (default-directory (or (project-directory) default-directory)))
       (vterm)))
   :custom
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 100000)
   :config
-  (add-to-list 'display-buffer-alist '("\\*.*vterm\\*" (display-buffer-in-side-window))))
+  (add-to-list 'display-buffer-alist
+               '("\\*.*vterm\\*" (display-buffer-in-side-window) (window-height . 0.3))))
 
 
 (use-package writeroom-mode
