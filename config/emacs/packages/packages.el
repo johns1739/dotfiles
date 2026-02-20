@@ -757,12 +757,6 @@
   (popper-mode 1)
   (popper-echo-mode 1))
 
-:hook
-(popper-open-popup . popper-setup)
-:config
-(popper-mode +1)
-(popper-echo-mode +1))
-
 (use-package trashed
   :disabled ;; Never used.
   :bind (:map global-leader-map
