@@ -72,11 +72,17 @@
     (add-to-list 'compilation-error-regexp-alist 'elixir-unit-test-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-unit-test-target
-                   "     \\([^ ]+\\.exs\\):\\([0-9]+\\)" 1 2 nil 1 1)))
-    ;; (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
-    ;; (add-to-list 'compilation-error-regexp-alist-alist
-    ;;              '(elixir-warning-target
-    ;;                "└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1)))
+                   "     \\([^ ]+\\.exs\\):\\([0-9]+\\)" 1 2 nil 1 1))
+    (add-to-list 'compilation-error-regexp-alist 'elixir-error-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(elixir-error-target
+                   "    error:.+
+[ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1))
+    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(elixir-warning-target
+                   "    warning:.+
+[ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 2 1)))
   (with-eval-after-load 'eglot
     (setf (alist-get '(elixir-mode elixir-ts-mode heex-ts-mode)
                      eglot-server-programs
