@@ -606,22 +606,25 @@
 (use-package tab-bar
   :straight nil
   :if (display-graphic-p)
-  :bind ( :map global-map
-          ("s-{" . tab-previous)
-          ("s-}" . tab-next)
-          ("s-t" . tab-bar-new-tab)
-          ("s-w" . tab-bar-close-tab)
-          :map global-leader-map
+  :bind ( :map goto-map
           ("T" . tab-bar-mode)
-          :map tab-prefix-map
-          ("SPC" . tab-switch)
-          ("'" . tab-recent))
+          ("t SPC" . tab-bar-switch-to-tab)
+          ("t q" . tab-bar-close-tab)
+          ("t t" . tab-bar-new-tab)
+          ("t n" . tab-bar-switch-to-next-tab)
+          ("t p" . tab-bar-switch-to-prev-tab)
+          ("t N" . tab-bar-move-tab)
+          ("t P" . tab-bar-move-tab-backward)
+          ("t r" . tab-bar-rename-tab)
+          ("t '" . tab-bar-switch-to-recent-tab))
   :init
-  (keymap-set goto-map "t" tab-prefix-map)
   (defun tab-bar-tab-name-project ()
     (if (project-current)
-        (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)
+        (propertize (format "[%s] " (project-name (project-current))) 'face 'bold)
       (tab-bar-tab-name-current)))
+  :custom-face
+  (tab-bar-tab ((t (:weight bold))))
+  (tab-bar-tab-inactive ((t (:inherit tab-bar :foreground "gray50"))))
   :custom
   (tab-bar-show 1)
   (tab-bar-select-tab-modifiers '(super))

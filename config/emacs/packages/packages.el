@@ -428,9 +428,9 @@
 
 (use-package embark
   :bind (([remap describe-bindings] . embark-bindings)
-         :map mode-specific-map
-         ("." . embark-act)
-         (">" . embark-collect)
+         :map ctl-x-map
+         ("A" . embark-act)
+         ("C" . embark-collect)
          ("E" . embark-export)))
 
 (use-package embark-consult
