@@ -850,7 +850,9 @@
   :config
   (tmr-mode-line-mode t))
 
-(use-package transient) ;; needed by magit, forge, and others
+(use-package transient
+  ;; needed by magit, forge, and others
+  :defer)
 
 (use-package undo-tree
   :demand
