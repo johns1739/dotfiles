@@ -124,7 +124,6 @@
           ("w K" . windmove-swap-states-up)
           ("w L" . windmove-swap-states-right)
           :map search-map
-          ("b" . ibuffer)
           ("g" . rgrep)
           ("j" . list-registers)
           ("m" . list-bookmarks)
@@ -245,16 +244,12 @@
 
 (use-package compile
   :bind (:map global-leader-map
-              ("k ." . compile)
-              ("k >" . comint)
-              ("k ," . compilation-goto-in-progress-buffer)
-              ("k b" . eval-buffer)
               ("k g" . recompile)
               ("k k" . compile-dwim)
-              ("k K" . comint-dwim)
+              ("k K" . compile)
               ("k n" . next-error)
               ("k p" . previous-error)
-              ("k w" . send-region-to-process))
+              ("k RET" . send-region-to-process))
   :custom
   (compilation-always-kill t)
   (compilation-context-lines 10)
@@ -268,19 +263,11 @@
   :hook
   (compilation-filter . ansi-color-compilation-filter)
   :init
-  (defun comint ()
-    (interactive)
-    (universal-argument)
-    (command-execute #'compile))
   (defun compile-dwim ()
     (interactive)
     (if (project-current)
         (call-interactively #'project-compile)
       (call-interactively #'compile)))
-  (defun comint-dwim ()
-    (interactive)
-    (universal-argument)
-    (command-execute #'compile-dwim))
   (defun send-region-to-process (arg beg end)
     """
     Send the current region to a process buffer.
@@ -337,30 +324,30 @@
   (ediff-keep-variants nil)
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
-  :bind (:map global-leader-map
-              ("x d" . ediff-files)))
+  :bind ( :map global-leader-map
+          ("x d" . ediff-files)))
 
 (use-package eglot
   :straight nil
-  :bind (:map global-leader-map
-              ("L" . eglot)
-              ("l TAB" . eglot-format)
-              ("l e" . eglot-events-buffer)
-              ("l E" . eglot-stderr-buffer)
-              ("l l" . eglot-reconnect)
-              ("l q" . eglot-shutdown)
-              ("l Q" . eglot-shutdown-all)
-              ("l r" . eglot-rename)
-              ("l d" . eglot-find-declaration)
-              ("l a" . eglot-code-actions))
+  :bind ( :map global-leader-map
+          ("L" . eglot)
+          ("l TAB" . eglot-format)
+          ("l e" . eglot-events-buffer)
+          ("l E" . eglot-stderr-buffer)
+          ("l l" . eglot-reconnect)
+          ("l q" . eglot-shutdown)
+          ("l Q" . eglot-shutdown-all)
+          ("l r" . eglot-rename)
+          ("l d" . eglot-find-declaration)
+          ("l a" . eglot-code-actions))
   :config
   (setq eglot-mode-line-session nil))
 
 (use-package eshell
   :straight nil
-  :bind (:map global-leader-map
-              ("k e" . project-eshell)
-              ("k E" . eshell))
+  :bind ( :map global-leader-map
+          ("k e" . project-eshell)
+          ("k E" . eshell))
   :config
   (add-to-list 'display-buffer-alist
                '("\\*.*eshell\\*" (display-buffer-in-side-window)
@@ -404,7 +391,7 @@
     "Try to do case-sensitive matching (not effective with all functions)."
     (buffer-backed-up-set-to-time)
     (if (and buffer-backed-up
-             (time-less-p (time-add (buffer-backed-up) (* 60 60 24))
+             (time-less-p (time-add (buffer-backed-up) (* 60 60 24)) ;; 24hrs
                           (current-time)))
         (setq buffer-backed-up nil))
     (let ((orig-fun-result (apply orig-fun args)))
@@ -583,11 +570,7 @@
 
 (use-package project
   :straight nil
-  :bind ( :map goto-map
-          ("D" . project-dired)
-          :map search-map
-          ("d" . project-find-dir)
-          :map project-prefix-map
+  :bind ( :map project-prefix-map
           ("K" . project-forget-project))
   :custom
   (project-switch-commands '((project-find-regexp "Regexp" "g")
@@ -597,11 +580,6 @@
                              (project-kill-buffers "Kill" "k")))
   :init
   (keymap-set global-leader-map "p" project-prefix-map))
-
-(use-package smerge-mode
-  :straight nil
-  :hook
-  (prog-mode . smerge-mode))
 
 (use-package tab-bar
   :straight nil
