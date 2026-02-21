@@ -728,6 +728,7 @@
   (scheme-mode . enable-paredit-mode))
 
 (use-package persistent-scratch
+  :disabled ;; not really used, slower start-up
   :if (display-graphic-p)
   :defer 5
   :config
@@ -869,8 +870,8 @@
   :if (display-graphic-p)
   :defer
   :after vertico
-  :bind (:map global-leader-map
-              ("m v" . vertico-posframe-mode))
+  :bind ( :map global-leader-map
+          ("m v" . vertico-posframe-mode))
   :custom
   (vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
   (vertico-posframe-min-width 80))
@@ -891,9 +892,9 @@
   ;; end
   :if (and (display-graphic-p)
            (string-suffix-p "/bin/fish" (getenv "SHELL")))
-  :bind (:map global-leader-map
-              ("k t" . vterm-project)
-              ("k T" . vterm))
+  :bind ( :map global-leader-map
+          ("k t" . vterm-project)
+          ("k T" . vterm))
   :init
   (defun vterm-project ()
     (interactive)
@@ -910,7 +911,6 @@
   :config
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-in-side-window) (window-height . 0.3))))
-
 
 (use-package writeroom-mode
   :if (display-graphic-p)
