@@ -464,6 +464,7 @@
   (ibuffer-use-header-line t)
   (ibuffer-default-shrink-to-minimum-size nil))
 
+;; TODO: Rebind org "n" binding to agenda transient menu
 (use-package org
   ;; Useful documentation: https://orgmode.org/worg/org-syntax.html
   :straight nil
