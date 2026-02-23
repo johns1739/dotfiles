@@ -185,13 +185,25 @@ ln -s $current_dirpath/config/emacs/snippets ~/.config/emacs/snippets
 
 **** Example ORG
 File Keyword Configuration
-#+begin_src verbatim
-#+STARTUP: show2levels content logdone hidestars indent logdrawer
-#+CATEGORY: tasks
-#+TAGS: doc(d) epic(e) initiative(i) story(s)
-#+TODO: TODO(t!) ACTIVE(a!) | DONE(d!)
-#+TODO: DESIGN(s!) CODE(c!) REVIEW(r!) | DONE(d!)
-#+TODO: | CANCELED(k@)
+#+begin_src fundamental
+,#+STARTUP: show2levels content logdone hidestars indent logdrawer hideblocks hidedrawers
+,#+STARTUP: nohideblocks nohidedrawers showstars nologdone nologdrawer
+,#+STARTUP: lognotedone
+
+,#+STARTUP: fold              (or overview, this is equivalent)
+,#+STARTUP: nofold            (or showall, this is equivalent)
+,#+STARTUP: content
+,#+STARTUP: show<n>levels (<n> = 2..5)
+,#+STARTUP: showeverything
+
+,#+STARTUP: indent
+,#+STARTUP: noindent
+
+,#+CATEGORY: tasks
+,#+TAGS: doc(d) epic(e) initiative(i) story(s)
+,#+TODO: TODO(t!) ACTIVE(a!) | DONE(d!)
+,#+TODO: DESIGN(s!) CODE(c!) REVIEW(r!) | DONE(d!)
+,#+TODO: | CANCELED(k@)
 #+end_src
 
 Faces for TODO Keywords

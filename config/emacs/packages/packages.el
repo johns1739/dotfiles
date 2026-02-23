@@ -720,13 +720,15 @@
   (completion-category-overrides nil))
 
 (use-package org-roam
-  :disabled ;; experimenting
-  :init
-  (unless (file-exists-p "~/.notes/org-roam")
-    (make-directory "~/.notes/org-roam"))
+  ;; :disabled ;; experimenting
+  :after (org)
+  :commands (org-roam-node-find)
   :custom
   (org-roam-directory (file-truename "~/.notes/org-roam"))
+  (org-roam-completion-everywhere t)
   :config
+  (unless (file-exists-p "~/.notes/org-roam")
+    (make-directory "~/.notes/org-roam"))
   (org-roam-db-autosync-mode))
 
 (use-package paredit

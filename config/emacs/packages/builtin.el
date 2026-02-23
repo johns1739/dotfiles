@@ -469,20 +469,9 @@
 (use-package org
   ;; Useful documentation: https://orgmode.org/worg/org-syntax.html
   :straight nil
-  :commands (org-todo-list
-             org-agenda
-             org-agenda-list
-             org-capture
-             org-capture-goto-target
-             org-search-view
-             org-occur-in-agenda-files)
+  :commands (org-agenda)
   :init
   (defun org-mode-setup ()
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((emacs-lisp . t)
-       (shell . t)
-       (sql . t))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
     (electric-indent-local-mode -1))
   :hook
   (org-mode . org-mode-setup)
@@ -490,53 +479,33 @@
   :bind ( ("C-c L" . org-store-link)
           :map global-leader-map
           ("N" . org-agenda)
-          ("n ," . org-capture-goto-last-stored)
-          ("n /" . org-tags-view)
-          ("n SPC" . org-search-view)
-          ("n f" . org-capture-goto-target)
-          ("n k" . org-capture)
-          ("n L" . org-store-link)
-          ("n s" . org-occur-in-agenda-files)
-          ("n t" . org-todo-list)
-          ("n v" . org-agenda-list)
-          ("n r r" . org-refile-copy)
-          ("n r R" . org-refile)
-          ("n r ," . org-refile-goto-last-stored)
+          ("n '" . org-capture-goto-last-stored)
+          ("n ," . org-mark-ring-goto)
           :map org-mode-map
           ([remap goto-address-at-point] . org-open-at-point)
           ([remap kill-sentence] . org-cut-subtree)
           ("M-H" . org-babel-mark-block)
           ("M-n" . org-next-visible-heading)
           ("M-p" . org-previous-visible-heading)
-          ("M-N" . org-babel-next-src-block)
-          ("M-P" . org-babel-previous-src-block)
-          ("M-P" . org-previous-visible-heading)
-          ("C-M-N" . org-move-subtree-down)
-          ("C-M-P" . org-move-subtree-up))
+          ("M-N" . org-move-subtree-down)
+          ("M-P" . org-move-subtree-up))
   :custom
-  (org-directory "~/.notes")
+  (org-directory "~/.notes/org")
   (org-agenda-files (list org-directory))
-  (org-agenda-restore-windows-after-quit t)
-  (org-agenda-start-on-weekday 0)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
   (org-agenda-todo-list-sublevels t)
   (org-agenda-window-setup 'reorganize-frame)
   (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
-  (org-cycle-hide-block-startup t)
-  (org-edit-src-content-indentation 0)
-  (org-hide-drawer-startup t)
+  (org-src-content-indentation 0)
   (org-hide-emphasis-markers t)
   (org-hide-leading-stars (display-graphic-p))
-  (org-log-done nil)
-  (org-log-into-drawer t)
   (org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 1)))
   (org-return-follows-link nil)
   (org-special-ctrl-a/e t)
-  (org-startup-folded 'overview)
-  (org-startup-indented t)
   (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
+  (org-agenda-custom-commands '(("k" "Capture" org-capture)))
   ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
   (org-todo-keyword-faces '(("TODO" . "steel blue")
                             ("ACTIVE" . "light goldenrod")
@@ -554,10 +523,15 @@
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
       :prepend t :tree-type week)))
   :config
-  (unless (file-exists-p "~/.notes")
-    (make-directory "~/.notes"))
   (require 'org-capture)
-  (require 'org-crypt))
+  (require 'org-crypt)
+  (unless (file-exists-p "~/.notes/org")
+    (make-directory "~/.notes/org"))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (shell . t)
+     (sql . t)))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
 
 (use-package proced
   :straight nil
