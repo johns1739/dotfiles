@@ -87,6 +87,13 @@
   (global-command-log-mode))
 
 (use-package consult
+  :init
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
+    (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
+  (defun consult-org-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap consult-outline] . consult-org-heading)))
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
          ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
@@ -122,14 +129,12 @@
          ("h" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
-  :init
-  (setq completion-in-region-function #'consult-completion-in-region)
-  (setq register-preview-function #'consult-register-format)
-  (setq xref-show-xrefs-function #'consult-xref)
-  (setq xref-show-definitions-function #'consult-xref)
-  (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
-    (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
+  (org-mode . consult-org-setup)
+  :custom
+  (completion-in-region-function #'consult-completion-in-region)
+  (register-preview-function #'consult-register-format)
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref)
   :config
   (if (executable-find "fd")
       (bind-keys :map search-map
@@ -720,9 +725,12 @@
   (completion-category-overrides nil))
 
 (use-package org-roam
-  ;; :disabled ;; experimenting
   :after (org)
   :commands (org-roam-node-find)
+  :bind ( :map global-leader-map
+          ("n f" . org-roam-node-find)
+          ("n l" . org-roam-buffer-toggle)
+          ("n i" . org-roam-node-insert))
   :custom
   (org-roam-directory (file-truename "~/.notes/org-roam"))
   (org-roam-completion-everywhere t)
