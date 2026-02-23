@@ -476,11 +476,13 @@
   :hook
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
-  :bind ( ("C-c L" . org-store-link)
+  :bind ( :map mode-specific-map
+          ("n L" . org-store-link)
           :map global-leader-map
-          ("N" . org-agenda)
+          ("n n" . org-agenda)
           ("n '" . org-capture-goto-last-stored)
           ("n ," . org-mark-ring-goto)
+          ("n L" . org-store-link)
           :map org-mode-map
           ([remap goto-address-at-point] . org-open-at-point)
           ([remap kill-sentence] . org-cut-subtree)

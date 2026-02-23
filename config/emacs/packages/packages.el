@@ -727,16 +727,23 @@
 (use-package org-roam
   :after (org)
   :commands (org-roam-node-find)
-  :bind ( :map global-leader-map
+  :bind (:map global-leader-map
+          ("n c" . org-roam-capture)
           ("n f" . org-roam-node-find)
-          ("n l" . org-roam-buffer-toggle)
-          ("n i" . org-roam-node-insert))
+          ("n i" . org-roam-node-insert)
+          ("n l" . org-roam-buffer-toggle))
+  :init
+  (defun org-roam-mode-setup ()
+    (bind-keys :map (current-local-map)
+               ("C-c n i" . org-roam-node-insert)
+               ("C-c n l" . org-roam-buffer-toggle)))
+  :hook
+  (org-mode . org-roam-mode-setup)
   :custom
-  (org-roam-directory (file-truename "~/.notes/org-roam"))
+  (org-roam-directory "~/.notes/org-roam")
   (org-roam-completion-everywhere t)
   :config
-  (unless (file-exists-p "~/.notes/org-roam")
-    (make-directory "~/.notes/org-roam"))
+  (make-directory "~/.notes/org-roam" t)
   (org-roam-db-autosync-mode))
 
 (use-package paredit
