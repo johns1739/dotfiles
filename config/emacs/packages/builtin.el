@@ -155,6 +155,7 @@
   (eldoc-echo-area-use-multiline-p 'truncate-sym-name-if-fit)
   (enable-recursive-minibuffers t) ;; Might be confusing
   (fast-but-imprecise-scrolling t)
+  (find-file-visit-truename t)
   (global-auto-revert-non-file-buffers t)
   (history-delete-duplicates t)
   (history-length 1000)

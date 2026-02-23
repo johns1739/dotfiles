@@ -719,6 +719,16 @@
   (completion-category-defaults nil)
   (completion-category-overrides nil))
 
+(use-package org-roam
+  :disabled ;; experimenting
+  :init
+  (unless (file-exists-p "~/.notes/org-roam")
+    (make-directory "~/.notes/org-roam"))
+  :custom
+  (org-roam-directory (file-truename "~/.notes/org-roam"))
+  :config
+  (org-roam-db-autosync-mode))
+
 (use-package paredit
   :disabled ;; Gets in the way, difficult to fix a broken parens mat
   :hook
