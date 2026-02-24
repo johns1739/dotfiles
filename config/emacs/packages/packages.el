@@ -40,7 +40,7 @@
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
-         ("n r g" . avy-org-refile-as-child)
+         ("n w" . avy-org-refile-as-child)
          ("x g p" . avy-copy-line)
          ("x g P" . avy-copy-region)
          ("x g g" . avy-move-line)
@@ -91,9 +91,6 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
     (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
-  (defun consult-org-setup ()
-    (bind-keys :map (current-local-map)
-               ([remap consult-outline] . consult-org-heading)))
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
          ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
@@ -129,7 +126,6 @@
          ("h" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
-  (org-mode . consult-org-setup)
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (register-preview-function #'consult-register-format)
@@ -725,23 +721,29 @@
   (completion-category-overrides nil))
 
 (use-package org-roam
+  :disabled ;; mainly for networking notes, but not really used
   :after (org)
   :commands (org-roam-node-find)
-  :bind (:map global-leader-map
-          ("n c" . org-roam-capture)
-          ("n f" . org-roam-node-find)
-          ("n i" . org-roam-node-insert)
-          ("n l" . org-roam-buffer-toggle))
+  :bind ( :map global-leader-map
+          ("n r c" . org-roam-capture)
+          ("n r f" . org-roam-node-find)
+          ("n r i" . org-roam-node-insert)
+          ("n r t" . org-roam-tag-add)
+          ("n r w" . org-roam-refile)
+          ("n r l" . org-roam-buffer-toggle))
   :init
   (defun org-roam-mode-setup ()
     (bind-keys :map (current-local-map)
                ("C-c n i" . org-roam-node-insert)
+               ("C-c n t" . org-roam-tag-add)
+               ("C-c n w" . org-roam-refile)
                ("C-c n l" . org-roam-buffer-toggle)))
   :hook
   (org-mode . org-roam-mode-setup)
   :custom
   (org-roam-directory "~/.notes/org-roam")
   (org-roam-completion-everywhere t)
+  (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:12}" 'face 'org-tag)))
   :config
   (make-directory "~/.notes/org-roam" t)
   (org-roam-db-autosync-mode))

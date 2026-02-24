@@ -469,7 +469,6 @@
 (use-package org
   ;; Useful documentation: https://orgmode.org/worg/org-syntax.html
   :straight nil
-  :commands (org-agenda)
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))
@@ -479,7 +478,10 @@
   :bind ( :map mode-specific-map
           ("n L" . org-store-link)
           :map global-leader-map
-          ("n n" . org-agenda)
+          ("n SPC" . org-search-view)
+          ("N" . org-agenda)
+          ("n k" . org-capture)
+          ("n t" . org-todo-list)
           ("n '" . org-capture-goto-last-stored)
           ("n ," . org-mark-ring-goto)
           ("n L" . org-store-link)
@@ -492,43 +494,39 @@
           ("M-N" . org-move-subtree-down)
           ("M-P" . org-move-subtree-up))
   :custom
-  (org-directory "~/.notes/org")
-  (org-agenda-files (list org-directory))
+  (org-directory "~/.notes")
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
-  (org-agenda-todo-list-sublevels t)
   (org-agenda-window-setup 'reorganize-frame)
-  (org-columns-default-format "%TODO %ITEM %ALLTAGS %DEADLINE")
   (org-src-content-indentation 0)
   (org-hide-emphasis-markers t)
-  (org-hide-leading-stars (display-graphic-p))
+  (org-hide-leading-stars t)
   (org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 1)))
-  (org-return-follows-link nil)
   (org-special-ctrl-a/e t)
   (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
-  (org-agenda-custom-commands '(("k" "Capture" org-capture)))
   ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
-  (org-todo-keyword-faces '(("TODO" . "steel blue")
+  (org-todo-keyword-faces '(("TODO" . "dim gray")
                             ("ACTIVE" . "light goldenrod")
-                            ("REVIEW" . "goldenrod")
-                            ("BLOCKED" . "goldenrod")
+                            ("REVIEW" . "light goldenrod")
+                            ("BLOCKED" . "light goldenrod")
                             ("DONE" . "dim gray")
                             ("BACKLOG" . "dim gray")
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\n"
-      :prepend t :empty-lines-after 1)
-     ("n" "Note" entry (file+headline "notes.org" "Notes") "* %?\n%i"
-      :prepend t :empty-lines-after 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %T %?\n%i"
-      :prepend t :tree-type week)))
+   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\n%i"
+      :prepend t)
+     ("n" "Note" entry (file "notes.org") "* %?\n%i"
+      :prepend t)
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i"
+      :prepend t)))
   :config
   (require 'org-capture)
   (require 'org-crypt)
-  (unless (file-exists-p "~/.notes/org")
-    (make-directory "~/.notes/org"))
+  (unless (file-exists-p "~/.notes")
+    (make-directory "~/.notes"))
+  (setopt org-agenda-files (list org-directory))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)

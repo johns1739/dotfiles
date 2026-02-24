@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: drawer
+# key: ..
+# --
+:${1:properties}:
+$2
+:end:
+$0
