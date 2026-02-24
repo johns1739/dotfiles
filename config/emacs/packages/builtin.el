@@ -432,9 +432,9 @@
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
-   '(try-expand-dabbrev-visible
-     try-expand-list
+   '(try-expand-list
      try-expand-line
+     try-expand-dabbrev-visible
      try-expand-dabbrev
      ;; try-expand-list-all-buffers
      try-expand-line-all-buffers
@@ -465,9 +465,7 @@
   (ibuffer-use-header-line t)
   (ibuffer-default-shrink-to-minimum-size nil))
 
-;; TODO: Rebind org "n" binding to agenda transient menu
 (use-package org
-  ;; Useful documentation: https://orgmode.org/worg/org-syntax.html
   :straight nil
   :init
   (defun org-mode-setup ()
@@ -480,7 +478,9 @@
           :map global-leader-map
           ("n SPC" . org-search-view)
           ("N" . org-agenda)
+          ("n f" . org-capture-goto-target)
           ("n k" . org-capture)
+          ("n r" . org-occur-link-in-agenda-files)
           ("n t" . org-todo-list)
           ("n '" . org-capture-goto-last-stored)
           ("n ," . org-mark-ring-goto)
@@ -515,12 +515,11 @@
                             ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Tasks") "* TODO %?\n%i"
-      :prepend t)
-     ("n" "Note" entry (file "notes.org") "* %?\n%i"
-      :prepend t)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i"
-      :prepend t)))
+   `(("t" "Task" entry (file "tasks.org") "* TODO %?\n%i")
+     ("n" "Note" entry (file "notes.org") "* %?\n%i")
+     ("r" "Ref" entry (file "refs.org") "* %?\n%a\n%i")
+     ("h" "Habit" entry (file "habits.org") "* TODO %?\nDEADLINE: %t")
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
   :config
   (require 'org-capture)
   (require 'org-crypt)
