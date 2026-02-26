@@ -770,6 +770,7 @@
   (with-eval-after-load 'magit
     (pinentry-start)))
 
+;; TODO: Remove, instead rely on display-alist
 (use-package popper
   :demand
   :if (display-graphic-p)
@@ -915,11 +916,12 @@
   (visual-replace-global-mode))
 
 (use-package vterm
+  ;; https://github.com/akermu/emacs-libvterm/blob/master/README.md
   ;; In config.fish
   ;; if test "$INSIDE_EMACS" = 'vterm'
   ;;   and test -n "$EMACS_VTERM_PATH"
   ;;   and test -f "$EMACS_VTERM_PATH"
-  ;;   source "$EMACS_VTERM_PATH/etc/emacs-verm.fish"
+  ;;   source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
   ;; end
   :if (and (display-graphic-p)
            (string-suffix-p "/bin/fish" (getenv "SHELL")))
@@ -937,8 +939,11 @@
           (default-directory (or (project-directory) default-directory)))
       (vterm)))
   :custom
+  (vterm-always-compile-module t)
+  (vterm-copy-exclude-prompt t)
+  (vterm-kill-buffer-on-exit t)
   (vterm-copy-mode-remove-fake-newlines t)
-  (vterm-max-scrollback 100000)
+  (vterm-max-scrollback 100000) ;; can't go higher than this
   :config
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-in-side-window) (window-height . 0.3))))
