@@ -433,9 +433,9 @@
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
-   '(try-expand-list
+   '(try-expand-dabbrev-visible
+     try-expand-list
      try-expand-line
-     try-expand-dabbrev-visible
      try-expand-dabbrev
      ;; try-expand-list-all-buffers
      try-expand-line-all-buffers
