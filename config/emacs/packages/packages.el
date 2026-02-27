@@ -91,9 +91,6 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
     (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
-  (defun consult-org-setup ()
-    (bind-keys :map (current-local-map)
-               ([remap consult-outline] . consult-org-agenda)))
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
          ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
@@ -117,6 +114,7 @@
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          :map global-leader-map
          ("k SPC" . consult-flymake)
+         ("n /" . consult-org-heading)
          :map minibuffer-mode-map
          ("M-i" . consult-history)
          :map search-map
@@ -129,7 +127,6 @@
          ("h" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
-  (org-mode . consult-org-setup)
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (register-preview-function #'consult-register-format)
@@ -226,7 +223,9 @@
 (use-package deadgrep
   :bind ( :map search-map
           ("g" . deadgrep)
-          ("G" . rgrep)))
+          ("G" . rgrep)
+          :map deadgrep-mode-map
+          ("C-w" . deadgrep-edit-mode)))
 
 (use-package denote
   :disabled ;; prefer org-mode note taking
@@ -623,8 +622,8 @@
       (meow-reverse))
     (call-interactively #'meow-search))
   (defun meow-setup ()
-    (set-face-attribute 'meow-insert-indicator nil :inherit 'bold)
-    (set-face-attribute 'meow-beacon-indicator nil :inherit 'bold-italic)
+    (set-face-attribute 'meow-insert-indicator nil :inherit '(bold-italic warning))
+    (set-face-attribute 'meow-beacon-indicator nil :inherit '(bold success))
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
     (meow-motion-define-key
@@ -923,7 +922,7 @@
   ;; In config.fish
   ;; if test "$INSIDE_EMACS" = 'vterm'
   ;;   and test -n "$EMACS_VTERM_PATH"
-  ;;   and test -f "$EMACS_VTERM_PATH"
+  ;;   and test -d "$EMACS_VTERM_PATH"
   ;;   source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
   ;; end
   :if (and (display-graphic-p)

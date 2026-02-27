@@ -13,7 +13,7 @@
 
 theme = dark:Desert,light:Flexoki Light
 background-opacity = 1
-font-size = 14
+font-size = 13
 unfocused-split-opacity = 0.6
 
 # behavior settings

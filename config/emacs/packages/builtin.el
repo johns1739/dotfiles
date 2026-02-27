@@ -482,6 +482,7 @@
           ("n f" . org-capture-goto-target)
           ("n k" . org-capture)
           ("n r" . org-occur-link-in-agenda-files)
+          ("n s" . org-occur-in-agenda-files)
           ("n t" . org-todo-list)
           ("n '" . org-capture-goto-last-stored)
           ("n ," . org-mark-ring-goto)
@@ -522,10 +523,7 @@
      ("n" "Note" entry (file "notes.org") "* %?\n%i")
      ("r" "Ref. Note" entry (file "notes.org") "* %? :ref:\n%a\n%i")
      ("h" "Habit" entry (file "habits.org") "* TODO %?\nDEADLINE: %t")
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
-     ("J" "Journal" entry (file+olp+datetree "journal.org")
-      "* %A\n%T\n#+begin_src fundamental\n%i\n#+end_src"
-      :immediate-finish t)))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
   :config
   (require 'org-capture)
   (require 'org-crypt)
