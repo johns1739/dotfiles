@@ -91,6 +91,9 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
     (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
+  (defun consult-org-setup ()
+    (bind-keys :map (current-local-map)
+               ([remap consult-outline] . consult-org-agenda)))
   :bind (([remap Info-search] . consult-info)
          ([remap bookmark-jump] . consult-bookmark)
          ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
@@ -126,6 +129,7 @@
          ("h" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
+  (org-mode . consult-org-setup)
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (register-preview-function #'consult-register-format)
@@ -163,7 +167,7 @@
   :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :commands (copilot-mode)
   :bind ( :map global-leader-map
-          ("m c" . copilot-mode)
+          ("i c" . copilot-mode)
           :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)
@@ -457,6 +461,8 @@
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :custom
   (gptel-default-mode 'org-mode)
+  (gptel-prompt-prefix-alist '((org-mode . "* @user: ")))
+  (gptel-response-prefix-alist '((org-mode . "@assistant\n")))
   :bind ( :map global-leader-map
           ("i i" . gptel)
           ("i m" . gptel-menu)
@@ -472,15 +478,12 @@
   ;; (gptel-post-stream . gptel-auto-scroll) ;; Annoying.
   ;; (gptel-post-response . gptel-beginning-of-response) ;; Doesn't always work.
   :config
-  (setf (alist-get 'org-mode gptel-prompt-prefix-alist) "* @user: ")
-  (setf (alist-get 'org-mode gptel-response-prefix-alist) "@assistant\n")
   (with-eval-after-load 'dired-mode
     (bind-keys :map dired-mode-map
                ("I" . gptel-add)))
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
-               ("C-c I" . gptel-org-set-topic)
-               ("C-c C-<return>" . gptel-send))))
+               ("C-c I" . gptel-org-set-topic))))
 
 (use-package find-file-in-project
   :bind (:map goto-map

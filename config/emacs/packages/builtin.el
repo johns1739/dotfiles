@@ -478,7 +478,7 @@
           ("n L" . org-store-link)
           :map global-leader-map
           ("n SPC" . org-search-view)
-          ("N" . org-agenda)
+          ("n a" . org-agenda)
           ("n f" . org-capture-goto-target)
           ("n k" . org-capture)
           ("n r" . org-occur-link-in-agenda-files)
@@ -492,6 +492,8 @@
           ("M-H" . org-babel-mark-block)
           ("M-n" . org-next-visible-heading)
           ("M-p" . org-previous-visible-heading)
+          ("C-M-a" . org-up-element)
+          ("C-M-e" . org-down-element)
           ("M-N" . org-move-subtree-down)
           ("M-P" . org-move-subtree-up))
   :custom
@@ -518,9 +520,12 @@
   (org-capture-templates
    `(("t" "Task" entry (file "tasks.org") "* TODO %?\n%i")
      ("n" "Note" entry (file "notes.org") "* %?\n%i")
-     ("r" "Ref" entry (file "refs.org") "* %?\n%a\n%i")
+     ("r" "Ref. Note" entry (file "notes.org") "* %? :ref:\n%a\n%i")
      ("h" "Habit" entry (file "habits.org") "* TODO %?\nDEADLINE: %t")
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
+     ("J" "Journal" entry (file+olp+datetree "journal.org")
+      "* %A\n%T\n#+begin_src fundamental\n%i\n#+end_src"
+      :immediate-finish t)))
   :config
   (require 'org-capture)
   (require 'org-crypt)
@@ -578,9 +583,6 @@
     (if (project-current)
         (propertize (format "[%s] " (project-name (project-current))) 'face 'bold)
       (tab-bar-tab-name-current)))
-  :custom-face
-  (tab-bar-tab ((t (:weight bold))))
-  (tab-bar-tab-inactive ((t (:inherit tab-bar :foreground "gray50"))))
   :custom
   (tab-bar-show 1)
   (tab-bar-select-tab-modifiers '(super))
@@ -588,7 +590,11 @@
   (tab-bar-close-button nil)
   (tab-bar-new-button-show nil)
   (tab-bar-new-button nil)
-  (tab-bar-tab-name-function 'tab-bar-tab-name-project))
+  (tab-bar-tab-name-function 'tab-bar-tab-name-project)
+  :config
+  (custom-set-faces ;; faces must be set in config since not available on init.
+   '(tab-bar-tab ((t (:weight bold))))
+   '(tab-bar-tab-inactive ((t (:inherit tab-bar :foreground "gray50"))))))
 
 (use-package treesit
   :straight nil
