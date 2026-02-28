@@ -829,7 +829,7 @@
   (defun simple-modeline-segment-branch ()
     "Display current git branch in mode line."
     (when vc-mode
-      (let ((branch (s-truncate 30 (vc-git--current-branch))))
+      (let ((branch (s-truncate 30 vc-mode)))
         (propertize (format " %s" branch) 'face 'font-lock-keyword-face))))
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
