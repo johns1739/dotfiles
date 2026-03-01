@@ -514,7 +514,9 @@
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i")
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
+     ("J" "Journal" entry (file+olp+datetree "journal.org") "* JOURNAL\n%T\n%a\n%i"
+      :immediate-finish t)))
   :custom-face
   (org-todo ((t (:weight bold :foreground "light goldenrod"))))
   (org-done ((t (:weight bold :foreground "dim gray"))))
