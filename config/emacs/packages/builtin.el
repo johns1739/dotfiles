@@ -503,27 +503,21 @@
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
   (org-agenda-window-setup 'reorganize-frame)
+  (org-archive-location ".archive::* From %s")
   (org-edit-src-content-indentation 0)
   (org-hide-emphasis-markers t)
   (org-hide-leading-stars t)
   (org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 1)))
   (org-special-ctrl-a/e t)
   (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
-  ;; https://orgmode.org/manual/Tracking-TODO-state-changes.html
-  (org-todo-keyword-faces '(("TODO" . "dim gray")
-                            ("ACTIVE" . "light goldenrod")
-                            ("REVIEW" . "light goldenrod")
-                            ("BLOCKED" . "light goldenrod")
-                            ("DONE" . "dim gray")
-                            ("BACKLOG" . "dim gray")
-                            ("CANCELED" . "dim gray")))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file "tasks.org") "* TODO %?\n%i")
-     ("n" "Note" entry (file "notes.org") "* %?\n%i")
-     ("r" "Ref. Note" entry (file "notes.org") "* %? :ref:\n%a\n%i")
-     ("h" "Habit" entry (file "habits.org") "* TODO %?\nDEADLINE: %t")
+   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
+     ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i")
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
+  :custom-face
+  (org-todo ((t (:weight bold :foreground "light goldenrod"))))
+  (org-done ((t (:weight bold :foreground "dim gray"))))
   :config
   (require 'org-capture)
   (require 'org-crypt)
