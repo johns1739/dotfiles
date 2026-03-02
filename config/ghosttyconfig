@@ -24,7 +24,7 @@ copy-on-select = clipboard
 clipboard-paste-protection = false
 
 # window look & feel
-window-theme = auto
+window-theme = dark
 window-decoration = auto
 window-height = 45
 window-width = 120
