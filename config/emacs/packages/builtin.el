@@ -517,10 +517,10 @@
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
      ("J" "Journal" entry (file+olp+datetree "journal.org") "* JOURNAL\n%T\n%a\n%i"
       :immediate-finish t)))
-  :custom-face
-  (org-todo ((t (:weight bold :foreground "light goldenrod"))))
-  (org-done ((t (:weight bold :foreground "dim gray"))))
   :config
+  (custom-set-faces
+   '(org-todo ((t (:weight bold :foreground "light goldenrod"))))
+   '(org-done ((t (:weight bold :foreground "dim gray")))))
   (require 'org-capture)
   (require 'org-crypt)
   (unless (file-exists-p "~/.notes")
