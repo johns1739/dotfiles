@@ -950,11 +950,9 @@
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-in-side-window) (window-height . 0.3))))
 
-;; TODO: https://github.com/natrys/whisper.el
 (use-package whisper
-  :if (executable-find "sox")
-  :bind (("C-c v" . whisper-transcribe-fast)
-         ("C-c n" . whisper-transcribe)))
+  :straight (:host github :repo "natrys/whisper.el" :files ("*.el"))
+  :bind (("C-c v" . whisper-run)))
 
 (use-package writeroom-mode
   :if (display-graphic-p)
