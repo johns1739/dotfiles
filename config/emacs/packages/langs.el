@@ -199,7 +199,6 @@
   :hook
   (python-mode . indent-bars-mode)
   :config
-  ;; TODO compilation-next-error doesn't past first error
   (with-eval-after-load 'compile
     (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
     (add-to-list 'compilation-error-regexp-alist-alist

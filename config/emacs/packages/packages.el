@@ -251,8 +251,7 @@
               ("m h s" . devdocs-search)))
 
 (use-package diff-hl ;; git diff changes in fringe
-  ;; TODO: Make it work nice with meow normal
-  ;; not really used, better to use magit-diff.
+  ;; not really used, better to use magit-diff. Conflicts w/ meow bindings.
   ;; :bind (:map global-leader-map
   ;;             ("m d" . diff-hl-show-hunk))
   :after magit
@@ -768,13 +767,12 @@
 
 (use-package pinentry
   ;; allows for secure entry of passphrases requested by GnuPG
-  :commands (pinentry-start)
-  :init
-  (with-eval-after-load 'magit
-    (pinentry-start)))
+  :after magit
+  :config
+  (pinentry-start))
 
-;; TODO: Remove, instead rely on display-alist
 (use-package popper
+  :disabled ;; prefer display-buffer-alist
   :demand
   :if (display-graphic-p)
   :bind ( :map popper-mode-map
