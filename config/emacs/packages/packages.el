@@ -334,7 +334,6 @@
   :hook
   (prog-mode . eldoc-box-hover-at-point-mode))
 
-;; TODO: Set custom destination database to .notes
 (use-package elfeed
   :commands (elfeed)
   :bind ( :map global-leader-map
@@ -344,16 +343,16 @@
    '(("http://nullprogram.com/feed/" emacs)
      ("https://planet.emacslife.com/atom.xml" emacs)
      ("https://modern-sql.com/feed" sql)
-     ("https://hnrss.org/jobs" jobs)
+     ;; ("https://hnrss.org/jobs" jobs)
      ("https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month" news)
+     ("https://hnrss.org/frontpage" news)
      ("https://modern-sql.com/feed" sql)
-     ("https://lobste.rs/rss" news)
-     ("https://hnrss.org/frontpage" news))))
+     ("https://lobste.rs/rss" news))))
 
 (use-package ellama
   :disabled ;; prefer gptel
   :custom
-  (ellama-user-nick "Juan")
+  (ellama-user-nick "Lobo")
   (ellama-assistant-nick "Cody")
   (ellama-language "English")
   (ellama-spinner-enabled t)
