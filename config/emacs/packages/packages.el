@@ -69,7 +69,7 @@
          #'cape-abbrev
          #'cape-keyword
          #'cape-file
-         #'cape-dict
+         ;; #'cape-dict ;; no need for dicts
          ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
          ;; #'cape-line ;; Kinda buggy
          )))
