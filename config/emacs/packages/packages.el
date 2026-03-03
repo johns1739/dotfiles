@@ -71,6 +71,7 @@
          #'cape-file
          ;; #'cape-dict ;; no need for dicts
          ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
+         ;; #'cape-elisp-block ;; elisp buffers already set its own cape func.
          ;; #'cape-line ;; Kinda buggy
          )))
 
