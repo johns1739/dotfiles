@@ -951,8 +951,9 @@
                '("\\*.*vterm\\*" (display-buffer-in-side-window) (window-height . 0.3))))
 
 (use-package whisper
+  :if (executable-find "ffmpeg")
   :straight (:host github :repo "natrys/whisper.el" :files ("*.el"))
-  :bind (("C-c v" . whisper-run)))
+  :bind (("C-M-y" . whisper-run)))
 
 (use-package writeroom-mode
   :if (display-graphic-p)
