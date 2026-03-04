@@ -244,6 +244,10 @@
     (when (derived-mode-p 'prog-mode)
       (delete-trailing-whitespace))))
 
+(use-package calc
+  :bind ( :map calc-mode-map
+          ("i" . nil)))
+
 (use-package compile
   :bind (:map global-leader-map
               ("k g" . recompile)

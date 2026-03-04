@@ -340,14 +340,15 @@
           ("m f" . elfeed))
   :custom
   (elfeed-feeds
-   '(("http://nullprogram.com/feed/" emacs)
-     ("https://planet.emacslife.com/atom.xml" emacs)
-     ("https://modern-sql.com/feed" sql)
-     ;; ("https://hnrss.org/jobs" jobs)
-     ("https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month" news)
-     ("https://hnrss.org/frontpage" news)
-     ("https://modern-sql.com/feed" sql)
-     ("https://lobste.rs/rss" news))))
+   '(("http://nullprogram.com/feed/" null emacs)
+     ("https://planet.emacslife.com/atom.xml" emacslife emacs)
+     ("https://modern-sql.com/feed" modernsql sql)
+     ;; ("https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month" reddit news)
+     ;; ("https://hnrss.org/frontpage" hn news)
+     ;; ("https://hnrss.org/jobs" hn jobs)
+     ("https://lobste.rs/rss" lobste news)))
+  :config
+  (run-with-idle-timer 120 t #'elfeed-db-unload))
 
 (use-package ellama
   :disabled ;; prefer gptel
