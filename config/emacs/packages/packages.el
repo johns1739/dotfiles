@@ -283,6 +283,7 @@
           ("w O" . ace-swap-window)))
 
 (use-package agent-shell
+  ;; https://github.com/xenodium/agent-shell
   :if (display-graphic-p)
   :commands (agent-shell)
   :init
@@ -340,18 +341,16 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
-  :commands (cape-abbrev cape-dict cape-elisp-symbol cape-file cape-history cape-dabbrev cape-line cape-keyword)
   :custom
+  ;; #'cape-dict ;; no need for dicts
+  ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
+  ;; #'cape-line ;; Kinda buggy
   (completion-at-point-functions
    (list #'cape-dabbrev
          #'cape-abbrev
          #'cape-keyword
          #'cape-file
-         ;; #'cape-dict ;; no need for dicts
-         ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
-         ;; #'cape-elisp-block ;; elisp buffers already set its own cape func.
-         ;; #'cape-line ;; Kinda buggy
-         )))
+         #'cape-elisp-block)))
 
 (use-package casual ;; Better transient menu
   :disabled ;; Too much configuration for different modes.
