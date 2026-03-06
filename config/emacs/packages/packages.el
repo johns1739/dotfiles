@@ -379,8 +379,9 @@
   (compilation-error-regexp-alist '())
   (compilation-error-regexp-alist-alist '())
   (compilation-max-output-line-length 121)
-  (compilation-scroll-output t)
+  (compilation-scroll-output 'first-error)
   (compilation-search-path '(nil)) ;; directories to search for files
+  (compilation-skip-threshold 2) ;; skip warnings and info with next-error
   (compilation-window-height 20)
   (compile-command "make ")
   :hook
@@ -725,9 +726,7 @@
      ;; ("https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month" reddit news)
      ;; ("https://hnrss.org/frontpage" hn news)
      ;; ("https://hnrss.org/jobs" hn jobs)
-     ("https://lobste.rs/rss" lobste news)))
-  :config
-  (run-with-idle-timer 120 t #'elfeed-db-unload))
+     ("https://lobste.rs/rss" lobste news))))
 
 (use-package ellama
   :disabled ;; prefer gptel
