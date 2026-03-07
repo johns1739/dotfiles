@@ -1,5 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 
+(keymap-global-set "C-x C-b" #'ibuffer)
+(keymap-global-set "C-x SPC" #'switch-to-buffer)
+(keymap-global-set "M-L" #'duplicate-dwim)
+(keymap-global-set "M-I" #'completion-at-point)
+(keymap-global-set "M-j" #'join-line)
+(keymap-global-set "M-o" #'other-window)
+
 (setopt completion-auto-help 'always)
 (setopt completion-auto-select 'second-tab)
 (setopt completion-category-defaults nil)

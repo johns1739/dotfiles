@@ -1,8 +1,26 @@
 ;;; -*- lexical-binding: t -*-
 
+(require 'package)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+			  ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(setq package-archive-priorities '(("gnu" . 100) ("melpa-stable" . 75)))
+(setq use-package-always-ensure t)
+(package-initialize)
+
+;; Install early for downstream dependencies
+(use-package exec-path-from-shell
+  :demand
+  :if (and (memq window-system '(mac ns x)) (display-graphic-p))
+  :custom
+  (exec-path-from-shell-debug t)
+  (exec-path-from-shell-warn-duration-millis 1000)
+  :config
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
 (use-package emacs ;; graphics only
   :demand
-  :straight nil
   :if (display-graphic-p)
   :hook
   ((text-mode prog-mode) . display-line-numbers-mode)
@@ -30,7 +48,6 @@
 
 (use-package emacs ;; terminal only
   :demand
-  :straight nil
   :unless (display-graphic-p)
   :config
   ;; activate mouse-based scrolling
@@ -40,7 +57,6 @@
 
 (use-package emacs
   :demand
-  :straight nil
   :init
   (defvar-keymap global-leader-map :doc "Global leader keymap.")
   (keymap-set ctl-x-map "SPC" global-leader-map)
@@ -245,7 +261,6 @@
       (delete-trailing-whitespace))))
 
 (use-package custom
-  :straight nil
   :bind (:map global-leader-map
               ("x y" . copy-relative-file-name)
               ("x Y" . copy-absolute-file-name))
@@ -335,7 +350,6 @@
   (beacon-mode 1))
 
 (use-package calc
-  :straight nil
   :bind ( :map calc-mode-map
           ("i" . nil)))
 
@@ -365,7 +379,6 @@
   (global-command-log-mode))
 
 (use-package compile
-  :straight nil
   :bind (:map global-leader-map
               ("k g" . recompile)
               ("k k" . compile-dwim)
@@ -500,7 +513,6 @@
   ;; M-x copilot-install-server
   ;; M-x copilot-login
   :if (executable-find "npm")
-  :straight (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :commands (copilot-mode)
   :bind ( :map global-leader-map
           ("i c" . copilot-mode)
@@ -521,7 +533,6 @@
 
 (use-package copilot-chat
   :disabled ;; too slow, better to use gptel
-  :straight (:host github :repo "chep/copilot-chat.el" :files ("*.el"))
   :if (display-graphic-p)
   :requires copilot
   :after (request org markdown-mode copilot))
@@ -529,8 +540,6 @@
 (use-package corfu
   :demand
   :if (display-graphic-p)
-  :straight (corfu :files (:defaults "extensions/*.el")
-                   :includes (corfu-echo corfu-history corfu-popupinfo))
   ;; When corfu-auto is off, better to not modify bindings.
   :bind ( :map corfu-map
           ("RET" . nil))
@@ -604,18 +613,18 @@
   (global-diff-hl-mode))
 
 (use-package diff-mode
-  :straight nil
   :commands (diff diff-mode)
   :bind ( :map diff-mode-map
           ("M-o" . nil)))
 
 (use-package dimmer
+  :disabled ;; TODO: Figure out error issue with latest version
   :if (display-graphic-p) ;; Only works in GUI
   :config
-  (dimmer-mode))
+  (dimmer-mode t))
 
 (use-package dired
-  :straight nil
+  :ensure nil
   :custom
   (dired-dwim-target t)
   (dired-kill-when-opening-new-dired-buffer t)
@@ -626,7 +635,8 @@
   (dired-mode . hl-line-mode))
 
 (use-package dired-subtree
-  ;; :disabled ;; Not really used.
+  ;; TODO
+  :disabled ;; Not really used. How to install informal repo?
   :init
   (with-eval-after-load 'dired-mode
     (require 'dired-subtree))
@@ -653,14 +663,6 @@
   ;; (eat-compile-terminfo)
   :if (and (display-graphic-p)
            (not (string-suffix-p "/bin/fish" (getenv "SHELL"))))
-  :straight (eat :type git
-                 :host codeberg
-                 :repo "akib/emacs-eat"
-                 :files ("*.el" ("term" "term/*.el") "*.texi"
-                         "*.ti" ("terminfo/e" "terminfo/e/*")
-                         ("terminfo/65" "terminfo/65/*")
-                         ("integration" "integration/*")
-                         (:exclude ".dir-locals.el" "*-tests.el")))
   :bind ( :map global-leader-map
           ("k t" . eat-project)
           ("k T" . eat)
@@ -684,7 +686,6 @@
                  (window-height . 0.3))))
 
 (use-package ediff
-  :straight nil
   :custom
   (ediff-keep-variants nil)
   (ediff-split-window-function #'split-window-horizontally)
@@ -693,7 +694,6 @@
           ("x d" . ediff-files)))
 
 (use-package eglot
-  :straight nil
   :bind ( :map global-leader-map
           ("L" . eglot)
           ("l TAB" . eglot-format)
@@ -776,7 +776,6 @@
   :hook (after-init . envrc-global-mode))
 
 (use-package eshell
-  :straight nil
   :bind ( :map global-leader-map
           ("k e" . project-eshell)
           ("k E" . eshell))
@@ -786,7 +785,6 @@
                  (window-height . 0.3))))
 
 (use-package ffap
-  :straight nil
   :commands (find-file-at-point)
   :init
   (defun ffap-deep-match-file (filename)
@@ -803,7 +801,6 @@
   (add-to-list 'ffap-alist '("" . ffap-deep-match-file)))
 
 (use-package files ;; backups
-  :straight nil
   :custom
   (backup-by-copying t)
   (backup-directory-alist `(("." . "~/.backups")))
@@ -851,7 +848,6 @@
   (flycheck-mode . flycheck-set-bindings))
 
 (use-package flymake
-  :straight nil
   :bind (:map global-leader-map
               ("k d" . flymake-show-buffer-diagnostics)
               ("k D" . flymake-show-project-diagnostics))
@@ -859,7 +855,6 @@
   (flymake-fringe-indicator-position 'left-fringe))
 
 (use-package flyspell
-  :straight nil
   ;; brew install aspell
   ;; brew install ispell
   ;; ispell fails to install due to compilation issues
@@ -881,7 +876,6 @@
   ;; cargo install emacs-lsp-booster
   :if (executable-find "emacs-lsp-booster")
   :after eglot
-  :straight (:host github :repo "jdtsmith/eglot-booster")
   :config
   (eglot-booster-mode))
 
@@ -961,7 +955,6 @@
                ("C-c I" . gptel-org-set-topic))))
 
 (use-package help
-  :straight nil
   :bind (:map help-map
               ("h" . nil)) ;; accidentally pressed too often
   :custom
@@ -979,7 +972,6 @@
          ("F" . helpful-function)))
 
 (use-package hippie-exp
-  :straight nil
   :bind (:map global-map ("M-i" . hippie-expand))
   :custom
   (hippie-expand-verbose t)
@@ -1050,7 +1042,6 @@
 
 (use-package ligature
   :disabled ;; too much setup
-  :straight (:host github :repo "mickeynp/ligature.el")
   :config
   (ligature-set-ligatures 'prog-mode '("--" "---" "==" "===" "!=" "!==" "=!=" "=:=" "=/=" "<=" ">=" "&&" "&&&" "&=" "++" "+++"
    "***" ";;" "!!" "??" "?:" "?." "?=" "<:" ":<" ":>" ">:" "<>" "<<<" ">>>" "<<" ">>" "||" "-|"
@@ -1127,7 +1118,7 @@
     (set-face-attribute 'meow-beacon-indicator nil :inherit '(bold success))
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
-    (meow-motion-define-key
+    (meow-motion-overwrite-define-key
      '("<escape>" . ignore))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
@@ -1224,7 +1215,6 @@
   (completion-category-overrides nil))
 
 (use-package org
-  :straight nil
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))
@@ -1357,7 +1347,6 @@
   (popper-echo-mode 1))
 
 (use-package proced
-  :straight nil
   :commands proced
   :bind (:map global-leader-map ("k P" . proced))
   :custom
@@ -1368,7 +1357,6 @@
   (proced-format 'short))
 
 (use-package project
-  :straight nil
   :bind ( :map project-prefix-map
           ("K" . project-forget-project))
   :custom
@@ -1438,7 +1426,6 @@
 
 
 (use-package tab-bar
-  :straight nil
   :if (display-graphic-p)
   :bind ( :map goto-map
           ("T" . tab-bar-mode)
@@ -1512,7 +1499,6 @@
   (treemacs-project-follow-mode t))
 
 (use-package treesit
-  :straight nil
   :config
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -1606,7 +1592,6 @@
 
 (use-package which-key
   :demand
-  :straight nil
   :custom
   (which-key-side-window-location 'right)
   :config
@@ -1614,7 +1599,6 @@
 
 (use-package whisper
   :if (executable-find "ffmpeg")
-  :straight (:host github :repo "natrys/whisper.el" :files ("*.el"))
   :bind (("C-M-y" . whisper-run))
   :init
   (defun rk/get-ffmpeg-device ()
@@ -1690,7 +1674,6 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
   (xclip-mode))
 
 (use-package xref
-  :straight nil
   :defer
   :custom
   (xref-after-return-hook '(recenter xref-pulse-momentarily))

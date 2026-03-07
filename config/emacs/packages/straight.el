@@ -1,5 +1,8 @@
 ;;; -*- lexical-binding: t -*-
 
+;; early-init.el
+;; (setopt package-enable-at-startup nil)
+
 (setopt straight-check-for-modifications '(check-on-save find-when-checking))
 
 (defvar bootstrap-version)
@@ -21,15 +24,3 @@
 
 (setopt straight-use-package-by-default t)
 (setopt straight-log (not is-simple-editor))
-
-;; Install early for downstream dependencies
-(use-package exec-path-from-shell
-  :demand
-  :if (and (memq window-system '(mac ns x)) (display-graphic-p))
-  :custom
-  (exec-path-from-shell-debug t)
-  (exec-path-from-shell-warn-duration-millis 1000)
-  :config
-  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO"))
-    (add-to-list 'exec-path-from-shell-variables var))
-  (exec-path-from-shell-initialize))

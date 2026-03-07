@@ -4,12 +4,10 @@
 
 (use-package cc-mode
   :mode "\\.c\\'"
-  :straight nil
   :init
   (add-to-list 'major-mode-remap-alist '(cc-mode . c-ts-mode)))
 
 (use-package common-lisp-mode
-  :straight nil
   :mode
   (("\\.lisp$" . common-lisp-mode)
    ("\\.clisp$" . common-lisp-mode))
@@ -124,7 +122,6 @@
   (scheme-mode . geiser-mode))
 
 (use-package gleam-ts-mode
-  :straight (:host github :repo "gleam-lang/gleam-mode")
   :mode (rx ".gleam" eos)
   :init
   (with-eval-after-load 'eglot
@@ -146,7 +143,6 @@
                  '(janet-mode "janet-lsp"))))
 
 (use-package js-mode
-  :straight nil
   :mode "\\.js\\'"
   :custom
   (js-indent-level 4))
@@ -155,7 +151,6 @@
   :mode "\\.lua\\'")
 
 (use-package make-mode
-  :straight nil
   :init
   (defun make-mode-setup ()
     (setq-local outline-regexp "^[A-Za-z].+:"))
@@ -175,7 +170,6 @@
   ;; requirements:
   ;; npm i -g redoc-cli
   :if (executable-find "redoc-cli")
-  :straight (:host github :repo "merrickluo/openapi-preview")
   :bind (:map yaml-ts-mode-map
               ("C-c C-c p" . openapi-preview)))
 
@@ -184,13 +178,11 @@
   :if (executable-find "psql"))
 
 (use-package pgmacs
-  :straight (:host github :repo "emarsden/pgmacs")
   :if (and (display-graphic-p) (executable-find "psql"))
   :requires (pg)
   :commands (pgmacs pgmacs-open-uri pgmacs-open-string))
 
 (use-package python
-  :straight nil
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :custom
