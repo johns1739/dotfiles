@@ -4,8 +4,8 @@
 
 (when is-simple-editor
   (setq custom-file (concat user-emacs-directory "simple-custom.el"))
-  (load (concat user-emacs-directory "packages/simple.el"))
-  (load custom-file :no-error-if-file-missing))
+  (load (concat user-emacs-directory "packages/simple.el") :noerror :nomessage)
+  (load custom-file :no-error-if-file-missing :noerror :nomessage))
 
 (when (not is-simple-editor)
   (setq custom-file (concat user-emacs-directory "custom.el"))
