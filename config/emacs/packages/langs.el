@@ -1,19 +1,17 @@
-;;; -*- lexical-binding: t -*-
-
-;; (load (locate-user-emacs-file "packages/langs.el") :no-error-if-file-is-missing)
+;; ;;; -*- lexical-binding: t -*-
 
 (use-package cc-mode
   :mode "\\.c\\'"
   :init
   (add-to-list 'major-mode-remap-alist '(cc-mode . c-ts-mode)))
 
-(use-package common-lisp-mode
-  :mode
-  (("\\.lisp$" . common-lisp-mode)
-   ("\\.clisp$" . common-lisp-mode))
-  :config
-  (load (expand-file-name "~/.quicklisp/slime-helper.el") t) ;; t = noerror
-  (setq inferior-lisp-program "sbcl"))
+;; (use-package common-lisp-mode
+;;   :mode
+;;   (("\\.lisp$" . common-lisp-mode)
+;;    ("\\.clisp$" . common-lisp-mode))
+;;   :config
+;;   (load (expand-file-name "~/.quicklisp/slime-helper.el") :noerror)
+;;   (setq inferior-lisp-program "sbcl"))
 
 (use-package csv-mode
   :mode "\\.csv\\'")
@@ -23,9 +21,9 @@
   :custom
   (css-indent-offset 2))
 
-(use-package dockerfile-mode
-  :mode (("\\Dockerfile\\'" . dockerfile-mode)
-         ("\\.dockerfile\\'" . dockerfile-mode)))
+;; (use-package dockerfile-mode
+;;   :mode (("\\Dockerfile\\'" . dockerfile-mode)
+;;          ("\\.dockerfile\\'" . dockerfile-mode)))
 
 (use-package fish-mode
   :mode "\\.fish\\'")
@@ -114,48 +112,48 @@
   (add-to-list 'eglot-server-programs
                '(erlang-mode "elp" "server")))
 
-(use-package geiser-guile
-  :commands (geiser geiser-mode)
-  :custom
-  (geiser-debug-jump-to-debug t)
-  :hook
-  (scheme-mode . geiser-mode))
+;; (use-package geiser-guile
+;;   :commands (geiser geiser-mode)
+;;   :custom
+;;   (geiser-debug-jump-to-debug t)
+;;   :hook
+;;   (scheme-mode . geiser-mode))
 
-(use-package gleam-ts-mode
-  :mode (rx ".gleam" eos)
-  :init
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(gleam-ts-mode "gleam" "lsp"))))
+;; (use-package gleam-ts-mode
+;;   :mode (rx ".gleam" eos)
+;;   :init
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs
+;;                  '(gleam-ts-mode "gleam" "lsp"))))
 
-(use-package go-ts-mode
-  ;; go install golang.org/x/tools/gopls@latest
-  :mode "\\.go\\'"
-  :custom
-  (go-ts-mode-indent-offset 4))
+;; (use-package go-ts-mode
+;;   ;; go install golang.org/x/tools/gopls@latest
+;;   :mode "\\.go\\'"
+;;   :custom
+;;   (go-ts-mode-indent-offset 4))
 
-(use-package janet-mode
-  :mode "\\.janet$"
-  :config
-  (exec-path-from-shell-copy-env "JANET_PATH")
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(janet-mode "janet-lsp"))))
+;; (use-package janet-mode
+;;   :mode "\\.janet$"
+;;   :config
+;;   (exec-path-from-shell-copy-env "JANET_PATH")
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs
+;;                  '(janet-mode "janet-lsp"))))
 
-(use-package js-mode
-  :mode "\\.js\\'"
-  :custom
-  (js-indent-level 4))
+;; (use-package js-mode
+;;   :mode "\\.js\\'"
+;;   :custom
+;;   (js-indent-level 4))
 
-(use-package lua-mode
-  :mode "\\.lua\\'")
+;; (use-package lua-mode
+;;   :mode "\\.lua\\'")
 
-(use-package make-mode
-  :init
-  (defun make-mode-setup ()
-    (setq-local outline-regexp "^[A-Za-z].+:"))
-  :hook
-  (makefile-bsdmake-mode . make-mode-setup))
+;; (use-package make-mode
+;;   :init
+;;   (defun make-mode-setup ()
+;;     (setq-local outline-regexp "^[A-Za-z].+:"))
+;;   :hook
+;;   (makefile-bsdmake-mode . make-mode-setup))
 
 (use-package markdown-mode
   :mode ("README\\.md\\'" . gfm-mode)
@@ -166,21 +164,21 @@
               ("M-p" . markdown-outline-previous)
               ("C-c C-." . markdown-do)))
 
-(use-package openapi-preview
-  ;; requirements:
-  ;; npm i -g redoc-cli
-  :if (executable-find "redoc-cli")
-  :bind (:map yaml-ts-mode-map
-              ("C-c C-c p" . openapi-preview)))
+;; (use-package openapi-preview
+;;   ;; requirements:
+;;   ;; npm i -g redoc-cli
+;;   :if (executable-find "redoc-cli")
+;;   :bind (:map yaml-ts-mode-map
+;;               ("C-c C-c p" . openapi-preview)))
 
-(use-package pg
-  :defer
-  :if (executable-find "psql"))
+;; (use-package pg
+;;   :defer
+;;   :if (executable-find "psql"))
 
-(use-package pgmacs
-  :if (and (display-graphic-p) (executable-find "psql"))
-  :requires (pg)
-  :commands (pgmacs pgmacs-open-uri pgmacs-open-string))
+;; (use-package pgmacs
+;;   :if (and (display-graphic-p) (executable-find "psql"))
+;;   :requires (pg)
+;;   :commands (pgmacs pgmacs-open-uri pgmacs-open-string))
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
@@ -197,88 +195,88 @@
                  '(python-pytest-target
                    "^\\([A-Za-z0-9/][^ (]+\\.py\\):\\([1-9][0-9]*\\): " 1 2 nil nil 1))))
 
-(use-package python-black
-  :disabled ;; python-lsp formatter is good enough
-  :if (executable-find "black")
-  :after python
-  :init
-  (defun python-black-setup ()
-    (bind-keys :map (current-local-map)
-               ([remap indent-format-buffer] . python-black-buffer)))
-  :hook
-  (python-ts-mode . python-black-setup))
+;; (use-package python-black
+;;   :disabled ;; python-lsp formatter is good enough
+;;   :if (executable-find "black")
+;;   :after python
+;;   :init
+;;   (defun python-black-setup ()
+;;     (bind-keys :map (current-local-map)
+;;                ([remap indent-format-buffer] . python-black-buffer)))
+;;   :hook
+;;   (python-ts-mode . python-black-setup))
 
-(use-package ruby-ts-mode
-  :mode "\\.rb\\'"
-  :init
-  (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
-  (defun rails-compile ()
-    (interactive)
-    (setq compile-command
-          (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
-                 (let ((linum (number-to-string (line-number-at-pos)))
-                       (file-name (relative-file-name)))
-                   (if (< (line-number-at-pos) 5)
-                       (string-join (list "rails t " file-name))
-                     (string-join (list "rails t " (s-concat file-name ":" linum))))))
-                (t compile-command)))
-    (call-interactively #'compile-dwim))
-  (defun rails-comint ()
-    (interactive)
-    (universal-argument)
-    (command-execute #'rails-compile))
-  (defun ruby-setup ()
-    (setq-local compile-command "rails t")
-    (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
-    (bind-keys :map (current-local-map)
-               ([remap compile-dwim] . rails-compile)
-               ([remap comint-dwim] . rails-comint)))
-  :hook
-  (ruby-base-mode . ruby-setup)
-  :config
-  (with-eval-after-load 'compile
-    (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(rails-test-target
-                   "^rails test \\([^:]+\\):\\([0-9]+\\)" 1 2 nil nil 1))
-    (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
-    (add-to-list 'compilation-error-regexp-alist-alist
-                 '(rspec-backtrace-target
-                   "^ +# \\(./[A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((ruby-mode ruby-ts-mode)
-                   . ("solargraph" "stdio" :initializationOptions
-                      (;; options
-                       :useBundler t
-                       :diagnostics t
-                       :completion t
-                       :hover t
-                       :autoformat :json-false
-                       :formatting t
-                       :symbols t
-                       :definitions t
-                       :rename t
-                       :references t
-                       :folding t))))))
+;; (use-package ruby-ts-mode
+;;   :mode "\\.rb\\'"
+;;   :init
+;;   (add-to-list 'major-mode-remap-alist '(ruby-mode . ruby-ts-mode))
+;;   (defun rails-compile ()
+;;     (interactive)
+;;     (setq compile-command
+;;           (cond ((string-match-p "_test.rb\\'" (buffer-file-name))
+;;                  (let ((linum (number-to-string (line-number-at-pos)))
+;;                        (file-name (relative-file-name)))
+;;                    (if (< (line-number-at-pos) 5)
+;;                        (string-join (list "rails t " file-name))
+;;                      (string-join (list "rails t " (s-concat file-name ":" linum))))))
+;;                 (t compile-command)))
+;;     (call-interactively #'compile-dwim))
+;;   (defun rails-comint ()
+;;     (interactive)
+;;     (universal-argument)
+;;     (command-execute #'rails-compile))
+;;   (defun ruby-setup ()
+;;     (setq-local compile-command "rails t")
+;;     (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)")
+;;     (bind-keys :map (current-local-map)
+;;                ([remap compile-dwim] . rails-compile)
+;;                ([remap comint-dwim] . rails-comint)))
+;;   :hook
+;;   (ruby-base-mode . ruby-setup)
+;;   :config
+;;   (with-eval-after-load 'compile
+;;     (add-to-list 'compilation-error-regexp-alist 'rails-test-target)
+;;     (add-to-list 'compilation-error-regexp-alist-alist
+;;                  '(rails-test-target
+;;                    "^rails test \\([^:]+\\):\\([0-9]+\\)" 1 2 nil nil 1))
+;;     (add-to-list 'compilation-error-regexp-alist 'rspec-backtrace-target)
+;;     (add-to-list 'compilation-error-regexp-alist-alist
+;;                  '(rspec-backtrace-target
+;;                    "^ +# \\(./[A-Za-z0-9][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
+;;   (with-eval-after-load 'eglot
+;;     (add-to-list 'eglot-server-programs
+;;                  `((ruby-mode ruby-ts-mode)
+;;                    . ("solargraph" "stdio" :initializationOptions
+;;                       (;; options
+;;                        :useBundler t
+;;                        :diagnostics t
+;;                        :completion t
+;;                        :hover t
+;;                        :autoformat :json-false
+;;                        :formatting t
+;;                        :symbols t
+;;                        :definitions t
+;;                        :rename t
+;;                        :references t
+;;                        :folding t))))))
 
-(use-package sqlformat
-  :if (executable-find "pg_format")
-  :commands (sqlformat sqlformat-buffer)
-  :init
-  (defun sql-set-bindings ()
-    (bind-keys :map (current-local-map)
-               ([remap indent-format-buffer] . sqlformat-buffer)))
-  :hook
-  (sql-mode . sql-set-bindings)
-  :config
-  (setq sqlformat-command 'pgformatter)
-  (setq sqlformat-args '("-s2" "-g")))
+;; (use-package sqlformat
+;;   :if (executable-find "pg_format")
+;;   :commands (sqlformat sqlformat-buffer)
+;;   :init
+;;   (defun sql-set-bindings ()
+;;     (bind-keys :map (current-local-map)
+;;                ([remap indent-format-buffer] . sqlformat-buffer)))
+;;   :hook
+;;   (sql-mode . sql-set-bindings)
+;;   :config
+;;   (setq sqlformat-command 'pgformatter)
+;;   (setq sqlformat-args '("-s2" "-g")))
 
-(use-package terraform-mode
-  :mode "\\.tf\\'"
-  :custom
-  (terraform-indent-level 2))
+;; (use-package terraform-mode
+;;   :mode "\\.tf\\'"
+;;   :custom
+;;   (terraform-indent-level 2))
 
 (use-package typescript-ts-mode
   :mode "\\.ts$"
@@ -288,22 +286,22 @@
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))
 
-(use-package web-mode
-  :disabled ;; Mode not very good.
-  :mode
-  (("\\.phtml\\'" . web-mode)
-   ("\\.php\\'" . web-mode)
-   ("\\.tpl\\'" . web-mode)
-   ("\\.[agj]sp\\'" . web-mode)
-   ("\\.as[cp]x\\'" . web-mode)
-   ("\\.erb\\'" . web-mode)
-   ("\\.mustache\\'" . web-mode)
-   ("\\.djhtml\\'" . web-mode)))
+;; (use-package web-mode
+;;   :disabled ;; Mode not very good.
+;;   :mode
+;;   (("\\.phtml\\'" . web-mode)
+;;    ("\\.php\\'" . web-mode)
+;;    ("\\.tpl\\'" . web-mode)
+;;    ("\\.[agj]sp\\'" . web-mode)
+;;    ("\\.as[cp]x\\'" . web-mode)
+;;    ("\\.erb\\'" . web-mode)
+;;    ("\\.mustache\\'" . web-mode)
+;;    ("\\.djhtml\\'" . web-mode)))
 
 (use-package yaml-mode
   :mode "\\(\\.ya?ml\\)\\'"
   :hook
   (yaml-mode . indent-bars-mode))
 
-(use-package zig-mode
-  :mode "\\.zig\\'")
+;; (use-package zig-mode
+;;   :mode "\\.zig\\'")

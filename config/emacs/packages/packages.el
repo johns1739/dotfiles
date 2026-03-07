@@ -1,11 +1,12 @@
 ;;; -*- lexical-binding: t -*-
 
 (require 'package)
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-			  ("melpa-stable" . "https://stable.melpa.org/packages/")))
-(setq package-archive-priorities '(("gnu" . 100) ("melpa-stable" . 75)))
-(setq use-package-always-ensure t)
-(package-initialize)
+(require 'use-package)
+
+(setopt package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+			               ("melpa-stable" . "https://stable.melpa.org/packages/")))
+(setopt package-archive-priorities '(("gnu" . 100) ("melpa-stable" . 75)))
+(setopt use-package-always-ensure t)
 
 ;; Install early for downstream dependencies
 (use-package exec-path-from-shell
@@ -261,6 +262,8 @@
       (delete-trailing-whitespace))))
 
 (use-package custom
+  :demand
+  :ensure nil
   :bind (:map global-leader-map
               ("x y" . copy-relative-file-name)
               ("x Y" . copy-absolute-file-name))
@@ -635,8 +638,8 @@
   (dired-mode . hl-line-mode))
 
 (use-package dired-subtree
-  ;; TODO
-  :disabled ;; Not really used. How to install informal repo?
+  :disabled ;; github repo setup strange
+  :vc (:url "https://github.com/Fuco1/dired-hacks")
   :init
   (with-eval-after-load 'dired-mode
     (require 'dired-subtree))
@@ -659,6 +662,7 @@
     (plist-put column :width 62)))
 
 (use-package eat
+  :disabled ;; prefer vterm
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
   :if (and (display-graphic-p)
@@ -801,6 +805,7 @@
   (add-to-list 'ffap-alist '("" . ffap-deep-match-file)))
 
 (use-package files ;; backups
+  :ensure nil
   :custom
   (backup-by-copying t)
   (backup-directory-alist `(("." . "~/.backups")))
@@ -873,6 +878,7 @@
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 (use-package eglot-booster
+  :disabled ;; eglot-booster not available melpa?
   ;; cargo install emacs-lsp-booster
   :if (executable-find "emacs-lsp-booster")
   :after eglot
@@ -880,6 +886,7 @@
   (eglot-booster-mode))
 
 (use-package embark
+  :disabled ;; rarely used
   :bind (([remap describe-bindings] . embark-bindings)
          :map ctl-x-map
          ("A" . embark-act)
@@ -887,6 +894,8 @@
          ("E" . embark-export)))
 
 (use-package embark-consult
+  :disabled
+  :after (embark consult)
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
@@ -955,8 +964,9 @@
                ("C-c I" . gptel-org-set-topic))))
 
 (use-package help
-  :bind (:map help-map
-              ("h" . nil)) ;; accidentally pressed too often
+  :ensure nil
+  :bind ( :map help-map
+          ("h" . nil)) ;; accidentally pressed too often
   :custom
   (help-window-select 'other))
 
@@ -972,7 +982,8 @@
          ("F" . helpful-function)))
 
 (use-package hippie-exp
-  :bind (:map global-map ("M-i" . hippie-expand))
+  :bind ( :map global-map
+	  ("M-i" . hippie-expand))
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
@@ -1376,7 +1387,6 @@
 (use-package simple-modeline
   :demand
   :init
-  (require 's)
   (defun simple-modeline-segment-branch ()
     "Display current git branch in mode line."
     (when vc-mode
@@ -1423,7 +1433,6 @@
   :if (display-graphic-p)
   :bind ( :map global-leader-map
           ("m p" . spacious-padding-mode)))
-
 
 (use-package tab-bar
   :if (display-graphic-p)
@@ -1499,6 +1508,7 @@
   (treemacs-project-follow-mode t))
 
 (use-package treesit
+  :ensure nil
   :config
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")
@@ -1542,8 +1552,8 @@
 
 (use-package vertico-posframe
   :if (display-graphic-p)
-  :defer
   :after vertico
+  :defer
   :bind ( :map global-leader-map
           ("m v" . vertico-posframe-mode))
   :custom
@@ -1558,6 +1568,7 @@
   (visual-replace-global-mode))
 
 (use-package vterm
+  :disabled ;; requires special installation TODO
   ;; https://github.com/akermu/emacs-libvterm/blob/master/README.md
   ;; In config.fish
   ;; if test "$INSIDE_EMACS" = 'vterm'
@@ -1598,6 +1609,7 @@
   (which-key-mode))
 
 (use-package whisper
+  :disabled ;; not available TODO
   :if (executable-find "ffmpeg")
   :bind (("C-M-y" . whisper-run))
   :init
