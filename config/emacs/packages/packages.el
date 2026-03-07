@@ -5,6 +5,7 @@
 
 (setopt package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
 			               ("melpa-stable" . "https://stable.melpa.org/packages/")))
+
 (setopt package-archive-priorities '(("gnu" . 100) ("melpa-stable" . 75)))
 (setopt use-package-always-ensure t)
 
@@ -94,7 +95,6 @@
           ("x s" . sort-lines)
           ("x w" . whitespace-cleanup)
           ;; Compilation & Computation
-          ("k *" . calc)
           ("k r" . ielm)
           ;; Settings (Look & Feel)
           (", ," . open-custom-file)
@@ -330,6 +330,7 @@
   :commands (auto-dark-mode))
 
 (use-package avy
+  :defer
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
          ("n w" . avy-org-refile-as-child)
@@ -353,7 +354,9 @@
   (beacon-mode 1))
 
 (use-package calc
-  :bind ( :map calc-mode-map
+  :bind ( :map global-leader-map
+          ("k *" . calc)
+          :map calc-mode-map
           ("i" . nil)))
 
 (use-package cape
@@ -946,10 +949,7 @@
           ("i m" . gptel-menu)
           ("i A" . gptel-add)
           ("i K" . gptel-context-remove-all)
-          ("i R" . gptel-rewrite)
-          :map dired-mode-map
-          ("A" . gptel-add)
-          ("K" . gptel-context-remove-all))
+          ("i R" . gptel-rewrite))
   :hook
   (gptel-mode . visual-line-mode)
   ;; (gptel-mode . gptel-highlight-mode) ;; Not available for some reason.
@@ -958,7 +958,9 @@
   :config
   (with-eval-after-load 'dired-mode
     (bind-keys :map dired-mode-map
-               ("I" . gptel-add)))
+               ("A" . gptel-add)
+               ("K" . gptel-context-remove-all)))
+
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic))))
@@ -1379,6 +1381,8 @@
   :init
   (keymap-set global-leader-map "p" project-prefix-map))
 
+(use-package s) ;; https://github.com/magnars/s.el#functions
+
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
   :bind (:map global-leader-map
@@ -1435,6 +1439,7 @@
           ("m p" . spacious-padding-mode)))
 
 (use-package tab-bar
+  :defer
   :if (display-graphic-p)
   :bind ( :map goto-map
           ("T" . tab-bar-mode)

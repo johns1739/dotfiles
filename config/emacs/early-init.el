@@ -21,21 +21,22 @@
 (setopt read-process-output-max (* 1024 1024)) ;; 1mb
 
 (unless is-simple-editor
-  (require 'benchmark)
-  (setopt use-package-verbose t)
+  ;; Debugging
+  ;; (setopt use-package-verbose t)
   (setopt use-package-compute-statistics t)
+  ;; (setopt debug-on-error t)
+
+  (setopt warning-suppress-types '((comp) (bytecomp) (files)))
+  (setopt native-comp-async-report-warnings-errors 'silent)
+
   (setopt frame-resize-pixelwise t)
   (setopt frame-inhibit-implied-resize t)
   (setopt frame-title-format '("%n %b - %F"))
   (setopt inhibit-compacting-font-caches t)
   (setopt mode-line-format nil)
-
-  ;; Silence logs
-  ;; (setopt byte-compile-warnings '())
-  (setopt warning-suppress-log-types '((comp) (bytecomp)))
-  (setopt native-comp-async-report-warnings-errors 'silent)
   (setopt inhibit-startup-echo-area-message "")
 
+  (require 'benchmark)
   (defmacro tt (label &rest forms)
     `(message "%s took %ss" ,label (benchmark-elapse ,@forms)))
 

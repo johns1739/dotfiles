@@ -1,4 +1,4 @@
-#+STARTUP: show2levels content
+#+STARTUP: show2levels content indent
 
 * Install
 ** Dependencies
