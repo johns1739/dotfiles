@@ -4,9 +4,10 @@
 (require 'use-package)
 
 (setopt package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-			               ("melpa-stable" . "https://stable.melpa.org/packages/")))
+			               ("melpa-stable" . "https://stable.melpa.org/packages/")
+                           ("melpa" . "https://melpa.org/packages/")))
 
-(setopt package-archive-priorities '(("gnu" . 100) ("melpa-stable" . 75)))
+(setopt package-archive-priorities '(("gnu" . 100) ("melpa-stable" . 50) ("melpa" . 1)))
 (setopt use-package-always-ensure t)
 
 ;; Install early for downstream dependencies
@@ -1573,7 +1574,6 @@
   (visual-replace-global-mode))
 
 (use-package vterm
-  :disabled ;; requires special installation TODO
   ;; https://github.com/akermu/emacs-libvterm/blob/master/README.md
   ;; In config.fish
   ;; if test "$INSIDE_EMACS" = 'vterm'
@@ -1614,7 +1614,7 @@
   (which-key-mode))
 
 (use-package whisper
-  :disabled ;; not available TODO
+  :disabled ;; could be better
   :if (executable-find "ffmpeg")
   :bind (("C-M-y" . whisper-run))
   :init
