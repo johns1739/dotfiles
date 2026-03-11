@@ -144,6 +144,7 @@
           ("w L" . windmove-swap-states-right)
           :map search-map
           ("g" . rgrep)
+          ("f" . find-name-dired)
           ("j" . list-registers)
           ("m" . list-bookmarks)
           ("o" . occur)
@@ -478,6 +479,7 @@
          ("M-i" . consult-history)
          :map search-map
          ("f" . consult-find) ;; works even if not in a project
+         ("F" . find-name-dired)
          ("l" . consult-line)
          ("L" . consult-focus-lines)
          ("s" . consult-ripgrep)

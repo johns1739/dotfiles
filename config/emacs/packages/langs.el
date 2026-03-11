@@ -279,9 +279,7 @@
 ;;   (terraform-indent-level 2))
 
 (use-package typescript-ts-mode
-  :mode "\\.ts$"
-  :custom
-  (typescript-ts-mode-indent-offset 4)
+  :mode ("\\.ts$" "\\.tsx$")
   :config
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs '((typescript-mode typescript-ts-mode) . ("deno" "lsp")))))

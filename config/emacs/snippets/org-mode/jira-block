@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: jira-block
+# key: ,jira
+# --
+#+BEGIN_SRC sh
+jira issue view --plain $0
+#+END_SRC
