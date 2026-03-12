@@ -1,5 +1,6 @@
 ;;-*- lexical-binding: t; -*-
 
+;; TODO: https://github.com/LionyxML/emacs-solo
 ;; Loading packages
 
 (when is-simple-editor
@@ -11,7 +12,5 @@
   (setq custom-file (concat user-emacs-directory "custom.el"))
   (setq packages '("packages.el" "langs.el" "color-themes.el"))
   (dolist (package packages)
-    (tt (format "*** %s" package)
-        (load (concat user-emacs-directory "packages/" package))))
-  (tt (format "*** %s" custom-file)
-      (load custom-file :no-error-if-file-missing)))
+    (load (concat user-emacs-directory "packages/" package)))
+  (load custom-file :no-error-if-file-missing))

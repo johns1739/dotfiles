@@ -150,7 +150,6 @@
           ("o" . occur)
           ("r" . recentf-open))
   :custom
-  (auto-revert-avoid-polling t)
   (auto-window-vscroll nil)
   (completion-auto-help 'always)
   (completion-auto-select 'second-tab)
@@ -176,7 +175,6 @@
   (enable-recursive-minibuffers t) ;; Might be confusing
   (fast-but-imprecise-scrolling t)
   (find-file-visit-truename t)
-  (global-auto-revert-non-file-buffers t)
   (history-delete-duplicates t)
   (history-length 1000)
   (imenu-max-item-length 80)
@@ -221,7 +219,6 @@
   (desktop-save-mode -1) ;; CPU heavy when loading many buffers under LSP
   (electric-indent-mode t)
   (electric-pair-mode -1)
-  (global-auto-revert-mode t)
   (global-eldoc-mode t)
   (global-so-long-mode t)
   (line-number-mode t)
@@ -325,11 +322,27 @@
   ;; (aidermacs-default-model "gemini-2.5-pro"))
   (aidermacs-default-chat-mode 'architect))
 
+(use-package auth-source
+  ;; password authentication service
+  ;; To reload authinfo:
+  ;; (auth-source-forget-all-cached)
+  :ensure nil
+  :custom
+  (auth-sources '("~/.authinfo.gpg")))
+
 (use-package auto-dark ;; auto switching dark / light color themes
   :disabled ;; better to manually select
   ;; (setopt auto-dark-themes '((wombat) (leuven)))
   ;; (auto-dark-mode)
   :commands (auto-dark-mode))
+
+(use-package autorevert
+  :ensure nil
+  :custom
+  (auto-revert-avoid-polling t)
+  (global-auto-revert-non-file-buffers t)
+  :config
+  (global-auto-revert-mode t))
 
 (use-package avy
   :defer
@@ -524,7 +537,7 @@
   :if (executable-find "npm")
   :commands (copilot-mode)
   :bind ( :map global-leader-map
-          ("i c" . copilot-mode)
+          ("i c" . global-copilot-mode)
           :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)
@@ -912,19 +925,14 @@
 
 (use-package forge
   ;; setup:
-  ;; Create ~/.authinfo with content:
+  ;; Create ~/.authinfo.gpg with content:
   ;; machine api.github.com login USERNAME^forge password TOKEN
   ;; where USERNAME: git config --global github.user jubajr17
   ;; and TOKEN: from https://github.com/settings/tokens
   ;;            in a browser to generate a new "classic" token using
   ;;            the repo, user and read:org scopes
   ;; Run M-x auth-source-forget-all-cached
-  :commands (forge-dispatch)
-  :custom
-  ;; password authentication service
-  ;; To reload authinfo:
-  ;; (auth-source-forget-all-cached)
-  (auth-sources '("~/.authinfo")))
+  :commands (forge-dispatch))
 
 (use-package git-link
   :bind (:map global-leader-map
@@ -963,7 +971,6 @@
     (bind-keys :map dired-mode-map
                ("A" . gptel-add)
                ("K" . gptel-context-remove-all)))
-
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic))))
@@ -1012,6 +1019,7 @@
   (advice-add 'hippie-expand :around #'hippie-expand-case-fold-advice))
 
 (use-package ibuffer
+  :ensure nil
   :bind ( :map global-map
           ("C-x C-b" . ibuffer))
   :custom
@@ -1024,6 +1032,17 @@
   (ibuffer-title-face 'font-lock-doc-face)
   (ibuffer-use-header-line t)
   (ibuffer-default-shrink-to-minimum-size nil))
+
+(use-package icomplete
+  :disabled
+  :ensure nil
+  :custom
+  (icomplete-delay-completions-threshold 0)
+  (icomplete-compute-delay 0)
+  (icomplete-show-matches-on-no-input t)
+  (icomplete-scroll t)
+  :config
+  (icomplete-vertical-mode))
 
 (use-package imenu-list
   :bind (:map global-leader-map
@@ -1517,6 +1536,9 @@
 
 (use-package treesit
   :ensure nil
+  :custom
+  (treesit-auto-install-grammar 'always)
+  (treesit-enabled-modes t)
   :config
   (setq treesit-language-source-alist
         '((bash "https://github.com/tree-sitter/tree-sitter-bash")

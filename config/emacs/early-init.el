@@ -3,45 +3,47 @@
 (defvar is-simple-editor (getenv "SIMPLE")
   "Whether Emacs is running in a simple editor environment.")
 
-(if (fboundp 'menu-bar-mode)
-    (menu-bar-mode -1))
+;; Disables unused UI Elements
+(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+(if (fboundp 'tooltip-mode) (tooltip-mode -1))
+(if (fboundp 'fringe-mode) (fringe-mode -1))
 
-(if (fboundp 'tool-bar-mode)
-    (tool-bar-mode -1))
+;; Delay garbage collection while Emacs is booting
+(setopt gc-cons-threshold most-positive-fixnum)
+(setopt gc-cons-percentage 0.6)
 
-(if (fboundp 'tooltip-mode)
-    (tooltip-mode -1))
+;; Single VC backend inscreases booting speed
+(setq vc-handled-backends '(Git))
 
-(if (fboundp 'scroll-bar-mode)
-    (scroll-bar-mode -1))
+(setopt inhibit-compacting-font-caches t)
 
-;; Garbage Collection (for performance)
-(setopt gc-cons-percentage 0.1)
-(setopt gc-cons-threshold (* 100 1024 1024)) ;; 100mb
-(setopt read-process-output-max (* 1024 1024)) ;; 1mb
+(when (eq system-type 'darwin)
+  (setq ns-use-proxy-icon nil))
+
+;; Do not native compile if on battery power
+(setopt native-comp-async-on-battery-power nil) ; EMACS-31
+
+;; Avoid raising the *Messages* buffer if anything is still without
+;; lexical bindings
+(setq warning-minimum-level :error)
+(setq warning-suppress-types '((lexical-binding)))
+
+;; Schedule garbage collection sensible defaults for after booting
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            (setopt gc-cons-threshold (* 100 1024 1024))
+            (setopt gc-cons-percentage 0.1)
+            (message
+             "*** Emacs loaded in %s seconds with %d garbage collections."
+             (emacs-init-time "%.2f") gcs-done)))
+
 
 (unless is-simple-editor
-  ;; Debugging
-  ;; (setopt use-package-verbose t)
   (setopt use-package-compute-statistics t)
-  ;; (setopt debug-on-error t)
-
   (setopt warning-suppress-types '((comp) (bytecomp) (files)))
   (setopt native-comp-async-report-warnings-errors 'silent)
+  (setopt inhibit-startup-echo-area-message ""))
 
-  (setopt frame-resize-pixelwise t)
-  (setopt frame-inhibit-implied-resize t)
-  (setopt frame-title-format '("%n %b - %F"))
-  (setopt inhibit-compacting-font-caches t)
-  (setopt mode-line-format nil)
-  (setopt inhibit-startup-echo-area-message "")
-
-  (require 'benchmark)
-  (defmacro tt (label &rest forms)
-    `(message "%s took %ss" ,label (benchmark-elapse ,@forms)))
-
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message
-               "*** Emacs loaded in %s seconds with %d garbage collections."
-               (emacs-init-time "%.2f") gcs-done))))
+(provide 'early-init)

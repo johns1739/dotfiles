@@ -278,6 +278,7 @@
 ;;   :custom
 ;;   (terraform-indent-level 2))
 
+;; TODO: outline for describe(, before...(, it( headings.
 (use-package typescript-ts-mode
   :mode ("\\.ts$" "\\.tsx$")
   :config
