@@ -1,4 +1,4 @@
-;; ;; ;;; -*- lexical-binding: t -*-
+;;; emacs-color-themes.el --- Color Themes  -*- lexical-binding: t; -*-
 
 (use-package color-theme-modern
   :disabled ;; Lexical binding warnings.
@@ -52,3 +52,6 @@
 
 (use-package zenburn-theme
   :defer t)
+
+(provide 'emacs-color-themes)
+;;; emacs-color-themes.el ends here

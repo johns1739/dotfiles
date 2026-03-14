@@ -1,4 +1,4 @@
-;;; -*- lexical-binding: t -*-
+;;; early-init.el --- Early Init  -*- lexical-binding: t; -*-
 
 (defvar is-simple-editor (getenv "SIMPLE")
   "Whether Emacs is running in a simple editor environment.")
@@ -15,20 +15,20 @@
 (setopt gc-cons-percentage 0.6)
 
 ;; Single VC backend inscreases booting speed
-(setq vc-handled-backends '(Git))
+(setopt vc-handled-backends '(Git))
 
 (setopt inhibit-compacting-font-caches t)
 
 (when (eq system-type 'darwin)
-  (setq ns-use-proxy-icon nil))
+  (setopt ns-use-proxy-icon nil))
 
 ;; Do not native compile if on battery power
 (setopt native-comp-async-on-battery-power nil) ; EMACS-31
 
 ;; Avoid raising the *Messages* buffer if anything is still without
 ;; lexical bindings
-(setq warning-minimum-level :error)
-(setq warning-suppress-types '((lexical-binding)))
+(setopt warning-minimum-level :error)
+(setopt warning-suppress-types '((lexical-binding)))
 
 ;; Schedule garbage collection sensible defaults for after booting
 (add-hook 'emacs-startup-hook
@@ -36,9 +36,11 @@
             (setopt gc-cons-threshold (* 100 1024 1024))
             (setopt gc-cons-percentage 0.1)
             (message
-             "*** Emacs loaded in %s seconds with %d garbage collections."
-             (emacs-init-time "%.2f") gcs-done)))
+             "*** Emacs loaded in %s seconds with %d garbage collections and %d packages."
+             (emacs-init-time "%.2f") gcs-done (length package-activated-list))))
 
+;; (when is-simple-editor
+  ;; TODO: Disable package initialize here
 
 (unless is-simple-editor
   (setopt use-package-compute-statistics t)

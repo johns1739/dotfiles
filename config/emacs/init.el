@@ -1,16 +1,18 @@
-;;-*- lexical-binding: t; -*-
+;;; init.el --- Init Configuration  -*- lexical-binding: t; -*-
 
-;; TODO: https://github.com/LionyxML/emacs-solo
-;; Loading packages
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(require 'emacs-base)
+
+(unless is-simple-editor
+  (require 'emacs-external-manager)
+  (require 'emacs-external-packages)
+  (require 'emacs-color-themes)
+  (setq custom-file (concat user-emacs-directory "custom.el"))
+  (load custom-file :no-error-if-file-missing))
 
 (when is-simple-editor
-  (setq custom-file (concat user-emacs-directory "simple-custom.el"))
-  (load (concat user-emacs-directory "packages/simple.el") :noerror :nomessage)
-  (load custom-file :no-error-if-file-missing :noerror :nomessage))
-
-(when (not is-simple-editor)
-  (setq custom-file (concat user-emacs-directory "custom.el"))
-  (setq packages '("packages.el" "langs.el" "color-themes.el"))
-  (dolist (package packages)
-    (load (concat user-emacs-directory "packages/" package)))
+  (setq custom-file (concat user-emacs-directory ".simple-custom.el"))
   (load custom-file :no-error-if-file-missing))
+
+(provide 'init)
+;;; init.el ends here

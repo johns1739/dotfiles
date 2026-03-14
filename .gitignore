@@ -1,1 +1,5 @@
 .DS_Store
+/config/emacs/cache/
+/config/emacs/elpa/
+/config/emacs/eln-cache/
+/config/emacs/custom.el
