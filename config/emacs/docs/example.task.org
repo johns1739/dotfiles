@@ -4,12 +4,13 @@
 #+STARTUP: content
 #+STARTUP: show<n>levels (<n> = 2..5) 
 
+# These have been pre-configured in emacs-base.el
 #+STARTUP: indent noindent
 #+STARTUP: hidestars showstars
-#+STARTUP: hidedrawers nohidedrawers
-#+STARTUP: logdrawer nologdrawer
-#+STARTUP: hideblocks nohideblocks
 #+STARTUP: logdone nologdone lognotedone
+#+STARTUP: hideblocks nohideblocks
+#+STARTUP: logdrawer nologdrawer
+#+STARTUP: hidedrawers nohidedrawers
 
 #+CATEGORY: tasks
 

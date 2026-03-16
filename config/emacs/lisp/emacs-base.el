@@ -1,13 +1,5 @@
 ;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
 
-;; TODO: These show up in *Messages* at terminal startup. What are they?
-;; Loading warnings (native-compiled elisp)...done
-;; Loading goto-addr (native-compiled elisp)...done
-;; Loading pixel-scroll (native-compiled elisp)...done
-;; Loading treesit (native-compiled elisp)...done
-
-;; TODO: Figure out unknown packages and document what they do
-
 (use-package emacs
   :ensure nil
   :init
@@ -16,7 +8,6 @@
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
   :bind
-  ("C-x SPC" . switch-to-buffer)
   ("C-M-;" . comment-indent)
   ("C-M-z" . delete-pair)
   ("C-x C-z" . nil)
@@ -66,8 +57,6 @@
     (", r" . reload-emacs)
     (", t" . toggle-truncate-lines)
     (", x" . describe-font)
-    :map mode-specific-map
-    ("C-o" . goto-address-at-point)
     :map goto-map
     ("SPC" . switch-to-buffer)
     ("." . xref-find-definitions)
@@ -123,7 +112,6 @@
   (fast-but-imprecise-scrolling t)
   (resize-mini-windows 'grow-only)
   (frame-resize-pixelwise t)
-  (global-goto-address-mode t)                            ;     C-c RET on URLs open in default browser
   (browse-url-secondary-browser-function 'eww-browse-url) ; C-u C-c RET on URLs open in EWW
   (find-ls-option '("-exec ls -ldh {} +" . "-ldh"))  ; find-dired results with human readable sizes
   (help-window-select t)
@@ -156,8 +144,6 @@
   (use-dialog-box nil)
   (use-short-answers t)
   (vc-handled-backends '(Git))
-  (pixel-scroll-precision-mode t)
-  (pixel-scroll-precision-use-momentum nil)
   (tab-width 4)
   (auto-save-list-file-prefix (expand-file-name "cache/auto-saves/sessions/" user-emacs-directory))
   (auto-save-file-name-transforms `((".*" ,(expand-file-name "cache/auto-saves/" user-emacs-directory) t)))
@@ -250,6 +236,7 @@
     (interactive)
     (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing)))
 
+;; TODO: How does this work?
 (use-package abbrev
   :ensure nil
   :custom
@@ -543,9 +530,6 @@
   (remote-file-name-inhibit-auto-save t)
   (remote-file-name-inhibit-locks t)
   (remote-file-name-inhibit-auto-save-visited t)
-  (tramp-copy-size-limit (* 2 1024 1024)) ;; 2MB
-  (tramp-use-scp-direct-remote-copying t)
-  (tramp-verbose 2)
   :config
   (add-to-list 'save-some-buffers-action-alist
                `("d" ,(lambda (buffer) (diff-buffer-with-file (buffer-file-name buffer)))
@@ -641,6 +625,14 @@
                '(go "https://github.com/tree-sitter/tree-sitter-go"))
   (add-to-list 'treesit-language-source-alist
                '(gomod "https://github.com/camdencheek/tree-sitter-go-mod")))
+
+(use-package goto-addr
+  :ensure nil
+  :bind
+  (:map mode-specific-map
+    ("C-o" . goto-address-at-point))
+  :config
+  (global-goto-address-mode -1))
 
 (use-package grep
   :ensure nil
@@ -830,24 +822,29 @@
           ("M-N" . org-move-subtree-down)
           ("M-P" . org-move-subtree-up))
   :custom
-  (org-directory "~/.notes")
+  (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
+  (org-agenda-tags-column 0)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
   (org-agenda-window-setup 'reorganize-frame)
   (org-archive-location ".archive::* From %s")
-  (org-edit-src-content-indentation 0)
-  (org-startup-indented t)
-  (org-tags-column 0)
-  (org-fold-catch-invisible-edits 'show-and-error)
-  (org-insert-heading-respect-content t)
   (org-confirm-babel-evaluate nil)
-  (org-agenda-tags-column 0)
+  (org-directory "~/.notes")
+  (org-edit-src-content-indentation 0)
+  (org-fold-catch-invisible-edits 'show-and-error)
+  (org-hide-block-startup t)
+  (org-hide-drawer-startup t)
   (org-hide-emphasis-markers t)
   (org-hide-leading-stars t)
+  (org-insert-heading-respect-content t)
+  (org-log-done 'time)
+  (org-log-into-drawer t)
   (org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 1)))
   (org-special-ctrl-a/e t)
-  (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
+  (org-startup-folded 'content)
+  (org-startup-indented t)
+  (org-tags-column 0)
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
@@ -877,6 +874,12 @@
   (show-paren-context-when-offscreen 'overlay)
   :config
   (show-paren-mode))
+
+(use-package pixel-scroll
+  :ensure nil
+  :custom
+  (pixel-scroll-precision-mode nil)
+  (pixel-scroll-precision-use-momentum nil))
 
 (use-package proced
   :ensure nil
@@ -999,6 +1002,13 @@
   :config
   (save-place-mode t))
 
+(use-package tramp
+  :custom
+  (tramp-copy-size-limit (* 2 1024 1024)) ;; 2MB
+  (tramp-use-scp-direct-remote-copying t)
+  (tramp-verbose 2)
+  (tramp-persistency-file-name (expand-file-name "cache/tramp" user-emacs-directory)))
+
 (use-package transient
   :ensure nil
   :custom
@@ -1059,6 +1069,7 @@
 (use-package treesit
   :ensure nil
   :custom
+  (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
   (treesit-auto-install-grammar 'always)
   (treesit-enabled-modes t) ;; TODO: Verify major-mode-alist remap variable
   (treesit-font-lock-level 4))
