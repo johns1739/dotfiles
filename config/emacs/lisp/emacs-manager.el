@@ -1,4 +1,4 @@
-;;; external-package-manager.el --- Third Party Packages  -*- lexical-binding: t; -*-
+;;; external-manager.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -9,5 +9,6 @@
         '(("gnu" . 100) ("melpa-stable" . 50) ("melpa" . 1)))
 
 (setopt use-package-always-ensure t)
+(setopt use-package-always-defer t)
 
-(provide 'emacs-external-manager)
+(provide 'emacs-manager)

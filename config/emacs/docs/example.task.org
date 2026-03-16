@@ -1,0 +1,19 @@
+#+STARTUP: showeverything
+#+STARTUP: fold              (or overview, this is equivalent)
+#+STARTUP: nofold            (or showall, this is equivalent)
+#+STARTUP: content
+#+STARTUP: show<n>levels (<n> = 2..5) 
+
+#+STARTUP: indent noindent
+#+STARTUP: hidestars showstars
+#+STARTUP: hidedrawers nohidedrawers
+#+STARTUP: logdrawer nologdrawer
+#+STARTUP: hideblocks nohideblocks
+#+STARTUP: logdone nologdone lognotedone
+
+#+CATEGORY: tasks
+
+#+TAGS: doc(d) epic(e) initiative(i) story(s)
+#+TODO: TODO(t!) ACTIVE(a!) | DONE(d!)
+#+TODO: DESIGN(s!) CODE(c!) REVIEW(r!) | DONE(d!)
+#+TODO: | CANCELED(k!/@)

@@ -1,11 +1,17 @@
 ;;; init.el --- Init Configuration  -*- lexical-binding: t; -*-
 
+;; TODO: These show up in *Messages* at terminal startup. What are they?
+;; Loading warnings (native-compiled elisp)...done
+;; Loading goto-addr (native-compiled elisp)...done
+;; Loading pixel-scroll (native-compiled elisp)...done
+;; Loading treesit (native-compiled elisp)...done
+
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (require 'emacs-base)
 
 (unless is-simple-editor
-  (require 'emacs-external-manager)
-  (require 'emacs-external-packages)
+  (require 'emacs-manager)
+  (require 'emacs-packages)
   (require 'emacs-color-themes)
   (setq custom-file (concat user-emacs-directory "custom.el"))
   (load custom-file :no-error-if-file-missing))

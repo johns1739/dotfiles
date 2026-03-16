@@ -256,7 +256,6 @@
   ;; To reload authinfo:
   ;; (auth-source-forget-all-cached)
   :ensure nil
-  :defer t
   :custom
   (epg-pinentry-mode 'loopback)
   (auth-sources '("~/.authinfo.gpg")))
@@ -280,7 +279,6 @@
 
 (use-package bookmark
   :ensure nil
-  :defer t
   :custom
   (bookmark-file (expand-file-name "cache/bookmarks" user-emacs-directory)))
 
@@ -380,7 +378,6 @@
 
 (use-package doc-view
   :ensure nil
-  :defer t
   :custom
   (doc-view-resolution 200))
 
@@ -393,7 +390,6 @@
 
 (use-package delsel
   :ensure nil
-  :defer t
   :config
   (delete-selection-mode -1))
 
@@ -452,7 +448,6 @@
 
 (use-package elec-pair
   :ensure nil
-  :defer t
   :config
   (electric-pair-mode -1))
 
@@ -565,7 +560,6 @@
 
 (use-package display-fill-column-indicator
   :ensure nil
-  :defer t
   :custom
   (display-fill-column-indicator-warning nil))
 
@@ -756,7 +750,6 @@
 
 (use-package log-edit
   :ensure nil
-  :defer t
   :custom
   (log-edit-confirm 'changed)
   (log-edit-keep-buffer nil)
@@ -1007,7 +1000,6 @@
 
 (use-package tab-bar
   :if (display-graphic-p)
-  :defer t
   :bind
   ( :map goto-map
     ("T" . tab-bar-mode)
@@ -1146,7 +1138,6 @@
 
 (use-package xref
   :ensure nil
-  :defer t
   :custom
   (xref-after-return-hook '(recenter xref-pulse-momentarily))
   (xref-show-definitions-function #'xref-show-definitions-completing-read)

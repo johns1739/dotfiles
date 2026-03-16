@@ -1,4 +1,4 @@
-;;; emacs-external-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
+;;; emacs-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
 ;; Install early for downstream dependencies
 (use-package exec-path-from-shell
@@ -51,7 +51,6 @@
   :commands (auto-dark-mode))
 
 (use-package avy
-  :defer
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
          ("n w" . avy-org-refile-as-child)
@@ -223,6 +222,7 @@
 
 (use-package dashboard
   :if (display-graphic-p)
+  :demand
   :custom
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
@@ -758,7 +758,6 @@
 (use-package persistent-scratch
   :disabled ;; not really used, slower start-up
   :if (display-graphic-p)
-  :defer 5
   :config
   (persistent-scratch-setup-default))
 
@@ -852,9 +851,7 @@
   :config
   (tmr-mode-line-mode t))
 
-(use-package transient
-  ;; needed by magit, forge, and others
-  :defer)
+(use-package transient)
 
 (use-package trashed
   :disabled ;; Never used.
@@ -900,7 +897,6 @@
 (use-package vertico-posframe
   :if (display-graphic-p)
   :after vertico
-  :defer
   :bind ( :map global-leader-map
           ("m v" . vertico-posframe-mode))
   :custom
@@ -1046,4 +1042,4 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 (use-package fish-mode
   :mode "\\.fish\\'")
 
-(provide 'emacs-external-packages)
+(provide 'emacs-packages)
