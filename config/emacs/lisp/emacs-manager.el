@@ -10,5 +10,6 @@
 
 (setopt use-package-always-ensure t)
 (setopt use-package-always-defer t)
+(setopt package-user-dir (expand-file-name "cache/elpa/" user-emacs-directory))
 
 (provide 'emacs-manager)
