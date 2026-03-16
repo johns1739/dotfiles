@@ -1,5 +1,13 @@
 ;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
 
+;; TODO: These show up in *Messages* at terminal startup. What are they?
+;; Loading warnings (native-compiled elisp)...done
+;; Loading goto-addr (native-compiled elisp)...done
+;; Loading pixel-scroll (native-compiled elisp)...done
+;; Loading treesit (native-compiled elisp)...done
+
+;; TODO: Figure out unknown packages and document what they do
+
 (use-package emacs
   :ensure nil
   :init
@@ -203,7 +211,7 @@
     (find-file user-init-file))
   (defun open-packages-dired ()
     (interactive)
-    (dired (locate-user-emacs-file "packages/")))
+    (dired (locate-user-emacs-file "lisp/")))
   (defun open-custom-file ()
     (interactive)
     (if (boundp 'custom-file)
