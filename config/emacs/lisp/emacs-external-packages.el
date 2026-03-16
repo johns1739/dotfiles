@@ -888,7 +888,7 @@
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t)
-  (undo-tree-history-directory-alist `(("." . ,(locate-user-emacs-file "undo-tree-history"))))
+  (undo-tree-history-directory-alist `(("." . ,(expand-file-name "cache/undo-tree-history/" user-emacs-directory))))
   :config
   (global-undo-tree-mode 1))
 
