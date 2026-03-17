@@ -662,7 +662,7 @@
      '("b" . meow-back-word)
      '("B" . meow-back-symbol)
      '("c" . meow-change)
-     '("C" . meow-sync-grab)
+     '("C" . nil)
      '("d" . meow-delete)
      '("D" . meow-kill)
      '("e" . meow-next-word)
