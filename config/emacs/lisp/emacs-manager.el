@@ -1,4 +1,4 @@
-;;; external-manager.el --- Third Party Packages  -*- lexical-binding: t; -*-
+;;; emacs-manager.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
 (setopt package-archives
         '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -9,7 +9,6 @@
         '(("gnu" . 100) ("melpa-stable" . 50) ("melpa" . 1)))
 
 (setopt use-package-always-ensure t)
-(setopt use-package-always-defer t)
-(setopt package-user-dir (expand-file-name "cache/elpa/" user-emacs-directory))
+(setopt use-package-always-defer nil) ;; better to pick which packages to defer
 
 (provide 'emacs-manager)

@@ -30,6 +30,9 @@
 (setopt warning-minimum-level :error)
 (setopt warning-suppress-types '((lexical-binding)))
 
+(setopt package-user-dir (expand-file-name "cache/elpa/" user-emacs-directory))
+(setopt package-gnupghome-dir (expand-file-name "cache/elpa/gnupg/" user-emacs-directory))
+
 ;; Schedule garbage collection sensible defaults for after booting
 (add-hook 'emacs-startup-hook
           (lambda ()

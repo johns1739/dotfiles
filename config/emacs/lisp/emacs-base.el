@@ -2,6 +2,7 @@
 
 (use-package emacs
   :ensure nil
+  :demand
   :init
   (defvar-keymap global-leader-map :doc "Global leader keymap.")
   (keymap-set ctl-x-map "SPC" global-leader-map)
@@ -143,7 +144,6 @@
   (tab-always-indent t)
   (use-dialog-box nil)
   (use-short-answers t)
-  (vc-handled-backends '(Git))
   (tab-width 4)
   (auto-save-list-file-prefix (expand-file-name "cache/auto-saves/sessions/" user-emacs-directory))
   (auto-save-file-name-transforms `((".*" ,(expand-file-name "cache/auto-saves/" user-emacs-directory) t)))
@@ -210,7 +210,7 @@
     "Split window right and jump to it."
     (interactive)
     (select-window (split-window-right)))
-(defun absolute-file-name ()
+  (defun absolute-file-name ()
     "Absolute path to file."
     (expand-file-name (buffer-file-name)))
   (defun copy-absolute-file-name ()
@@ -239,6 +239,7 @@
 ;; TODO: How does this work?
 (use-package abbrev
   :ensure nil
+  :defer
   :custom
   (save-abbrevs nil)
   :config
@@ -246,11 +247,12 @@
     '((",uuid" ""
        (lambda () (insert (org-id-uuid)))))))
 
+;; password authentication service
+;; To reload authinfo:
+;; (auth-source-forget-all-cached)
 (use-package auth-source
-  ;; password authentication service
-  ;; To reload authinfo:
-  ;; (auth-source-forget-all-cached)
   :ensure nil
+  :defer
   :custom
   (epg-pinentry-mode 'loopback)
   (auth-sources '("~/.authinfo.gpg")))
@@ -274,6 +276,7 @@
 
 (use-package bookmark
   :ensure nil
+  :defer
   :custom
   (bookmark-file (expand-file-name "cache/bookmarks" user-emacs-directory)))
 
@@ -373,6 +376,7 @@
 
 (use-package doc-view
   :ensure nil
+  :defer
   :custom
   (doc-view-resolution 200))
 
@@ -390,6 +394,7 @@
 
 (use-package diff-mode
   :ensure nil
+  :defer
   :commands (diff diff-mode)
   :custom
   (diff-default-read-only t)
@@ -403,6 +408,7 @@
 
 (use-package dired
   :ensure nil
+  :defer
   :custom
   (dired-auto-revert-buffer t)
   (dired-dwim-target t)
@@ -420,6 +426,7 @@
 
 (use-package display-line-numbers
   :ensure nil
+  :defer
   :bind
   ( :map global-leader-map
     (", n" . display-line-numbers-mode))
@@ -443,6 +450,7 @@
 
 (use-package elec-pair
   :ensure nil
+  :defer
   :config
   (electric-pair-mode -1))
 
@@ -552,6 +560,7 @@
 
 (use-package display-fill-column-indicator
   :ensure nil
+  :defer
   :custom
   (display-fill-column-indicator-warning nil))
 
@@ -602,6 +611,7 @@
 
 (use-package frame
   :ensure nil
+  :defer
   :bind
   ("C-x 5 SPC" . select-frame-by-name)
   ("C-x 5 R" . set-frame-name)
@@ -655,6 +665,7 @@
 
 (use-package help
   :ensure nil
+  :defer
   :bind
   ( :map help-map
     ("h" . nil)) ;; accidentally pressed too often
@@ -716,6 +727,7 @@
 
 (use-package isearch
   :ensure nil
+  :defer
   :custom
   (isearch-lazy-count t)
   (isearch-wrap-pause 'no)
@@ -750,6 +762,7 @@
 
 (use-package log-edit
   :ensure nil
+  :defer
   :custom
   (log-edit-confirm 'changed)
   (log-edit-keep-buffer nil)
@@ -785,6 +798,7 @@
 
 (use-package minibuffer
   :ensure nil
+  :defer
   :custom
   (enable-recursive-minibuffers t)
   (read-buffer-completion-ignore-case t)
@@ -877,6 +891,7 @@
 
 (use-package pixel-scroll
   :ensure nil
+  :defer
   :custom
   (pixel-scroll-precision-mode nil)
   (pixel-scroll-precision-use-momentum nil))
@@ -897,18 +912,21 @@
 
 (use-package project
   :ensure nil
+  :defer
   :bind ( :map project-prefix-map
           ("K" . project-forget-project))
   :custom
   (project-list-file (expand-file-name "cache/projects" user-emacs-directory))
-  (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod")) ; Excelent for mono repos with multiple langs, makes Eglot happy
-  (project-switch-commands '((project-find-regexp "Regexp" "g")
-                             (project-find-file "File" "f")
-                             (project-find-dir "Dir" "d")
-                             (project-eshell "Eshell" "e")
-                             (project-kill-buffers "Kill" "k")))
+  (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod")) ; Excellent for mono repos with multiple langs, makes Eglot happy
   :init
-  (keymap-set global-leader-map "p" project-prefix-map))
+  (keymap-set global-leader-map "p" project-prefix-map)
+  :config
+  (require 'vc-git) ;; project-find-file requires vc-git--program-version
+  (setopt project-switch-commands '((project-find-regexp "Regexp" "g")
+                                    (project-find-file "File" "f")
+                                    (project-find-dir "Dir" "d")
+                                    (project-eshell "Eshell" "e")
+                                    (project-kill-buffers "Kill" "k"))))
 
 (use-package python
   :mode ("\\.py\\'" . python-ts-mode)
@@ -928,6 +946,7 @@
 
 (use-package recentf
   :ensure nil
+  :demand
   :bind
   ( :map goto-map
     ("r" . recentf))
@@ -1003,14 +1022,17 @@
   (save-place-mode t))
 
 (use-package tramp
+  :defer
   :custom
   (tramp-copy-size-limit (* 2 1024 1024)) ;; 2MB
   (tramp-use-scp-direct-remote-copying t)
   (tramp-verbose 2)
-  (tramp-persistency-file-name (expand-file-name "cache/tramp" user-emacs-directory)))
+  :config
+  (setq tramp-persistency-file-name (expand-file-name "cache/tramp" user-emacs-directory)))
 
 (use-package transient
   :ensure nil
+  :defer
   :custom
   (transient-history-file (expand-file-name "cache/transient/history.el" user-emacs-directory))
   (transient-levels-file (expand-file-name "cache/transient/levels.el" user-emacs-directory))
@@ -1068,6 +1090,7 @@
 
 (use-package treesit
   :ensure nil
+  :defer
   :custom
   (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
   (treesit-auto-install-grammar 'always)
@@ -1098,17 +1121,23 @@
 
 (use-package uniquify
   :ensure nil
+  :defer
   :custom
   (uniquify-buffer-name-style 'forward)
   (uniquify-strip-common-suffix t)
-  :config
-  (with-no-warnings
-    (setq uniquify-after-kill-buffer-p t)
-    (setq uniquify-after-kill-buffer-flag t)))
+  (uniquify-after-kill-buffer-p t)
+  (uniquify-after-kill-buffer-flag t))
+
+(use-package vc
+  :ensure nil
+  :defer
+  :custom
+  (vc-handled-backends '(Git)))
 
 ;; TODO: Help windows, re-use windows
 (use-package window
   :ensure nil
+  :defer
   :bind (("C-x w t"  . window-layout-transpose)
          ("C-x w r"  . window-layout-rotate-clockwise)
          ("C-x w f h"  . window-layout-flip-leftright)
@@ -1157,6 +1186,7 @@
 
 (use-package xref
   :ensure nil
+  :defer
   :custom
   (xref-after-return-hook '(recenter xref-pulse-momentarily))
   (xref-show-definitions-function #'xref-show-definitions-completing-read)

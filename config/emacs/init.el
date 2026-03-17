@@ -11,7 +11,7 @@
   (load custom-file :no-error-if-file-missing))
 
 (when is-simple-editor
-  (setq custom-file (concat user-emacs-directory ".simple.el"))
+  (setq custom-file (concat user-emacs-directory ".custom.el"))
   (load custom-file :no-error-if-file-missing))
 
 (provide 'init)

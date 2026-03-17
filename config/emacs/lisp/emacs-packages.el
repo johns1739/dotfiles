@@ -221,8 +221,8 @@
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
 (use-package dashboard
-  :if (display-graphic-p)
   :demand
+  :if (display-graphic-p)
   :custom
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
@@ -494,7 +494,7 @@
   (gptel-mode . visual-line-mode)
   (gptel-mode . gptel-highlight-mode)
   :init
-  (with-eval-after-load 'dired-mode
+  (with-eval-after-load 'dired
     (bind-keys :map dired-mode-map
                ("A" . gptel-add)
                ("K" . gptel-context-remove-all)))
@@ -785,7 +785,9 @@
   (popper-mode 1)
   (popper-echo-mode 1))
 
-(use-package s) ;; https://github.com/magnars/s.el#functions
+ ;; https://github.com/magnars/s.el#functions
+(use-package s
+  :defer)
 
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
