@@ -2,3 +2,4 @@
 /config/emacs/cache/
 /config/emacs/eln-cache/
 custom.el
+/config/emacs/.custom.el

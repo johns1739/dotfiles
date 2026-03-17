@@ -42,8 +42,8 @@
              "*** Emacs loaded in %s seconds with %d garbage collections and %d packages."
              (emacs-init-time "%.2f") gcs-done (length package-activated-list))))
 
-;; (when is-simple-editor
-  ;; TODO: Disable package initialize here
+(when is-simple-editor
+  (setopt package-enable-at-startup nil))
 
 (unless is-simple-editor
   (setopt use-package-compute-statistics t)
