@@ -1,6 +1,5 @@
 ;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
 
-;; TODO: Completion-at-point-functions set by magit during commit. Check what else modifies this value.
 (use-package emacs
   :ensure nil
   :demand
