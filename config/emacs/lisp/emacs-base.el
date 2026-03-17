@@ -1,5 +1,6 @@
 ;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
 
+;; TODO: Completion-at-point-functions set by magit during commit. Check what else modifies this value.
 (use-package emacs
   :ensure nil
   :demand
@@ -359,8 +360,8 @@
   (completions-format 'one-column)
   (completions-max-height nil)
   (completions-sort 'historical)
-  :hook
-  ((prog-mode text-mode) . completion-preview-mode))
+  ;; preview mode provides its own mode-map that conflicts with regular completion
+  (completion-preview-mode nil))
 
 (use-package conf-mode
   :ensure nil
@@ -568,10 +569,8 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k d" . flymake-show-buffer-diagnostics)
-    :map flymake-mode-map
-    ("M-8" . flymake-goto-next-error)
-    ("M-7" . flymake-goto-prev-error))
+    ("k f" . flymake-show-buffer-diagnostics)
+    ("k F" . flymake-mode))
   :custom
   (flymake-indicator-type 'margins)
   (flymake-fringe-indicator-position 'left-fringe)
@@ -987,9 +986,8 @@
                         :rename t
                         :references t
                         :folding t)))))
-  (add-to-list
-   'treesit-language-source-alist
-   '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
+  (add-to-list 'treesit-language-source-alist
+               '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
 
 (use-package rust-ts-mode
   :ensure nil
@@ -1088,11 +1086,12 @@
   (add-to-list 'treesit-language-source-alist
                '(toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src")))
 
+;; TODO: Figure out what additional auxilary packages work well with treesitter
 (use-package treesit
   :ensure nil
   :defer
   :custom
-  (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
+  ;; (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
   (treesit-auto-install-grammar 'always)
   (treesit-enabled-modes t) ;; TODO: Verify major-mode-alist remap variable
   (treesit-font-lock-level 4))

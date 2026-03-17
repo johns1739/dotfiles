@@ -50,6 +50,12 @@
   ;; (auto-dark-mode)
   :commands (auto-dark-mode))
 
+(use-package auto-dim-other-buffers
+  :demand
+  :if (display-graphic-p)
+  :config
+  (auto-dim-other-buffers-mode 1))
+
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -117,6 +123,7 @@
          ([remap switch-to-buffer] . consult-buffer)
          ([remap yank-pop] . consult-yank-pop)
          ([remap load-theme] . consult-theme)
+         ([remap recentf] . consult-recent-file)
          ([remap recentf-open] . consult-recent-file)
          ([remap org-search-view] . consult-org-agenda)
          ([remap list-registers] . consult-register)
@@ -128,7 +135,7 @@
          ("k SPC" . consult-flymake)
          ("n /" . consult-org-heading)
          :map minibuffer-mode-map
-         ("M-i" . consult-history)
+         ("C-r" . consult-history)
          :map search-map
          ("f" . consult-find) ;; works even if not in a project
          ("F" . find-name-dired)
@@ -137,7 +144,7 @@
          ("s" . consult-ripgrep)
          :map goto-map
          ("I" . consult-imenu-multi)
-         ("h" . consult-outline))
+         ("o" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
@@ -200,19 +207,18 @@
 (use-package corfu
   :demand
   :if (display-graphic-p)
-  ;; When corfu-auto is off, better to not modify bindings.
   :bind ( :map corfu-map
           ("RET" . nil))
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0.3)
+  (corfu-auto-delay 0.5)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-preview-current 'insert)
   (corfu-preselect 'prompt)
   (corfu-separator ?\s)
   (corfu-echo-delay 0.2)
-  (corfu-popupinfo-delay '(2.0 . 0.5))
+  (corfu-popupinfo-delay '(1.0 . 0.5))
   (corfu-min-width 20)
   :config
   (global-corfu-mode 1)
@@ -474,6 +480,14 @@
 (use-package git-timemachine
   :disabled ;; never really used. ;; Magit tools are preferred.
   :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
+
+(use-package golden-ratio
+  :demand
+  :if (display-graphic-p)
+  :config
+  (with-eval-after-load 'ace-window
+      (add-to-list 'golden-ratio-extra-commands 'ace-window))
+  (golden-ratio-mode 1))
 
 (use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
@@ -1045,3 +1059,4 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
   :mode "\\.fish\\'")
 
 (provide 'emacs-packages)
+;;; emacs-packages.el ends here
