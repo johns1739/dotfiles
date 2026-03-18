@@ -1,6 +1,5 @@
 ;;; emacs-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
-;; Install early for downstream dependencies
 (use-package exec-path-from-shell
   :demand
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
@@ -8,6 +7,8 @@
   (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO"))
+    (add-to-list 'exec-path-from-shell-variables var))
   (exec-path-from-shell-initialize))
 
 (use-package ace-window
@@ -496,6 +497,9 @@
   (gptel-default-mode 'org-mode)
   (gptel-prompt-prefix-alist '((org-mode . "* @user: ")))
   (gptel-response-prefix-alist '((org-mode . "@assistant\n")))
+  (gptel-gh-token-file (expand-file-name "cache/gptel/copilot-chat/token" user-emacs-directory))
+  (gptel-gh-github-token-file (expand-file-name "cache/gptel/copilot-chat/github-token" user-emacs-directory))
+  (gptel-crowdsourced-prompts-file (expand-file-name "cache/gptel/crowdsourced-prompts.csv" user-emacs-directory))
   :bind ( :map global-leader-map
           ("i i" . gptel)
           ("i m" . gptel-menu)
@@ -546,6 +550,11 @@
   :disabled ;; never really used and there are compilation errors.
   :bind (("M-$" . jinx-correct)
          ([remap flyspell-mode] . jinx-mode)))
+
+;; TODO: jira issue list not showing
+;; https://github.com/unmonoqueteclea/jira.el?tab=readme-ov-file#authentication
+(use-package jira
+  :defer)
 
 (use-package kubernetes
   :disabled ;; rarely used

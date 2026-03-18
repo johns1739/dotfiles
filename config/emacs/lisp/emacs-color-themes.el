@@ -1,5 +1,13 @@
 ;;; emacs-color-themes.el --- Color Themes  -*- lexical-binding: t; -*-
 
+;; (cond ((display-graphic-p)
+;;        (load-theme 'darktooth :no-confirm))
+;;       ((and (not (display-graphic-p)) (not is-simple-editor))
+;;        (load-theme 'creamsody :no-confirm)
+;;        (set-face-background 'default "unspecified-bg"))
+;;       (is-simple-editor
+;;        (load-theme 'wombat :no-confirm)))
+
 ;; https://github.com/emacs-jp/replace-colorthemes?tab=readme-ov-file
 ;; WARNING: Lexical-Binding
 (use-package color-theme-modern

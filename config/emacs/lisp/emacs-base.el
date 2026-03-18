@@ -247,6 +247,7 @@
     '((",uuid" ""
        (lambda () (insert (org-id-uuid)))))))
 
+;; TODO: Learn how authinfo.gpg works
 ;; password authentication service
 ;; To reload authinfo:
 ;; (auth-source-forget-all-cached)
@@ -255,7 +256,7 @@
   :defer
   :custom
   (epg-pinentry-mode 'loopback)
-  (auth-sources '("~/.authinfo.gpg")))
+  (auth-sources '("~/.authinfo" "~/.authinfo.gpg")))
 
 (use-package autorevert
   :ensure nil
@@ -915,16 +916,17 @@
           ("K" . project-forget-project))
   :custom
   (project-list-file (expand-file-name "cache/projects" user-emacs-directory))
-  (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod")) ; Excellent for mono repos with multiple langs, makes Eglot happy
+  ;; Excellent for mono repos with multiple langs, makes Eglot happy
+  ;; (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod"))
   :init
   (keymap-set global-leader-map "p" project-prefix-map)
   :config
   (require 'vc-git) ;; project-find-file requires vc-git--program-version
-  (setopt project-switch-commands '((project-find-regexp "Regexp" "g")
-                                    (project-find-file "File" "f")
-                                    (project-find-dir "Dir" "d")
-                                    (project-eshell "Eshell" "e")
-                                    (project-kill-buffers "Kill" "k"))))
+  (setopt project-switch-commands '((project-find-regexp "Regexp" ?g)
+                                    (project-find-file "File" ?f)
+                                    (project-find-dir "Dir" ?d)
+                                    (project-eshell "Eshell" ?e)
+                                    (project-kill-buffers "Kill" ?k))))
 
 (use-package python
   :mode ("\\.py\\'" . python-ts-mode)
@@ -956,6 +958,12 @@
   (recentf-save-file (expand-file-name "cache/recentf" user-emacs-directory))
   :config
   (recentf-mode t))
+
+;; TODO: What is this about?
+(use-package request
+  :defer
+  :custom
+  (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
 
 (use-package ruby-ts-mode
   :ensure nil
