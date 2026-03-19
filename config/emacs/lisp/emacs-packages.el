@@ -191,6 +191,7 @@
   (copilot-idle-delay 0.5)
   (copilot-indent-offset-warning-disable t)
   (copilot-max-char-warning-disable t)
+  (copilot-install-dir (expand-file-name "cache/copilot/" user-emacs-directory))
   :custom-face
   (copilot-overlay-face
    ((t ( :family "JetBrainsMonoNL Nerd Font Mono"
@@ -736,9 +737,9 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(substring partial-completion orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides nil))
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles partial-completion))))
+  (completion-category-defaults nil))
 
 (use-package org-roam
   :disabled ;; mainly for networking notes, but not really used

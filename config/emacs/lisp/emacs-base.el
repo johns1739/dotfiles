@@ -14,7 +14,6 @@
   ("C-x C-z" . nil)
   ("C-x K" . kill-this-buffer)
   ("C-z" . nil)
-  ("M-I" . completion-at-point)
   ("M-L" . duplicate-dwim)
   ("M-j" . join-line)
   ("M-n" . forward-paragraph)
@@ -145,6 +144,7 @@
   (use-dialog-box nil)
   (use-short-answers t)
   (tab-width 4)
+  (read-extended-command-predicate #'command-completion-default-include-p)
   (auto-save-list-file-prefix (expand-file-name "cache/auto-saves/sessions/" user-emacs-directory))
   (auto-save-file-name-transforms `((".*" ,(expand-file-name "cache/auto-saves/" user-emacs-directory) t)))
   (prettify-symbols-alist '(("!=" . ?≠)
@@ -351,7 +351,7 @@
   (completion-auto-help 'always)
   (completion-auto-select 'second-tab)
   (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles . (basic partial-completion)))))
+  (completion-category-overrides '((file (styles basic partial-completion))))
   (completion-cycle-threshold 3)
   (completion-ignore-case t)
   ;; (completion-styles '(basic substring partial-completion))
@@ -361,7 +361,9 @@
   (completions-max-height nil)
   (completions-sort 'historical)
   ;; preview mode provides its own mode-map that conflicts with regular completion
-  (completion-preview-mode nil))
+  (completion-preview-mode nil)
+  (completion-pcm-leading-wildcard t)
+  :bind ("C-M-i" . completion-at-point))
 
 (use-package conf-mode
   :ensure nil
@@ -375,18 +377,16 @@
   (add-to-list 'treesit-language-source-alist
                '(css "https://github.com/tree-sitter/tree-sitter-css")))
 
-(use-package doc-view
+(use-package dabbrev
   :ensure nil
-  :defer
-  :custom
-  (doc-view-resolution 200))
-
-(use-package dockerfile-ts-mode
-  :ensure nil
-  :mode "\\Dockerfile.*\\'"
+  :bind (("M-/" . dabbrev-expand)
+         ("C-M-/" . dabbrev-completion))
   :config
-  (add-to-list 'treesit-language-source-alist
-               '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
+  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
+  (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
+  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
 
 (use-package delsel
   :ensure nil
@@ -437,6 +437,19 @@
   (display-line-numbers-widen t)
   :hook
   ((text-mode prog-mode) . display-line-numbers-mode))
+
+(use-package doc-view
+  :ensure nil
+  :defer
+  :custom
+  (doc-view-resolution 200))
+
+(use-package dockerfile-ts-mode
+  :ensure nil
+  :mode "\\Dockerfile.*\\'"
+  :config
+  (add-to-list 'treesit-language-source-alist
+               '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
 
 (use-package ediff
   :ensure nil
@@ -569,8 +582,9 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k f" . flymake-show-buffer-diagnostics)
-    ("k F" . flymake-mode))
+    ("d D" . flymake-mode)
+    ("d d" . flymake-show-buffer-diagnostics)
+    ("d p" . flymake-show-project-diagnostics))
   :custom
   (flymake-indicator-type 'margins)
   (flymake-fringe-indicator-position 'left-fringe)
@@ -586,6 +600,8 @@
   ;; NOTE: ispell fails to install due to compilation issues
   :ensure nil
   :if (or (executable-find "aspell") (executable-find "ispell"))
+  :custom
+  (text-mode-ispell-word-completion nil)
   :config
   (if (executable-find "ispell")
       (setq ispell-program-name "ispell")
@@ -929,6 +945,10 @@
                                     (project-kill-buffers "Kill" ?k))))
 
 (use-package python
+  ;; Example .dir-locals.el to configure compile command.
+  ;; ((python-mode . ((eval . (if (and (buffer-file-name)
+  ;;                                   (string-match-p "test_.*\\.py" (file-name-nondirectory (buffer-file-name))))
+  ;;                              (setq-local compile-command (concat "pytest " (relative-file-name))))))))
   :mode ("\\.py\\'" . python-ts-mode)
   :interpreter ("python" . python-ts-mode)
   :custom
