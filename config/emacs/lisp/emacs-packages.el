@@ -467,7 +467,9 @@
   ;;            in a browser to generate a new "classic" token using
   ;;            the repo, user and read:org scopes
   ;; Run M-x auth-source-forget-all-cached
-  :commands (forge-dispatch))
+  :commands (forge-dispatch)
+  :custom
+  (forge-database-file (expand-file-name "cache/forge/forge-database.sqlite" user-emacs-directory)))
 
 (use-package git-link
   :bind (:map global-leader-map

@@ -294,7 +294,8 @@
   :ensure nil
   :bind (:map global-leader-map
               ("k g" . recompile)
-              ("k k" . compile)
+              ("k k" . compile-dwim)
+              ("k K" . compile)
               ("k RET" . send-region-to-process))
   :custom
   (ansi-color-for-compilation-mode t)
@@ -312,6 +313,10 @@
   (compilation-filter . ansi-color-compilation-filter)
   (compilation-mode . hl-line-mode)
   :init
+  (defun compile-dwim ()
+    (interactive)
+    (if (project-current)
+        (call-interactively #'compile)))
   (defun send-region-to-process (arg beg end)
     " Send the current region to a process buffer.
     The first time it's called, will prompt for the buffer to
