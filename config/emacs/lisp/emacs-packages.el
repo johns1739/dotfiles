@@ -460,7 +460,7 @@
 
 (use-package forge
   ;; setup:
-  ;; Create ~/.authinfo.gpg with content:
+  ;; Create ~/.authinfo with content:
   ;; machine api.github.com login USERNAME^forge password TOKEN
   ;; where USERNAME: git config --global github.user jubajr17
   ;; and TOKEN: from https://github.com/settings/tokens
