@@ -67,7 +67,7 @@
     ("?" . xref-find-references)
     ("/" . xref-find-apropos)
     ("'" . mode-line-other-buffer)
-    ("f" . find-file-at-point)
+    ("u" . find-file-at-point)
     ("d" . dired-jump)
     ("i" . imenu)
     ("j" . jump-to-register)

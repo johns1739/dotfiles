@@ -454,9 +454,13 @@
   (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package find-file-in-project
-  :bind (:map goto-map
-              ("f" . find-file-in-project-at-point)
-              ("F" . find-file-in-project-by-selected)))
+  :bind
+  ( :map goto-map
+    ("u" . find-file-in-project-at-point)
+    ("U" . find-file-at-point))
+  ( :map project-prefix-map
+    ("u" . find-file-in-project-at-point)
+    ("U" . find-file-in-project-by-selected)))
 
 (use-package forge
   ;; setup:
@@ -521,6 +525,13 @@
   (with-eval-after-load 'org
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic))))
+
+;; TOD: Create bindings
+(use-package gptel-agent
+  :after (gptel)
+  :vc ( :url "https://github.com/karthink/gptel-agent"
+        :rev :newest)
+  :config (gptel-agent-update))
 
 (use-package gptel-commit
   :after (gptel magit)
