@@ -522,6 +522,15 @@
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic))))
 
+(use-package gptel-commit
+  :after (gptel magit)
+  :custom
+  (gptel-commit-stream t)
+  :config
+  (with-eval-after-load 'magit
+    (define-key git-commit-mode-map (kbd "C-c g") #'gptel-commit)
+    (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
+
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-command] . helpful-command)
