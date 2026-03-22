@@ -857,7 +857,7 @@
           ("M-P" . org-move-subtree-up))
   :custom
   (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
-  (org-agenda-tags-column 0)
+  (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'far)
@@ -878,7 +878,7 @@
   (org-special-ctrl-a/e t)
   (org-startup-folded 'content)
   (org-startup-indented t)
-  (org-tags-column 0)
+  (org-tags-column -80)
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
