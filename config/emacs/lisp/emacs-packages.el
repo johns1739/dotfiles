@@ -512,7 +512,9 @@
           ("i m" . gptel-menu)
           ("i A" . gptel-add)
           ("i K" . gptel-context-remove-all)
-          ("i R" . gptel-rewrite))
+          ("i R" . gptel-rewrite)
+          :map gptel-mode-map
+          ("C-c C-<return>" . gptel-send))
   :hook
   (gptel-mode . visual-line-mode)
   (gptel-mode . gptel-highlight-mode)
@@ -531,6 +533,8 @@
   :after (gptel)
   :vc ( :url "https://github.com/karthink/gptel-agent"
         :rev :newest)
+  :bind ( :map global-leader-map
+          ("i a" . gptel-agent))
   :config (gptel-agent-update))
 
 (use-package gptel-commit
