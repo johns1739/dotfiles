@@ -18,9 +18,12 @@
           ("w 0" . ace-delete-window)
           ("w 1" . ace-delete-other-windows)
           ("w o" . ace-select-window)
-          ("w O" . ace-swap-window)))
+          ("w O" . ace-swap-window))
+  :custom
+  (aw-dispatch-when-more-than 3))
 
 (use-package agent-shell
+  :disabled ;; prefer gptel-agent
   ;; https://github.com/xenodium/agent-shell
   :if (display-graphic-p)
   :commands (agent-shell)
@@ -55,6 +58,7 @@
   :config
   (auto-dim-other-buffers-mode 1))
 
+;; TODO: Better bindings
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -131,7 +135,7 @@
          ([remap keep-lines] . consult-keep-lines)
          ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
          :map global-leader-map
-         ("k SPC" . consult-flymake)
+         ("d SPC" . consult-flymake)
          ("n /" . consult-org-heading)
          :map minibuffer-mode-map
          ("C-r" . consult-history)
@@ -559,6 +563,9 @@ Follow good Git style:
     (define-key git-commit-mode-map (kbd "C-c g") #'gptel-commit)
     (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
 
+(use-package gptel-magit
+  :hook (magit-mode . gptel-magit-install))
+
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-command] . helpful-command)
@@ -702,8 +709,8 @@ Follow good Git style:
      '("1" . meow-expand-1)
      '("-" . negative-argument)
      '("_" . meow-reverse)
-     '("(" . nil)
-     '(")" . nil)
+     '("(" . meow-start-kmacro)
+     '(")" . meow-end-or-call-kmacro)
      '("a" . meow-append)
      '("A" . meow-open-below)
      '("b" . meow-back-word)
@@ -714,8 +721,8 @@ Follow good Git style:
      '("D" . meow-kill)
      '("e" . meow-next-word)
      '("E" . meow-next-symbol)
-     '("f" . meow-till)
-     '("F" . meow-find)
+     '("f" . meow-find)
+     '("F" . nil)
      (cons "g" goto-map)
      '("G" . meow-grab)
      '("h" . meow-left)
@@ -742,7 +749,7 @@ Follow good Git style:
      '("R" . meow-sync-grab)
      (cons "s" search-map)
      '("S" . save-buffer)
-     '("t" . nil)
+     '("t" . meow-till)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)
      ;; '("U" . meow-undo-in-selection)

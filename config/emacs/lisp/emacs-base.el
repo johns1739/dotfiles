@@ -5,7 +5,7 @@
   :demand
   :init
   (defvar-keymap global-leader-map :doc "Global leader keymap.")
-  (keymap-set ctl-x-map "SPC" global-leader-map)
+  (keymap-set global-map "M-SPC" global-leader-map)
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
   :bind
@@ -20,6 +20,7 @@
   ("M-o" . other-window)
   ("M-p" . backward-paragraph)
   ("RET" . newline-and-indent)
+  ("M-S-SPC" . cycle-spacing)
   ([remap backward-sentence] . backward-sexp)
   ([remap downcase-word] . downcase-dwim)
   ([remap forward-sentence] . forward-sexp)
@@ -28,6 +29,7 @@
   ([remap upcase-word] . upcase-dwim)
   ( :map global-leader-map
     ("SPC" . project-switch-to-buffer)
+    ("." . find-file)
     ("=" . balance-windows-area)
     ("0" . delete-window)
     ("1" . delete-other-windows)
