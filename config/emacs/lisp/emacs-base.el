@@ -459,6 +459,7 @@
   (add-to-list 'treesit-language-source-alist
                '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
 
+;; TODO: Find an ediff replacement maybe
 (use-package ediff
   :ensure nil
   :custom
@@ -468,7 +469,9 @@
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   :bind ( :map global-leader-map
-          ("x d" . ediff-files)))
+          ("x d" . ediff-files))
+  :config
+  (advice-add 'ediff-window-display-p :override #'ignore))
 
 (use-package elec-pair
   :ensure nil
