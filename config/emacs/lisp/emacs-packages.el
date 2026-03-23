@@ -655,6 +655,11 @@
   (magit-list-refs-sortby "-creatordate")
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(use-package magit-delta
+  :disabled ;; diff colors are difficult to see, ugly
+  :if (and (display-graphic-p) (executable-find "delta"))
+  :hook (magit-mode . magit-delta-mode))
+
 (use-package magit-todos
   :disabled ;; not really used, slow startup if project too big
   :bind (:map project-prefix-map ("t" . magit-todos-list))

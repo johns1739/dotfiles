@@ -169,11 +169,13 @@
   :hook
   (special-mode . hl-line-mode)
   :config
-  (unless (display-graphic-p)
+  (unless (display-graphic-p) ;; When in terminal ...
+    (custom-set-faces
+     '(default ((((type tty))))))
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-  (when (display-graphic-p)
+  (when (display-graphic-p) ;; When in GUI ...
     (add-to-list 'default-frame-alist '(height . 40))
     (add-to-list 'default-frame-alist '(width . 120))
     (set-display-table-slot standard-display-table 'vertical-border ?\u2502)
@@ -910,7 +912,7 @@
 (use-package paren
   :custom
   (show-paren-delay 0)
-  (show-paren-style 'mixed)
+  (show-paren-style 'parenthesis)
   (show-paren-context-when-offscreen 'overlay)
   :config
   (show-paren-mode))
