@@ -318,7 +318,8 @@
   (defun compile-dwim ()
     (interactive)
     (if (project-current)
-        (call-interactively #'compile)))
+        (call-interactively #'project-compile)
+      (call-interactively #'compile)))
   (defun send-region-to-process (arg beg end)
     " Send the current region to a process buffer.
     The first time it's called, will prompt for the buffer to
@@ -961,6 +962,14 @@
   :custom
   (python-indent-guess-indent-offset-verbose t)
   (python-indent-offset 4)
+  :init
+  (defun python-ts-mode-setup ()
+    (when (and (buffer-file-name)
+               (string-match-p "test_.*\\.py" (file-name-nondirectory (buffer-file-name))))
+      (setq-local outline-regexp "\s*\\(def test_\\|class Test\\)")
+      (setq-local compile-command (concat "pytest " (relative-file-name)))))
+  :hook
+  (python-ts-mode . python-ts-mode-setup)
   :config
   (add-to-list 'treesit-language-source-alist
                '(python "https://github.com/tree-sitter/tree-sitter-python"))
