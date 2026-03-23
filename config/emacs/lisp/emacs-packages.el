@@ -653,9 +653,7 @@
   (magit-blame-echo-style 'headings)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate")
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
-  :config
-  (transient-append-suffix 'magit-file-dispatch "G" '("j" "Goto Status Here" magit-status-here)))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package magit-todos
   :disabled ;; not really used, slow startup if project too big
