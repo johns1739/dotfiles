@@ -608,17 +608,11 @@
      (note "i" compilation-info))))
 
 (use-package flyspell
-  ;; brew install aspell
-  ;; brew install ispell
-  ;; NOTE: ispell fails to install due to compilation issues
   :ensure nil
-  :if (or (executable-find "aspell") (executable-find "ispell"))
+  :bind ( :map global-leader-map
+          ("m $" . flyspell-mode))
   :custom
-  (text-mode-ispell-word-completion nil)
-  :config
-  (if (executable-find "ispell")
-      (setq ispell-program-name "ispell")
-    (setq ispell-program-name "aspell")))
+  (flyspell-delay 1))
 
 (use-package ffap
   :ensure nil
@@ -762,6 +756,20 @@
   (lazy-count-prefix-format "(%s/%s) ")
   (lazy-count-suffix-format nil)
   (search-whitespace-regexp ".*?"))
+
+(use-package ispell
+  ;; brew install aspell (preferred)
+  ;; brew install ispell
+  ;; NOTE: ispell fails to install due to compilation issues
+  :ensure nil
+  :if (or (executable-find "aspell") (executable-find "ispell"))
+  :bind ( :map global-map
+          ("M-$" . ispell-word))
+  :custom
+  (text-mode-ispell-word-completion nil)
+  :config
+  (if (executable-find "aspell")
+      (setq ispell-program-name "aspell")))
 
 (use-package js-ts-mode
   :ensure nil
