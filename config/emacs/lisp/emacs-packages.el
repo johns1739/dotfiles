@@ -63,14 +63,14 @@
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
          ("n w" . avy-org-refile-as-child)
-         ("x g p" . avy-copy-line)
-         ("x g P" . avy-copy-region)
-         ("x g g" . avy-move-line)
-         ("x g G" . avy-move-region)
-         ("x g k" . avy-kill-whole-line)
-         ("x g K" . avy-kill-region)
-         ("x g y" . avy-kill-ring-save-whole-line)
-         ("x g Y" . avy-kill-ring-save-region)
+         ("y p" . avy-copy-line)
+         ("y P" . avy-copy-region)
+         ("y g" . avy-move-line) ;; g for grab
+         ("y G" . avy-move-region) ;; G for Grab
+         ("y k" . avy-kill-whole-line)
+         ("y K" . avy-kill-region)
+         ("y y" . avy-kill-ring-save-whole-line)
+         ("y Y" . avy-kill-ring-save-region)
          :map isearch-mode-map
          ("M-g" . avy-isearch)
          :map goto-map
@@ -610,6 +610,7 @@
 ;; TODO: jira issue list not showing
 ;; https://github.com/unmonoqueteclea/jira.el?tab=readme-ov-file#authentication
 (use-package jira
+  :disabled
   :defer)
 
 (use-package kubernetes
