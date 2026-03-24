@@ -232,6 +232,9 @@
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
+(use-package csv-mode
+  :mode "\\.csv\\'")
+
 (use-package dashboard
   :demand
   :if (display-graphic-p)
@@ -315,6 +318,14 @@
                           docker-container-columns)))
     (plist-put column :width 62)))
 
+(use-package dumb-jump
+  :commands (dumb-jump-xref-activate)
+  :custom
+  (dumb-jump-force-searcher 'rg)
+  (dumb-jump-prefer-searcher 'rg)
+  :init
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
 (use-package eat
   :disabled ;; prefer vterm
   ;; When eat-terminal input is acting weird, try re-compiling with command:
@@ -342,6 +353,14 @@
                '("\\*.*eat\\*"
                  (display-buffer-in-side-window)
                  (window-height . 0.3))))
+
+(use-package eglot-booster
+  :disabled ;; eglot-booster not available melpa?
+  ;; cargo install emacs-lsp-booster
+  :if (executable-find "emacs-lsp-booster")
+  :after eglot
+  :config
+  (eglot-booster-mode))
 
 (use-package eldoc-box
   :disabled ;; annoying GUI
@@ -406,9 +425,26 @@
   :hook
   (elysium-apply-changes . smerge-mode))
 
+(use-package embark
+  :disabled ;; rarely used
+  :bind (([remap describe-bindings] . embark-bindings)
+         :map ctl-x-map
+         ("A" . embark-act)
+         ("C" . embark-collect)
+         ("E" . embark-export)))
+
 (use-package envrc
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))
+
+(use-package embark-consult
+  :disabled
+  :after (embark consult)
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
+
+(use-package fish-mode
+  :mode "\\.fish\\'")
 
 (use-package flycheck
   :disabled ;; prefer flymake
@@ -429,35 +465,7 @@
   :hook
   (flycheck-mode . flycheck-set-bindings))
 
-(use-package dumb-jump
-  :commands (dumb-jump-xref-activate)
-  :custom
-  (dumb-jump-force-searcher 'rg)
-  (dumb-jump-prefer-searcher 'rg)
-  :init
-  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-(use-package eglot-booster
-  :disabled ;; eglot-booster not available melpa?
-  ;; cargo install emacs-lsp-booster
-  :if (executable-find "emacs-lsp-booster")
-  :after eglot
-  :config
-  (eglot-booster-mode))
-
-(use-package embark
-  :disabled ;; rarely used
-  :bind (([remap describe-bindings] . embark-bindings)
-         :map ctl-x-map
-         ("A" . embark-act)
-         ("C" . embark-collect)
-         ("E" . embark-export)))
-
-(use-package embark-consult
-  :disabled
-  :after (embark consult)
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
 
 (use-package find-file-in-project
   :bind
@@ -1109,11 +1117,7 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
   :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
 
-(use-package csv-mode
-  :mode "\\.csv\\'")
 
-(use-package fish-mode
-  :mode "\\.fish\\'")
 
 (provide 'emacs-packages)
 ;;; emacs-packages.el ends here
