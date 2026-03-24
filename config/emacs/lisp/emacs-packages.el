@@ -535,19 +535,21 @@
                ("C-c I" . gptel-org-set-topic))))
 
 (use-package gptel-agent
-  :after (gptel)
   :vc ( :url "https://github.com/karthink/gptel-agent"
         :rev :newest)
   :bind ( :map global-leader-map
           ("i a" . gptel-agent))
-  :config (gptel-agent-update))
+  :config
+  (require 'gptel)
+  (gptel-agent-update))
 
 (use-package gptel-commit
   :disabled ;; prefer gptel-magit
-  :after (gptel magit)
+  :after  (magit)
   :custom
   (gptel-commit-stream t)
   :config
+  (require 'gptel)
   (with-eval-after-load 'magit
     (define-key git-commit-mode-map (kbd "C-c g") #'gptel-commit)
     (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
