@@ -12,7 +12,6 @@
   (exec-path-from-shell-initialize))
 
 (use-package ace-window
-  :if (display-graphic-p)
   :bind  (([remap other-window] . ace-window)
           :map goto-map
           ("w 0" . ace-delete-window)
@@ -47,7 +46,7 @@
   (aidermacs-default-chat-mode 'architect))
 
 (use-package auto-dark ;; auto switching dark / light color themes
-  :disabled ;; better to manually select
+  :disabled ;; better to manually select.
   ;; (setopt auto-dark-themes '((wombat) (leuven)))
   ;; (auto-dark-mode)
   :commands (auto-dark-mode))
@@ -55,6 +54,8 @@
 (use-package auto-dim-other-buffers
   :demand
   :if (display-graphic-p)
+  :custom
+  (golden-ratio-auto-scale t)
   :config
   (auto-dim-other-buffers-mode 1))
 
@@ -493,7 +494,6 @@
 
 (use-package golden-ratio
   :demand
-  :if (display-graphic-p)
   :config
   (with-eval-after-load 'ace-window
       (add-to-list 'golden-ratio-extra-commands 'ace-window))
@@ -532,7 +532,6 @@
     (bind-keys :map org-mode-map
                ("C-c I" . gptel-org-set-topic))))
 
-;; TOD: Create bindings
 (use-package gptel-agent
   :after (gptel)
   :vc ( :url "https://github.com/karthink/gptel-agent"
