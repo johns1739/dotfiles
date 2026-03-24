@@ -564,8 +564,10 @@
     (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
 
 (use-package gptel-magit
-  :after (gptel magit)
-  :hook (magit-mode . gptel-magit-install))
+  :after (magit)
+  :hook (magit-mode . gptel-magit-install)
+  :config
+  (require 'gptel))
 
 (use-package gptel-prompts
   :disabled ;; Fails to install, package not available
