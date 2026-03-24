@@ -12,6 +12,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package ace-window
+  :if (display-graphic-p)
   :bind  (([remap other-window] . ace-window)
           :map goto-map
           ("w 0" . ace-delete-window)
@@ -494,6 +495,7 @@
 
 (use-package golden-ratio
   :demand
+  :if (display-graphic-p)
   :config
   (with-eval-after-load 'ace-window
       (add-to-list 'golden-ratio-extra-commands 'ace-window))
