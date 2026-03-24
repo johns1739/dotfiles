@@ -55,8 +55,6 @@
 (use-package auto-dim-other-buffers
   :demand
   :if (display-graphic-p)
-  :custom
-  (golden-ratio-auto-scale t)
   :config
   (auto-dim-other-buffers-mode 1))
 
@@ -114,42 +112,43 @@
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
     (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
-  :bind (([remap Info-search] . consult-info)
-         ([remap bookmark-jump] . consult-bookmark)
-         ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
-         ([remap imenu] . consult-imenu)
-         ([remap keep-lines] . consult-keep-lines)
-         ([remap isearch-edit-string] . consult-isearch-history)
-         ([remap project-switch-to-buffer] . consult-project-buffer)
-         ([remap repeat-complex-command] . consult-complex-command)
-         ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
-         ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
-         ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-         ([remap switch-to-buffer] . consult-buffer)
-         ([remap yank-pop] . consult-yank-pop)
-         ([remap load-theme] . consult-theme)
-         ([remap recentf] . consult-recent-file)
-         ([remap recentf-open] . consult-recent-file)
-         ([remap org-search-view] . consult-org-agenda)
-         ([remap list-registers] . consult-register)
-         ([remap jump-to-register] . consult-register-load)
-         ([remap point-to-register] . consult-register-store)
-         ([remap keep-lines] . consult-keep-lines)
-         ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-         :map global-leader-map
-         ("d SPC" . consult-flymake)
-         ("n /" . consult-org-heading)
-         :map minibuffer-mode-map
-         ("C-r" . consult-history)
-         :map search-map
-         ("f" . consult-find) ;; works even if not in a project
-         ("F" . find-name-dired)
-         ("l" . consult-line)
-         ("L" . consult-focus-lines)
-         ("s" . consult-ripgrep)
-         :map goto-map
-         ("I" . consult-imenu-multi)
-         ("o" . consult-outline))
+  :bind
+  (([remap Info-search] . consult-info)
+   ([remap bookmark-jump] . consult-bookmark)
+   ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
+   ([remap imenu] . consult-imenu)
+   ([remap keep-lines] . consult-keep-lines)
+   ([remap isearch-edit-string] . consult-isearch-history)
+   ([remap project-switch-to-buffer] . consult-project-buffer)
+   ([remap repeat-complex-command] . consult-complex-command)
+   ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
+   ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
+   ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+   ([remap switch-to-buffer] . consult-buffer)
+   ([remap yank-pop] . consult-yank-pop)
+   ([remap load-theme] . consult-theme)
+   ([remap recentf] . consult-recent-file)
+   ([remap recentf-open] . consult-recent-file)
+   ([remap org-search-view] . consult-org-agenda)
+   ([remap list-registers] . consult-register)
+   ([remap jump-to-register] . consult-register-load)
+   ([remap point-to-register] . consult-register-store)
+   ([remap keep-lines] . consult-keep-lines)
+   ([remap yank-from-kill-ring] . consult-yank-from-kill-ring))
+  ( :map global-leader-map
+   ("d SPC" . consult-flymake)
+   ("n /" . consult-org-heading))
+  ( :map minibuffer-mode-map
+   ("C-r" . consult-history))
+  ( :map search-map
+   ("f" . consult-find) ;; works even if not in a project
+   ("F" . find-name-dired)
+   ("l" . consult-line)
+   ("L" . consult-focus-lines)
+   ("s" . consult-ripgrep))
+  ( :map goto-map
+   ("I" . consult-imenu-multi)
+   ("o" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
@@ -504,9 +503,11 @@
 (use-package golden-ratio
   :demand
   :if (display-graphic-p)
+  :custom
+  (golden-ratio-auto-scale nil) ;; yields wider buffers, better
   :config
   (with-eval-after-load 'ace-window
-      (add-to-list 'golden-ratio-extra-commands 'ace-window))
+    (add-to-list 'golden-ratio-extra-commands 'ace-window))
   (golden-ratio-mode 1))
 
 (use-package gptel ;; ai, copilot, chatgpt

@@ -12,7 +12,6 @@
   ("C-M-;" . comment-indent)
   ("C-M-z" . delete-pair)
   ("C-x C-z" . nil)
-  ("C-x K" . kill-this-buffer)
   ("C-z" . nil)
   ("M-L" . duplicate-dwim)
   ("M-j" . join-line)
@@ -448,6 +447,12 @@
   :hook
   ((text-mode prog-mode) . display-line-numbers-mode))
 
+(use-package display-fill-column-indicator
+  :ensure nil
+  :defer
+  :custom
+  (display-fill-column-indicator-warning nil))
+
 (use-package doc-view
   :ensure nil
   :defer
@@ -461,7 +466,6 @@
   (add-to-list 'treesit-language-source-alist
                '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
 
-;; TODO: Find an ediff replacement maybe
 (use-package ediff
   :ensure nil
   :custom
@@ -471,7 +475,7 @@
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   :bind ( :map global-leader-map
-          ("x d" . ediff-files))
+          ("m d" . ediff-files))
   :config
   (advice-add 'ediff-window-display-p :override #'ignore))
 
@@ -585,11 +589,6 @@
       orig-fun-result))
   (advice-add 'backup-buffer :around #'buffer-backed-up-reset-advice))
 
-(use-package display-fill-column-indicator
-  :ensure nil
-  :defer
-  :custom
-  (display-fill-column-indicator-warning nil))
 
 (use-package flymake
   :ensure nil
@@ -661,7 +660,7 @@
 (use-package goto-addr
   :ensure nil
   :bind
-  (:map mode-specific-map
+  ( :map mode-specific-map
     ("C-o" . goto-address-at-point))
   :config
   (global-goto-address-mode -1))
