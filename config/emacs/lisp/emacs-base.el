@@ -9,17 +9,17 @@
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
   :bind
-  ("C-M-;" . comment-indent)
-  ("C-M-z" . delete-pair)
-  ("C-x C-z" . nil)
+  ("C-M-d" . delete-pair)
   ("C-z" . nil)
   ("M-L" . duplicate-dwim)
+  ("M-S-SPC" . cycle-spacing)
   ("M-j" . join-line)
   ("M-n" . forward-paragraph)
   ("M-o" . other-window)
   ("M-p" . backward-paragraph)
   ("RET" . newline-and-indent)
-  ("M-S-SPC" . cycle-spacing)
+  ("s-[" . previous-buffer)
+  ("s-]" . next-buffer)
   ([remap backward-sentence] . backward-sexp)
   ([remap downcase-word] . downcase-dwim)
   ([remap forward-sentence] . forward-sexp)
@@ -41,11 +41,9 @@
     ("x s" . sort-lines)
     ("x y" . copy-relative-file-name)
     ("x Y" . copy-absolute-file-name)
-    ;; Compilation & Computation
-    ("k r" . ielm)
     ;; Settings (Look & Feel)
     (", ," . open-custom-file)
-    (", <" . open-packages-dired)
+    (", ." . open-packages-dired)
     (", +" . global-text-scale-adjust)
     (", =" . balance-windows-area)
     (", D" . toggle-debug-on-error)
@@ -461,7 +459,7 @@
 
 (use-package dockerfile-ts-mode
   :ensure nil
-  :mode "\\Dockerfile.*\\'"
+  :mode "Dockerfile.*\\'"
   :config
   (add-to-list 'treesit-language-source-alist
                '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
@@ -484,6 +482,13 @@
   :defer
   :config
   (electric-pair-mode -1))
+
+(use-package emacs-lisp-mode
+  :ensure nil
+  :mode "\\.el\\'"
+  :bind
+  ( :map emacs-lisp-mode-map
+    ("C-c t" . ielm)))
 
 (use-package elixir-ts-mode
   :ensure nil
@@ -689,8 +694,10 @@
   :defer
   :bind
   ( :map help-map
+    ("M" . describe-keymap)
     ("h" . nil)) ;; accidentally pressed too often
   :custom
+  (help-window-keep-selected t)
   (help-window-select 'other))
 
 (use-package hippie-exp
@@ -847,9 +854,7 @@
   :hook
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
-  :bind ( :map mode-specific-map
-          ("n L" . org-store-link)
-          :map global-leader-map
+  :bind ( :map global-leader-map
           ("n SPC" . org-search-view)
           ("n a" . org-agenda)
           ("n f" . org-capture-goto-target)

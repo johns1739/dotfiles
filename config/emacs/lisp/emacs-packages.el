@@ -814,6 +814,7 @@
           ("n r w" . org-roam-refile)
           ("n r l" . org-roam-buffer-toggle))
   :init
+  ;; TODO: Can map under org-roam-mode-map
   (defun org-roam-mode-setup ()
     (bind-keys :map (current-local-map)
                ("C-c n i" . org-roam-node-insert)
