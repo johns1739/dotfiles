@@ -7,7 +7,7 @@
 ;;                   ((display-graphic-p)
 ;;                    (load-theme 'darktooth :no-confirm))
 ;;                   (t
-;;                    (load-theme 'wombat :no-confirm)))))
+;;                    (load-theme 'creamsody :no-confirm)))))
 
 ;; https://github.com/emacs-jp/replace-colorthemes?tab=readme-ov-file
 ;; WARNING: Lexical-Binding
