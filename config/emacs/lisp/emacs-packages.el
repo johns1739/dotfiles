@@ -219,12 +219,14 @@
   (corfu-auto-delay 0.5)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
-  (corfu-preview-current 'insert)
-  (corfu-preselect 'prompt)
-  (corfu-separator ?\s)
   (corfu-echo-delay 0.2)
-  (corfu-popupinfo-delay '(1.0 . 0.5))
   (corfu-min-width 20)
+  (corfu-popupinfo-delay '(1.0 . 0.5))
+  (corfu-preselect 'prompt)
+  (corfu-preview-current 'insert)
+  (corfu-quit-at-boundary t)
+  (corfu-quit-no-match t)
+  (corfu-separator ?\s)
   :config
   (global-corfu-mode 1)
   (corfu-popupinfo-mode 1)
@@ -510,11 +512,14 @@
     (add-to-list 'golden-ratio-extra-commands 'ace-window))
   (golden-ratio-mode 1))
 
+;; TODO: Try markdown to see if that works better
+;;       Might fix issues with gptel-aibo with apply / summon commands
 (use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
   ;; Copilot settings:
   ;; (setq gptel-model 'claude-3.7-sonnet)
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
+  :demand ;; required for the extensions to load corectly
   :custom
   (gptel-default-mode 'org-mode)
   (gptel-prompt-prefix-alist '((org-mode . "* @user: ")))
@@ -523,13 +528,14 @@
   (gptel-gh-github-token-file (expand-file-name "cache/gptel/copilot-chat/github-token" user-emacs-directory))
   (gptel-crowdsourced-prompts-file (expand-file-name "cache/gptel/crowdsourced-prompts.csv" user-emacs-directory))
   :bind ( :map global-leader-map
-          ("i i" . gptel)
+          ("i SPC" . gptel)
           ("i m" . gptel-menu)
           ("i A" . gptel-add)
           ("i K" . gptel-context-remove-all)
           ("i R" . gptel-rewrite)
           :map gptel-mode-map
-          ("C-c C-<return>" . gptel-send))
+          ("C-c C-<return>" . gptel-send)
+          ("C-c C-c" . gptel-org-set-topic))
   :hook
   (gptel-mode . visual-line-mode)
   (gptel-mode . gptel-highlight-mode)
@@ -537,37 +543,42 @@
   (with-eval-after-load 'dired
     (bind-keys :map dired-mode-map
                ("A" . gptel-add)
-               ("K" . gptel-context-remove-all)))
-  :config
-  (with-eval-after-load 'org
-    (bind-keys :map org-mode-map
-               ("C-c I" . gptel-org-set-topic))))
+               ("K" . gptel-context-remove-all))))
 
 (use-package gptel-agent
+  :after (gptel)
   :vc ( :url "https://github.com/karthink/gptel-agent"
         :rev :newest)
   :bind ( :map global-leader-map
           ("i a" . gptel-agent))
   :config
-  (require 'gptel)
   (gptel-agent-update))
+
+(use-package gptel-aibo
+  :after (gptel)
+  :bind
+  ( :map mode-specific-map
+    ("i" . gptel-aibo)
+    ("I" . gptel-aibo-summon))
+  ( :map global-leader-map
+    ("i i" . gptel-aibo)
+    ("i I" . gptel-aibo-summon))
+  ( :map gptel-aibo-mode-map
+    ("C-c C-<return>" . gptel-aibo-send)))
 
 (use-package gptel-commit
   :disabled ;; prefer gptel-magit
-  :after  (magit)
+  :after  (gptel magit)
   :custom
   (gptel-commit-stream t)
   :config
-  (require 'gptel)
   (with-eval-after-load 'magit
     (define-key git-commit-mode-map (kbd "C-c g") #'gptel-commit)
     (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
 
 (use-package gptel-magit
-  :after (magit)
-  :hook (magit-mode . gptel-magit-install)
-  :config
-  (require 'gptel))
+  :after (gptel magit)
+  :hook (magit-mode . gptel-magit-install))
 
 (use-package gptel-prompts
   :disabled ;; Fails to install, package not available
