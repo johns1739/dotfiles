@@ -1,3 +1,5 @@
+# -*- mode: conf-space -*-
+
 # ghostty +help
 # +version
 # +help
@@ -43,17 +45,48 @@ font-feature = -calt
 font-feature = -liga
 font-feature = -dlig
 
-# Keybindings
+
+# Global Keybindings
 
 ## Quick Terminal Prompt
-keybind = super+`=toggle_quick_terminal
+keybind = global:cmd+shift+1=toggle_quick_terminal
+
+## Toggle all Ghostty windows visibility
+keybind = global:cmd+shift+o=toggle_visibility
+
+
+# Keybindings
+
+## Reset
+keybind = super+shift+r=reset
+
+## Auto-split (splits along the larger dimension)
+keybind = super+shift+n=new_split:auto
+
+## Copy URL under cursor
+keybind = super+shift+u=copy_url_to_clipboard
+
+## Command Prompt
 keybind = super+shift+;=toggle_command_palette
 
-## screen navigation
-keybind = super+shift+p=jump_to_prompt:-1
-keybind = super+shift+n=jump_to_prompt:1
+## Jump to next/previous prompt
+keybind = super+alt+p=jump_to_prompt:-1
+keybind = super+alt+n=jump_to_prompt:1 
 
-## saving screen output
-keybind = super+,>y=write_screen_file:paste
-keybind = super+,>shift+y=write_selection_file:paste
-keybind = super+,>super+y=write_scrollback_file:paste
+## Search
+keybind = super+shift+f=search_selection
+
+## Saving Screen output
+keybind = super+s>a>y=write_scrollback_file:copy
+keybind = super+s>a>p=write_scrollback_file:paste
+keybind = super+s>a>o=write_scrollback_file:open
+
+keybind = super+s>s>y=write_screen_file:copy
+keybind = super+s>s>p=write_screen_file:paste
+keybind = super+s>s>o=write_screen_file:open
+
+keybind = super+s>r>y=write_selection_file:copy
+keybind = super+s>r>p=write_selection_file:paste
+keybind = super+s>r>o=write_selection_file:open
+
+

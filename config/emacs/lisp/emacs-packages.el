@@ -529,7 +529,7 @@
   (gptel-crowdsourced-prompts-file (expand-file-name "cache/gptel/crowdsourced-prompts.csv" user-emacs-directory))
   :bind ( :map global-leader-map
           ("i SPC" . gptel)
-          ("i m" . gptel-menu)
+          ("i ," . gptel-menu)
           ("i A" . gptel-add)
           ("i K" . gptel-context-remove-all)
           ("i R" . gptel-rewrite)
@@ -549,17 +549,14 @@
   :after (gptel)
   :vc ( :url "https://github.com/karthink/gptel-agent"
         :rev :newest)
-  :bind ( :map global-leader-map
-          ("i a" . gptel-agent))
+  :bind ( :map project-prefix-map
+          ("i" . gptel-agent))
   :config
   (gptel-agent-update))
 
 (use-package gptel-aibo
   :after (gptel)
   :bind
-  ( :map mode-specific-map
-    ("i" . gptel-aibo)
-    ("I" . gptel-aibo-summon))
   ( :map global-leader-map
     ("i i" . gptel-aibo)
     ("i I" . gptel-aibo-summon))
@@ -637,7 +634,7 @@
   (kubernetes-redraw-frequency 3600))
 
 (use-package ligature
-  :disabled ;; too much setup
+  :disabled ;; not easy to setup
   :config
   (ligature-set-ligatures 'prog-mode '("--" "---" "==" "===" "!=" "!==" "=!=" "=:=" "=/=" "<=" ">=" "&&" "&&&" "&=" "++" "+++"
    "***" ";;" "!!" "??" "?:" "?." "?=" "<:" ":<" ":>" ">:" "<>" "<<<" ">>>" "<<" ">>" "||" "-|"
@@ -1132,7 +1129,6 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 (use-package yasnippet-snippets
   :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
-
 
 
 (provide 'emacs-packages)

@@ -370,7 +370,7 @@
   ;; preview mode provides its own mode-map that conflicts with regular completion
   (completion-preview-mode nil)
   (completion-pcm-leading-wildcard t)
-  :bind ("C-M-i" . completion-at-point))
+  :bind ("M-I" . completion-at-point))
 
 (use-package conf-mode
   :ensure nil
