@@ -331,8 +331,6 @@
   :disabled ;; prefer vterm
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
-  :if (and (display-graphic-p)
-           (not (string-suffix-p "/bin/fish" (getenv "SHELL"))))
   :bind ( :map global-leader-map
           ("k t" . eat-project)
           ("k T" . eat)
@@ -1012,8 +1010,6 @@
   ;;   and test -d "$EMACS_VTERM_PATH"
   ;;   source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
   ;; end
-  :if (and (display-graphic-p)
-           (string-suffix-p "/bin/fish" (getenv "SHELL")))
   :bind ( :map global-leader-map
           ("k t" . vterm-project)
           ("k T" . vterm))
