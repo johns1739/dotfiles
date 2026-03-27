@@ -984,13 +984,12 @@
   (defun python-ts-mode-setup ()
     (when (and (buffer-file-name)
                (string-match-p "test_.*\\.py" (file-name-nondirectory (buffer-file-name))))
-      (setq-local outline-regexp "\s*\\(def test_\\|class Test\\)")
+      (setq-local outline-regexp "\s*\\(\\(async\\)? def test_\\|class Test\\)")
       (setq-local compile-command (concat "pytest " (relative-file-name)))))
   :hook
   (python-ts-mode . python-ts-mode-setup)
   :config
-  (add-to-list 'treesit-language-source-alist
-               '(python "https://github.com/tree-sitter/tree-sitter-python"))
+  (add-to-list 'treesit-language-source-alist '(python "https://github.com/tree-sitter/tree-sitter-python"))
   (with-eval-after-load 'compile
     (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
     (add-to-list 'compilation-error-regexp-alist-alist

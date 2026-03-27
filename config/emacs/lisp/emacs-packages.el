@@ -187,7 +187,8 @@
   :if (executable-find "npm")
   :commands (copilot-mode)
   :bind ( :map global-leader-map
-          ("i c" . global-copilot-mode)
+          ("i c" . copilot-mode)
+          ("i C" . global-copilot-mode)
           :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)
@@ -209,6 +210,7 @@
   :if (display-graphic-p)
   :after (request org markdown-mode copilot))
 
+;; TODO: Sometimes laggy. cape completion function?
 (use-package corfu
   :demand
   :if (display-graphic-p)
@@ -510,6 +512,7 @@
     (add-to-list 'golden-ratio-extra-commands 'ace-window))
   (golden-ratio-mode 1))
 
+;; TODO: completion-at-point-functions is re-set to some slow complete functions.
 (use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
   ;; Copilot settings:
