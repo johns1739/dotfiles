@@ -237,8 +237,8 @@
     (interactive)
     (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing)))
 
-;; TODO: How does this work?
 (use-package abbrev
+  :disabled ;; not sure how this works
   :ensure nil
   :defer
   :custom
@@ -248,7 +248,6 @@
     '((",uuid" ""
        (lambda () (insert (org-id-uuid)))))))
 
-;; TODO: Learn how authinfo.gpg works
 ;; password authentication service
 ;; To reload authinfo:
 ;; (auth-source-forget-all-cached)
@@ -695,6 +694,7 @@
   :bind
   ( :map help-map
     ("M" . describe-keymap)
+    ("C-h" . nil) ;; accidentally pressed too often
     ("h" . nil)) ;; accidentally pressed too often
   :custom
   (help-window-keep-selected t)
@@ -1141,14 +1141,13 @@
   (add-to-list 'treesit-language-source-alist
                '(toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src")))
 
-;; TODO: Figure out what additional auxilary packages work well with treesitter
 (use-package treesit
   :ensure nil
   :defer
   :custom
   ;; (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
   (treesit-auto-install-grammar 'always)
-  (treesit-enabled-modes t) ;; TODO: Verify major-mode-alist remap variable
+  (treesit-enabled-modes t)
   (treesit-font-lock-level 4))
 
 (use-package typescript-ts-mode
@@ -1188,7 +1187,6 @@
   :custom
   (vc-handled-backends '(Git)))
 
-;; TODO: Help windows, re-use windows
 (use-package window
   :ensure nil
   :defer

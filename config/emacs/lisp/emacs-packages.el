@@ -61,7 +61,7 @@
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
-         ("n w" . avy-org-refile-as-child)
+         ("n g" . avy-org-refile-as-child)
          ("y p" . avy-copy-line)
          ("y P" . avy-copy-region)
          ("y g" . avy-move-line) ;; g for grab
@@ -138,7 +138,8 @@
    ("d SPC" . consult-flymake)
    ("n /" . consult-org-heading))
   ( :map minibuffer-mode-map
-   ("C-r" . consult-history))
+   ("C-r" . consult-history)
+   ("C-M-i" . consult-history))
   ( :map search-map
    ("f" . consult-find) ;; works even if not in a project
    ("F" . find-name-dired)
@@ -814,23 +815,14 @@
   :disabled ;; mainly for networking notes, but not really used
   :after (org)
   :commands (org-roam-node-find)
-  :bind ( :map global-leader-map
-          ("n r c" . org-roam-capture)
-          ("n r f" . org-roam-node-find)
-          ("n r i" . org-roam-node-insert)
-          ("n r t" . org-roam-tag-add)
-          ("n r w" . org-roam-refile)
-          ("n r l" . org-roam-buffer-toggle))
-  :init
-  ;; TODO: Can map under org-roam-mode-map
-  (defun org-roam-mode-setup ()
-    (bind-keys :map (current-local-map)
-               ("C-c n i" . org-roam-node-insert)
-               ("C-c n t" . org-roam-tag-add)
-               ("C-c n w" . org-roam-refile)
-               ("C-c n l" . org-roam-buffer-toggle)))
-  :hook
-  (org-mode . org-roam-mode-setup)
+  :bind
+  ( :map global-leader-map
+    ("n r c" . org-roam-capture)
+    ("n r f" . org-roam-node-find)
+    ("n r i" . org-roam-node-insert)
+    ("n r t" . org-roam-tag-add)
+    ("n r w" . org-roam-refile)
+    ("n r l" . org-roam-buffer-toggle))
   :custom
   (org-roam-directory "~/.notes/org-roam")
   (org-roam-completion-everywhere t)
