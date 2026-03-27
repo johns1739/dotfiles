@@ -516,21 +516,24 @@
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :demand ;; required for the extensions to load corectly
   :custom
-  (gptel-default-mode 'markdown-ts-mode)
-  (gptel-prompt-prefix-alist '((markdown-ts-mode . "### ") (org-mode . "* @user: ")))
-  (gptel-response-prefix-alist '((org-mode . "@assistant\n")))
+  (gptel-default-mode 'org-mode)
+  (gptel-prompt-prefix-alist '((markdown-ts-mode . "### ") (org-mode . "* PROMPT ")))
+  (gptel-response-prefix-alist '((org-mode . "** RESPONSE\n")))
   (gptel-gh-token-file (expand-file-name "cache/gptel/copilot-chat/token" user-emacs-directory))
   (gptel-gh-github-token-file (expand-file-name "cache/gptel/copilot-chat/github-token" user-emacs-directory))
   (gptel-crowdsourced-prompts-file (expand-file-name "cache/gptel/crowdsourced-prompts.csv" user-emacs-directory))
-  :bind ( :map global-leader-map
-          ("i SPC" . gptel)
-          ("i ," . gptel-menu)
-          ("i A" . gptel-add)
-          ("i K" . gptel-context-remove-all)
-          ("i R" . gptel-rewrite)
-          :map gptel-mode-map
-          ("C-c C-<return>" . gptel-send)
-          ("C-c C-c" . gptel-org-set-topic))
+  :bind
+  ( :map global-leader-map
+    ("i SPC" . gptel)
+    ("i ," . gptel-menu)
+    ("i A" . gptel-add)
+    ("i K" . gptel-context-remove-all)
+    ("i R" . gptel-rewrite))
+  ( :map gptel-mode-map
+    ("C-c C-<return>" . gptel-send)
+    ("C-c C-c" . gptel-abort)
+    ("C-c C-t" . gptel-org-set-topic)
+    ("C-c C-p" . gptel-org-set-properties))
   :hook
   (gptel-mode . visual-line-mode)
   (gptel-mode . gptel-highlight-mode)
