@@ -549,7 +549,7 @@
   :vc ( :url "https://github.com/karthink/gptel-agent" :rev :newest)
   :bind
   ( :map global-leader-map
-    ("i a" . gptel-agent)a)
+    ("i a" . gptel-agent))
   ( :map project-prefix-map
     ("i" . gptel-agent))
   :config
@@ -595,7 +595,12 @@
          :map help-map
          ("k" . helpful-key) ;; overshadowed by meow
          ("." . helpful-at-point)
-         ("F" . helpful-function)))
+         ("F" . helpful-function))
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\*helpful"
+                 (display-buffer-reuse-mode-window display-buffer-pop-up-window)
+                 (mode . helpful-mode))))
 
 (use-package imenu-list
   :bind (:map global-leader-map

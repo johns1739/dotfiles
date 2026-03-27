@@ -1,15 +1,10 @@
-# Run command in repos:
+# -*- mode: conf-unix -*-
+
+# Run on large repos that need to be maintained.
 # git maintenance start
 
-[user]
-    name = Juan Banda
-    email = jubajr17@gmail.com
-
-[core]
-    autocrlf = input
-
-[merge]
-    ff = only
+# To see which repos are resistered with maintenance.
+# git config --global --get-all maintenance.repo
 
 [alias]
     cm = commit -m
@@ -24,12 +19,21 @@
     se = !git rev-list --all | xargs git grep -F
     st = status -sb
 
-[init]
-    defaultBranch = main
+[branch]
+    sort = -committerdate
 
-[push]
-    default = current
-    autoSetupRemote = true
+[column]
+    ui = auto
+
+[core]
+    autocrlf = input
+
+[diff]
+    algorithm = histogram
+    colorMoved = plain
+
+[fetch]
+    prune = true
 
 [filter "lfs"]
     smudge = git-lfs smudge -- %f
@@ -37,14 +41,31 @@
     required = true
     clean = git-lfs clean -- %f
 
+[init]
+    defaultBranch = main
+
+[merge]
+    ff = only
+
+[pull]
+    rebase = true
+
+[rebase]
+    autoStash = true
+
+[push]
+    default = current
+    autoSetupRemote = true
+
 [rerere]
     enabled = true
 
-[column]
-    ui = auto
-
-[branch]
-    sort = -committerdate
-
 [submodule]
     recurse = true
+
+[tag]
+    sort = version:refname
+
+[user]
+    name = Juan Banda
+    email = jubajr17@gmail.com

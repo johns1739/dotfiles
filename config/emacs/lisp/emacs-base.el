@@ -698,7 +698,7 @@
     ("h" . nil)) ;; accidentally pressed too often
   :custom
   (help-window-keep-selected t)
-  (help-window-select 'other))
+  (help-window-select t))
 
 (use-package hippie-exp
   :ensure nil
