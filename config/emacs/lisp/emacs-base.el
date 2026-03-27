@@ -825,7 +825,8 @@
   :ensure nil
   :mode "\\.md\\'"
   :mode ("README\\.md\\'" . gfm-mode) ;; depends on builtin markdown-mode
-  :bind ( :map markdown-mode-map
+  :bind ( :map markdown-ts-mode-map
+          ("M-;" . markdown-blockquote-region)
           ("M-H" . markdown-mark-block)
           ("M-n" . markdown-outline-next)
           ("M-p" . markdown-outline-previous)
@@ -1011,12 +1012,6 @@
   (recentf-save-file (expand-file-name "cache/recentf" user-emacs-directory))
   :config
   (recentf-mode t))
-
-;; TODO: What is this about?
-(use-package request
-  :defer
-  :custom
-  (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
 
 (use-package ruby-ts-mode
   :ensure nil

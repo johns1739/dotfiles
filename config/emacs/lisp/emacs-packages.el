@@ -58,7 +58,6 @@
   :config
   (auto-dim-other-buffers-mode 1))
 
-;; TODO: Better bindings
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
@@ -290,7 +289,7 @@
   (global-diff-hl-mode))
 
 (use-package dimmer
-  :disabled ;; TODO: Figure out error issue with latest version
+  :disabled ;; Fails to install with latest revision. Use auto-dim-other-buffers
   :if (display-graphic-p) ;; Only works in GUI
   :config
   (dimmer-mode t))
@@ -510,8 +509,6 @@
     (add-to-list 'golden-ratio-extra-commands 'ace-window))
   (golden-ratio-mode 1))
 
-;; TODO: Try markdown to see if that works better
-;;       Might fix issues with gptel-aibo with apply / summon commands
 (use-package gptel ;; ai, copilot, chatgpt
   ;; llm copilot chat
   ;; Copilot settings:
@@ -519,8 +516,8 @@
   ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
   :demand ;; required for the extensions to load corectly
   :custom
-  (gptel-default-mode 'org-mode)
-  (gptel-prompt-prefix-alist '((org-mode . "* @user: ")))
+  (gptel-default-mode 'markdown-ts-mode)
+  (gptel-prompt-prefix-alist '((markdown-ts-mode . "### ") (org-mode . "* @user: ")))
   (gptel-response-prefix-alist '((org-mode . "@assistant\n")))
   (gptel-gh-token-file (expand-file-name "cache/gptel/copilot-chat/token" user-emacs-directory))
   (gptel-gh-github-token-file (expand-file-name "cache/gptel/copilot-chat/github-token" user-emacs-directory))
@@ -545,10 +542,12 @@
 
 (use-package gptel-agent
   :after (gptel)
-  :vc ( :url "https://github.com/karthink/gptel-agent"
-        :rev :newest)
-  :bind ( :map project-prefix-map
-          ("i" . gptel-agent))
+  :vc ( :url "https://github.com/karthink/gptel-agent" :rev :newest)
+  :bind
+  ( :map global-leader-map
+    ("i a" . gptel-agent)a)
+  ( :map project-prefix-map
+    ("i" . gptel-agent))
   :config
   (gptel-agent-update))
 
@@ -615,10 +614,10 @@
   :bind (("M-$" . jinx-correct)
          ([remap flyspell-mode] . jinx-mode)))
 
-;; TODO: jira issue list not showing
 ;; https://github.com/unmonoqueteclea/jira.el?tab=readme-ov-file#authentication
 (use-package jira
-  :disabled
+  :disabled ;; jira issue not loading list
+  :after (request)
   :defer)
 
 (use-package kubernetes
@@ -874,6 +873,12 @@
   :config
   (popper-mode 1)
   (popper-echo-mode 1))
+
+;; http request library
+(use-package request ;; depended by Jira
+  :defer
+  :custom
+  (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
 
  ;; https://github.com/magnars/s.el#functions
 (use-package s
