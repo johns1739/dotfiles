@@ -847,6 +847,11 @@
   (lisp-interaction-mode . enable-paredit-mode)
   (scheme-mode . enable-paredit-mode))
 
+(use-package pdf-tools
+  :mode "\\.pdf\\'"
+  :config
+  (pdf-tools-install))
+
 (use-package persistent-scratch
   :disabled ;; not really used, slower start-up
   :if (display-graphic-p)

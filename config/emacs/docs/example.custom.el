@@ -20,18 +20,27 @@
                  :width normal
                  :height 130)))))
 
-(with-eval-after-load 'gptel
-  (setq gptel-model 'claude-opus-4.6)
-  (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
-
 (add-hook 'prog-mode-hook #'copilot-mode)
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 (add-hook 'prog-mode-hook #'indent-bars-mode)
 
-(add-to-list 'exec-path "~/.local/elixir-ls")
+(with-eval-after-load 'elfeed
+  (setopt elfeed-db-directory "~/Documents/elfeed"))
 
-(if (display-graphic-p)
-    (load-theme 'darktooth :no-confirm-loading)
-  (progn
-    (load-theme 'creamsody :no-confirm-loading)
-    (set-face-background 'default "unspecified-bg")))
+(with-eval-after-load 'gptel
+  (setq gptel-model 'claude-opus-4.6)
+  (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
+
+(with-eval-after-load 'org
+  (setq org-directory "~/Documents/notes"))
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (cond ((display-graphic-p) ;; graphics
+                   (add-hook 'elixir-ts-mode-hook #'prettify-symbols-mode)
+                   (load-theme 'darktooth :no-confirm))
+                  ((and (not (display-graphic-p)) (not is-simple-editor)) ;; terminal
+                   (load-theme 'creamsody :no-confirm)
+                   (set-face-background 'default "unspecified-bg"))
+                  (is-simple-editor ;; simple terminal
+                   (load-theme 'wombat :no-confirm)))))

@@ -503,6 +503,8 @@
   :hook
   (elixir-ts-mode . elixir-ts-mode-setup)
   :config
+  (add-to-list 'treesit-language-source-alist
+               '(elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src"))
   (with-eval-after-load 'compile
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
     (add-to-list 'compilation-error-regexp-alist-alist
