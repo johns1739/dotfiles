@@ -27,20 +27,18 @@
 (with-eval-after-load 'elfeed
   (setopt elfeed-db-directory "~/Documents/elfeed"))
 
-(with-eval-after-load 'gptel
-  (setq gptel-model 'claude-opus-4.6)
-  (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
-
 (with-eval-after-load 'org
-  (setq org-directory "~/Documents/notes"))
+  (setopt org-directory "~/Documents/notes")
+  (unless (file-exists-p org-directory)
+    (make-directory org-directory))
+  (setopt org-agenda-files (list org-directory)))
 
-(add-hook 'after-init-hook
-          (lambda ()
-            (cond ((display-graphic-p) ;; graphics
-                   (add-hook 'elixir-ts-mode-hook #'prettify-symbols-mode)
-                   (load-theme 'darktooth :no-confirm))
-                  ((and (not (display-graphic-p)) (not is-simple-editor)) ;; terminal
-                   (load-theme 'creamsody :no-confirm)
-                   (set-face-background 'default "unspecified-bg"))
-                  (is-simple-editor ;; simple terminal
-                   (load-theme 'wombat :no-confirm)))))
+(defun after-init-setup ()
+  (cond ((display-graphic-p)
+         (load-theme 'darktooth :no-confirm))
+        (is-simple-editor
+         (load-theme 'wombat :no-confirm))
+        (t ;; terminal
+         (load-theme 'creamsody :no-confirm)
+         (set-face-background 'default "unspecified-bg"))))
+(add-hook 'after-init-hook #'after-init-setup)

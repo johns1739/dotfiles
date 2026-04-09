@@ -1046,7 +1046,7 @@
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-in-side-window) (window-height . 0.3))))
 
-(use-package whisper
+(use-package whisper ;; Audio recording
   :disabled ;; could be better
   :if (executable-find "ffmpeg")
   :bind (("C-M-y" . whisper-run))

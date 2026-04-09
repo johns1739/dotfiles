@@ -2,7 +2,7 @@
 # name: drawer
 # key: ..
 # --
-:${1:properties}:
+:${1:PROPERTIES}:
 $2
-:end:
+:END:
 $0

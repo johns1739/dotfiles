@@ -502,6 +502,7 @@
       (setq outline-regexp " *\\(describe \\|test \\|setup \\)"))))
   :hook
   (elixir-ts-mode . elixir-ts-mode-setup)
+  (elixir-ts-mode . prettify-symbols-mode)
   :config
   (add-to-list 'treesit-language-source-alist
                '(elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src"))
@@ -887,7 +888,6 @@
   (org-agenda-window-setup 'reorganize-frame)
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
-  (org-directory "~/.notes")
   (org-edit-src-content-indentation 0)
   (org-fold-catch-invisible-edits 'show-and-error)
   (org-hide-block-startup t)
@@ -915,9 +915,6 @@
    '(org-done ((t (:weight bold :foreground "dim gray")))))
   (require 'org-capture)
   (require 'org-crypt)
-  (unless (file-exists-p "~/.notes")
-    (make-directory "~/.notes"))
-  (setopt org-agenda-files (list org-directory))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
