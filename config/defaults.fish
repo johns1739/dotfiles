@@ -12,7 +12,7 @@ fish_add_path "$HOME/.local/bin"
 alias ....='cd ../../..'
 alias ...='cd ../..'
 alias ..='cd ..'
-alias e="env SIMPLE=t emacs -nw"
+alias e="SIMPLE=t emacs -nw"
 alias emacs="emacs -nw"
 alias grep="grep --line-buffered --color"
 alias l="less"

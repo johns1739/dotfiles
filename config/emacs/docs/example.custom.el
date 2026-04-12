@@ -20,9 +20,9 @@
                  :width normal
                  :height 130)))))
 
-(add-hook 'prog-mode-hook #'copilot-mode)
-(add-hook 'prog-mode-hook #'display-line-numbers-mode)
-(add-hook 'prog-mode-hook #'indent-bars-mode)
+;; (add-hook 'prog-mode-hook #'copilot-mode)
+;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
+;; (add-hook 'prog-mode-hook #'indent-bars-mode)
 
 (with-eval-after-load 'elfeed
   (setopt elfeed-db-directory "~/Documents/elfeed"))
