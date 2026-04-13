@@ -421,7 +421,8 @@
   (dired-dwim-target t)
   (dired-hide-details-hide-absolute-location t)
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches "-alh --group-directories-first")
+  ;; (dired-listing-switches "-alh --group-directories-first") ;; brew install coreutils
+  (dired-listing-switches "-alh")
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'always)
   (image-dired-dir (expand-file-name "cache/image-dired" user-emacs-directory))
