@@ -9,6 +9,7 @@ brew install -v --quiet \
      asdf \
      autoconf \
      btop \
+     cmake \
      direnv \
      fd  \
      fish \
@@ -17,8 +18,9 @@ brew install -v --quiet \
      git  \
      gnupg  \
      jq \
-     libgccjit \
      lazygit \
+     libgccjit \
+     libvterm \
      ripgrep \
      tlrc \
      tree-sitter \
