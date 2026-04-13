@@ -525,6 +525,7 @@
   :custom
   (eshell-history-size 100000)
   (eshell-hist-ignoredups t)
+  (eshell-directory-name (expand-file-name "cache/eshell" user-emacs-directory))
   :config
   (add-to-list 'display-buffer-alist
                '("\\*.*eshell\\*" (display-buffer-in-side-window)
