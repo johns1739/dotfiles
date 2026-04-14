@@ -24,8 +24,11 @@
 ;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
 ;; (add-hook 'prog-mode-hook #'indent-bars-mode)
 
-(with-eval-after-load 'elfeed
-  (setopt elfeed-db-directory "~/Documents/elfeed"))
+;; (with-eval-after-load 'vterm
+;;   (setopt vterm-shell "/opt/homebrew/bin/fish"))
+
+;; (with-eval-after-load 'elfeed
+;;   (setopt elfeed-db-directory "~/Documents/elfeed"))
 
 (with-eval-after-load 'org
   (setopt org-directory "~/Documents/notes")

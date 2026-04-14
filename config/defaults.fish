@@ -20,3 +20,9 @@ alias lg="lazygit"
 alias ll="ls -lh --color"
 alias rgrep="grep --color -rnIi"
 alias top="btop"
+
+if test "$INSIDE_EMACS" = 'vterm'
+    and test -n "$EMACS_VTERM_PATH"
+    and test -d "$EMACS_VTERM_PATH"
+    source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+end

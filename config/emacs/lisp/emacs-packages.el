@@ -1016,13 +1016,6 @@
   (visual-replace-global-mode))
 
 (use-package vterm
-  ;; https://github.com/akermu/emacs-libvterm/blob/master/README.md
-  ;; In config.fish
-  ;; if test "$INSIDE_EMACS" = 'vterm'
-  ;;   and test -n "$EMACS_VTERM_PATH"
-  ;;   and test -d "$EMACS_VTERM_PATH"
-  ;;   source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
-  ;; end
   :bind ( :map global-leader-map
           ("k t" . vterm-project)
           ("k T" . vterm))
