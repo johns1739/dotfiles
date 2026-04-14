@@ -861,16 +861,16 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   :bind ( :map global-leader-map
+          ("n '" . org-capture-goto-last-stored)
+          ("n ?" . org-occur-link-in-agenda-files)
+          ("n L" . org-store-link)
           ("n SPC" . org-search-view)
           ("n a" . org-agenda)
           ("n f" . org-capture-goto-target)
           ("n k" . org-capture)
-          ("n r" . org-occur-link-in-agenda-files)
+          ("n m" . org-mark-ring-goto)
           ("n s" . org-occur-in-agenda-files)
           ("n t" . org-todo-list)
-          ("n '" . org-capture-goto-last-stored)
-          ("n ," . org-mark-ring-goto)
-          ("n L" . org-store-link)
           :map org-mode-map
           ([remap goto-address-at-point] . org-open-at-point)
           ([remap kill-sentence] . org-cut-subtree)
@@ -907,10 +907,10 @@
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
+     ("t" "TaskAtPoint" entry (file+headline "tasks.org" "Task") "* TODO %A\n%f\n%i" :immediate-finish t)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i")
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
-     ("J" "Journal" entry (file+olp+datetree "journal.org") "* JOURNAL\n%T\n%a\n%i"
-      :immediate-finish t)))
+     ("J" "JournalAtPoint" entry (file+olp+datetree "journal.org") "* %A\n%T\n%F\n%i" :immediate-finish t)))
   :config
   (custom-set-faces
    '(org-todo ((t (:weight bold :foreground "light goldenrod"))))
