@@ -39,6 +39,7 @@
     ("x k" . delete-matching-lines)
     ("x u" . delete-duplicate-lines)
     ("x s" . sort-lines)
+    ("x t" . toggle-truncate-lines)
     ;; Copy/Paste
     ("y f" . copy-relative-file-name)
     ("y F" . copy-absolute-file-name)
@@ -50,12 +51,11 @@
     (", D" . toggle-debug-on-error)
     (", F" . toggle-frame-fullscreen)
     (", R" . restart-emacs)
-    (", SPC" . load-theme)
     (", c" . display-fill-column-indicator-mode)
     (", f" . toggle-frame-maximized)
     (", h" . hl-line-mode)
     (", r" . reload-emacs)
-    (", t" . toggle-truncate-lines)
+    (", t" . load-theme)
     (", x" . describe-font)
     :map goto-map
     ("SPC" . switch-to-buffer)

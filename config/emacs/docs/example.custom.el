@@ -30,6 +30,9 @@
 ;; (with-eval-after-load 'elfeed
 ;;   (setopt elfeed-db-directory "~/Documents/elfeed"))
 
+;; (with-eval-after-load 'auto-dark
+;;   (setq auto-dark-themes '((darktooth) (solarized-light))))
+
 (with-eval-after-load 'org
   (setopt org-directory "~/Documents/notes")
   (unless (file-exists-p org-directory)

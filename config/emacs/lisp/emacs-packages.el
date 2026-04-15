@@ -47,10 +47,12 @@
   (aidermacs-default-chat-mode 'architect))
 
 (use-package auto-dark ;; auto switching dark / light color themes
-  :disabled ;; better to manually select.
-  ;; (setopt auto-dark-themes '((wombat) (leuven)))
-  ;; (auto-dark-mode)
-  :commands (auto-dark-mode))
+  ;; (auto-dark-mode) ;; auto to system's settings, but doesn't work
+  :commands (auto-dark-mode auto-dark-toggle-appearance)
+  :bind ( :map global-leader-map
+          (", T" . auto-dark-toggle-appearance))
+  :config
+  (setq auto-dark-themes '((wombat) (leuven))))
 
 (use-package auto-dim-other-buffers
   :demand
