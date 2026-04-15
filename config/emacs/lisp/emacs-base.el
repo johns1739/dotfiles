@@ -34,13 +34,14 @@
     ("1" . delete-other-windows)
     ("2" . split-window-below-and-jump)
     ("3" . split-window-right-and-jump)
-    ;; Copy/Paste/Edits
+    ;; Edits
     ("x l" . keep-lines)
     ("x k" . delete-matching-lines)
     ("x u" . delete-duplicate-lines)
     ("x s" . sort-lines)
-    ("x y" . copy-relative-file-name)
-    ("x Y" . copy-absolute-file-name)
+    ;; Copy/Paste
+    ("y f" . copy-relative-file-name)
+    ("y F" . copy-absolute-file-name)
     ;; Settings (Look & Feel)
     (", ," . open-custom-file)
     (", ." . open-packages-dired)
@@ -165,6 +166,7 @@
                             ))
   :hook
   (special-mode . hl-line-mode)
+  (text-mode . visual-line-mode)
   :config
   (unless (display-graphic-p) ;; When in terminal ...
     (custom-set-faces
@@ -271,9 +273,10 @@
 (use-package bash-ts-mode
   :ensure nil
   :mode "\\.\\(sh\\|bash\\)\\'"
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(bash "https://github.com/tree-sitter/tree-sitter-bash" "master" "src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(bash "https://github.com/tree-sitter/tree-sitter-bash" "master" "src"))))
 
 (use-package bookmark
   :ensure nil
@@ -379,9 +382,10 @@
   :mode "\\.css\\'"
   :custom
   (css-indent-offset 2)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(css "https://github.com/tree-sitter/tree-sitter-css")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(css "https://github.com/tree-sitter/tree-sitter-css"))))
 
 (use-package dabbrev
   :ensure nil
@@ -460,9 +464,10 @@
 (use-package dockerfile-ts-mode
   :ensure nil
   :mode "Dockerfile.*\\'"
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src"))))
 
 (use-package ediff
   :ensure nil
@@ -476,6 +481,11 @@
           ("m d" . ediff-files))
   :config
   (advice-add 'ediff-window-display-p :override #'ignore))
+
+(use-package editorconfig
+  :ensure nil
+  :config
+  (editorconfig-mode t))
 
 (use-package elec-pair
   :ensure nil
@@ -494,6 +504,9 @@
   :ensure nil
   :mode "\\.exs?\\'"
   :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src")))
   (defun elixir-ts-mode-setup ()
     (setq-local compilation-error-regexp-alist '(elixir-unit-test-target elixir-error-target elixir-warning-target))
     (cond
@@ -505,8 +518,6 @@
   (elixir-ts-mode . elixir-ts-mode-setup)
   (elixir-ts-mode . prettify-symbols-mode)
   :config
-  (add-to-list 'treesit-language-source-alist
-               '(elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src"))
   (with-eval-after-load 'compile
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
     (add-to-list 'compilation-error-regexp-alist-alist
@@ -660,11 +671,12 @@
   :ensure nil
   :mode "\\.go\\'"
   :mode ("go\\.mod\\'" . go-mod-ts-mode)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(go "https://github.com/tree-sitter/tree-sitter-go"))
-  (add-to-list 'treesit-language-source-alist
-               '(gomod "https://github.com/camdencheek/tree-sitter-go-mod")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(go "https://github.com/tree-sitter/tree-sitter-go"))
+    (add-to-list 'treesit-language-source-alist
+                 '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))))
 
 (use-package goto-addr
   :ensure nil
@@ -689,9 +701,10 @@
 (use-package heex-ts-mode
   :ensure nil
   :mode "\\.heex\\'"
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(heex "https://github.com/phoenixframework/tree-sitter-heex")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(heex "https://github.com/phoenixframework/tree-sitter-heex"))))
 
 (use-package help
   :ensure nil
@@ -786,26 +799,27 @@
   :ensure nil
   :mode "\\.jsx?\\'"
   :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
+    (add-to-list 'treesit-language-source-alist
+                 '(jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc" "master" "src")))
   (defun js-ts-mode-setup ()
     (setq indent-tabs-mode nil))
   :hook
   (js-ts-mode . js-ts-mode-setup)
   :custom
-  (js-indent-level 2)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-  (add-to-list 'treesit-language-source-alist
-               '(jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc" "master" "src")))
+  (js-indent-level 2))
 
 (use-package json-ts-mode
   :ensure nil
   :mode "\\.json\\'"
   :hook
   (json-ts-mode . js-ts-mode-setup)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(json "https://github.com/tree-sitter/tree-sitter-json")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(json "https://github.com/tree-sitter/tree-sitter-json"))))
 
 (use-package log-edit
   :ensure nil
@@ -820,14 +834,14 @@
   :init
   (defun make-mode-setup ()
     (setq-local outline-regexp "^[A-Za-z].+:"))
-  :hook
-  (makefile-bsdmake-mode . make-mode-setup)
-  :config
-  (add-to-list 'treesit-language-source-alist
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
                '(make "https://github.com/alemuller/tree-sitter-make")))
+  :hook
+  (makefile-bsdmake-mode . make-mode-setup))
 
 (use-package markdown-ts-mode
-  :ensure nil
+  ;; :ensure nil ;; only available in latest emacs.
   :mode "\\.md\\'"
   :mode ("README\\.md\\'" . gfm-mode) ;; depends on builtin markdown-mode
   :bind ( :map markdown-ts-mode-map
@@ -838,11 +852,12 @@
           ("C-c C-." . markdown-do))
   :custom
   (markdown-command "multimarkdown")
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
-  (add-to-list 'treesit-language-source-alist
-               '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
+    (add-to-list 'treesit-language-source-alist
+                 '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src"))))
 
 (use-package minibuffer
   :ensure nil
@@ -982,6 +997,9 @@
   (python-indent-guess-indent-offset-verbose t)
   (python-indent-offset 4)
   :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(python "https://github.com/tree-sitter/tree-sitter-python")))
   (defun python-ts-mode-setup ()
     (when (and (buffer-file-name)
                (string-match-p "test_.*\\.py" (file-name-nondirectory (buffer-file-name))))
@@ -990,7 +1008,6 @@
   :hook
   (python-ts-mode . python-ts-mode-setup)
   :config
-  (add-to-list 'treesit-language-source-alist '(python "https://github.com/tree-sitter/tree-sitter-python"))
   (with-eval-after-load 'compile
     (add-to-list 'compilation-error-regexp-alist 'python-pytest-target)
     (add-to-list 'compilation-error-regexp-alist-alist
@@ -1021,6 +1038,9 @@
   (ruby-indent-level 2)
   (ruby-indent-tabs-mode nil)
   :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+               '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
   (defun ruby-ts-mode-setup ()
     (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)"))
   :hook
@@ -1040,18 +1060,17 @@
                         :definitions t
                         :rename t
                         :references t
-                        :folding t)))))
-  (add-to-list 'treesit-language-source-alist
-               '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
+                        :folding t))))))
 
 (use-package rust-ts-mode
   :ensure nil
   :mode "\\.rs\\'"
   :custom
   (rust-indent-level 2)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src"))))
 
 (use-package savehist
   :ensure nil
@@ -1137,9 +1156,10 @@
 (use-package toml-ts-mode
   :ensure nil
   :mode "\\.toml\\'"
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src"))))
 
 (use-package treesit
   :ensure nil
@@ -1157,9 +1177,10 @@
   (typescript-ts-mode . js-ts-mode-setup)
   :custom
   (typescript-indent-level 2)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))))
 
 (use-package tsx-ts-mode
   :ensure nil
@@ -1168,9 +1189,10 @@
   (tsx-ts-mode . js-ts-mode-setup)
   :custom
   (typescript-indent-level 2)
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))))
 
 (use-package uniquify
   :ensure nil
@@ -1249,9 +1271,10 @@
 (use-package yaml-ts-mode
   :ensure nil
   :mode "\\.ya?ml\\'"
-  :config
-  (add-to-list 'treesit-language-source-alist
-               '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "master" "src")))
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "master" "src"))))
 
 (provide 'emacs-base)
 ;;; emacs-base.el ends here

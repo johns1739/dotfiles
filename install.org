@@ -15,6 +15,7 @@ brew install -v --quiet \
      fish \
      fzf  \
      gcc \
+     gh \
      git  \
      gnupg  \
      jq \

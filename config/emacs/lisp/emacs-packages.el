@@ -513,11 +513,7 @@
   (golden-ratio-mode 1))
 
 ;; TODO: completion-at-point-functions is re-set to some slow complete functions.
-(use-package gptel ;; ai, copilot, chatgpt
-  ;; llm copilot chat
-  ;; Copilot settings:
-  ;; (setq gptel-model 'claude-3.7-sonnet)
-  ;; (setq gptel-backend (gptel-make-gh-copilot "Copilot"))
+(use-package gptel ;; ai llm copilot chatgpt
   :demand ;; required for the extensions to load corectly
   :custom
   (gptel-default-mode 'org-mode)
