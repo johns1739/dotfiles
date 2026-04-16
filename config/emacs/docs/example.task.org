@@ -8,8 +8,8 @@
 #+STARTUP: indent noindent
 #+STARTUP: hidestars showstars
 #+STARTUP: logdone nologdone lognotedone
-#+STARTUP: hideblocks nohideblocks
 #+STARTUP: logdrawer nologdrawer
+#+STARTUP: hideblocks nohideblocks
 #+STARTUP: hidedrawers nohidedrawers
 
 #+CATEGORY: tasks

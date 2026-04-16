@@ -774,7 +774,7 @@
   (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
-  (org-agenda-todo-ignore-scheduled 'far)
+  (org-agenda-todo-ignore-scheduled 'future)
   (org-agenda-window-setup 'reorganize-frame)
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
