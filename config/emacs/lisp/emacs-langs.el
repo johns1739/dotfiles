@@ -9,6 +9,7 @@
                  '(bash "https://github.com/tree-sitter/tree-sitter-bash" "master" "src"))))
 
 (use-package css-ts-mode
+  :ensure nil
   :mode "\\.css\\'"
   :custom
   (css-indent-offset 2)
