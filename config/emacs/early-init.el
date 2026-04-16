@@ -1,8 +1,5 @@
 ;;; early-init.el --- Early Init  -*- lexical-binding: t; -*-
 
-(defvar is-simple-editor (getenv "SIMPLE")
-  "Whether Emacs is running in a simple editor environment.")
-
 ;; Disables unused UI Elements
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -42,14 +39,10 @@
              "*** Emacs loaded in %s seconds with %d garbage collections and %d packages."
              (emacs-init-time "%.2f") gcs-done (length package-activated-list))))
 
-(when is-simple-editor
-  (setopt package-enable-at-startup nil))
-
-(unless is-simple-editor
-  (setopt use-package-compute-statistics t)
-  (setopt use-package-verbose t)
-  (setopt warning-suppress-types '((comp) (bytecomp) (files)))
-  (setopt native-comp-async-report-warnings-errors 'silent)
-  (setopt inhibit-startup-echo-area-message ""))
+(setopt use-package-compute-statistics t)
+(setopt use-package-verbose t)
+(setopt warning-suppress-types '((comp) (bytecomp) (files)))
+(setopt native-comp-async-report-warnings-errors 'silent)
+(setopt inhibit-startup-echo-area-message "")
 
 (provide 'early-init)

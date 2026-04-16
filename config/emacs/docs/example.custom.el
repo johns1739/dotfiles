@@ -40,11 +40,9 @@
   (setopt org-agenda-files (list org-directory)))
 
 (defun after-init-setup ()
-  (cond ((display-graphic-p)
-         (load-theme 'darktooth :no-confirm))
-        (is-simple-editor
-         (load-theme 'wombat :no-confirm))
-        (t ;; terminal
-         (load-theme 'creamsody :no-confirm)
-         (set-face-background 'default "unspecified-bg"))))
+  (if (display-graphic-p)
+      (load-theme 'darktooth :no-confirm)
+    (progn ;; terminal
+      (load-theme 'creamsody :no-confirm)
+      (set-face-background 'default "unspecified-bg"))))
 (add-hook 'after-init-hook #'after-init-setup)
