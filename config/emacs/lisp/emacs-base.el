@@ -48,12 +48,9 @@
     (", ." . open-packages-dired)
     (", +" . global-text-scale-adjust)
     (", =" . balance-windows-area)
-    (", D" . toggle-debug-on-error)
     (", F" . toggle-frame-fullscreen)
     (", R" . restart-emacs)
-    (", c" . display-fill-column-indicator-mode)
     (", f" . toggle-frame-maximized)
-    (", h" . hl-line-mode)
     (", r" . reload-emacs)
     (", t" . load-theme)
     (", x" . describe-font)
@@ -288,6 +285,7 @@
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   :ensure nil
   :bind (:map global-leader-map
+              ("k D" . toggle-debug-on-error)
               ("k g" . recompile)
               ("k k" . compile-dwim)
               ("k K" . compile)
@@ -366,10 +364,6 @@
   (completion-pcm-leading-wildcard t)
   :bind ("M-I" . completion-at-point))
 
-(use-package conf-mode
-  :ensure nil
-  :mode ("\\.env\\..*\\'" "\\.env\\'"))
-
 (use-package dabbrev
   :ensure nil
   :bind (("M-/" . dabbrev-expand)
@@ -424,7 +418,7 @@
   :defer
   :bind
   ( :map global-leader-map
-    (", n" . display-line-numbers-mode))
+    ("m n" . display-line-numbers-mode))
   :custom
   (display-line-numbers-type t)
   (display-line-numbers-width 4)
@@ -435,6 +429,9 @@
 (use-package display-fill-column-indicator
   :ensure nil
   :defer
+  :bind
+  ( :map global-leader-map
+    ("m c" . display-fill-column-indicator-mode))
   :custom
   (display-fill-column-indicator-warning nil))
 
@@ -662,6 +659,12 @@
       (apply orig-fun args)))
   :config
   (advice-add 'hippie-expand :around #'hippie-expand-case-fold-advice))
+
+(use-package hl-line
+  :ensure nil
+  :bind
+  ( :map global-leader-map
+    ("m h" . hl-line-mode)))
 
 (use-package ibuffer
   :ensure nil
