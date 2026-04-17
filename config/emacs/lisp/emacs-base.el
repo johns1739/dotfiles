@@ -799,7 +799,7 @@
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
-     ("t" "TaskAtPoint" entry (file+headline "tasks.org" "Task") "* TODO %A\n%f\n%i" :immediate-finish t)
+     ("T" "TaskAtPoint" entry (file+headline "tasks.org" "Task") "* TODO %A\n%f\n%i" :immediate-finish t)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i")
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
      ("J" "JournalAtPoint" entry (file+olp+datetree "journal.org") "* %A\n%T\n%F\n%i" :immediate-finish t)))
