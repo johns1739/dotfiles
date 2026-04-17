@@ -20,24 +20,43 @@
                  :width normal
                  :height 130)))))
 
-;; (add-hook 'prog-mode-hook #'copilot-mode)
-;; (add-hook 'prog-mode-hook #'display-line-numbers-mode)
-;; (add-hook 'prog-mode-hook #'indent-bars-mode)
+;; (with-eval-after-load 'auto-dark
+;;   (setq auto-dark-themes '((darktooth) (solarized-light))))
 
-;; (with-eval-after-load 'vterm
-;;   (setopt vterm-shell "/opt/homebrew/bin/fish"))
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                '((ruby-mode ruby-ts-mode) "ruby-lsp")))
+
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs
+;;                `((ruby-mode ruby-ts-mode)
+;;                  . ("solargraph" "stdio" :initializationOptions
+;;                     ( :useBundler t
+;;                       :diagnostics t
+;;                       :completion t
+;;                       :hover t
+;;                       :autoformat :json-false
+;;                       :formatting t
+;;                       :symbols t
+;;                       :definitions t
+;;                       :rename t
+;;                       :references t
+;;                       :folding t))))))
 
 ;; (with-eval-after-load 'elfeed
 ;;   (setopt elfeed-db-directory "~/Documents/elfeed"))
 
-;; (with-eval-after-load 'auto-dark
-;;   (setq auto-dark-themes '((darktooth) (solarized-light))))
+;; (with-eval-after-load 'exec-path-from-shell
+;;   (setq exec-path-from-shell-shell-name "/opt/homebrew/bin/fish"))
 
-(with-eval-after-load 'org
-  (setopt org-directory "~/Documents/notes")
-  (unless (file-exists-p org-directory)
-    (make-directory org-directory))
-  (setopt org-agenda-files (list org-directory)))
+;; (with-eval-after-load 'org
+;;   (setopt org-directory "~/Documents/notes")
+;;   (unless (file-exists-p org-directory)
+;;     (make-directory org-directory))
+;;   (setopt org-agenda-files (list org-directory)))
+
+;; (with-eval-after-load 'vterm
+;;   (setopt vterm-shell "/opt/homebrew/bin/fish"))
 
 (defun after-init-setup ()
   (if (display-graphic-p)

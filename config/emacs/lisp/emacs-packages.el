@@ -164,9 +164,10 @@
                  ("f" . consult-fd))))
 
 (use-package consult-flycheck
-  :disabled ;; not using flycheck
   :after (consult flycheck)
-  :commands (consult-flycheck))
+  :bind
+  ( :map global-leader-map
+    ("d SPC" . consult-flycheck)))
 
 (use-package consult-denote ;; Prot's note-taking with org
   :disabled ;; not using denote
@@ -450,25 +451,21 @@
   :mode "\\.fish\\'")
 
 (use-package flycheck
-  :disabled ;; prefer flymake
-  ;; only used with lsp-mode
-  ;; https://www.flycheck.org/en/latest/
   :commands (global-flycheck-mode flycheck-mode)
-  :init
-  (defun flycheck-set-bindings ()
-    (bind-keys :map (current-local-map)
-               ([remap consult-flymake] . consult-flycheck)
-               ([remap flymake-show-buffer-diagnostics] . consult-flycheck)
-               ([remap flymake-show-diagnostic] . flycheck-display-error-at-point)
-               ([remap flymake-show-project-diagnostics] . nil)
-               ([remap flymake-goto-next-error] . flycheck-next-error)
-               ([remap flymake-goto-prev-error] . flycheck-previous-error)))
   :custom
-  (flycheck-indication-mode 'right-fringe)
+  (flycheck-indication-mode 'left-fringe)
   :hook
-  (flycheck-mode . flycheck-set-bindings))
-
-
+  (flycheck-mode . flycheck-set-indication-mode)
+  :bind
+  ( :map global-leader-map
+    ("D" . flycheck-mode)
+    ("d ." . flycheck-explain-error-at-point)
+    ("d c" . flycheck-compile)
+    ("d d" . flycheck-list-errors)
+    ("d D" . flycheck-buffer)
+    ("d e" . flycheck-verify-setup)
+    ("d p" . nil)
+    ("d y" . flycheck-copy-errors-as-kill)))
 
 (use-package find-file-in-project
   :bind

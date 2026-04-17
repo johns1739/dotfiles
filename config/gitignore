@@ -1,3 +1,5 @@
 .env
 .envrc
 /.agent-shell/
+Gemfile.local
+Gemfile.local.lock

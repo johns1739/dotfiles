@@ -165,7 +165,7 @@
 
 (use-package ruby-ts-mode
   :ensure nil
-  :mode ("\\.rb\\'" "Rakefile\\'" "Gemfile\\'")
+  :mode ("\\.rb\\'" "Rakefile\\'" "Gemfile\\'" "Gemfile.local\\'")
   :interpreter "ruby"
   :custom
   (ruby-indent-level 2)
@@ -177,23 +177,7 @@
   (defun ruby-ts-mode-setup ()
     (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)"))
   :hook
-  (ruby-ts-mode . ruby-ts-mode-setup)
-  :config
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 `((ruby-ts-mode)
-                   . ("solargraph" "stdio" :initializationOptions
-                      ( :useBundler t
-                        :diagnostics t
-                        :completion t
-                        :hover t
-                        :autoformat :json-false
-                        :formatting t
-                        :symbols t
-                        :definitions t
-                        :rename t
-                        :references t
-                        :folding t))))))
+  (ruby-ts-mode . ruby-ts-mode-setup))
 
 (use-package rust-ts-mode
   :ensure nil
