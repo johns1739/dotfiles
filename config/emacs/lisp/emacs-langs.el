@@ -176,12 +176,28 @@
                  '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
   (defun ruby-ts-mode-setup ()
     (when (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name)))
-      (setq-local compile-command `(s-concat "bundle exec rspec "(relative-file-name) (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
+      (setq-local compile-command `(s-concat "bundle exec rspec "
+                                             (relative-file-name)
+                                             (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
       (setq-local outline-level nil)
       (setq-local outline-search-function nil)
       (setq-local outline-regexp " +\\(context \\|describe \\|test \\|it \\)")))
   :hook
-  (ruby-ts-mode . ruby-ts-mode-setup))
+  (ruby-ts-mode . ruby-ts-mode-setup)
+  :config
+  (with-eval-after-load 'compile
+    ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+    ;;   TYPE is 2 or nil for a real error or 1 for warning or 0 for info.
+    (add-to-list 'compilation-error-regexp-alist 'ruby-rspec-inner-failure-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(ruby-rspec-inner-failure-target
+                   "# \\([^:]+\\):\\([0-9]+\\):"
+                   1 2 nil nil 1))
+    (add-to-list 'compilation-error-regexp-alist 'ruby-rspec-test-failure-target)
+    (add-to-list 'compilation-error-regexp-alist-alist
+                 '(ruby-rspec-test-failure-target
+                   "^rspec \\([^:]+\\):\\([0-9]+\\)"
+                   1 2 nil nil 1))))
 
 (use-package rust-ts-mode
   :ensure nil
