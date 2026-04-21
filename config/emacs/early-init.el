@@ -5,7 +5,6 @@
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'tooltip-mode) (tooltip-mode -1))
-(if (fboundp 'fringe-mode) (fringe-mode -1))
 
 ;; Delay garbage collection while Emacs is booting
 (setopt gc-cons-threshold most-positive-fixnum)

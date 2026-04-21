@@ -285,7 +285,6 @@
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   :ensure nil
   :bind (:map global-leader-map
-              ("k D" . toggle-debug-on-error)
               ("k g" . recompile)
               ("k k" . compile-dwim)
               ("k K" . compile)
@@ -440,6 +439,25 @@
   :defer
   :custom
   (doc-view-resolution 200))
+
+(use-package edebug
+  :ensure nil
+  :bind
+  ( :map global-leader-map
+    ("k D" . edebug-remove-instrumentation)
+    ("k d" . edebug-set-breakpoint)
+  ( :map edebug-mode-map
+    ("SPC" . edebug-step-mode)
+    ("." . edebug-goto-here)
+    ("c" . edebug-go-mode)
+    ("n" . edebug-step-mode)
+    ("N" . edebug-next-mode)
+    ("s" . edebug-step-in)
+    ("l" . edebug-where)
+    ("i" . edebug-pop-to-backtrace)
+    ("u" . edebug-step-out)
+    ("U" . edebug-view-outside)
+    ("'" . edebug-bounce-point))))
 
 (use-package ediff
   :ensure nil
