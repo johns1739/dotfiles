@@ -176,9 +176,10 @@
                  '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
   (defun ruby-ts-mode-setup ()
     (when (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name)))
+      (setq-local compile-command `(s-concat "bundle exec rspec "(relative-file-name) (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
       (setq-local outline-level nil)
       (setq-local outline-search-function nil)
-      (setq-local outline-regexp "\\s+\\(context \\|describe \\|test \\|it \\)")))
+      (setq-local outline-regexp " +\\(context \\|describe \\|test \\|it \\)")))
   :hook
   (ruby-ts-mode . ruby-ts-mode-setup))
 
