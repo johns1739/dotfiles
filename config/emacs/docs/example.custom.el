@@ -23,6 +23,9 @@
 ;; (with-eval-after-load 'auto-dark
 ;;   (setq auto-dark-themes '((darktooth) (solarized-light))))
 
+;; (with-eval-after-load 'copilot
+;;   (add-hook 'prog-mode-hook #'copilot-mode))
+
 ;; (with-eval-after-load 'eglot
 ;;   (add-to-list 'eglot-server-programs
 ;;                '((ruby-mode ruby-ts-mode) "ruby-lsp")))

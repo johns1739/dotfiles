@@ -39,10 +39,12 @@
              "*** Emacs loaded in %s seconds with %d garbage collections and %d packages."
              (emacs-init-time "%.2f") gcs-done (length package-activated-list))))
 
-(setopt use-package-compute-statistics t)
-(setopt use-package-verbose t)
 (setopt warning-suppress-types '((comp) (bytecomp) (files)))
 (setopt native-comp-async-report-warnings-errors 'silent)
 (setopt inhibit-startup-echo-area-message "")
+
+(when (display-graphic-p)
+  (setopt use-package-compute-statistics )
+  (setopt use-package-verbose t))
 
 (provide 'early-init)

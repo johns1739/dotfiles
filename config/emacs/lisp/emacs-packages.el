@@ -191,7 +191,8 @@
           ("i C" . global-copilot-mode)
           :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
-          ("M-e" . copilot-accept-completion-by-line)
+          ("C-e" . copilot-accept-completion-by-line)
+          ("TAB" . copilot-accept-completion-by-line)
           ("M-<return>" . copilot-accept-completion))
   :custom
   (copilot-idle-delay 0.5)
@@ -215,6 +216,7 @@
   :demand
   :if (display-graphic-p)
   :bind ( :map corfu-map
+          ("TAB" . nil) ;; shadows copilot completion
           ("RET" . nil))
   :custom
   (corfu-auto t)
