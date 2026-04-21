@@ -173,9 +173,12 @@
   :init
   (with-eval-after-load 'treesit
     (add-to-list 'treesit-language-source-alist
-               '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
+                 '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
   (defun ruby-ts-mode-setup ()
-    (setq-local outline-regexp "\s*\\(context \\|describe \\|test \\|it \\)"))
+    (when (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name)))
+      (setq-local outline-level nil)
+      (setq-local outline-search-function nil)
+      (setq-local outline-regexp "\\s+\\(context \\|describe \\|test \\|it \\)")))
   :hook
   (ruby-ts-mode . ruby-ts-mode-setup))
 
@@ -227,7 +230,10 @@
   :init
   (with-eval-after-load 'treesit
     (add-to-list 'treesit-language-source-alist
-                 '(vue "https://github.com/ikatyang/tree-sitter-vue"))))
+                 '(vue "https://github.com/ikatyang/tree-sitter-vue")))
+  :bind
+  ( :map vue-ts-mode-map
+    ("M-o" . nil)))
 
 (use-package yaml-ts-mode
   :ensure nil

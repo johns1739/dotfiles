@@ -46,13 +46,10 @@
   ;; (aidermacs-default-model "gemini-2.5-pro"))
   (aidermacs-default-chat-mode 'architect))
 
-(use-package auto-dark ;; auto switching dark / light color themes
-  ;; (auto-dark-mode) ;; auto to system's settings, but doesn't work
+(use-package auto-dark
   :commands (auto-dark-mode auto-dark-toggle-appearance)
   :bind ( :map global-leader-map
-          (", T" . auto-dark-toggle-appearance))
-  :config
-  (setq auto-dark-themes '((wombat) (leuven))))
+          (", T" . auto-dark-toggle-appearance)))
 
 (use-package auto-dim-other-buffers
   :demand
