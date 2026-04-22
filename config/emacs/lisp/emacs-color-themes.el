@@ -31,6 +31,9 @@
   :disabled ;; ERROR: gnus-group-news-low
   :defer)
 
+(use-package kaolin-themes
+  :defer)
+
 (use-package kuronami-theme
   :disabled
   :defer)

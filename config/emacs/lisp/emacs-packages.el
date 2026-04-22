@@ -52,6 +52,7 @@
           (", T" . auto-dark-toggle-appearance)))
 
 (use-package auto-dim-other-buffers
+  :disabled ;; dimmed face not fit to my liking
   :demand
   :if (display-graphic-p)
   :config
@@ -453,8 +454,8 @@
   :commands (global-flycheck-mode flycheck-mode)
   :custom
   (flycheck-indication-mode 'left-fringe)
-  :hook
-  (flycheck-mode . flycheck-set-indication-mode)
+  ;; :hook
+  ;; (flycheck-mode . flycheck-set-indication-mode)
   :bind
   ( :map global-leader-map
     ("D" . flycheck-mode)
@@ -500,7 +501,7 @@
   :disabled ;; never really used. ;; Magit tools are preferred.
   :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
 
-(use-package golden-ratio
+(use-package golden-ratio ;; auto-scales focused buffer
   :demand
   :if (display-graphic-p)
   :custom
@@ -898,14 +899,14 @@
     "Display current git branch in mode line."
     (when vc-mode
       (let ((branch (string-truncate-left vc-mode 30)))
-        (propertize (format " %s" branch) 'face 'font-lock-keyword-face))))
+        (propertize (format " %s" branch) 'face 'bold))))
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
     (if (project-current)
         (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)))
   (defun simple-modeline-segment-buffer-name-2 ()
     "Display buffer's relative-name in mode line."
-    (propertize (concat "  " (mode-line-buffer-name)) 'face 'mode-line-buffer-id))
+    (propertize (concat "  " (mode-line-buffer-name)) 'face 'bold))
   (defun simple-modeline-segment-spaces ()
     (propertize "  "))
   (defun mode-line-buffer-name ()
