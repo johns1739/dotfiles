@@ -277,7 +277,7 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k *" . calc)
+    ("o c" . calc)
     :map calc-mode-map
     ("i" . nil)))
 
@@ -299,11 +299,12 @@
   (compilation-scroll-output 'first-error)
   (compilation-search-path '(nil)) ;; directories to search for files
   (compilation-skip-threshold 2) ;; skip warnings and info with next-error
-  (compilation-window-height 20)
+  (compilation-window-height nil)
   (compile-command "make ")
   :hook
   (compilation-filter . ansi-color-compilation-filter)
   (compilation-mode . hl-line-mode)
+  (compilation-mode . visual-line-mode)
   :init
   (defun compile-dwim ()
     (interactive)
@@ -468,7 +469,7 @@
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
   :bind ( :map global-leader-map
-          ("m d" . ediff-files))
+          ("o d" . ediff-files))
   :config
   (advice-add 'ediff-window-display-p :override #'ignore))
 
@@ -850,7 +851,7 @@
 
 (use-package proced
   :ensure nil
-  :bind (:map global-leader-map ("k p" . proced))
+  :bind (:map global-leader-map ("o p" . proced))
   :custom
   (proced-tree-flag t)
   (proced-descend t)

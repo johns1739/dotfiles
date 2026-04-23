@@ -288,6 +288,8 @@
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
+  :custom
+  (diff-hl-draw-borders nil)
   :config
   ;; Terminal does not have a fringe, so use margin instead.
   (unless (display-graphic-p)
@@ -318,7 +320,7 @@
   :disabled ;; rarely used
   :if (and (display-graphic-p) (executable-find "docker"))
   :bind (:map global-leader-map
-              ("k o" . docker))
+              ("o D" . docker))
   :config
   (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
                           docker-container-columns)))
@@ -375,7 +377,7 @@
 (use-package elfeed
   :commands (elfeed)
   :bind ( :map global-leader-map
-          ("m f" . elfeed))
+          ("o f" . elfeed))
   :custom
   (elfeed-feeds
    '(("http://nullprogram.com/feed/" null emacs)
@@ -477,6 +479,7 @@
     ("U" . find-file-in-project-by-selected)))
 
 (use-package forge
+  ;; https://docs.magit.vc/forge/
   ;; setup:
   ;; Create ~/.authinfo with content:
   ;; machine api.github.com login USERNAME^forge password TOKEN
@@ -484,7 +487,7 @@
   ;; and TOKEN: from https://github.com/settings/tokens
   ;;            in a browser to generate a new "classic" token using
   ;;            the repo, user and read:org scopes
-  ;; Run M-x auth-source-forget-all-cached
+  ;; Run M-x auth-source-forget-all-cached (auth-source-forget-all-cached)
   :commands (forge-dispatch)
   :custom
   (forge-database-file (expand-file-name "cache/forge/forge-database.sqlite" user-emacs-directory)))
@@ -502,14 +505,15 @@
   :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
 
 (use-package golden-ratio ;; auto-scales focused buffer
-  :demand
   :if (display-graphic-p)
+  :bind
+  ( :map global-leader-map
+    ("m g" . golden-ratio-mode))
   :custom
   (golden-ratio-auto-scale nil) ;; yields wider buffers, better
   :config
   (with-eval-after-load 'ace-window
-    (add-to-list 'golden-ratio-extra-commands 'ace-window))
-  (golden-ratio-mode 1))
+    (add-to-list 'golden-ratio-extra-commands 'ace-window)))
 
 ;; TODO: completion-at-point-functions is re-set to some slow complete functions.
 (use-package gptel ;; ai llm copilot chatgpt
@@ -602,8 +606,8 @@
 
 (use-package imenu-list
   :bind (:map global-leader-map
-              ("m i" . imenu-list)
-              ("m I" . imenu-list-smart-toggle))
+              ("o I" . imenu-list)
+              ("o i" . imenu-list-smart-toggle))
   :custom
   (imenu-list-focus-after-activation t)
   (imenu-list-auto-resize nil)
@@ -614,7 +618,7 @@
   :bind (:map global-leader-map
               ("m g" . indent-bars-mode))
   :hook
-  (yaml-mode . indent-bars-mode))
+  ((python-mode yaml-mode) . indent-bars-mode))
 
 (use-package jinx
   :disabled ;; never really used and there are compilation errors.
@@ -632,7 +636,7 @@
   :if (and (display-graphic-p) (executable-find "kubectl"))
   :commands (kubernetes-overview)
   :bind (:map global-leader-map
-              ("k O" . kubernetes-overview))
+              ("o K" . kubernetes-overview))
   :custom
   (kubernetes-poll-frequency 3600)
   (kubernetes-redraw-frequency 3600))
@@ -878,13 +882,14 @@
   (popper-echo-mode 1))
 
 ;; http request library
-(use-package request ;; depended by Jira
+(use-package request ;; Jira dependency
   :defer
   :custom
   (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
 
  ;; https://github.com/magnars/s.el#functions
 (use-package s
+  :disabled
   :defer)
 
 (use-package show-font
@@ -940,11 +945,11 @@
 (use-package spacious-padding
   :if (display-graphic-p)
   :bind ( :map global-leader-map
-          ("m p" . spacious-padding-mode)))
+          ("m P" . spacious-padding-mode)))
 
 (use-package tmr
   :bind (:map global-leader-map
-              ("m t" . tmr-tabulated-view))
+              ("o t" . tmr-tabulated-view))
   :custom
   (tmr-timer-finished-functions
    '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer))
@@ -998,7 +1003,7 @@
   :if (display-graphic-p)
   :after vertico
   :bind ( :map global-leader-map
-          ("m v" . vertico-posframe-mode))
+          ("m V" . vertico-posframe-mode))
   :custom
   (vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
   (vertico-posframe-min-width 80))

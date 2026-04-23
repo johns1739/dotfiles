@@ -6,7 +6,6 @@
   :disabled ;; Too many themes, hard to remember
   :defer)
 
-
 (use-package color-theme-sanityinc-tomorrow
   :disabled ;; ERROR: Cyclic gnus-group-news-6 foreground face.
   :defer)
@@ -28,14 +27,14 @@
   :defer)
 
 (use-package gruvbox-theme
-  :disabled ;; ERROR: gnus-group-news-low
   :defer)
 
 (use-package kaolin-themes
+  :disabled
   :defer)
 
 (use-package kuronami-theme
-  :disabled
+  :disabled ;; nothing really good
   :defer)
 
 (use-package modus-themes
@@ -46,9 +45,14 @@
   :defer)
 
 (use-package solarized-theme
+  :disabled
   :defer)
 
 (use-package standard-themes
+  :defer)
+
+(use-package tao-theme
+  :disabled ;; box apperance around methods, does not look nice
   :defer)
 
 (use-package timu-rouge-theme
