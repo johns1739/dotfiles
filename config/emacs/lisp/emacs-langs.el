@@ -12,6 +12,7 @@
   :ensure nil
   :hook
   (conf-mode . display-line-numbers-mode)
+  (conf-mode . outline-minor-mode)
   :mode ("\\.env\\..*\\'" "\\.env\\'"))
 
 (use-package css-ts-mode
@@ -35,6 +36,8 @@
 (use-package emacs-lisp-mode
   :ensure nil
   :mode "\\.el\\'"
+  :hook
+  (emacs-lisp-mode . outline-minor-mode)
   :bind
   ( :map emacs-lisp-mode-map
     ("C-c t" . ielm)))
@@ -251,6 +254,17 @@
   :bind
   ( :map vue-ts-mode-map
     ("M-o" . nil)))
+
+(use-package web-mode
+  :mode "\\.phtml\\'"
+  :mode "\\.tpl\\.php\\'"
+  :mode "\\.[agj]sp\\'"
+  :mode "\\.as[cp]x\\'"
+  :mode "\\.erb\\'"
+  :mode "\\.mustache\\'"
+  :mode "\\.djhtml\\'"
+  :mode "\\.vue\\'")
+
 
 (use-package yaml-ts-mode
   :ensure nil

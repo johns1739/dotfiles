@@ -379,6 +379,7 @@
   :bind ( :map global-leader-map
           ("o f" . elfeed))
   :custom
+  (elfeed-db-directory (expand-file-name "cache/elfeed" user-emacs-directory))
   (elfeed-feeds
    '(("http://nullprogram.com/feed/" null emacs)
      ("https://planet.emacslife.com/atom.xml" emacslife emacs)
@@ -508,7 +509,7 @@
   :if (display-graphic-p)
   :bind
   ( :map global-leader-map
-    ("m g" . golden-ratio-mode))
+    ("m G" . golden-ratio-mode))
   :custom
   (golden-ratio-auto-scale nil) ;; yields wider buffers, better
   :config
@@ -630,6 +631,16 @@
   :disabled ;; jira issue not loading list
   :after (request)
   :defer)
+
+(use-package kirigami
+  :bind
+  ( :map global-leader-map
+    ("z M" . kirigami-close-folds)
+    ("z W" . kirigami-open-folds)
+    ("z m" . kirigami-close-fold)
+    ("z w" . kirigami-open-fold)
+    ("z z" . kirigami-toggle-fold)
+    ("z o" . kirigami-open-fold-rec)))
 
 (use-package kubernetes
   :disabled ;; rarely used
@@ -984,6 +995,16 @@
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-project-follow-mode t))
+
+(use-package treesit-fold
+  :vc (:url "https://github.com/emacs-tree-sitter/treesit-fold")
+  :init
+  (defun treesit-fold-auto-enable ()
+    "Function to run when a Tree-sitter major mode is activated."
+    (when (string-suffix-p "-ts-mode" (symbol-name major-mode))
+      (treesit-fold-mode t)))
+  :hook
+  (after-change-major-mode . treesit-fold-auto-enable))
 
 (use-package undo-tree
   :demand
