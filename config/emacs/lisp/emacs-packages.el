@@ -493,9 +493,11 @@
   (forge-database-file (expand-file-name "cache/forge/forge-database.sqlite" user-emacs-directory)))
 
 (use-package git-link
-  :bind (:map global-leader-map
-              ("x j" . git-link)
-              ("x J" . git-link-dispatch)))
+  :commands (git-link git-link-dispatch)
+  :init
+  (with-eval-after-load 'magit
+    (transient-append-suffix 'magit-file-dispatch "e" '("y" "Copy url" git-link))
+    (transient-append-suffix 'magit-file-dispatch "y" '("Y" "Copy url" git-link-dispatch))))
 
 (use-package git-modes
   :disabled) ;; Long load time.
