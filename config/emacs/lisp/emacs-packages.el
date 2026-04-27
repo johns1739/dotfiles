@@ -52,11 +52,10 @@
           (", T" . auto-dark-toggle-appearance)))
 
 (use-package auto-dim-other-buffers
-  :disabled ;; dimmed face not fit to my liking
   :demand
   :if (display-graphic-p)
   :config
-  (auto-dim-other-buffers-mode 1))
+  (auto-dim-other-buffers-mode t))
 
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
