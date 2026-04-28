@@ -544,26 +544,25 @@
   (remote-file-name-inhibit-auto-save t)
   (remote-file-name-inhibit-locks t)
   (remote-file-name-inhibit-auto-save-visited t)
+  :init
+  (defvar buffer-backed-up-interval (* 60 60 24)
+    "Interval seconds to backup files")
+  (defun buffer-backed-up-maybe-reset ()
+    "Set the buffer-backed-up variable to the current time every n seconds."
+    (cond ((not buffer-backed-up)
+           (setq-local buffer-backed-up-timestamp (current-time)))
+          ((and buffer-backed-up-timestamp
+                (time-less-p
+                 (time-add buffer-backed-up-timestamp buffer-backed-up-interval)
+                 (current-time)))
+           (setq-local buffer-backed-up-timestamp (current-time))
+           (setq buffer-backed-up nil))))
+  :hook
+  (before-save . buffer-backed-up-maybe-reset)
   :config
   (add-to-list 'save-some-buffers-action-alist
                `("d" ,(lambda (buffer) (diff-buffer-with-file (buffer-file-name buffer)))
-                 "show diff between the buffer and its file"))
-  (defun buffer-backed-up-set-to-time ()
-    "Set the buffer-backed-up variable to the current time if t."
-    (if (eq buffer-backed-up t)
-        (setq buffer-backed-up (current-time))))
-  (defun buffer-backed-up-reset-advice (orig-fun &rest args)
-    "Try to do case-sensitive matching (not effective with all functions)."
-    (buffer-backed-up-set-to-time)
-    (if (and buffer-backed-up
-             (time-less-p (time-add buffer-backed-up (* 60 60 24)) ;; 24hrs
-                          (current-time)))
-        (setq buffer-backed-up nil))
-    (let ((orig-fun-result (apply orig-fun args)))
-      (buffer-backed-up-set-to-time)
-      orig-fun-result))
-  (advice-add 'backup-buffer :around #'buffer-backed-up-reset-advice))
-
+                 "show diff between the buffer and its file")))
 
 (use-package flymake
   :ensure nil
