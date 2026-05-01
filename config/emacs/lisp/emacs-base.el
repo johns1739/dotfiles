@@ -445,8 +445,12 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k D" . edebug-remove-instrumentation)
-    ("k d" . edebug-set-breakpoint)
+    ("k u" . edebug-unset-breakpoint)
+    ("k U" . edebug-unset-breakpoint)
+    ("k i" . edebug-instrument-callee)
+    ("k I" . edebug-remove-instrumentation)
+    ("k b" . edebug-set-breakpoint)
+    ("k B" . edebug-set-conditional-breakpoint)
   ( :map edebug-mode-map
     ("SPC" . edebug-step-mode)
     ("." . edebug-goto-here)
@@ -797,7 +801,7 @@
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'future)
-  (org-agenda-window-setup 'reorganize-frame)
+  (org-agenda-window-setup 'other-window)
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
   (org-edit-src-content-indentation 0)
@@ -814,6 +818,10 @@
   (org-startup-folded 'content)
   (org-startup-indented t)
   (org-tags-column -80)
+  (org-todo-keyword-faces
+   '(("WIP" . (:foreground "spring green"))
+     ("ACTIVE" . (:foreground "spring green"))
+     ("REVIEW" . org-done)))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
@@ -953,7 +961,7 @@
   :init
   (defun tab-bar-tab-name-project ()
     (if (project-current)
-        (propertize (format "[%s] " (project-name (project-current))) 'face 'bold)
+        (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)
       (tab-bar-tab-name-current)))
   :custom
   (tab-bar-new-tab-choice "*scratch*")
@@ -961,7 +969,7 @@
   (tab-bar-show 1)
   (tab-bar-select-tab-modifiers '(super))
   (tab-bar-auto-width nil)
-  (tab-bar-separator "")
+  (tab-bar-separator "  ")
   (tab-bar-close-button-show nil)
   (tab-bar-close-button nil)
   (tab-bar-new-button-show nil)
@@ -1015,6 +1023,15 @@
   :custom
   (wdired-allow-to-change-permissions t)
   (wdired-create-parent-directories t))
+
+(use-package which-func-mode
+  :ensure nil
+  :custom
+  (which-func-update-delay 0.2)
+  (which-func-display 'mode-and-header)
+  :bind
+  ( :map global-leader-map
+    ("m ." . which-function-mode)))
 
 (use-package which-key
   :ensure nil

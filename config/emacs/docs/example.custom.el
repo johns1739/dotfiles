@@ -58,6 +58,10 @@
 ;;     (make-directory org-directory))
 ;;   (setopt org-agenda-files (list org-directory)))
 
+;; (with-eval-after-load 'project
+;;   (project-forget-zombie-projects)
+;;   (project-remember-projects-under "~/Projects/"))
+
 ;; (with-eval-after-load 'vterm
 ;;   (setopt vterm-shell "/opt/homebrew/bin/fish"))
 

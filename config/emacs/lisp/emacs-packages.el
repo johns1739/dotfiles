@@ -211,7 +211,6 @@
   :if (display-graphic-p)
   :after (request org markdown-mode copilot))
 
-;; TODO: Sometimes laggy. cape completion function?
 (use-package corfu
   :demand
   :if (display-graphic-p)
@@ -461,6 +460,7 @@
   :bind
   ( :map global-leader-map
     ("D" . flycheck-mode)
+    ("d SPC" . nil)
     ("d ." . flycheck-explain-error-at-point)
     ("d c" . flycheck-compile)
     ("d d" . flycheck-list-errors)
@@ -468,6 +468,11 @@
     ("d e" . flycheck-verify-setup)
     ("d p" . nil)
     ("d y" . flycheck-copy-errors-as-kill)))
+
+(use-package flycheck-eglot
+  :after (flycheck eglot)
+  :config
+  (global-flycheck-eglot-mode t))
 
 (use-package find-file-in-project
   :bind
@@ -503,8 +508,10 @@
   :disabled) ;; Long load time.
 
 (use-package git-timemachine
-  :disabled ;; never really used. ;; Magit tools are preferred.
-  :bind (:map global-leader-map ("j t" . git-timemachine-toggle)))
+  :commands (git-timemachine git-timemachine-toggle)
+  :init
+  (with-eval-after-load 'magit
+    (transient-append-suffix 'magit-file-dispatch "d" '("T" "Timemachine" git-timemachine))))
 
 (use-package golden-ratio ;; auto-scales focused buffer
   :if (display-graphic-p)
