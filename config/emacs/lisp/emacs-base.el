@@ -431,7 +431,7 @@
   :defer
   :bind
   ( :map global-leader-map
-    ("m c" . display-fill-column-indicator-mode))
+    ("m f" . display-fill-column-indicator-mode))
   :custom
   (display-fill-column-indicator-warning nil))
 

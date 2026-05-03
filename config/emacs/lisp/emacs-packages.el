@@ -187,12 +187,12 @@
   :if (executable-find "npm")
   :commands (copilot-mode)
   :bind ( :map global-leader-map
-          ("i c" . copilot-mode)
-          ("i C" . global-copilot-mode)
+          ("m c" . copilot-mode)
+          ("m C" . global-copilot-mode)
           :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
-          ("C-e" . copilot-accept-completion-by-line)
-          ("TAB" . copilot-accept-completion-by-line)
+          ("M-e" . copilot-accept-completion-by-line)
+          ("M-TAB" . copilot-accept-completion)
           ("M-<return>" . copilot-accept-completion))
   :custom
   (copilot-idle-delay 0.5)
@@ -523,6 +523,7 @@
   :config
   (with-eval-after-load 'ace-window
     (add-to-list 'golden-ratio-extra-commands 'ace-window)))
+
 
 ;; TODO: completion-at-point-functions is re-set to some slow complete functions.
 (use-package gptel ;; ai llm copilot chatgpt
