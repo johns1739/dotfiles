@@ -498,8 +498,7 @@
   (eshell-directory-name (expand-file-name "cache/eshell" user-emacs-directory))
   :config
   (add-to-list 'display-buffer-alist
-               '("\\*.*eshell\\*" (display-buffer-in-side-window)
-                 (window-height . 0.3))))
+               '("\\*.*eshell\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package eglot
   :ensure nil

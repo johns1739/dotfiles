@@ -354,9 +354,7 @@
   (eshell-load . eat-eshell-mode)
   :config
   (add-to-list 'display-buffer-alist
-               '("\\*.*eat\\*"
-                 (display-buffer-in-side-window)
-                 (window-height . 0.3))))
+               '("\\*.*eat\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package eglot-booster
   :disabled ;; eglot-booster not available melpa?
@@ -1067,7 +1065,7 @@
   (vterm-max-scrollback 100000) ;; can't go higher than this
   :config
   (add-to-list 'display-buffer-alist
-               '("\\*.*vterm\\*" (display-buffer-in-side-window) (window-height . 0.3))))
+               '("\\*.*vterm\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package whisper ;; Audio recording
   :disabled ;; could be better
