@@ -88,8 +88,8 @@
   ;; #'cape-line ;; Kinda buggy
   (completion-at-point-functions
    (list #'cape-dabbrev
-         #'cape-abbrev
          #'cape-keyword
+         #'cape-abbrev
          #'cape-file
          #'cape-elisp-block)))
 

@@ -237,15 +237,12 @@
     (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing)))
 
 (use-package abbrev
-  :disabled ;; not sure how this works
   :ensure nil
-  :defer
   :custom
   (save-abbrevs nil)
   :config
   (define-abbrev-table 'global-abbrev-table
-    '((",uuid" ""
-       (lambda () (insert (org-id-uuid)))))))
+    '(("uuid" "" (lambda () (insert (org-id-uuid)))))))
 
 ;; password authentication service
 ;; To reload authinfo:
@@ -968,7 +965,7 @@
   (tab-bar-show 1)
   (tab-bar-select-tab-modifiers '(super))
   (tab-bar-auto-width nil)
-  (tab-bar-separator "  ")
+  (tab-bar-separator "   ")
   (tab-bar-close-button-show nil)
   (tab-bar-close-button nil)
   (tab-bar-new-button-show nil)

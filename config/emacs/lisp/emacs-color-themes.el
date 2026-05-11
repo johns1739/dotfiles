@@ -37,6 +37,9 @@
   :disabled ;; nothing really good
   :defer)
 
+(use-package miasma-theme
+  :defer)
+
 (use-package modus-themes
   :defer)
 

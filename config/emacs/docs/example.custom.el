@@ -20,6 +20,10 @@
                  :width normal
                  :height 130)))))
 
+;; (with-eval-after-load 'abbrev
+;;   (define-abbrev global-abbrev-table "eg" "some example here")
+;;   (add-hook 'prog-mode-hook #'abbrev-mode))
+
 ;; (with-eval-after-load 'auto-dark
 ;;   (setq auto-dark-themes '((darktooth) (solarized-light))))
 
