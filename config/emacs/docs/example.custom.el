@@ -56,6 +56,9 @@
 ;; (with-eval-after-load 'exec-path-from-shell
 ;;   (setq exec-path-from-shell-shell-name "/opt/homebrew/bin/fish"))
 
+;; (with-eval-after-load 'flycheck
+;;   (flycheck-add-mode 'javascript-eslint 'web-mode))
+
 ;; (with-eval-after-load 'org
 ;;   (setopt org-directory "~/Documents/notes")
 ;;   (unless (file-exists-p org-directory)
@@ -65,6 +68,13 @@
 ;; (with-eval-after-load 'project
 ;;   (project-forget-zombie-projects)
 ;;   (project-remember-projects-under "~/Projects/"))
+
+;; (with-eval-after-load 'web-mode
+;;   (setopt web-mode-css-indent-offset 2)
+;;   (setopt web-mode-code-indent-offset 2)
+;;   (setopt web-mode-attr-indent-offset 2)
+;;   (setopt web-mode-sql-indent-offset 2)
+;;   (setopt web-mode-markup-indent-offset 2))
 
 ;; (with-eval-after-load 'vterm
 ;;   (setopt vterm-shell "/opt/homebrew/bin/fish"))

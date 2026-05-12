@@ -279,10 +279,11 @@
               ("m h s" . devdocs-search)))
 
 (use-package diff-hl ;; git diff changes in fringe
-  ;; not really used, better to use magit-diff. Conflicts w/ meow bindings.
-  ;; :bind (:map global-leader-map
-  ;;             ("m d" . diff-hl-show-hunk))
   :after magit
+  :commands (diff-hl-show-hunk)
+  :init
+  (with-eval-after-load 'magit
+    (transient-append-suffix 'magit-file-dispatch "d" '("." "show-diff-hunk" diff-hl-show-hunk)))
   :hook
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
@@ -499,8 +500,8 @@
   :commands (git-link git-link-dispatch)
   :init
   (with-eval-after-load 'magit
-    (transient-append-suffix 'magit-file-dispatch "e" '("y" "Copy url" git-link))
-    (transient-append-suffix 'magit-file-dispatch "y" '("Y" "Copy url" git-link-dispatch))))
+    (transient-append-suffix 'magit-file-dispatch "e" '("y" "Copy Link" git-link))
+    (transient-append-suffix 'magit-file-dispatch "y" '("Y" "Copy Link Dispatch" git-link-dispatch))))
 
 (use-package git-modes
   :disabled) ;; Long load time.

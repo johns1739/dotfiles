@@ -263,7 +263,7 @@
   :mode "\\.erb\\'"
   :mode "\\.mustache\\'"
   :mode "\\.djhtml\\'"
-  :mode "\\.vue\\'"
+  ;; :mode "\\.vue\\'"
   :custom
   (web-mode-enable-auto-indentation nil))
 
