@@ -940,25 +940,33 @@
 
 (use-package tab-bar
   :if (display-graphic-p)
-  :bind
-  ( :map goto-map
-    ("T" . tab-bar-mode)
-    ("t SPC" . tab-bar-switch-to-tab)
-    ("t q" . tab-bar-close-tab)
-    ("t \"" . tab-bar-switch-to-last-tab)
-    ("t t" . tab-bar-new-tab)
-    ("t T" . tab-bar-undo-close-tab)
-    ("t n" . tab-bar-switch-to-next-tab)
-    ("t p" . tab-bar-switch-to-prev-tab)
-    ("t N" . tab-bar-move-tab)
-    ("t P" . tab-bar-move-tab-backward)
-    ("t r" . tab-bar-rename-tab)
-    ("t '" . tab-bar-switch-to-recent-tab))
   :init
+  (keymap-set goto-map "t" tab-bar-map)
   (defun tab-bar-tab-name-project ()
     (if (project-current)
         (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)
       (tab-bar-tab-name-current)))
+  :bind
+  ( :map global-map
+    ("s-t" . tab-bar-new-tab)
+    ("s-w" . tab-bar-close-tab)
+    ("s-{" . tab-bar-switch-to-prev-tab)
+    ("s-}" . tab-bar-switch-to-next-tab)
+    :map goto-map
+    ("T" . tab-bar-mode)
+    :map tab-bar-map
+    ("SPC" . tab-bar-switch-to-tab)
+    ("q" . tab-bar-close-tab)
+    ("\"" . tab-bar-switch-to-last-tab)
+    ("t" . tab-bar-new-tab)
+    ("T" . tab-bar-undo-close-tab)
+    ("n" . tab-bar-switch-to-next-tab)
+    ("p" . tab-bar-switch-to-prev-tab)
+    ("N" . tab-bar-move-tab)
+    ("P" . tab-bar-move-tab-backward)
+    ("r" . tab-bar-rename-tab)
+    ("'" . tab-bar-switch-to-recent-tab)
+    ("<touchscreen-begin>" . nil))
   :custom
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-tab-hints t)
