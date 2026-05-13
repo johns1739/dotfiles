@@ -59,6 +59,13 @@
 ;; (with-eval-after-load 'flycheck
 ;;   (flycheck-add-mode 'javascript-eslint 'web-mode))
 
+;; (with-eval-after-load 'gptel
+;;   (setq gptel-model 'claude-opus-4.6
+;;         ;; Copilot Business: api.business.githubcopilot.com
+;;         ;; Copilot Enterprise: api.enterprise.githubcopilot.com
+;;         ;; Copilot Pro and Pro+: api.individual.githubcopilot.com
+;;         gptel-backend (gptel-make-gh-copilot "Copilot")))
+
 ;; (with-eval-after-load 'org
 ;;   (setopt org-directory "~/Documents/notes")
 ;;   (unless (file-exists-p org-directory)

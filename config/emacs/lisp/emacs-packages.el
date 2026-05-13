@@ -693,9 +693,11 @@
 
 (use-package magit
   :commands (magit-project-status)
-  :bind (:map global-leader-map
-              ("j" . magit-file-dispatch)
-              ("J" . magit-dispatch))
+  :bind ( :map global-leader-map
+          ("j" . magit-file-dispatch)
+          ("J" . magit-dispatch)
+          :map magit-status-mode-map
+          ("C-o" . magit-diff-visit-file-other-window))
   :init
   (with-eval-after-load 'project
     (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
