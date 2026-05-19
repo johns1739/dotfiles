@@ -770,6 +770,7 @@
   :hook
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
+  (org-agenda-mode . visual-line-mode)
   :bind ( :map global-leader-map
           ("n '" . org-capture-goto-last-stored)
           ("n ?" . org-occur-link-in-agenda-files)
@@ -817,7 +818,8 @@
   (org-todo-keyword-faces
    '(("WIP" . (:foreground "spring green"))
      ("ACTIVE" . (:foreground "spring green"))
-     ("REVIEW" . org-done)))
+     ("REVIEW" . (:foreground "spring green"))
+     ("BACKLOG" . org-done)))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")

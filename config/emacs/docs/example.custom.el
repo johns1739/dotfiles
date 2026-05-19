@@ -93,3 +93,5 @@
       (load-theme 'creamsody :no-confirm)
       (set-face-background 'default "unspecified-bg"))))
 (add-hook 'after-init-hook #'after-init-setup)
+
+(server-start)

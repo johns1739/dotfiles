@@ -909,9 +909,8 @@
   (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
 
  ;; https://github.com/magnars/s.el#functions
-(use-package s
-  :disabled
-  :defer)
+(use-package s ;; useful string functions
+  :demand)
 
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
@@ -924,12 +923,13 @@
   (defun simple-modeline-segment-branch ()
     "Display current git branch in mode line."
     (when vc-mode
-      (let ((branch (string-truncate-left vc-mode 30)))
+      (let ((branch (s-truncate 40 vc-mode "...")))
         (propertize (format " %s" branch) 'face 'bold))))
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
-    (if (project-current)
-        (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)))
+    (if-let* ((project (project-current))
+              (name (s-truncate 15 (project-name project))))
+        (propertize (format "[%s]" name) 'face 'bold)))
   (defun simple-modeline-segment-buffer-name-2 ()
     "Display buffer's relative-name in mode line."
     (propertize (concat "  " (mode-line-buffer-name)) 'face 'bold))
