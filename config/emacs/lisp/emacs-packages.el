@@ -640,6 +640,10 @@
   :after (request)
   :defer)
 
+(use-package keychain-environment
+  ;; Check when on macos
+  :if (eq system-type 'darwin))
+
 (use-package kirigami
   :bind
   ( :map global-leader-map
