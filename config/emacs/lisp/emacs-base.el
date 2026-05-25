@@ -715,11 +715,14 @@
   :ensure nil
   :defer
   :custom
+  (isearch-allow-scroll t)
   (isearch-lazy-count t)
   (isearch-wrap-pause 'no)
   (lazy-count-prefix-format "(%s/%s) ")
   (lazy-count-suffix-format nil)
-  (search-whitespace-regexp ".*?"))
+  (search-whitespace-regexp ".*?")
+  :hook
+  (isearch-mode-end . recenter-top-bottom))
 
 (use-package ispell
   ;; brew install aspell (preferred)
