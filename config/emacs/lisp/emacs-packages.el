@@ -237,7 +237,10 @@
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
 (use-package csv-mode
-  :mode "\\.csv\\'")
+  :mode "\\.csv\\'"
+  :hook
+  (csv-mode . csv-align-mode)
+  (csv-mode . read-only-mode))
 
 (use-package dashboard
   :demand
@@ -257,14 +260,14 @@
 
 (use-package denote
   :disabled ;; prefer org-mode note taking
-  :bind (:map global-leader-map
-              ("n d SPC" . denote-open-or-create)
-              ("n d n" . denote)
-              ("n d j" . denote-journal-extras-new-or-existing-entry)
-              ("n d l" . denote-link-or-create)
-              ("n d k" . denote-find-link)
-              ("n d K" . denote-find-backlink)
-              ("n d r" . denote-rename-file-using-front-matter))
+  :bind ( :map global-leader-map
+          ("n d SPC" . denote-open-or-create)
+          ("n d n" . denote)
+          ("n d j" . denote-journal-extras-new-or-existing-entry)
+          ("n d l" . denote-link-or-create)
+          ("n d k" . denote-find-link)
+          ("n d K" . denote-find-backlink)
+          ("n d r" . denote-rename-file-using-front-matter))
   :custom
   (denote-directory "~/workspaces/notes")
   (denote-date-prompt-use-org-read-date t)
@@ -747,6 +750,7 @@
     (set-face-attribute 'meow-beacon-indicator nil :inherit '(bold success))
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
+    (add-to-list 'meow-expand-exclude-mode-list 'csv-mode)
     (meow-motion-overwrite-define-key
      '("<escape>" . ignore))
     (meow-normal-define-key

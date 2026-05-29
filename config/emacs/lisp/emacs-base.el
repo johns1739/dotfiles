@@ -34,6 +34,8 @@
     ("3" . split-window-right-and-jump)
     ("=" . balance-windows-area)
     ("SPC" . project-switch-to-buffer)
+    ;; Modes
+    ("m v" . visual-line-mode)
     ;; Edits
     ("x k" . delete-matching-lines)
     ("x l" . keep-lines)
@@ -163,7 +165,7 @@
                             ))
   :hook
   (special-mode . hl-line-mode)
-  (text-mode . visual-line-mode)
+  ;; (text-mode . visual-line-mode) ;; Do not use visual-line-mode for csv-mode
   :config
   (unless (display-graphic-p) ;; When in terminal ...
     (custom-set-faces

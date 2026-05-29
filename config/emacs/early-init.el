@@ -43,7 +43,7 @@
 (setopt inhibit-startup-echo-area-message "")
 
 (when (display-graphic-p)
-  (setopt use-package-compute-statistics )
+  (setopt use-package-compute-statistics t)
   (setopt use-package-verbose t))
 
 (provide 'early-init)

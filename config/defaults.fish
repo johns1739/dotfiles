@@ -13,6 +13,7 @@ alias ....='cd ../../..'
 alias ...='cd ../..'
 alias ..='cd ..'
 alias emacs="emacs -nw"
+alias emacs_server="emacs --daemon --debug-init 2>&1"
 alias grep="grep --line-buffered --color"
 alias l="less"
 alias lg="lazygit"
