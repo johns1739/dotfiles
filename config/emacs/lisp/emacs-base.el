@@ -787,6 +787,7 @@
           ("n m" . org-mark-ring-goto)
           ("n s" . org-occur-in-agenda-files)
           ("n t" . org-todo-list)
+          ("n T" . org-toggle-agenda-directories)
           :map org-mode-map
           ([remap goto-address-at-point] . org-open-at-point)
           ([remap kill-sentence] . org-cut-subtree)
@@ -833,6 +834,17 @@
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
      ("J" "JournalAtPoint" entry (file+olp+datetree "journal.org") "* %A\n%T\n%F\n%i" :immediate-finish t)))
   :config
+  (defvar org-agenda-directories '()
+    "List of directories to toggle for org-agenda-files.")
+  (defun org-toggle-agenda-directories ()
+    "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
+    (interactive)
+    (let* ((current-dir (car org-agenda-files))
+           (next-dir (or (cadr (member current-dir org-agenda-directories))
+                         (car org-agenda-directories)
+                         org-directory)))
+      (setopt org-agenda-files (list next-dir))
+      (message "Switched org-agenda-files to: %s" next-dir)))
   (custom-set-faces
    '(org-todo ((t (:weight bold :foreground "light goldenrod"))))
    '(org-done ((t (:weight bold :foreground "dim gray")))))

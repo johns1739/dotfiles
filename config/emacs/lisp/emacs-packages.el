@@ -193,7 +193,7 @@
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)
           ("M-TAB" . copilot-accept-completion)
-          ("M-<return>" . copilot-accept-completion))
+          ("M-RET" . copilot-accept-completion))
   :custom
   (copilot-idle-delay 0.5)
   (copilot-indent-offset-warning-disable t)
