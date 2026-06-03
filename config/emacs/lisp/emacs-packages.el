@@ -12,7 +12,6 @@
   (exec-path-from-shell-initialize))
 
 (use-package ace-window
-  :if (display-graphic-p)
   :bind  (([remap other-window] . ace-window)
           :map goto-map
           ("w 0" . ace-delete-window)
@@ -516,7 +515,6 @@
     (transient-append-suffix 'magit-file-dispatch "d" '("T" "Timemachine" git-timemachine))))
 
 (use-package golden-ratio ;; auto-scales focused buffer
-  :if (display-graphic-p)
   :bind
   ( :map global-leader-map
     ("m G" . golden-ratio-mode))
@@ -525,7 +523,6 @@
   :config
   (with-eval-after-load 'ace-window
     (add-to-list 'golden-ratio-extra-commands 'ace-window)))
-
 
 ;; TODO: completion-at-point-functions is re-set to some slow complete functions.
 (use-package gptel ;; ai llm copilot chatgpt
@@ -931,22 +928,23 @@
   (defun simple-modeline-segment-branch ()
     "Display current git branch in mode line."
     (when vc-mode
-      (let ((branch (s-truncate 40 vc-mode "...")))
+      (let ((branch (truncate-string-to-width vc-mode 40)))
         (propertize (format " %s" branch) 'face 'bold))))
   (defun simple-modeline-segment-project-name ()
     "Display project name in mode line."
     (if-let* ((project (project-current))
-              (name (s-truncate 15 (project-name project))))
+              (name (truncate-string-to-width (project-name project) 20)))
         (propertize (format "[%s]" name) 'face 'bold)))
   (defun simple-modeline-segment-buffer-name-2 ()
     "Display buffer's relative-name in mode line."
-    (propertize (concat "  " (mode-line-buffer-name)) 'face 'bold))
+    (let ((buffer-name (or (buffer-file-name) (buffer-name)))
+          (shortened-name (string-truncate-left (relative-file-name) 50)))
+      (propertize (concat "  " shortened-name) 'face 'bold)))
   (defun simple-modeline-segment-spaces ()
     (propertize "  "))
-  (defun mode-line-buffer-name ()
-    (if (buffer-file-name)
-        (string-truncate-left (relative-file-name) 50)
-      (buffer-name)))
+  (defun simple-modeline-segment-misc-info-shortened ()
+    (if-let ((info (simple-modeline-segment-misc-info)))
+        (truncate-string-to-width info 20 nil nil "]")))
   :custom
   (simple-modeline-segments
    '(( ;; left indicators
@@ -964,7 +962,8 @@
       ;; simple-modeline-segment-encoding
       ;; simple-modeline-segment-vc
       simple-modeline-segment-branch
-      simple-modeline-segment-misc-info
+      ;; simple-modeline-segment-misc-info
+      simple-modeline-segment-misc-info-shortened
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
       simple-modeline-segment-spaces)))
@@ -1039,7 +1038,7 @@
   (vertico-mode))
 
 (use-package vertico-posframe
-  :if (display-graphic-p)
+  :if (display-graphic-p) ;; does not work in terminal
   :after vertico
   :bind ( :map global-leader-map
           ("m V" . vertico-posframe-mode))
