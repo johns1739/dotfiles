@@ -131,7 +131,7 @@
   (next-error-highlight-no-select 1.0)
   (next-error-message-highlight t)
   (next-error-recenter '(4))
-  (register-use-preview t)
+  (register-use-preview 'traditional)
   (register-preview-delay 0.5)
   (require-final-newline t)
   (read-answer-short t)

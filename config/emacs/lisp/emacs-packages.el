@@ -508,6 +508,7 @@
 (use-package git-modes
   :disabled) ;; Long load time.
 
+;; TODO: when activated, meow conflicts and font-locking is disabled.
 (use-package git-timemachine
   :commands (git-timemachine git-timemachine-toggle)
   :init
