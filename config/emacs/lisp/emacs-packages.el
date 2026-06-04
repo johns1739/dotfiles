@@ -12,6 +12,7 @@
   (exec-path-from-shell-initialize))
 
 (use-package ace-window
+  :if (display-graphic-p) ;; Num assignments in terminal are incosistent.
   :bind  (([remap other-window] . ace-window)
           :map goto-map
           ("w 0" . ace-delete-window)
