@@ -1,6 +1,7 @@
 # Fish Shell Configuration
-
 set fish_greeting # turn off welcome message
+bind --user alt-e true
+bind --user alt-v true
 
 set -gx EDITOR "emacs -nw"
 set -gx SUDO_EDITOR "$EDITOR"

@@ -36,6 +36,8 @@
     ("SPC" . project-switch-to-buffer)
     ;; Modes
     ("m v" . visual-line-mode)
+    ;; Open Apps
+    ("o C" . calendar)
     ;; Edits
     ("x k" . delete-matching-lines)
     ("x l" . keep-lines)
