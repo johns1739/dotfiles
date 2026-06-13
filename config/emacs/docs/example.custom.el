@@ -67,10 +67,9 @@
 ;;         gptel-backend (gptel-make-gh-copilot "Copilot")))
 
 ;; (with-eval-after-load 'org
-;;   (setopt org-directory "~/Documents/notes")
-;;   (unless (file-exists-p org-directory)
-;;     (make-directory org-directory))
-;;   (setopt org-agenda-files (list org-directory)))
+;;   (add-hook 'org-mode-hook #'flyspell-mode)
+;;   (setq org-agenda-directories '("~/Documents/notes" "~/Documents/notes"))
+;;   (org-setup-directory))
 
 ;; (with-eval-after-load 'project
 ;;   (project-forget-zombie-projects)

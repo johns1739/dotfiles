@@ -846,6 +846,22 @@
   (completion-category-overrides '((file (styles partial-completion))))
   (completion-category-defaults nil))
 
+(use-package org-modern
+  :disabled ;; still in its early stages.
+  :after org
+  :custom-face
+  ;; (org-modern-priority ((t (:inverse-video nil))))
+  ;; (org-modern-todo ((t (:inverse-video nil))))
+  (org-modern-done ((t (:foreground nil :background nil :inherit (org-done org-modern-label)))))
+  :custom
+  (org-modern-todo-faces
+   '(("WIP" :foreground "spring green" :inherit org-modern-todo)
+     ("ACTIVE" :foreground "spring green" :inherit org-modern-todo)
+     ("REVIEW" :foreground "spring green" :inherit org-modern-todo)
+     ("BACKLOG" :inherit org-modern-done)))
+  :config
+  (global-org-modern-mode))
+
 (use-package org-roam
   :disabled ;; mainly for networking notes, but not really used
   :after (org)

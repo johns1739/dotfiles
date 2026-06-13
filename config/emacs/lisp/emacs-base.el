@@ -170,8 +170,8 @@
   ;; (text-mode . visual-line-mode) ;; Do not use visual-line-mode for csv-mode
   :config
   (unless (display-graphic-p) ;; When in terminal ...
-    (custom-set-faces
-     '(default ((((type tty))))))
+    ;; (custom-set-faces
+    ;;  '(default ((((type tty))))))
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
@@ -801,7 +801,7 @@
           ("M-N" . org-move-subtree-down)
           ("M-P" . org-move-subtree-up))
   :custom
-  (org-agenda-sorting-strategy '((todo urgency-down category-keep deadline-up)))
+  (org-agenda-sorting-strategy '((todo deadline-up todo-state-down urgency-down category-keep)))
   (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
@@ -830,14 +830,21 @@
      ("BACKLOG" . org-done)))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i")
-     ("T" "TaskAtPoint" entry (file+headline "tasks.org" "Task") "* TODO %A\n%f\n%i" :immediate-finish t)
-     ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i")
+   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i" :empty-lines 1)
+     ("T" "TaskAtPoint" entry (file+headline "tasks.org" "Task") "* TODO %A\n%f\n%i" :immediate-finish t :empty-lines 1)
+     ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
      ("J" "JournalAtPoint" entry (file+olp+datetree "journal.org") "* %A\n%T\n%F\n%i" :immediate-finish t)))
   :config
   (defvar org-agenda-directories '()
     "List of directories to toggle for org-agenda-files.")
+  (defun org-setup-directory (&optional dir)
+    (let ((dir (or dir (car org-agenda-directories) org-directory)))
+      (setopt org-directory dir)
+      (unless (file-exists-p org-directory)
+        (make-directory org-directory))
+      (setopt org-agenda-files (list org-directory))
+      (message "Set org-agenda to: %s" org-directory)))
   (defun org-toggle-agenda-directories ()
     "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
     (interactive)
@@ -845,8 +852,7 @@
            (next-dir (or (cadr (member current-dir org-agenda-directories))
                          (car org-agenda-directories)
                          org-directory)))
-      (setopt org-agenda-files (list next-dir))
-      (message "Switched org-agenda-files to: %s" next-dir)))
+      (org-setup-directory next-dir)))
   (custom-set-faces
    '(org-todo ((t (:weight bold :foreground "light goldenrod"))))
    '(org-done ((t (:weight bold :foreground "dim gray")))))
@@ -891,7 +897,8 @@
   :ensure nil
   :defer
   :bind ( :map project-prefix-map
-          ("K" . project-forget-project))
+          ("K" . project-forget-project)
+          ("z" . project-forget-zombie-projects))
   :custom
   (project-list-file (expand-file-name "cache/projects" user-emacs-directory))
   ;; Excellent for mono repos with multiple langs, makes Eglot happy
