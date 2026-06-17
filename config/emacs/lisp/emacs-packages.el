@@ -499,6 +499,16 @@
   :custom
   (forge-database-file (expand-file-name "cache/forge/forge-database.sqlite" user-emacs-directory)))
 
+(use-package format-all
+  :commands format-all-mode
+  :hook (prog-mode . format-all-mode)
+  :custom
+  (format-all-show-errors 'errors)
+  :config
+  (setq-default format-all-formatters
+                ;; 2-spaces, no-grouping
+                '(("SQL" (pgformatter "-s2" "-g")))))
+
 (use-package git-link
   :commands (git-link git-link-dispatch)
   :init
@@ -1092,6 +1102,8 @@
   (vterm-copy-mode-remove-fake-newlines t)
   (vterm-max-scrollback 100000) ;; can't go higher than this
   :config
+  (with-eval-after-load 'project
+    (add-to-list 'project-switch-commands '(vterm-project "vTerm" "t")))
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
