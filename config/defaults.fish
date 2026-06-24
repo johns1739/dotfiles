@@ -13,8 +13,9 @@ fish_add_path "$HOME/.local/bin"
 alias ....='cd ../../..'
 alias ...='cd ../..'
 alias ..='cd ..'
+alias em='emacsclient -nw -c -a ""'
 alias emacs="emacs -nw"
-alias emacs_server="emacs --daemon --debug-init 2>&1"
+alias emacs_server="emacsclient -e '(kill-emacs)' 2>/dev/null; emacs --daemon --debug-init 2>&1"
 alias grep="grep --line-buffered --color"
 alias l="less"
 alias lg="lazygit"
