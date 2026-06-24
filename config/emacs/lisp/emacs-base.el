@@ -363,7 +363,7 @@
   ;; preview mode provides its own mode-map that conflicts with regular completion
   (completion-preview-mode nil)
   (completion-pcm-leading-wildcard t)
-  :bind ("M-I" . completion-at-point))
+  :bind ("M-i" . completion-at-point))
 
 (use-package dabbrev
   :ensure nil
@@ -660,7 +660,7 @@
   :ensure nil
   :bind
   ( :map global-map
-    ("M-i" . hippie-expand))
+    ("M-I" . hippie-expand))
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
@@ -896,22 +896,28 @@
 (use-package project
   :ensure nil
   :defer
-  :bind ( :map project-prefix-map
-          ("K" . project-forget-project)
-          ("z" . project-forget-zombie-projects))
+  :bind
+  ( :map project-prefix-map
+    ("K" . project-forget-project)
+    ("z" . project-forget-zombie-projects))
   :custom
   (project-list-file (expand-file-name "cache/projects" user-emacs-directory))
   ;; Excellent for mono repos with multiple langs, makes Eglot happy
   ;; (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod"))
   :init
+  (defun project-add-switch-command (command name &optional key)
+    "Add COMMAND with NAME and KEY to `project-switch-commands' and keep sorted."
+    (add-to-list 'project-switch-commands (if key (list command name key) (list command name)))
+    (sort project-switch-commands (lambda (a b) (string< (cadr a) (cadr b)))))
   (keymap-set global-leader-map "p" project-prefix-map)
   :config
   (require 'vc-git) ;; project-find-file requires vc-git--program-version
-  (setopt project-switch-commands '((project-find-regexp "Regexp" ?g)
-                                    (project-find-file "File" ?f)
-                                    (project-find-dir "Dir" ?d)
-                                    (project-eshell "Eshell" ?e)
-                                    (project-kill-buffers "Kill" ?k))))
+  (setopt project-switch-commands
+          '((project-find-dir "Dir" ?d)
+            (project-eshell "Eshell" ?e)
+            (project-find-file "File" ?f)
+            (project-find-regexp "Regexp" ?g)
+            (project-kill-buffers "Kill" ?k))))
 
 (use-package recentf
   :ensure nil

@@ -29,7 +29,7 @@
   :commands (agent-shell)
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(agent-shell "Agent" "I")))
+    (project-add-switch-command 'agent-shell "Agent" "I"))
   :bind ( :map global-leader-map
           ("I" . agent-shell))
   :custom
@@ -108,8 +108,8 @@
 (use-package consult
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(consult-project-buffer "Buffer" "SPC"))
-    (add-to-list 'project-switch-commands '(consult-ripgrep "Search" "s")))
+    (project-add-switch-command 'consult-project-buffer "Buffer" "SPC")
+    (project-add-switch-command 'consult-ripgrep "Search" "s"))
   :bind
   (([remap Info-search] . consult-info)
    ([remap bookmark-jump] . consult-bookmark)
@@ -285,6 +285,10 @@
   :after magit
   :commands (diff-hl-show-hunk)
   :init
+  (defun diff-hl-toggle-meow-state ()
+    (if diff-hl-show-hunk-mode
+        (meow-motion-mode 1)
+      (meow-normal-mode 1)))
   (with-eval-after-load 'magit
     (transient-append-suffix 'magit-file-dispatch "d" '("." "show-diff-hunk" diff-hl-show-hunk)))
   :hook
@@ -293,6 +297,8 @@
   :custom
   (diff-hl-draw-borders nil)
   :config
+  (with-eval-after-load 'meow
+    (add-hook 'diff-hl-show-hunk-mode-hook #'diff-hl-toggle-meow-state))
   ;; Terminal does not have a fringe, so use margin instead.
   (unless (display-graphic-p)
     (diff-hl-margin-mode))
@@ -347,7 +353,7 @@
           ("M-o" . other-window))
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(eat-project "Eat" "t")))
+    (project-add-switch-command 'eat-project "Eat" "t"))
   :custom
   (eat-enable-auto-line-mode nil) ;; more intuitive to use semi-char mode
   (eat-kill-buffer-on-exit t)
@@ -519,12 +525,25 @@
 (use-package git-modes
   :disabled) ;; Long load time.
 
-;; TODO: when activated, meow conflicts and font-locking is disabled.
 (use-package git-timemachine
   :commands (git-timemachine git-timemachine-toggle)
   :init
   (with-eval-after-load 'magit
-    (transient-append-suffix 'magit-file-dispatch "d" '("T" "Timemachine" git-timemachine))))
+    (transient-append-suffix 'magit-file-dispatch "d" '("T" "Timemachine" git-timemachine)))
+  :config
+  (defun git-timemachine-toggle-meow-state ()
+    "Set meow to motion state when enterint timemachine."
+    (if git-timemachine-mode
+        (progn
+          (meow-motion-mode 1)
+          (git-timemachine-refontify))
+      (meow-normal-mode 1)))
+  (defun git-timemachine-refontify (&rest _)
+    "Re-fontify buffer after timemachine revision change."
+    (font-lock-ensure))
+  (advice-add 'git-timemachine-show-revision :after #'git-timemachine-refontify)
+  (with-eval-after-load 'meow
+    (add-hook 'git-timemachine-mode-hook #'git-timemachine-toggle-meow-state)))
 
 (use-package golden-ratio ;; auto-scales focused buffer
   :bind
@@ -533,10 +552,11 @@
   :custom
   (golden-ratio-auto-scale nil) ;; yields wider buffers, better
   :config
+  (with-eval-after-load 'gptel-aibo
+    (add-to-list 'golden-ratio-extra-commands 'gptel-aibo))
   (with-eval-after-load 'ace-window
     (add-to-list 'golden-ratio-extra-commands 'ace-window)))
 
-;; TODO: completion-at-point-functions is re-set to some slow complete functions.
 (use-package gptel ;; ai llm copilot chatgpt
   :demand ;; required for the extensions to load corectly
   :custom
@@ -583,7 +603,7 @@
   :bind
   ( :map global-leader-map
     ("i i" . gptel-aibo)
-    ("i I" . gptel-aibo-summon))
+    ("i I" . gptel-aibo-complete-at-point))
   ( :map gptel-aibo-mode-map
     ("C-c C-<return>" . gptel-aibo-send)))
 
@@ -716,7 +736,7 @@
           ("C-o" . magit-diff-visit-file-other-window))
   :init
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(magit-project-status "Magit" "j")))
+    (project-add-switch-command 'magit-project-status "Magit" "j"))
   :custom
   (magit-blame-echo-style 'headings)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
@@ -1103,7 +1123,7 @@
   (vterm-max-scrollback 100000) ;; can't go higher than this
   :config
   (with-eval-after-load 'project
-    (add-to-list 'project-switch-commands '(vterm-project "vTerm" "t")))
+    (project-add-switch-command 'vterm-project "vTerm" "t"))
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
