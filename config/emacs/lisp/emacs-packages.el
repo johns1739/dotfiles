@@ -4,7 +4,7 @@
   :demand
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
   :custom
-  (exec-path-from-shell-debug t)
+  ;; (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
   :config
   (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO"))
@@ -82,16 +82,14 @@
 
 (use-package cape
   ;; Cape provides Completion At Point Extensions
-  :custom
+  :init
   ;; #'cape-dict ;; no need for dicts
   ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
   ;; #'cape-line ;; Kinda buggy
-  (completion-at-point-functions
-   (list #'cape-dabbrev
-         #'cape-keyword
-         #'cape-abbrev
-         #'cape-file
-         #'cape-elisp-block)))
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-keyword)
+  (add-hook 'completion-at-point-functions #'cape-dabbrev))
 
 (use-package casual ;; Better transient menu
   :disabled ;; Too much configuration for different modes.
@@ -111,28 +109,27 @@
     (project-add-switch-command 'consult-project-buffer "Buffer" "SPC")
     (project-add-switch-command 'consult-ripgrep "Search" "s"))
   :bind
-  (([remap Info-search] . consult-info)
-   ([remap bookmark-jump] . consult-bookmark)
+  (([remap bookmark-jump] . consult-bookmark)
    ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
    ([remap imenu] . consult-imenu)
-   ([remap keep-lines] . consult-keep-lines)
    ([remap isearch-edit-string] . consult-isearch-history)
+   ([remap jump-to-register] . consult-register-load)
+   ([remap keep-lines] . consult-keep-lines)
+   ([remap list-registers] . consult-register)
+   ([remap load-theme] . consult-theme)
+   ([remap org-search-view] . consult-org-agenda)
+   ([remap point-to-register] . consult-register-store)
    ([remap project-switch-to-buffer] . consult-project-buffer)
+   ([remap recentf-open] . consult-recent-file)
+   ([remap recentf] . consult-recent-file)
    ([remap repeat-complex-command] . consult-complex-command)
    ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
    ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
    ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
    ([remap switch-to-buffer] . consult-buffer)
+   ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
    ([remap yank-pop] . consult-yank-pop)
-   ([remap load-theme] . consult-theme)
-   ([remap recentf] . consult-recent-file)
-   ([remap recentf-open] . consult-recent-file)
-   ([remap org-search-view] . consult-org-agenda)
-   ([remap list-registers] . consult-register)
-   ([remap jump-to-register] . consult-register-load)
-   ([remap point-to-register] . consult-register-store)
-   ([remap keep-lines] . consult-keep-lines)
-   ([remap yank-from-kill-ring] . consult-yank-from-kill-ring))
+   ([remap Info-search] . consult-info))
   ( :map global-leader-map
    ("d SPC" . consult-flymake)
    ("n /" . consult-org-heading))
@@ -280,6 +277,8 @@
               ("m h I" . devdocs-install)
               ("m h h" . devdocs-lookup)
               ("m h s" . devdocs-search)))
+
+;; TODO: Is there a way to focus on a region when editing?
 
 (use-package diff-hl ;; git diff changes in fringe
   :after magit
@@ -961,9 +960,9 @@
   :custom
   (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
 
- ;; https://github.com/magnars/s.el#functions
-(use-package s ;; useful string functions
-  :demand)
+;; https://github.com/magnars/s.el#functions
+;; useful string functions
+(use-package s)
 
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal

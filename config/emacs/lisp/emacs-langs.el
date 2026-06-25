@@ -50,23 +50,25 @@
     (add-to-list 'treesit-language-source-alist
                  '(elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src")))
   (defun elixir-ts-mode-setup ()
-    (setq-local compilation-error-regexp-alist '(elixir-unit-test-target elixir-error-target elixir-warning-target))
     (cond
      ((string-match-p "router.ex$" (buffer-name))
-      (setq outline-regexp " *\\(get\\|delete\\|put\\|post\\|scope\\|pipe_through\\|resources\\) "))
+      (setq-local outline-regexp " *\\(get\\|delete\\|put\\|post\\|scope\\|pipe_through\\|resources\\) "))
      ((string-match-p "_test.exs$" (buffer-name))
-      (setq outline-regexp " *\\(describe \\|test \\|setup \\)"))))
+      (setq-local outline-regexp " *\\(describe \\|test \\|setup \\)"))))
   :hook
   (elixir-ts-mode . elixir-ts-mode-setup)
   (elixir-ts-mode . prettify-symbols-mode)
   :config
   (with-eval-after-load 'compile
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
+    (add-to-list 'compilation-error-regexp-alist 'elixir-unit-test-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-unit-test-target "     \\([^ ]+\\.exs\\):\\([0-9]+\\)" 1 2 nil 1 1))
+    (add-to-list 'compilation-error-regexp-alist 'elixir-error-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-error-target "    error:.+
 [ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1))
+    (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-warning-target "    warning:.+
 [ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 2 1))))
@@ -142,10 +144,11 @@
   ;; ((python-mode . ((eval . (if (and (buffer-file-name)
   ;;                                   (string-match-p "test_.*\\.py" (file-name-nondirectory (buffer-file-name))))
   ;;                              (setq-local compile-command (concat "pytest " (relative-file-name))))))))
+  :ensure nil
   :mode ("\\.py\\'" . python-ts-mode)
   :interpreter ("python" . python-ts-mode)
   :custom
-  (python-indent-guess-indent-offset-verbose t)
+  (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4)
   :init
   (with-eval-after-load 'treesit
@@ -178,11 +181,11 @@
     (add-to-list 'treesit-language-source-alist
                  '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
   (defun ruby-ts-mode-setup ()
-    (when (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name)))
+    (when (and (buffer-file-name)
+               (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name))))
       (setq-local compile-command `(concat "bundle exec rspec "
                                              (relative-file-name)
                                              (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
-      (setq-local outline-level nil)
       (setq-local outline-search-function nil)
       (setq-local outline-regexp " +\\(context \\|describe \\|test \\|it \\)")))
   :hook
@@ -206,7 +209,7 @@
   :ensure nil
   :mode "\\.rs\\'"
   :custom
-  (rust-indent-level 2)
+  (rust-ts-mode-indent-offset 2)
   :init
   (with-eval-after-load 'treesit
     (add-to-list 'treesit-language-source-alist

@@ -739,8 +739,8 @@
   :custom
   (text-mode-ispell-word-completion nil)
   :config
-  (if (executable-find "aspell")
-      (setq ispell-program-name "aspell")))
+  (when (executable-find "aspell")
+      (setopt ispell-program-name "aspell")))
 
 (use-package log-edit
   :ensure nil
@@ -752,6 +752,7 @@
   (log-edit-setup-add-author nil))
 
 (use-package make-mode
+  :ensure nil
   :init
   (defun make-mode-setup ()
     (setq-local outline-regexp "^[A-Za-z].+:"))
@@ -853,11 +854,10 @@
                          (car org-agenda-directories)
                          org-directory)))
       (org-setup-directory next-dir)))
-  (custom-set-faces
-   '(org-todo ((t (:weight bold :foreground "light goldenrod"))))
-   '(org-done ((t (:weight bold :foreground "dim gray")))))
+  (set-face-attribute 'org-todo nil :weight 'bold :foreground "light goldenrod")
+  (set-face-attribute 'org-done nil :weight 'bold :foreground "dim gray")
   (require 'org-capture)
-  (require 'org-crypt)
+  ;; (require 'org-crypt)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
@@ -865,6 +865,7 @@
      (sql . t)))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
 
 (use-package paren
+  :ensure nil
   :custom
   (show-paren-delay 0)
   (show-paren-style 'parenthesis)
@@ -873,9 +874,11 @@
   (show-paren-mode))
 
 (use-package pixel-scroll
+  ;; don't turn on
   :ensure nil
   :defer
   :custom
+  (pixel-scroll-mode nil)
   (pixel-scroll-precision-mode nil)
   (pixel-scroll-precision-use-momentum nil))
 
@@ -924,7 +927,7 @@
   :demand
   :bind
   ( :map goto-map
-    ("r" . recentf))
+    ("r" . recentf-open))
   :custom
   (recentf-auto-cleanup (if (daemonp) 300 'never))
   (recentf-max-menu-items 15)
@@ -956,12 +959,14 @@
   (save-place-mode t))
 
 (use-package tramp
+  :ensure nil
   :defer
   :custom
   (tramp-copy-size-limit (* 2 1024 1024)) ;; 2MB
   (tramp-use-scp-direct-remote-copying t)
   (tramp-verbose 2)
   :config
+  ;; Variable not available until after tramp is loaded.
   (setq tramp-persistency-file-name (expand-file-name "cache/tramp" user-emacs-directory)))
 
 (use-package transient
@@ -973,7 +978,7 @@
   (transient-values-file (expand-file-name "cache/transient/values.el" user-emacs-directory)))
 
 (use-package tab-bar
-  :if (display-graphic-p)
+  :if (display-graphic-p) ;; conflicts with terminal's bindings
   :init
   (keymap-set goto-map "t" tab-bar-map)
   (defun tab-bar-tab-name-project ()
@@ -1019,16 +1024,15 @@
                     tab-bar-format-global))
   :config
   (tab-bar-history-mode 1)
-  (custom-set-faces ;; faces must be set in config since not available on init.
-   '(tab-bar-tab ((t (:weight bold))))
-   '(tab-bar-tab-inactive ((t (:inherit tab-bar :foreground "gray50"))))))
+  (set-face-attribute 'tab-bar-tab nil :weight 'bold)
+  (set-face-attribute 'tab-bar-tab-inactive nil :inherit 'tab-bar :foreground "gray50"))
 
 (use-package treesit
   :ensure nil
   :defer
   :custom
   ;; (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
-  (treesit-auto-install-grammar 'always)
+  ;; (treesit-auto-install-grammar 'always) ;; Maybe available in later emacs version?
   (treesit-enabled-modes t)
   (treesit-font-lock-level 4))
 
@@ -1038,8 +1042,7 @@
   :custom
   (uniquify-buffer-name-style 'forward)
   (uniquify-strip-common-suffix t)
-  (uniquify-after-kill-buffer-p t)
-  (uniquify-after-kill-buffer-flag t))
+  (uniquify-after-kill-buffer-p t))
 
 (use-package vc
   :ensure nil
@@ -1062,7 +1065,7 @@
   (wdired-allow-to-change-permissions t)
   (wdired-create-parent-directories t))
 
-(use-package which-func-mode
+(use-package which-func
   :ensure nil
   :custom
   (which-func-update-delay 0.2)
