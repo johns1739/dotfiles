@@ -655,10 +655,11 @@
   (imenu-list-mode . hl-line-mode))
 
 (use-package indent-bars
-  :bind (:map global-leader-map
-              ("m g" . indent-bars-mode))
+  :bind
+  ( :map global-leader-map
+    ("m g" . indent-bars-mode))
   :hook
-  ((python-mode yaml-mode) . indent-bars-mode))
+  (prog-mode . indent-bars-mode))
 
 (use-package jinx
   :disabled ;; never really used and there are compilation errors.
