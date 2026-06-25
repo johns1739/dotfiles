@@ -121,7 +121,7 @@
                  '(json "https://github.com/tree-sitter/tree-sitter-json"))))
 
 (use-package markdown-ts-mode
-  ;; :ensure nil ;; only available in latest emacs.
+  ;; :ensure nil ;; only available in latest emacs 31
   :mode "\\.md\\'"
   :mode ("README\\.md\\'" . gfm-mode) ;; depends on builtin markdown-mode
   :bind ( :map markdown-ts-mode-map
