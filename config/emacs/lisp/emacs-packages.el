@@ -76,7 +76,6 @@
          ("g" . avy-goto-char-timer)))
 
 (use-package beacon
-  :if (display-graphic-p) ;; Not pretty in terminal
   :config
   (beacon-mode 1))
 
@@ -98,8 +97,9 @@
 
 (use-package command-log-mode
   :disabled ;; Use C-h l
-  :bind (:map global-leader-map
-              ("m l" . clm/toggle-command-log-buffer))
+  :bind
+  ( :map global-leader-map
+    ("m l" . clm/toggle-command-log-buffer))
   :config
   (global-command-log-mode))
 
@@ -241,7 +241,7 @@
 
 (use-package dashboard
   :demand
-  :if (display-graphic-p)
+  :if (display-graphic-p) ;; terminal uses server, the dashboard rarely seen.
   :custom
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
@@ -277,8 +277,6 @@
               ("m h I" . devdocs-install)
               ("m h h" . devdocs-lookup)
               ("m h s" . devdocs-search)))
-
-;; TODO: Is there a way to focus on a region when editing?
 
 (use-package diff-hl ;; git diff changes in fringe
   :after magit
@@ -325,7 +323,7 @@
 
 (use-package docker
   :disabled ;; rarely used
-  :if (and (display-graphic-p) (executable-find "docker"))
+  :if (executable-find "docker")
   :bind (:map global-leader-map
               ("o D" . docker))
   :config
@@ -375,7 +373,7 @@
 
 (use-package eldoc-box
   :disabled ;; annoying GUI
-  :if (display-graphic-p)
+  :if (display-graphic-p) ;; Only available on GUI
   :hook
   (prog-mode . eldoc-box-hover-at-point-mode))
 
@@ -424,7 +422,7 @@
   (ellama-context-header-line-global-mode 1))
 
 (use-package elysium
-  :disabled ;; doesn't work very well, buggy.
+  :disabled ;; doesn't work very well, buggy. Prefer aibo.
   :after (gptel)
   :custom
   (elysium-window-size 0.5)
@@ -467,13 +465,13 @@
   :bind
   ( :map global-leader-map
     ("D" . flycheck-mode)
-    ("d SPC" . nil)
+    ("d SPC" . nil) ;; unset a flymake binding
     ("d ." . flycheck-explain-error-at-point)
     ("d c" . flycheck-compile)
     ("d d" . flycheck-list-errors)
     ("d D" . flycheck-buffer)
     ("d e" . flycheck-verify-setup)
-    ("d p" . nil)
+    ("d p" . nil) ;; unset a flymake binding
     ("d y" . flycheck-copy-errors-as-kill)))
 
 (use-package flycheck-eglot
@@ -516,6 +514,10 @@
 
 (use-package git-link
   :commands (git-link git-link-dispatch)
+  :bind
+  ( :map global-leader-map
+    ("y j" . git-link)
+    ("y J" . git-link-dispatch))
   :init
   (with-eval-after-load 'magit
     (transient-append-suffix 'magit-file-dispatch "e" '("y" "Copy Link" git-link))
@@ -616,7 +618,7 @@
     (define-key git-commit-mode-map (kbd "C-c g") #'gptel-commit)
     (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
 
-(use-package gptel-magit
+(use-package gptel-magit ;; auto-generate commit messages
   :after (gptel magit)
   :hook (magit-mode . gptel-magit-install))
 
@@ -679,12 +681,12 @@
 (use-package kirigami
   :bind
   ( :map global-leader-map
-    ("z M" . kirigami-close-folds)
-    ("z W" . kirigami-open-folds)
-    ("z m" . kirigami-close-fold)
-    ("z w" . kirigami-open-fold)
+    ("z F" . kirigami-close-folds)
+    ("z O" . kirigami-open-folds)
+    ("z f" . kirigami-close-fold)
+    ("z o" . kirigami-open-fold)
     ("z z" . kirigami-toggle-fold)
-    ("z o" . kirigami-open-fold-rec)))
+    ("z ." . kirigami-open-fold-rec)))
 
 (use-package kubernetes
   :disabled ;; rarely used
@@ -876,7 +878,7 @@
   (completion-category-overrides '((file (styles partial-completion))))
   (completion-category-defaults nil))
 
-(use-package org-modern
+(use-package org-modern ;; Better look for org
   :disabled ;; still in its early stages.
   :after org
   :custom-face
@@ -957,6 +959,7 @@
 
 ;; http request library
 (use-package request ;; Jira dependency
+  :after jira
   :defer
   :custom
   (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
@@ -1019,7 +1022,7 @@
   (simple-modeline-mode))
 
 (use-package spacious-padding
-  :if (display-graphic-p)
+  :if (display-graphic-p) ;; fails to add padd in terminal
   :bind ( :map global-leader-map
           ("m P" . spacious-padding-mode)))
 
@@ -1127,6 +1130,7 @@
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
+;; TODO: See how to record audio into Emacs, maybe an Apple app?
 (use-package whisper ;; Audio recording
   :disabled ;; could be better
   :if (executable-find "ffmpeg")
@@ -1207,10 +1211,10 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
   :demand
-  :bind (:map goto-map
-              ("&" . yas-visit-snippet-file)
-              :map global-leader-map
-              ("x &" . yas-new-snippet))
+  :bind ( :map goto-map
+          ("&" . yas-visit-snippet-file)
+          :map global-leader-map
+          ("x &" . yas-new-snippet))
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
   :config
@@ -1219,7 +1223,6 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 (use-package yasnippet-snippets
   :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
-
 
 (provide 'emacs-packages)
 ;;; emacs-packages.el ends here
