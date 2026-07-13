@@ -139,6 +139,12 @@
     (add-to-list 'treesit-language-source-alist
                  '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src"))))
 
+;; Can remove if using emacs 31+
+(use-package md-ts-mode
+  :after markdown-ts-mode
+  :config
+  (md-ts-mode-enable-global))
+
 (use-package python
   ;; Example .dir-locals.el to configure compile command.
   ;; ((python-mode . ((eval . (if (and (buffer-file-name)
