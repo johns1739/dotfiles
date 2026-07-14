@@ -229,7 +229,8 @@
       (and project (project-root project))))
   (defun relative-file-name ()
     "Relative from project or cwd directory."
-    (file-relative-name (buffer-file-name) (or (project-directory) default-directory)))
+    (if-let (file-name (buffer-file-name))
+        (file-relative-name file-name (or (project-directory) default-directory))))
   (defun copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
     (interactive)
@@ -519,11 +520,11 @@
           ("l a" . eglot-code-actions))
   :custom
   (eglot-autoshutdown t)
-  (eglot-events-buffer-size 0)
-  (eglot-events-buffer-config '(:size 0 :format full))
-  (eglot-prefer-plaintext nil)
   (eglot-code-action-indications '(eldoc-hint))
-  (eglot-mode-line-session nil))
+  (eglot-events-buffer-config '(:size 0 :format full))
+  (eglot-events-buffer-size 0)
+  (eglot-mode-line-session nil)
+  (eglot-prefer-plaintext nil))
 
 (use-package eldoc
   :ensure nil

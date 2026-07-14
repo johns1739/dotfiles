@@ -586,7 +586,11 @@
   (with-eval-after-load 'dired
     (bind-keys :map dired-mode-map
                ("A" . gptel-add)
-               ("K" . gptel-context-remove-all))))
+               ("K" . gptel-context-remove-all)))
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\*gptel-.*\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))
+               '("\\*Copilot\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package gptel-agent
   :after (gptel)
@@ -985,8 +989,8 @@
         (propertize (format "[%s]" name) 'face 'bold)))
   (defun simple-modeline-segment-buffer-name-2 ()
     "Display buffer's relative-name in mode line."
-    (let ((buffer-name (or (buffer-file-name) (buffer-name)))
-          (shortened-name (string-truncate-left (relative-file-name) 50)))
+    (let* ((name (or (relative-file-name) (buffer-file-name) (buffer-name)))
+           (shortened-name (string-truncate-left name 50)))
       (propertize (concat "  " shortened-name) 'face 'bold)))
   (defun simple-modeline-segment-spaces ()
     (propertize "  "))
