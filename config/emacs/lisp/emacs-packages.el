@@ -470,8 +470,8 @@
     ("d c" . flycheck-compile)
     ("d d" . flycheck-list-errors)
     ("d D" . flycheck-buffer)
-    ("d e" . flycheck-verify-setup)
     ("d p" . nil) ;; unset a flymake binding
+    ("d v" . flycheck-verify-setup)
     ("d y" . flycheck-copy-errors-as-kill)))
 
 (use-package flycheck-eglot
@@ -659,9 +659,7 @@
 (use-package indent-bars
   :bind
   ( :map global-leader-map
-    ("m g" . indent-bars-mode))
-  :hook
-  (prog-mode . indent-bars-mode))
+    ("m g" . indent-bars-mode)))
 
 (use-package jinx
   :disabled ;; never really used and there are compilation errors.
@@ -915,7 +913,6 @@
   (org-roam-db-autosync-mode))
 
 (use-package paredit
-  :disabled ;; Gets in the way, difficult to fix a broken parens mat
   :hook
   (emacs-lisp-mode . enable-paredit-mode)
   (lisp-mode . enable-paredit-mode)

@@ -286,6 +286,8 @@
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   :ensure nil
   :bind (:map global-leader-map
+              ("k !" . shell-command)
+              ("k &" . async-shell-command)
               ("k g" . recompile)
               ("k k" . compile-dwim)
               ("k K" . compile)

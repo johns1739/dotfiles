@@ -73,6 +73,11 @@
                  '(elixir-warning-target "    warning:.+
 [ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 2 1))))
 
+(use-package flycheck-janet
+  ;; prefer janet-lsp flychecker
+  :after janet-ts-mode
+  :vc ( :url "https://github.com/sogaiu/flycheck-janet" :rev :newest))
+
 (use-package go-ts-mode
   ;; Install LSP:
   ;; go install golang.org/x/tools/gopls@latest
@@ -93,6 +98,17 @@
   (with-eval-after-load 'treesit
     (add-to-list 'treesit-language-source-alist
                  '(heex "https://github.com/phoenixframework/tree-sitter-heex"))))
+
+(use-package janet-ts-mode
+  :mode "\\.janet\\'"
+  :vc ( :url "https://github.com/sogaiu/janet-ts-mode" :rev :newest)
+  :hook (janet-ts-mode . enable-paredit-mode)
+  :init
+  (with-eval-after-load 'treesit
+    (add-to-list 'treesit-language-source-alist
+                 '(janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")))
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs `(janet-ts-mode "janet-lsp"))))
 
 (use-package js-ts-mode
   :ensure nil
