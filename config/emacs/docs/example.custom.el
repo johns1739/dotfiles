@@ -68,7 +68,7 @@
 
 ;; (with-eval-after-load 'org
 ;;   (add-hook 'org-mode-hook #'flyspell-mode)
-;;   (setq org-agenda-directories '("~/Documents/notes" "~/Documents/notes"))
+;;   (setq org-agenda-directories '("~/Documents/notes"))
 ;;   (org-setup-directory))
 
 ;; (with-eval-after-load 'project

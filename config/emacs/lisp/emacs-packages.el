@@ -1105,6 +1105,9 @@
   (visual-replace-global-mode))
 
 (use-package vterm
+  ;; Dependencies (linux):
+  ;; sudo apt update
+  ;; sudo apt install libtool libtool-bin
   :bind ( :map global-leader-map
           ("k t" . vterm-project)
           ("k T" . vterm))
