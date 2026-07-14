@@ -270,15 +270,24 @@
                  '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))))
 
 (use-package vue-ts-mode
+  ;; Dependencies
+  ;; npm install -g @vue/language-server typescript-language-server
   :vc (:url "https://github.com/8uff3r/vue-ts-mode")
   :mode "\\.vue\\'"
   :init
   (with-eval-after-load 'treesit
     (add-to-list 'treesit-language-source-alist
                  '(vue "https://github.com/ikatyang/tree-sitter-vue")))
+  (defun vue-eglot-tsdk-option ()
+    (let* ((npm-root (string-trim (shell-command-to-string "npm root -g")))
+           (tsdk-path (concat npm-root "/typescript/lib")))
+      (concat "--tsdk=" tsdk-path)))
   :bind
   ( :map vue-ts-mode-map
-    ("M-o" . nil)))
+    ("M-o" . nil))
+  :config
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs `(vue-ts-mode "vue-language-server" "--stdio" ,(vue-eglot-tsdk-option))))
 
 (use-package web-mode
   :mode "\\.phtml\\'"
