@@ -288,7 +288,7 @@
     ("M-o" . nil))
   :config
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs `(vue-ts-mode "vue-language-server" "--stdio" ,(vue-eglot-tsdk-option))))
+    (add-to-list 'eglot-server-programs `(vue-ts-mode "vue-language-server" "--stdio" ,(vue-eglot-tsdk-option)))))
 
 (use-package web-mode
   :mode "\\.phtml\\'"
