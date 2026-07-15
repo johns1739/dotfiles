@@ -244,10 +244,7 @@
 (use-package abbrev
   :ensure nil
   :custom
-  (save-abbrevs nil)
-  :config
-  (define-abbrev-table 'global-abbrev-table
-    '(("uuid" "" (lambda () (insert (org-id-uuid)))))))
+  (save-abbrevs nil))
 
 ;; password authentication service
 ;; To reload authinfo:
