@@ -917,6 +917,7 @@
   (org-roam-db-autosync-mode))
 
 (use-package paredit
+  :disabled ;; auto formats that conflicts with lang's formatting.
   :hook
   (emacs-lisp-mode . enable-paredit-mode)
   (lisp-mode . enable-paredit-mode)
