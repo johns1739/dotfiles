@@ -827,15 +827,12 @@
   (org-todo-keyword-faces
    '(("WIP" . (:foreground "spring green"))
      ("ACTIVE" . (:foreground "spring green"))
-     ("REVIEW" . (:foreground "spring green"))
-     ("BACKLOG" . org-done)))
+     ("REVIEW" . (:foreground "spring green"))))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i" :empty-lines 1)
-     ("T" "TaskAtPoint" entry (file+headline "tasks.org" "Task") "* TODO %A\n%f\n%i" :immediate-finish t :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")
-     ("J" "JournalAtPoint" entry (file+olp+datetree "journal.org") "* %A\n%T\n%F\n%i" :immediate-finish t)))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
   :config
   (defvar org-agenda-directories '()
     "List of directories to toggle for org-agenda-files.")

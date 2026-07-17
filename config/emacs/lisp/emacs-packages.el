@@ -841,7 +841,7 @@
      '("r" . meow-replace)
      '("R" . meow-sync-grab)
      (cons "s" search-map)
-     '("S" . nil)
+     '("S" . save-buffer)
      '("t" . meow-till)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)

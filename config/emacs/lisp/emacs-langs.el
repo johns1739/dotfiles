@@ -79,6 +79,14 @@
   :after janet-ts-mode
   :vc ( :url "https://github.com/sogaiu/flycheck-janet" :rev :newest))
 
+(use-package gleam-ts-mode
+  :mode (rx ".gleam" eos)
+  :config
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs `(gleam-ts-mode "gleam" "lsp")))
+  (unless (treesit-language-available-p 'gleam)
+    (gleam-ts-install-grammar)))
+
 (use-package go-ts-mode
   ;; Install LSP:
   ;; go install golang.org/x/tools/gopls@latest
