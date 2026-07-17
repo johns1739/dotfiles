@@ -457,6 +457,7 @@
   :mode "\\.fish\\'")
 
 (use-package flycheck
+  :demand ;; for dependencies
   :commands (global-flycheck-mode flycheck-mode)
   :custom
   (flycheck-indication-mode 'left-fringe)

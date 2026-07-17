@@ -79,7 +79,12 @@
   :after janet-ts-mode
   :vc ( :url "https://github.com/sogaiu/flycheck-janet" :rev :newest))
 
+;; TODO:
+;; https://github.com/gleam-lang/tree-sitter-gleam
+;; Resolve issue with: https://github.com/gleam-lang/gleam-mode/commit/ae8aecda23e9dca755d80e86cdb7c336011c2321
 (use-package gleam-ts-mode
+  ;; Install
+  ;; (gleam-ts-install-grammar)
   :mode (rx ".gleam" eos)
   :config
   (with-eval-after-load 'eglot
