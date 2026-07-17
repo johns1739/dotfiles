@@ -1027,10 +1027,18 @@
 (use-package treesit
   :ensure nil
   :defer
+  :init
+  (defun treesit-install-available-language-grammars ()
+    "Install all grammars available for Tree-sitter."
+    (interactive)
+    (dolist (lang treesit-language-source-alist)
+      (let ((language (car lang)))
+        (unless (treesit-ready-p language)
+          (treesit-install-language-grammar language)))))
   :custom
   ;; (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
   ;; (treesit-auto-install-grammar 'always) ;; Maybe available in later emacs version?
-  (treesit-enabled-modes t)
+  ;; (treesit-enabled-modes t) ;; Maybe available in later emacs version?
   (treesit-font-lock-level 4))
 
 (use-package uniquify
