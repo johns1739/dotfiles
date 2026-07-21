@@ -60,6 +60,8 @@
   (elixir-ts-mode . elixir-ts-mode-setup)
   (elixir-ts-mode . prettify-symbols-mode)
   :config
+  (with-eval-after-load 'eglot
+    (add-to-list 'eglot-server-programs `((elixir-mode elixir-ts-mode heex-ts-mode) "expert_lsp" "--stdio")))
   (with-eval-after-load 'compile
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
     (add-to-list 'compilation-error-regexp-alist 'elixir-unit-test-target)

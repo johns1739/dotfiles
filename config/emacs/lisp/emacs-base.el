@@ -1,5 +1,7 @@
 ;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
 
+;; TODO C-M-y (copy sexp)
+
 (use-package emacs
   :ensure nil
   :demand

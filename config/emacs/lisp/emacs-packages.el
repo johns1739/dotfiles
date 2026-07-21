@@ -732,6 +732,7 @@
   (lsp-mode . lsp-enable-which-key-integration)
   (lsp-mode . lsp-set-bindings))
 
+;; TODO: Easier access to the leader map of meow
 (use-package magit
   :commands (magit-project-status)
   :bind ( :map global-leader-map
@@ -785,8 +786,29 @@
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
     (add-to-list 'meow-expand-exclude-mode-list 'csv-mode)
-    (meow-motion-overwrite-define-key
+    (meow-motion-overwrite-define-key ;; Deprecated: use meow-motion-define-key on new version 1.6
+     (cons "SPC" global-leader-map)
+     '("M-SPC" . "H-SPC") ;; Rebind original space command (e.g., magit-status)
      '("<escape>" . ignore))
+    ;; TODO: Update paren example to actual working mode.
+    (setq meow-paren-keymap (make-keymap))
+    (meow-define-state paren
+      "meow state for interacting with smartparens"
+      :lighter " [P]"
+      :keymap meow-paren-keymap)
+    ;; meow-define-state creates the variable
+    (setq meow-cursor-type-paren 'hollow)
+    (meow-define-keys 'paren
+      '("<escape>" . meow-normal-mode)
+      '("l" . sp-forward-sexp)
+      '("h" . sp-backward-sexp)
+      '("j" . sp-down-sexp)
+      '("k" . sp-up-sexp)
+      '("n" . sp-forward-slurp-sexp)
+      '("b" . sp-forward-barf-sexp)
+      '("v" . sp-backward-barf-sexp)
+      '("c" . sp-backward-slurp-sexp)
+      '("u" . meow-undo))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
      '("M-DEL" . meow-backward-kill-word)
