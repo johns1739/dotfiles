@@ -169,6 +169,7 @@
   (special-mode . hl-line-mode)
   ;; (text-mode . visual-line-mode) ;; Do not use visual-line-mode for csv-mode
   :config
+  (put 'narrow-to-region 'disabled nil) ;; Enable command
   (unless (display-graphic-p) ;; When in terminal ...
     ;; (custom-set-faces
     ;;  '(default ((((type tty))))))
@@ -824,6 +825,7 @@
   (org-startup-folded 'content)
   (org-startup-indented t)
   (org-tags-column -80)
+  (org-use-fast-todo-selection 'auto)
   (org-todo-keyword-faces
    '(("WIP" . (:foreground "spring green"))
      ("ACTIVE" . (:foreground "spring green"))
