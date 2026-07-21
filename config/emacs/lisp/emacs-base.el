@@ -818,6 +818,7 @@
   (org-hide-emphasis-markers t)
   (org-hide-leading-stars t)
   (org-insert-heading-respect-content t)
+  (org-list-demote-modify-bullet '(("-" . "+") ("+" . "-")))
   (org-log-done 'time)
   (org-log-into-drawer t)
   (org-refile-targets '((nil :maxlevel . 2) (org-agenda-files :maxlevel . 1)))

@@ -871,6 +871,13 @@
   (meow-setup)
   (meow-global-mode))
 
+(use-package meow-tree-sitter
+  :after meow
+  :config
+  (meow-normal-define-key
+   '("o" . meow-tree-sitter-node))
+  (meow-tree-sitter-register-defaults))
+
 (use-package ob-http
   :disabled ;; Better to use curl in org-source blocks.
   :after org)
