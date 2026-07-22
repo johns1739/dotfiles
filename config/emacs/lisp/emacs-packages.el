@@ -732,7 +732,6 @@
   (lsp-mode . lsp-enable-which-key-integration)
   (lsp-mode . lsp-set-bindings))
 
-;; TODO: Easier access to the leader map of meow
 (use-package magit
   :commands (magit-project-status)
   :bind ( :map global-leader-map
@@ -903,6 +902,13 @@
 (use-package ob-http
   :disabled ;; Better to use curl in org-source blocks.
   :after org)
+
+(use-package ob-restclient
+  :after org
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((restclient . t))))
 
 (use-package orderless
   :custom

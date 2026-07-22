@@ -2,9 +2,9 @@
 # name: source-http
 # key: ,http
 # --
-#begin_src http :pretty
+#+begin_src http :pretty
 ${1:GET} ${2:http://example.com}
 ${3:Content-Type: application/json}
 
 {${0}}
-#end_src
+#+end_src

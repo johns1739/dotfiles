@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: source-restclient
+# key: ,rest
+# --
+#+begin_src restclient
+${1:POST} ${2:http://localhost}
+${3:Content-Type: application/json}
+
+${0:{}}
+#+end_src

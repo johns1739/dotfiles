@@ -1,7 +1,5 @@
 ;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
 
-;; TODO C-M-y (copy sexp)
-
 (use-package emacs
   :ensure nil
   :demand
@@ -11,6 +9,7 @@
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
   :bind
+  ("C-M-h" . mark-sexp)
   ("C-M-d" . delete-pair)
   ("C-z" . nil)
   ("M-L" . duplicate-dwim)
