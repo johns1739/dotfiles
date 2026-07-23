@@ -56,9 +56,8 @@
              "*** Emacs loaded in %s seconds with %d garbage collections and %d packages."
              (emacs-init-time "%.2f") gcs-done (length package-activated-list))))
 
-(when (display-graphic-p)
-  (setopt use-package-compute-statistics t)
-  (setopt use-package-verbose t))
+(setopt use-package-compute-statistics t)
+(setopt use-package-verbose t)
 
 (provide 'early-init)
 ;;; early-init.el ends here

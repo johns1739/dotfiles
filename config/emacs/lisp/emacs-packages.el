@@ -104,10 +104,6 @@
   (global-command-log-mode))
 
 (use-package consult
-  :init
-  (with-eval-after-load 'project
-    (project-add-switch-command 'consult-project-buffer "Buffer" "SPC")
-    (project-add-switch-command 'consult-ripgrep "Search" "s"))
   :bind
   (([remap bookmark-jump] . consult-bookmark)
    ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
@@ -131,20 +127,22 @@
    ([remap yank-pop] . consult-yank-pop)
    ([remap Info-search] . consult-info))
   ( :map global-leader-map
-   ("d SPC" . consult-flymake)
-   ("n /" . consult-org-heading))
+    ("d SPC" . consult-flymake)
+    ("n /" . consult-org-heading))
   ( :map minibuffer-mode-map
-   ("C-r" . consult-history)
-   ("C-M-i" . consult-history))
+    ("C-r" . consult-history)
+    ("C-M-i" . consult-history))
   ( :map search-map
-   ("f" . consult-find) ;; works even if not in a project
-   ("F" . find-name-dired)
-   ("l" . consult-line)
-   ("L" . consult-focus-lines)
-   ("s" . consult-ripgrep))
+    ("f" . consult-find) ;; works even if not in a project
+    ("M-f" . consult-find) ;; works even if not in a project
+    ("F" . find-name-dired)
+    ("l" . consult-line)
+    ("L" . consult-focus-lines)
+    ("s" . consult-ripgrep)
+    ("M-s" . consult-ripgrep))
   ( :map goto-map
-   ("I" . consult-imenu-multi)
-   ("o" . consult-outline))
+    ("I" . consult-imenu-multi)
+    ("o" . consult-outline))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
@@ -153,15 +151,20 @@
   (xref-show-xrefs-function #'consult-xref)
   (xref-show-definitions-function #'consult-xref)
   :config
+  (with-eval-after-load 'project
+    (project-add-switch-command 'consult-project-buffer "Buffer" "SPC")
+    (project-add-switch-command 'consult-ripgrep "Search" "s"))
   (if (executable-find "fd")
       (bind-keys :map search-map
                  ("f" . consult-fd))))
 
 (use-package consult-flycheck
-  :after (consult flycheck)
+  :after consult
   :bind
   ( :map global-leader-map
-    ("d SPC" . consult-flycheck)))
+    ("d SPC" . consult-flycheck))
+  :config
+  (require 'flycheck))
 
 (use-package consult-denote ;; Prot's note-taking with org
   :disabled ;; not using denote
@@ -457,7 +460,6 @@
   :mode "\\.fish\\'")
 
 (use-package flycheck
-  :demand ;; for dependencies
   :commands (global-flycheck-mode flycheck-mode)
   :custom
   (flycheck-indication-mode 'left-fringe)
@@ -476,7 +478,10 @@
     ("d y" . flycheck-copy-errors-as-kill)))
 
 (use-package flycheck-eglot
-  :after (flycheck eglot)
+  :after eglot
+  :init
+  (require 'flycheck)
+  (require 'consult-flycheck)
   :config
   (global-flycheck-eglot-mode t))
 
@@ -1142,21 +1147,22 @@
   :config
   (visual-replace-global-mode))
 
+;; TODO: Cursor sometimes stays as block on insert mode.
 (use-package vterm
   ;; Dependencies (linux):
   ;; sudo apt update
   ;; sudo apt install libtool libtool-bin
   :bind ( :map global-leader-map
-          ("k t" . vterm-project)
-          ("k T" . vterm))
+          ("k t" . vterm)
+          ("p t" . vterm-project))
   :init
   (defun vterm-project ()
     (interactive)
-    (require 'vterm) ;; resolves: Defining as dynamic an already lexical var: vterm-buffer-name
+    (require 'vterm) ;; Prevent defining as dynamic an already lexical var: vterm-buffer-name
     (let ((vterm-buffer-name
            (or (and (project-current)
                     (format "*%s-vterm*" (project-name (project-current))))
-               "*vterm*"))
+               "*project-vterm*"))
           (default-directory (or (project-directory) default-directory)))
       (vterm)))
   :custom
