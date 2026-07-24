@@ -731,18 +731,19 @@
   (isearch-mode-end . recenter-top-bottom))
 
 (use-package ispell
-  ;; brew install aspell (preferred)
-  ;; brew install ispell
-  ;; NOTE: ispell fails to install due to compilation issues
+  ;; brew install aspell
   :ensure nil
   :if (or (executable-find "aspell") (executable-find "ispell"))
-  :bind ( :map global-map
-          ("M-$" . ispell-word))
+  :bind
+  ( :map global-map
+    ("M-$" . ispell-word))
   :custom
   (text-mode-ispell-word-completion nil)
+  (ispell-personal-dictionary (expand-file-name "cache/ispell-personal-dict.txt" user-emacs-directory))
+  (ispell-extra-args '("--ignore=3 --sug-mode=slow --run-together"))
   :config
   (when (executable-find "aspell")
-      (setopt ispell-program-name "aspell")))
+    (setopt ispell-program-name "aspell")))
 
 (use-package log-edit
   :ensure nil
