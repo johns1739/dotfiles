@@ -782,7 +782,9 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   (org-agenda-mode . visual-line-mode)
-  :bind ( :map global-leader-map
+  :bind ( :map global-map
+          ("C-c L" . org-store-link)
+          :map global-leader-map
           ("n '" . org-capture-goto-last-stored)
           ("n ?" . org-occur-link-in-agenda-files)
           ("n L" . org-store-link)
@@ -863,6 +865,7 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
+     (ruby . t)
      (shell . t)
      (sql . t)))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
 
