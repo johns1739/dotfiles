@@ -38,6 +38,7 @@
     ;; Modes
     ("m v" . visual-line-mode)
     ;; Open Apps
+    ("o d" . diff)
     ("o C" . calendar)
     ;; Edits
     ("x k" . delete-matching-lines)
@@ -285,13 +286,15 @@
 (use-package compile
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   :ensure nil
-  :bind (:map global-leader-map
-              ("k !" . shell-command)
-              ("k &" . async-shell-command)
-              ("k g" . recompile)
-              ("k k" . compile-dwim)
-              ("k K" . compile)
-              ("k RET" . send-region-to-process))
+  :bind ( :map global-leader-map
+          ("k !" . shell-command)
+          ("k &" . async-shell-command)
+          ("k g" . recompile)
+          ("k k" . compile-dwim)
+          ("k K" . compile)
+          ("k RET" . send-region-to-process)
+          :map mode-specific-map
+          ("C-," . async-shell-command-rerun))
   :custom
   (ansi-color-for-compilation-mode t)
   (compilation-always-kill t)
@@ -309,6 +312,11 @@
   (compilation-mode . hl-line-mode)
   (compilation-mode . visual-line-mode)
   :init
+  (defun async-shell-command-rerun ()
+    "Run last async shell command."
+    (interactive)
+    (let ((async-shell-command-buffer 'confirm-kill-process))
+      (async-shell-command (car shell-command-history))))
   (defun compile-dwim ()
     (interactive)
     (if (project-current)
@@ -475,8 +483,8 @@
   (ediff-keep-variants nil)
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
-  :bind ( :map global-leader-map
-          ("o d" . ediff-files))
+  ;; :bind ( :map global-leader-map
+  ;;         ("o d" . ediff-files))
   :config
   (advice-add 'ediff-window-display-p :override #'ignore))
 
@@ -782,8 +790,7 @@
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
   (org-agenda-mode . visual-line-mode)
-  :bind ( :map global-map
-          ("C-c L" . org-store-link)
+  :bind ( ("C-c L" . org-store-link)
           :map global-leader-map
           ("n '" . org-capture-goto-last-stored)
           ("n ?" . org-occur-link-in-agenda-files)

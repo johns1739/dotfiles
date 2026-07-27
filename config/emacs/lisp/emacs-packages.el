@@ -538,18 +538,18 @@
   (with-eval-after-load 'magit
     (transient-append-suffix 'magit-file-dispatch "d" '("T" "Timemachine" git-timemachine)))
   :config
-  (defun git-timemachine-toggle-meow-state ()
-    "Set meow to motion state when enterint timemachine."
-    (if git-timemachine-mode
-        (progn
-          (meow-motion-mode 1)
-          (git-timemachine-refontify))
-      (meow-normal-mode 1)))
   (defun git-timemachine-refontify (&rest _)
     "Re-fontify buffer after timemachine revision change."
     (font-lock-ensure))
   (advice-add 'git-timemachine-show-revision :after #'git-timemachine-refontify)
   (with-eval-after-load 'meow
+    (defun git-timemachine-toggle-meow-state ()
+      "Set meow to motion state when enterint timemachine."
+      (if git-timemachine-mode
+          (progn
+            (meow-motion-mode 1)
+            (git-timemachine-refontify))
+        (meow-normal-mode 1)))
     (add-hook 'git-timemachine-mode-hook #'git-timemachine-toggle-meow-state)))
 
 (use-package golden-ratio ;; auto-scales focused buffer
