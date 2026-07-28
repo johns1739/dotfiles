@@ -1,5 +1,8 @@
 ;;; emacs-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
+;; TODO: org-roam integration
+;; https://www.orgroam.com/
+
 (use-package exec-path-from-shell
   :demand
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
@@ -1070,12 +1073,19 @@
           ("m P" . spacious-padding-mode)))
 
 (use-package tmr
-  :bind (:map global-leader-map
-              ("o t" . tmr-tabulated-view))
+  ;; Dependencies
+  ;; brew install ffmpeg
+  :bind ( :map global-leader-map
+          ("o t" . tmr-tabulated-view))
   :custom
   (tmr-timer-finished-functions
-   '(tmr-print-message-for-finished-timer tmr-acknowledge-minibuffer))
+   '(tmr-print-message-for-finished-timer
+     tmr-acknowledge-minibuffer))
   :config
+  (if (executable-find "ffplay")
+      (add-to-list 'tmr-timer-finished-functions 'tmr-sound-play))
+  (if (featurep 'dbusbind)
+      (add-to-list 'tmr-timer-finished-functions 'tmr-notification-notify))
   (tmr-mode-line-mode t))
 
 (use-package transient)
@@ -1148,6 +1158,7 @@
   (visual-replace-global-mode))
 
 ;; TODO: Cursor sometimes stays as block on insert mode.
+;; TODO: Previous / Next prompt?
 (use-package vterm
   ;; Dependencies (linux):
   ;; sudo apt update

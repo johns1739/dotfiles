@@ -1,5 +1,8 @@
 ;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
 
+;; TODO: emacs-lisp-book by prot
+;; https://protesilaos.com/emacs/emacs-lisp-elements
+
 (use-package emacs
   :ensure nil
   :demand
@@ -287,14 +290,11 @@
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   :ensure nil
   :bind ( :map global-leader-map
-          ("k !" . shell-command)
-          ("k &" . async-shell-command)
+          ("k &" . async-shell-command-rerun)
           ("k g" . recompile)
           ("k k" . compile-dwim)
           ("k K" . compile)
-          ("k RET" . send-region-to-process)
-          :map mode-specific-map
-          ("C-," . async-shell-command-rerun))
+          ("k RET" . send-region-to-process))
   :custom
   (ansi-color-for-compilation-mode t)
   (compilation-always-kill t)
