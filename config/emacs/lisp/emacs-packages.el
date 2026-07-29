@@ -675,9 +675,12 @@
     ("m g" . indent-bars-mode)))
 
 (use-package jinx
-  :disabled ;; never really used and there are compilation errors.
-  :bind (("M-$" . jinx-correct)
-         ([remap flyspell-mode] . jinx-mode)))
+  ;; Dependencies:
+  ;; brew install pkgconf enchant hunspell nuspell
+  :if (executable-find "enchant-2")
+  :bind ( ("C-M-$" . jinx-languages)
+          ([remap flyspell-mode] . jinx-mode)
+          ([remap ispell-word] . jinx-correct)))
 
 ;; https://github.com/unmonoqueteclea/jira.el?tab=readme-ov-file#authentication
 (use-package jira
