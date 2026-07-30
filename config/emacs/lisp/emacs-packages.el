@@ -680,7 +680,9 @@
   :if (executable-find "enchant-2")
   :bind ( ("C-M-$" . jinx-languages)
           ([remap flyspell-mode] . jinx-mode)
-          ([remap ispell-word] . jinx-correct)))
+          ([remap ispell-word] . jinx-correct))
+  :custom
+  (jinx-delay 0.5))
 
 ;; https://github.com/unmonoqueteclea/jira.el?tab=readme-ov-file#authentication
 (use-package jira

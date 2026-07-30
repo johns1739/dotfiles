@@ -39,6 +39,7 @@
     ("=" . balance-windows-area)
     ("SPC" . project-switch-to-buffer)
     ;; Modes
+    ("m t" . toggle-truncate-lines)
     ("m v" . visual-line-mode)
     ;; Open Apps
     ("o d" . diff)
@@ -47,7 +48,6 @@
     ("x k" . delete-matching-lines)
     ("x l" . keep-lines)
     ("x s" . sort-lines)
-    ("x t" . toggle-truncate-lines)
     ("x u" . delete-duplicate-lines)
     ;; Copy/Paste
     ("y F" . copy-absolute-file-name)
@@ -103,7 +103,6 @@
   (window-combination-resize t)
   (window-resize-pixelwise nil)
   (url-configuration-directory (expand-file-name "cache/url/" user-emacs-directory))
-  (truncate-lines t)
   (switch-to-buffer-obey-display-actions t)
   (shr-use-colors nil)
   (set-mark-command-repeat-pop t) ; So we can use C-u C-SPC C-SPC C-SPC... instead of C-u C-SPC C-u C-SPC...
@@ -789,7 +788,6 @@
   :hook
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
-  (org-agenda-mode . visual-line-mode)
   :bind ( ("C-c L" . org-store-link)
           :map global-leader-map
           ("n '" . org-capture-goto-last-stored)
