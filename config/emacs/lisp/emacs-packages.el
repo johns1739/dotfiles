@@ -633,7 +633,9 @@
 
 (use-package gptel-magit ;; auto-generate commit messages
   :after (gptel magit)
-  :hook (magit-mode . gptel-magit-install))
+  :hook (magit-mode . gptel-magit-install)
+  :custom
+  (gptel-magit-commit-prompt gptel-magit-prompt-zed))
 
 (use-package gptel-prompts
   :disabled ;; Fails to install, package not available
