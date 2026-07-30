@@ -76,6 +76,9 @@
                  '(elixir-warning-target "    warning:.+
 [ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 2 1))))
 
+(use-package elm-mode
+  :mode "\\.elm\\'")
+
 (use-package flycheck-janet
   ;; prefer janet-lsp flychecker
   :after janet-ts-mode

@@ -482,8 +482,8 @@
   (ediff-keep-variants nil)
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
-  ;; :bind ( :map global-leader-map
-  ;;         ("o d" . ediff-files))
+  :bind ( :map global-leader-map
+          ("o D" . ediff-files))
   :config
   (advice-add 'ediff-window-display-p :override #'ignore))
 

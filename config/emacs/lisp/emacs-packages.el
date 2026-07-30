@@ -568,7 +568,6 @@
     (add-to-list 'golden-ratio-extra-commands 'ace-window)))
 
 (use-package gptel ;; ai llm copilot chatgpt
-  :demand ;; required for the extensions to load corectly
   :custom
   (gptel-default-mode 'org-mode)
   (gptel-prompt-prefix-alist '((markdown-ts-mode . "### ") (org-mode . "* PROMPT ")))
@@ -602,40 +601,46 @@
                '("\\*Copilot\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package gptel-agent
-  :after (gptel)
   :vc ( :url "https://github.com/karthink/gptel-agent" :rev :newest)
   :bind
   ( :map global-leader-map
     ("i a" . gptel-agent))
   ( :map project-prefix-map
     ("i" . gptel-agent))
+  :preface
+  (require 'gptel)
   :config
   (gptel-agent-update))
 
 (use-package gptel-aibo
-  :after (gptel)
   :bind
   ( :map global-leader-map
     ("i i" . gptel-aibo)
     ("i I" . gptel-aibo-complete-at-point))
   ( :map gptel-aibo-mode-map
-    ("C-c C-<return>" . gptel-aibo-send)))
+    ("C-c C-<return>" . gptel-aibo-send))
+  :preface
+  (require 'gptel))
 
 (use-package gptel-commit
   :disabled ;; prefer gptel-magit
-  :after  (gptel magit)
+  :after  magit
   :custom
   (gptel-commit-stream t)
+  :preface
+  (require 'gptel)
   :config
   (with-eval-after-load 'magit
     (define-key git-commit-mode-map (kbd "C-c g") #'gptel-commit)
     (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
 
 (use-package gptel-magit ;; auto-generate commit messages
-  :after (gptel magit)
+  :after magit
   :hook (magit-mode . gptel-magit-install)
   :custom
-  (gptel-magit-commit-prompt gptel-magit-prompt-zed))
+  (gptel-magit-commit-prompt gptel-magit-prompt-zed)
+  :preface
+  (require 'gptel))
 
 (use-package gptel-prompts
   :disabled ;; Fails to install, package not available
