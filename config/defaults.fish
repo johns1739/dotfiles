@@ -10,15 +10,19 @@ set -gx SUDO_EDITOR "emacsnw"
 set -gx VISUAL "em"
 set -gx GPG_TTY (tty)
 
-alias ....='cd ../../..'
-alias ...='cd ../..'
-alias ..='cd ..'
-alias grep="grep --line-buffered --color"
-alias l="less"
-alias lg="lazygit"
-alias ll="ls -lh --color"
-alias rgrep="grep --color -rnIi"
-alias top="btop"
+if status is-interactive
+    alias ....='cd ../../..'
+    alias ...='cd ../..'
+    alias ..='cd ..'
+    alias grep="grep --line-buffered --color"
+    alias l="less"
+    alias lg="lazygit"
+    alias ll="ls -lh --color"
+    alias rgrep="grep --color -rnIi"
+    alias top="btop"
+
+    zoxide init fish --cmd g | source
+end
 
 if test "$INSIDE_EMACS" = 'vterm'
     and test -n "$EMACS_VTERM_PATH"
