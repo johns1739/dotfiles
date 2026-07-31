@@ -512,14 +512,14 @@
   (forge-database-file (expand-file-name "cache/forge/forge-database.sqlite" user-emacs-directory)))
 
 (use-package format-all
-  :commands format-all-mode
-  :hook (prog-mode . format-all-mode)
+  ;; https://github.com/lassik/emacs-format-all-the-code#supported-languages
+  :commands (format-all-mode format-all-region-or-buffer)
+  :bind ( :map global-leader-map
+          ("TAB" . format-all-region-or-buffer)
+          ("m TAB" . format-all-mode))
   :custom
-  (format-all-show-errors 'errors)
-  :config
-  (setq-default format-all-formatters
-                ;; 2-spaces, no-grouping
-                '(("SQL" (pgformatter "-s2" "-g")))))
+  (format-all-show-errors 'errors))
+
 
 (use-package git-link
   :commands (git-link git-link-dispatch)
@@ -725,14 +725,14 @@
   :disabled ;; not easy to setup
   :config
   (ligature-set-ligatures 'prog-mode '("--" "---" "==" "===" "!=" "!==" "=!=" "=:=" "=/=" "<=" ">=" "&&" "&&&" "&=" "++" "+++"
-   "***" ";;" "!!" "??" "?:" "?." "?=" "<:" ":<" ":>" ">:" "<>" "<<<" ">>>" "<<" ">>" "||" "-|"
-   "_|_" "|-" "||-" "|=" "||=" "##" "###" "####" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:"
-   "#!" "#=" "^=" "<$>" "<$" "$>" "<+>" "<+ +>" "<*>" "<* *>" "</" "</>" "/>" "<!--"
-   "<#--" "-->" "->" "->>" "<<-" "<-" "<=<" "=<<" "<<=" "<==" "<=>" "<==>" "==>" "=>"
-   "=>>" ">=>" ">>=" ">>-" ">-" ">--" "-<" "-<<" ">->" "<-<" "<-|" "<=|" "|=>" "|->" "<-"
-   "<~~" "<~" "<~>" "~~" "~~>" "~>" "~-" "-~" "~@" "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
-   "|>" "<|" "||>" "<||" "|||>" "|||>" "<|>" "..." ".." ".=" ".-" "..<" ".?" "::" ":::"
-   ":=" "::=" ":?" ":?>" "//" "///" "/*" "*/" "/=" "//=" "/==" "@_" "__"))
+                                       "***" ";;" "!!" "??" "?:" "?." "?=" "<:" ":<" ":>" ">:" "<>" "<<<" ">>>" "<<" ">>" "||" "-|"
+                                       "_|_" "|-" "||-" "|=" "||=" "##" "###" "####" "#{" "#[" "]#" "#(" "#?" "#_" "#_(" "#:"
+                                       "#!" "#=" "^=" "<$>" "<$" "$>" "<+>" "<+ +>" "<*>" "<* *>" "</" "</>" "/>" "<!--"
+                                       "<#--" "-->" "->" "->>" "<<-" "<-" "<=<" "=<<" "<<=" "<==" "<=>" "<==>" "==>" "=>"
+                                       "=>>" ">=>" ">>=" ">>-" ">-" ">--" "-<" "-<<" ">->" "<-<" "<-|" "<=|" "|=>" "|->" "<-"
+                                       "<~~" "<~" "<~>" "~~" "~~>" "~>" "~-" "-~" "~@" "[||]" "|]" "[|" "|}" "{|" "[<" ">]"
+                                       "|>" "<|" "||>" "<||" "|||>" "|||>" "<|>" "..." ".." ".=" ".-" "..<" ".?" "::" ":::"
+                                       ":=" "::=" ":?" ":?>" "//" "///" "/*" "*/" "/=" "//=" "/==" "@_" "__"))
   (global-ligature-mode t))
 
 (use-package lsp-mode
@@ -774,8 +774,8 @@
   :hook (magit-mode . magit-delta-mode))
 
 (use-package magit-todos
-  :disabled ;; not really used, slow startup if project too big
-  :bind (:map project-prefix-map ("t" . magit-todos-list))
+  ;; :disabled ;; not really used, slow startup if project too big
+  :after magit
   :config
   (magit-todos-mode 1))
 

@@ -260,6 +260,16 @@
     (add-to-list 'treesit-language-source-alist
                  '(rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src"))))
 
+(use-package sql-mode
+  :ensure nil
+  :mode "\\.sql\\'"
+  :init
+  (defun sql-mode-setup ()
+    ;; 2-spaces, no-grouping
+    (setq format-all-formatters '(("SQL" (pgformatter "-s2" "-g")))))
+  :hook
+  (sql-mode . sql-mode-setup))
+
 (use-package toml-ts-mode
   :ensure nil
   :mode "\\.toml\\'"
