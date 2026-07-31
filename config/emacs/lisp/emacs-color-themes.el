@@ -16,6 +16,7 @@
 (use-package darktooth-theme :defer)
 (use-package doric-themes :defer)
 (use-package ef-themes :defer)
+(use-package gruber-darker-theme :defer)
 (use-package gruvbox-theme :defer)
 (use-package miasma-theme :defer)
 (use-package modus-themes :defer)

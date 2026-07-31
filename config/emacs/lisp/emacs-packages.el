@@ -166,7 +166,7 @@
   :bind
   ( :map global-leader-map
     ("d SPC" . consult-flycheck))
-  :config
+  :preface
   (require 'flycheck))
 
 (use-package consult-denote ;; Prot's note-taking with org
@@ -1140,6 +1140,7 @@
   (after-change-major-mode . treesit-fold-auto-enable))
 
 (use-package undo-tree
+  :disabled ;; trying out vundo, works with native undo
   :demand
   :custom
   (undo-tree-visualizer-diff t)
@@ -1199,6 +1200,10 @@
     (project-add-switch-command 'vterm-project "vTerm" "t"))
   (add-to-list 'display-buffer-alist
                '("\\*.*vterm\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
+
+(use-package vundo
+  :bind
+  ( ("C-x u" . vundo)))
 
 ;; TODO: See how to record audio into Emacs, maybe an Apple app?
 (use-package whisper ;; Audio recording

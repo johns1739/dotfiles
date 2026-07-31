@@ -77,6 +77,10 @@
 [ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 2 1))))
 
 (use-package elm-mode
+  ;; Dependencies
+  ;; npm install -g @elm-tooling/elm-language-server
+  ;; npm install -g elm elm-test elm-format
+  ;; npm install -g elm-review
   :mode "\\.elm\\'")
 
 (use-package flycheck-janet
