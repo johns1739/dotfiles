@@ -131,7 +131,8 @@
    ([remap Info-search] . consult-info))
   ( :map global-leader-map
     ("d SPC" . consult-flymake)
-    ("n /" . consult-org-heading))
+    ("n /" . consult-org-heading)
+    (", SPC" . consult-emacs-packages))
   ( :map minibuffer-mode-map
     ("C-r" . consult-history)
     ("C-M-i" . consult-history))
@@ -146,6 +147,11 @@
   ( :map goto-map
     ("I" . consult-imenu-multi)
     ("o" . consult-outline))
+  :init
+  (defun consult-emacs-packages ()
+    "Search emacs configuration."
+    (interactive)
+    (consult-ripgrep user-emacs-directory "^(use-package "))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
@@ -520,7 +526,6 @@
   :custom
   (format-all-show-errors 'errors))
 
-
 (use-package git-link
   :commands (git-link git-link-dispatch)
   :bind
@@ -770,11 +775,13 @@
 
 (use-package magit-delta
   :disabled ;; diff colors are difficult to see, ugly
+  ;; Dependencies
+  ;; brew install git-delta
   :if (and (display-graphic-p) (executable-find "delta"))
   :hook (magit-mode . magit-delta-mode))
 
 (use-package magit-todos
-  ;; :disabled ;; not really used, slow startup if project too big
+  :disabled ;; slow startup if project too big, sometimes list is missing
   :after magit
   :config
   (magit-todos-mode 1))
