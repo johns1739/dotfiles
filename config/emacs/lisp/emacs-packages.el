@@ -151,7 +151,7 @@
   (defun consult-emacs-packages ()
     "Search emacs configuration."
     (interactive)
-    (consult-ripgrep user-emacs-directory "^(use-package "))
+    (consult-ripgrep (expand-file-name "lisp" user-emacs-directory) "^(use-package "))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
