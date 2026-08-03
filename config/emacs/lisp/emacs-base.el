@@ -812,7 +812,6 @@
           ("M-N" . org-move-subtree-down)
           ("M-P" . org-move-subtree-up))
   :custom
-  (org-agenda-sorting-strategy '((todo deadline-up todo-state-down urgency-down category-keep)))
   (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
@@ -836,13 +835,17 @@
   (org-startup-indented t)
   (org-tags-column -80)
   (org-use-fast-todo-selection 'auto)
+  (org-agenda-sorting-strategy
+   '((agenda habit-down time-up urgency-down category-keep)
+     (todo deadline-up habit-up todo-state-down urgency-down timestamp-up)
+     (search category-keep)))
   (org-todo-keyword-faces
    '(("WIP" . (:foreground "spring green"))
      ("ACTIVE" . (:foreground "spring green"))
      ("REVIEW" . (:foreground "spring green"))))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%i" :empty-lines 1)
+   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%U\n%i" :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
   :config

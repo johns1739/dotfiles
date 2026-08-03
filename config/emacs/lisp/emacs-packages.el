@@ -55,10 +55,8 @@
           (", T" . auto-dark-toggle-appearance)))
 
 (use-package auto-dim-other-buffers
-  :demand
-  :if (display-graphic-p)
-  :config
-  (auto-dim-other-buffers-mode t))
+  :bind ( :map global-leader-map
+          ("m D" . auto-dim-other-buffers-mode)))
 
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
@@ -172,7 +170,7 @@
   :bind
   ( :map global-leader-map
     ("d SPC" . consult-flycheck))
-  :preface
+  :config
   (require 'flycheck))
 
 (use-package consult-denote ;; Prot's note-taking with org
@@ -253,7 +251,7 @@
 
 (use-package dashboard
   :demand
-  :if (display-graphic-p) ;; terminal uses server, the dashboard rarely seen.
+  :unless (display-graphic-p) ;; Better when used w/ emacs server.
   :custom
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
@@ -612,9 +610,8 @@
     ("i a" . gptel-agent))
   ( :map project-prefix-map
     ("i" . gptel-agent))
-  :preface
-  (require 'gptel)
   :config
+  (require 'gptel)
   (gptel-agent-update))
 
 (use-package gptel-aibo
@@ -624,7 +621,7 @@
     ("i I" . gptel-aibo-complete-at-point))
   ( :map gptel-aibo-mode-map
     ("C-c C-<return>" . gptel-aibo-send))
-  :preface
+  :config
   (require 'gptel))
 
 (use-package gptel-commit
@@ -632,9 +629,8 @@
   :after  magit
   :custom
   (gptel-commit-stream t)
-  :preface
-  (require 'gptel)
   :config
+  (require 'gptel)
   (with-eval-after-load 'magit
     (define-key git-commit-mode-map (kbd "C-c g") #'gptel-commit)
     (define-key git-commit-mode-map (kbd "C-c G") #'gptel-commit-rationale)))
@@ -644,7 +640,7 @@
   :hook (magit-mode . gptel-magit-install)
   :custom
   (gptel-magit-commit-prompt gptel-magit-prompt-zed)
-  :preface
+  :config
   (require 'gptel))
 
 (use-package gptel-prompts

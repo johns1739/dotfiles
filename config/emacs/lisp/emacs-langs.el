@@ -229,8 +229,8 @@
     (when (and (buffer-file-name)
                (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name))))
       (setq-local compile-command `(concat "bundle exec rspec "
-                                             (relative-file-name)
-                                             (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
+                                           (relative-file-name)
+                                           (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
       (setq-local outline-search-function nil)
       (setq-local outline-regexp " +\\(context \\|describe \\|test \\|it \\)")))
   :hook
