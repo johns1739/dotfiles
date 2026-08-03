@@ -915,17 +915,19 @@
   :bind
   ( :map project-prefix-map
     ("K" . project-forget-project)
-    ("z" . project-forget-zombie-projects))
+    ("z" . project-forget-zombie-projects)
+    :map global-leader-map
+    ("P" . project-remember-projects-under))
   :custom
   (project-list-file (expand-file-name "cache/projects" user-emacs-directory))
   ;; Excellent for mono repos with multiple langs, makes Eglot happy
   ;; (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod"))
   :init
+  (keymap-set global-leader-map "p" project-prefix-map)
   (defun project-add-switch-command (command name &optional key)
     "Add COMMAND with NAME and KEY to `project-switch-commands' and keep sorted."
     (add-to-list 'project-switch-commands (if key (list command name key) (list command name)))
     (sort project-switch-commands (lambda (a b) (string< (cadr a) (cadr b)))))
-  (keymap-set global-leader-map "p" project-prefix-map)
   :config
   (require 'vc-git) ;; project-find-file requires vc-git--program-version
   (setopt project-switch-commands

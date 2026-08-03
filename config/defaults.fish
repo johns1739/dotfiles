@@ -5,9 +5,9 @@ bind --user alt-v true # unbind editor edit
 
 fish_add_path "$HOME/.local/bin"
 
-set -gx EDITOR "em"
-set -gx SUDO_EDITOR "emacsnw"
-set -gx VISUAL "em"
+set -gx EDITOR em
+set -gx SUDO_EDITOR emacsnw
+set -gx VISUAL em
 set -gx GPG_TTY (tty)
 
 if status is-interactive
@@ -24,8 +24,17 @@ if status is-interactive
     zoxide init fish --cmd g | source
 end
 
-if test "$INSIDE_EMACS" = 'vterm'
+if test "$INSIDE_EMACS" = vterm
     and test -n "$EMACS_VTERM_PATH"
     and test -d "$EMACS_VTERM_PATH"
     source "$EMACS_VTERM_PATH/etc/emacs-vterm.fish"
+
+    function ff
+        set -q argv[1]; or set argv[1] "."
+        vterm_cmd find-file (realpath "$argv")
+    end
+
+    function say
+        vterm_cmd message "%s" "$argv"
+    end
 end

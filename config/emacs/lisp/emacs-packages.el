@@ -1,6 +1,7 @@
 ;;; emacs-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
 ;; TODO: org-roam integration
+;; TODO: integrate microphone to terminal, ghostty, or claude
 ;; https://www.orgroam.com/
 
 (use-package exec-path-from-shell
@@ -572,6 +573,7 @@
 
 (use-package gptel ;; ai llm copilot chatgpt
   :custom
+  (gptel-log-level 'debug)
   (gptel-default-mode 'org-mode)
   (gptel-prompt-prefix-alist '((markdown-ts-mode . "### ") (org-mode . "* PROMPT ")))
   (gptel-response-prefix-alist '((org-mode . "** RESPONSE\n")))

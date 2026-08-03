@@ -34,6 +34,11 @@
 ;;   (add-to-list 'eglot-server-programs
 ;;                '((ruby-mode ruby-ts-mode) "ruby-lsp")))
 
+;; Custom Gemfile Instructions:
+;; https://shopify.github.io/ruby-lsp/vscode-extension.html#using-a-custom-gemfile
+;; (with-eval-after-load 'eglot
+;;   (add-to-list 'eglot-server-programs '((ruby-mode ruby-ts-mode) "ruby-lsp")))
+
 ;; (with-eval-after-load 'eglot
 ;;   (add-to-list 'eglot-server-programs
 ;;                `((ruby-mode ruby-ts-mode)
