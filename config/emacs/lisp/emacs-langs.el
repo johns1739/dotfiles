@@ -214,6 +214,7 @@
                    "^\\([A-Za-z0-9/][^ (]+\\.py\\):\\([1-9][0-9]*\\): "
                    1 2 nil nil 1))))
 
+;; TODO: Figure out how to direct to custom Gemfile for ruby-lsp
 (use-package ruby-ts-mode
   :ensure nil
   :mode ("\\.rb\\'" "Rakefile\\'" "Gemfile\\'" ".irbrc\\'")
