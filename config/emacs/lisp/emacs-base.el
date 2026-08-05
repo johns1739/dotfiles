@@ -1105,7 +1105,10 @@
     ("m ." . which-function-mode)))
 
 (use-package which-key
+  :demand
   :ensure nil
+  :bind ( :map help-map
+          ("?" . which-key-show-major-mode))
   :custom
   (which-key-side-window-location 'right)
   (which-key-separator " ")
