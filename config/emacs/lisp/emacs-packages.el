@@ -955,20 +955,17 @@
   (global-org-modern-mode))
 
 (use-package org-roam
-  :disabled ;; Too much, makes note-taking more complex.
   :commands (org-roam-node-find)
   :bind
-  ( :map org-mode-map
-    ("C-c C-r" . org-roam-node-insert)
-    :map global-leader-map
-    ("r SPC" . org-roam-node-find)
-    ("r i" . org-roam-node-insert)
-    ("r k" . org-roam-capture)
-    ("r K" . org-roam-extract-subtree)
-    ("r a" . org-roam-alias-add)
-    ("r q" . org-roam-tag-add)
-    ("r w" . org-roam-refile)
-    ("r ," . org-mark-ring-goto))
+  ( :map global-leader-map
+    ("n n" . org-roam-node-find)
+    ("n N" . org-roam-capture)
+    :map org-mode-map
+    ("C-c n i" . org-roam-node-insert)
+    ("C-c n k" . org-roam-extract-subtree)
+    ("C-c n a" . org-roam-alias-add)
+    ("C-c n t" . org-roam-tag-add)
+    ("C-c n w" . org-roam-refile))
   :custom
   (org-roam-db-location (expand-file-name "cache/org-roam/org-roam.db" user-emacs-directory))
   (org-roam-completion-everywhere t)
@@ -976,7 +973,7 @@
   :config
   (require 'org)
   (setopt org-roam-directory (expand-file-name "org-roam/" org-directory))
-  (make-directory org-roam-directory t)
+  (make-directory (expand-file-name org-roam-dailies-directory org-roam-directory) t)
   (org-roam-db-autosync-mode))
 
 (use-package paredit
@@ -1182,8 +1179,8 @@
   ;; sudo apt update
   ;; sudo apt install libtool libtool-bin
   :bind ( :map global-leader-map
-          ("k t" . vterm)
-          ("p t" . vterm-project))
+          ("k T" . vterm)
+          ("k t" . vterm-project))
   :init
   (defun vterm-project ()
     (interactive)

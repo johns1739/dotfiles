@@ -21,7 +21,7 @@ if status is-interactive
     alias rgrep="grep --color -rnIi"
     alias top="btop"
 
-    zoxide init fish --cmd g | source
+    zoxide init fish --cmd cd | source
 end
 
 if test "$INSIDE_EMACS" = vterm
