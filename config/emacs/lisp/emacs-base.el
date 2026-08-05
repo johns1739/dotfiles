@@ -785,6 +785,10 @@
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))
+  (defun consult-org-grep ()
+    "Search org directory."
+    (interactive)
+    (consult-ripgrep (expand-file-name org-directory user-emacs-directory)))
   :hook
   (org-mode . org-mode-setup)
   (org-agenda-mode . hl-line-mode)
@@ -796,7 +800,7 @@
           ("n k" . org-capture)
           ("n K" . org-capture-goto-target)
           ("n m" . org-mark-ring-goto)
-          ("n s" . org-occur-in-agenda-files)
+          ("n s" . consult-org-grep)
           ("n t" . org-todo-list)
           ("n T" . org-toggle-agenda-directories)
           :map org-mode-map
