@@ -1,9 +1,5 @@
 ;;; emacs-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
-;; TODO: org-roam integration
-;; TODO: integrate microphone to terminal, ghostty, or claude
-;; https://www.orgroam.com/
-
 (use-package exec-path-from-shell
   :demand
   :if (and (memq window-system '(mac ns x)) (display-graphic-p))
@@ -62,7 +58,7 @@
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
-         ("n g" . avy-org-refile-as-child)
+         ("n w" . avy-org-refile-as-child)
          ("y p" . avy-copy-line)
          ("y P" . avy-copy-region)
          ("y g" . avy-move-line) ;; g for grab
@@ -130,7 +126,6 @@
    ([remap Info-search] . consult-info))
   ( :map global-leader-map
     ("d SPC" . consult-flymake)
-    ("n /" . consult-org-heading)
     (", SPC" . consult-emacs-packages))
   ( :map minibuffer-mode-map
     ("C-r" . consult-history)
@@ -143,6 +138,8 @@
     ("L" . consult-focus-lines)
     ("s" . consult-ripgrep)
     ("M-s" . consult-ripgrep))
+  ( :map org-mode-map
+    ("C-c C-/" . consult-org-heading))
   ( :map goto-map
     ("I" . consult-imenu-multi)
     ("o" . consult-outline))
@@ -150,7 +147,7 @@
   (defun consult-emacs-packages ()
     "Search emacs configuration."
     (interactive)
-    (consult-ripgrep (expand-file-name "lisp" user-emacs-directory) "^(use-package "))
+    (consult-ripgrep (expand-file-name "lisp" user-emacs-directory) "^(use-package\\ "))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
@@ -958,23 +955,28 @@
   (global-org-modern-mode))
 
 (use-package org-roam
-  :disabled ;; mainly for networking notes, but not really used
-  :after (org)
+  :disabled ;; Too much, makes note-taking more complex.
   :commands (org-roam-node-find)
   :bind
-  ( :map global-leader-map
-    ("n r c" . org-roam-capture)
-    ("n r f" . org-roam-node-find)
-    ("n r i" . org-roam-node-insert)
-    ("n r t" . org-roam-tag-add)
-    ("n r w" . org-roam-refile)
-    ("n r l" . org-roam-buffer-toggle))
+  ( :map org-mode-map
+    ("C-c C-r" . org-roam-node-insert)
+    :map global-leader-map
+    ("r SPC" . org-roam-node-find)
+    ("r i" . org-roam-node-insert)
+    ("r k" . org-roam-capture)
+    ("r K" . org-roam-extract-subtree)
+    ("r a" . org-roam-alias-add)
+    ("r q" . org-roam-tag-add)
+    ("r w" . org-roam-refile)
+    ("r ," . org-mark-ring-goto))
   :custom
-  (org-roam-directory "~/.notes/org-roam")
+  (org-roam-db-location (expand-file-name "cache/org-roam/org-roam.db" user-emacs-directory))
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:12}" 'face 'org-tag)))
   :config
-  (make-directory "~/.notes/org-roam" t)
+  (require 'org)
+  (setopt org-roam-directory (expand-file-name "org-roam/" org-directory))
+  (make-directory org-roam-directory t)
   (org-roam-db-autosync-mode))
 
 (use-package paredit
@@ -1175,8 +1177,6 @@
   :config
   (visual-replace-global-mode))
 
-;; TODO: Cursor sometimes stays as block on insert mode.
-;; TODO: Previous / Next prompt?
 (use-package vterm
   ;; Dependencies (linux):
   ;; sudo apt update
@@ -1210,7 +1210,6 @@
   :bind
   ( ("C-x u" . vundo)))
 
-;; TODO: See how to record audio into Emacs, maybe an Apple app?
 (use-package whisper ;; Audio recording
   :disabled ;; could be better
   :if (executable-find "ffmpeg")

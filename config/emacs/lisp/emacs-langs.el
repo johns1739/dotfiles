@@ -88,10 +88,10 @@
   :after janet-ts-mode
   :vc ( :url "https://github.com/sogaiu/flycheck-janet" :rev :newest))
 
-;; TODO:
-;; https://github.com/gleam-lang/tree-sitter-gleam
-;; Resolve issue with: https://github.com/gleam-lang/gleam-mode/commit/ae8aecda23e9dca755d80e86cdb7c336011c2321
 (use-package gleam-ts-mode
+  ;; https://github.com/gleam-lang/tree-sitter-gleam
+  ;; NOTE: Resolve issue with:
+  ;; https://github.com/gleam-lang/gleam-mode/commit/ae8aecda23e9dca755d80e86cdb7c336011c2321
   ;; Install
   ;; (gleam-ts-install-grammar)
   :mode (rx ".gleam" eos)
@@ -161,8 +161,8 @@
 
 (use-package markdown-ts-mode
   ;; :ensure nil ;; only available in latest emacs 31
-  :mode "\\.md\\'"
-  :mode ("README\\.md\\'" . gfm-mode) ;; depends on builtin markdown-mode
+  ;; :mode "\\.md\\'"
+  :mode ("\\.md\\'" . gfm-mode) ;; depends on builtin markdown-mode
   :bind ( :map markdown-ts-mode-map
           ("M-;" . markdown-blockquote-region)
           ("M-H" . markdown-mark-block)
@@ -214,7 +214,6 @@
                    "^\\([A-Za-z0-9/][^ (]+\\.py\\):\\([1-9][0-9]*\\): "
                    1 2 nil nil 1))))
 
-;; TODO: Figure out how to direct to custom Gemfile for ruby-lsp
 (use-package ruby-ts-mode
   :ensure nil
   :mode ("\\.rb\\'" "Rakefile\\'" "Gemfile\\'" ".irbrc\\'")

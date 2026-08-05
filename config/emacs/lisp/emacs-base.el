@@ -791,12 +791,10 @@
   :bind ( ("C-c L" . org-store-link)
           :map global-leader-map
           ("n '" . org-capture-goto-last-stored)
-          ("n ?" . org-occur-link-in-agenda-files)
-          ("n L" . org-store-link)
           ("n SPC" . org-search-view)
           ("n a" . org-agenda)
-          ("n f" . org-capture-goto-target)
           ("n k" . org-capture)
+          ("n K" . org-capture-goto-target)
           ("n m" . org-mark-ring-goto)
           ("n s" . org-occur-in-agenda-files)
           ("n t" . org-todo-list)
@@ -825,7 +823,7 @@
   (org-hide-drawer-startup t)
   (org-hide-emphasis-markers t)
   (org-hide-leading-stars t)
-  (org-insert-heading-respect-content t)
+  (org-insert-heading-respect-content nil)
   (org-list-demote-modify-bullet '(("-" . "+") ("+" . "-")))
   (org-log-done 'time)
   (org-log-into-drawer t)
@@ -876,6 +874,11 @@
      (ruby . t)
      (shell . t)
      (sql . t)))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
+
+(use-package org-id
+  :ensure nil
+  :custom
+  (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))
 
 (use-package paren
   :ensure nil
