@@ -126,6 +126,7 @@
    ([remap Info-search] . consult-info))
   ( :map global-leader-map
     ("d SPC" . consult-flymake)
+    (", s" . consult-emacs)
     (", SPC" . consult-emacs-packages))
   ( :map minibuffer-mode-map
     ("C-r" . consult-history)
@@ -144,6 +145,10 @@
     ("I" . consult-imenu-multi)
     ("o" . consult-outline))
   :init
+  (defun consult-emacs ()
+    "Search emacs configuration."
+    (interactive)
+    (consult-ripgrep user-emacs-directory))
   (defun consult-emacs-packages ()
     "Search emacs configuration."
     (interactive)
@@ -954,6 +959,11 @@
 
 (use-package org-roam
   :commands (org-roam-node-find)
+  :init
+  (defun org-roam-setup-directory ()
+    (setopt org-roam-directory (expand-file-name "org-roam/" org-directory))
+    (make-directory org-roam-directory t)
+    (org-roam-db-autosync-mode))
   :bind
   ( :map global-leader-map
     ("n n" . org-roam-node-find)
@@ -975,9 +985,7 @@
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:12}" 'face 'org-tag)))
   :config
-  (setopt org-roam-directory (expand-file-name "org-roam/" org-directory))
-  (make-directory org-roam-directory t)
-  (org-roam-db-autosync-mode))
+  (org-roam-setup-directory))
 
 (use-package paredit
   :disabled ;; auto formats that conflicts with lang's formatting.
