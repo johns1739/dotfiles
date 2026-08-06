@@ -330,10 +330,9 @@
   (dired-subtree-use-backgrounds nil))
 
 (use-package docker
-  :disabled ;; rarely used
   :if (executable-find "docker")
   :bind (:map global-leader-map
-              ("o D" . docker))
+              ("o k" . docker))
   :config
   (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
                           docker-container-columns)))
@@ -712,7 +711,6 @@
     ("z ." . kirigami-open-fold-rec)))
 
 (use-package kubernetes
-  :disabled ;; rarely used
   :if (and (display-graphic-p) (executable-find "kubectl"))
   :commands (kubernetes-overview)
   :bind (:map global-leader-map
@@ -960,20 +958,25 @@
   ( :map global-leader-map
     ("n n" . org-roam-node-find)
     ("n N" . org-roam-capture)
+    :map mode-specific-map
+    ("n a a" . org-roam-dailies-goto-today)
+    ("n a y" . org-roam-dailies-goto-yesterday)
+    ("n a t" . org-roam-dailies-goto-tomorrow)
+    ("n n" . org-roam-node-find)
+    ("n N" . org-roam-capture)
     :map org-mode-map
     ("C-c n i" . org-roam-node-insert)
     ("C-c n k" . org-roam-extract-subtree)
-    ("C-c n a" . org-roam-alias-add)
-    ("C-c n t" . org-roam-tag-add)
+    ("C-c n ;" . org-roam-alias-add)
+    ("C-c n :" . org-roam-tag-add)
     ("C-c n w" . org-roam-refile))
   :custom
   (org-roam-db-location (expand-file-name "cache/org-roam/org-roam.db" user-emacs-directory))
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:12}" 'face 'org-tag)))
   :config
-  (require 'org)
   (setopt org-roam-directory (expand-file-name "org-roam/" org-directory))
-  (make-directory (expand-file-name org-roam-dailies-directory org-roam-directory) t)
+  (make-directory org-roam-directory t)
   (org-roam-db-autosync-mode))
 
 (use-package paredit
