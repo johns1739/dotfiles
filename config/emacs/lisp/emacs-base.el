@@ -81,6 +81,8 @@
     ("l" . goto-line)
     ("m" . bookmark-jump)
     ("u" . find-file-at-point)
+    ("p" . previous-buffer)
+    ("n" . next-buffer)
     ;; Window navigation
     ("w H" . windmove-swap-states-left)
     ("w J" . windmove-swap-states-down)
@@ -293,6 +295,8 @@
           ("k g" . recompile)
           ("k k" . compile-dwim)
           ("k K" . compile)
+          ("k n" . next-error)
+          ("k p" . previous-error)
           ("k RET" . send-region-to-process))
   :custom
   (ansi-color-for-compilation-mode t)
@@ -810,6 +814,7 @@
       (org-setup-directory next-dir)))
   :hook
   (org-mode . org-mode-setup)
+  (org-mode . visual-line-mode)
   (org-agenda-mode . hl-line-mode)
   :bind ( ("C-c L" . org-store-link)
           :map global-leader-map
@@ -859,7 +864,7 @@
   (org-use-fast-todo-selection 'auto)
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up urgency-down category-keep)
-     (todo urgency-down habit-up urgency-down todo-state-down timestamp-up)
+     (todo deadline-up habit-up urgency-down todo-state-down timestamp-up)
      (search category-keep)))
   (org-todo-keyword-faces
    '(("WIP" . (:foreground "spring green"))
@@ -1117,6 +1122,7 @@
   (which-key-separator " ")
   (which-key-prefix-prefix "… ")
   (which-key-max-display-columns 3)
+  (which-key-sort-uppercase-first nil)
   (which-key-idle-delay 1)
   (which-key-idle-secondary-delay 0.25)
   (which-key-add-column-padding 1)

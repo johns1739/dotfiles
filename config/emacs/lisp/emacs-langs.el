@@ -127,6 +127,7 @@
   :vc ( :url "https://github.com/sogaiu/janet-ts-mode" :rev :newest)
   :hook (janet-ts-mode . electric-pair-mode)
   :init
+  (add-to-list 'major-mode-remap-alist '(janet-mode . janet-ts-mode))
   (with-eval-after-load 'treesit
     (add-to-list 'treesit-language-source-alist
                  '(janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")))
