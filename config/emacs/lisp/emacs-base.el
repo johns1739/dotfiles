@@ -843,7 +843,7 @@
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'future)
-  (org-agenda-window-setup 'other-window)
+  (org-agenda-window-setup 'other-frame) ;; display buffer setting
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
   (org-edit-src-content-indentation 0)
