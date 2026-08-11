@@ -50,6 +50,7 @@
     ("x s" . sort-lines)
     ("x u" . delete-duplicate-lines)
     ;; Copy/Paste
+    ("y d" . copy-project-directory)
     ("y F" . copy-absolute-file-name)
     ("y f" . copy-relative-file-name)
     ;; Settings (Look & Feel)
@@ -238,11 +239,15 @@
     "Relative from project or cwd directory."
     (if-let (file-name (buffer-file-name))
         (file-relative-name file-name (or (project-directory) default-directory))))
+  (defun copy-project-directory ()
+    (interactive)
+    (if-let (dir (project-directory))
+        (kill-new dir)))
   (defun copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
     (interactive)
     (let ((rfn (relative-file-name)))
-      (kill-new (relative-file-name))
+      (kill-new rfn)
       (message "Copied %s" rfn)))
   (defun reload-emacs ()
     (interactive)
@@ -843,7 +848,7 @@
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
   (org-agenda-todo-ignore-scheduled 'future)
-  (org-agenda-window-setup 'other-frame) ;; display buffer setting
+  (org-agenda-window-setup 'current-window) ;; display buffer setting
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
   (org-edit-src-content-indentation 0)
