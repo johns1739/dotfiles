@@ -135,6 +135,7 @@
     ("f" . consult-find) ;; works even if not in a project
     ("M-f" . consult-find) ;; works even if not in a project
     ("F" . find-name-dired)
+    ("I" . consult-imenu-multi)
     ("l" . consult-line)
     ("L" . consult-focus-lines)
     ("s" . consult-ripgrep)
@@ -142,7 +143,6 @@
   ( :map org-mode-map
     ("C-c C-/" . consult-org-heading))
   ( :map goto-map
-    ("I" . consult-imenu-multi)
     ("o" . consult-outline))
   :init
   (defun consult-emacs ()
@@ -958,6 +958,7 @@
   (global-org-modern-mode))
 
 (use-package org-roam
+  :disabled ;; never really used
   :commands (org-roam-node-find)
   :init
   (defun org-roam-setup-directory ()

@@ -77,7 +77,6 @@
     ("SPC" . switch-to-buffer)
     ("d" . dired-jump)
     ("h" . eldoc)
-    ("i" . imenu)
     ("j" . jump-to-register)
     ("l" . goto-line)
     ("m" . bookmark-jump)
@@ -94,6 +93,7 @@
     ("w k" . windmove-up)
     ("w l" . windmove-right)
     :map search-map
+    ("i" . imenu)
     ("j" . list-registers)
     ("m" . list-bookmarks)
     ("o" . occur))
@@ -746,6 +746,14 @@
   :hook
   (isearch-mode-end . recenter-top-bottom))
 
+(use-package dictionary
+  :ensure nil
+  :bind
+  ( :map global-map
+    ("M-#" . dictionary-search))
+  :custom
+  (dictionary-server "dict.org"))
+
 (use-package ispell
   ;; brew install aspell
   :ensure nil
@@ -934,6 +942,7 @@
   :defer
   :bind
   ( :map project-prefix-map
+    ("d" . project-dired)
     ("K" . project-forget-project)
     ("z" . project-forget-zombie-projects)
     :map global-leader-map
@@ -951,7 +960,7 @@
   :config
   (require 'vc-git) ;; project-find-file requires vc-git--program-version
   (setopt project-switch-commands
-          '((project-find-dir "Dir" ?d)
+          '((project-dired "Dir" ?d)
             (project-eshell "Eshell" ?e)
             (project-find-file "File" ?f)
             (project-find-regexp "Regexp" ?g)

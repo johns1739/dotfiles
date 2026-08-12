@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: source-markdown-view
+# name: source-markdown
 # key: ,md
 # --
-#+begin_src markdown-view
+#+begin_src markdown
 $0
 #+end_src
