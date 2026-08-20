@@ -39,4 +39,12 @@ if test "$INSIDE_EMACS" = vterm
     end
 end
 
-string match -qr '^ghostel(,|$)' -- "$INSIDE_EMACS"; and source "$EMACS_GHOSTEL_PATH/etc/shell/ghostel.fish"
+if string match -qr '^ghostel(,|$)' -- "$INSIDE_EMACS"
+    and test -n "$EMACS_GHOSTEL_PATH"
+    and test -d "$EMACS_GHOSTEL_PATH"
+    source "$EMACS_GHOSTEL_PATH/etc/shell/ghostel.fish"
+
+    ff()   { ghostel_cmd find-file-other-window "$@"; }
+    dired() { ghostel_cmd dired-other-window "$@"; }
+    magit() { ghostel_cmd magit-status-setup-buffer "$(pwd)"; }
+end

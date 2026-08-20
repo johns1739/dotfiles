@@ -97,14 +97,15 @@
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ( :map global-leader-map
           ("i c" . claude-code-ide-menu))
-  :requires (monet inheritenv)
   :custom
   (claude-code-ide-debug t)
+  (claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-window-side 'left)
   (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
   (claude-code-ide-terminal-initialization-delay 0.15) ; better render
   :config
   (require 'monet)
+  (require 'inheritenv)
   (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
   (monet-mode 1)
   (claude-code-ide-emacs-tools-setup))
@@ -549,7 +550,9 @@
   :vc (:url "https://github.com/dakra/ghostel" :lisp-dir "lisp" :rev :newest)
   :bind ( :map global-leader-map
           ("k t" . ghostel-project)
-          ("k T" . ghostel))
+          ("k T" . ghostel)
+          :map project-prefix-map
+          ("t" . ghostel-project))
   :hook
   (after-init . ghostel-compile-global-mode)
   (after-init . ghostel-comint-global-mode)
@@ -843,8 +846,10 @@
     (set-face-attribute 'meow-insert-indicator nil :inherit '(bold-italic warning))
     (set-face-attribute 'meow-beacon-indicator nil :inherit '(bold success))
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
-    (add-to-list 'meow-expand-exclude-mode-list 'help-mode)
-    (add-to-list 'meow-expand-exclude-mode-list 'csv-mode)
+    (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode))
+      (add-to-list 'meow-expand-exclude-mode-list mode))
+    (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
+    (add-to-list 'meow-mode-state-list '(ghostel-mode . insert))
     (meow-motion-overwrite-define-key ;; Deprecated: use meow-motion-define-key on new version 1.6
      (cons "SPC" global-leader-map)
      '("M-SPC" . "H-SPC") ;; Rebind original space command (e.g., magit-status)
