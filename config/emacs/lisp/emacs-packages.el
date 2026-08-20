@@ -93,6 +93,22 @@
   :bind ( :map org-agenda-mode-map
           ("C-o" . casual-agenda-tmenu)))
 
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :bind ( :map global-leader-map
+          ("i c" . claude-code-ide-menu))
+  :requires (monet inheritenv)
+  :custom
+  (claude-code-ide-debug t)
+  (claude-code-ide-window-side 'left)
+  (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
+  (claude-code-ide-terminal-initialization-delay 0.15) ; better render
+  :config
+  (require 'monet)
+  (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
+  (monet-mode 1)
+  (claude-code-ide-emacs-tools-setup))
+
 (use-package command-log-mode
   :disabled ;; Use C-h l
   :bind
@@ -529,6 +545,18 @@
   :custom
   (format-all-show-errors 'errors))
 
+(use-package ghostel
+  :vc (:url "https://github.com/dakra/ghostel" :lisp-dir "lisp" :rev :newest)
+  :bind ( :map global-leader-map
+          ("k t" . ghostel-project)
+          ("k T" . ghostel))
+  :hook
+  (after-init . ghostel-compile-global-mode)
+  (after-init . ghostel-comint-global-mode)
+  :config
+  (with-eval-after-load 'project
+    (project-add-switch-command #'ghostel-project "Ghostel" "t")))
+
 (use-package git-link
   :commands (git-link git-link-dispatch)
   :bind
@@ -687,6 +715,10 @@
   :bind
   ( :map global-leader-map
     ("m g" . indent-bars-mode)))
+
+(use-package inheritenv
+  :defer
+  :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
 
 (use-package jinx
   ;; Dependencies:
@@ -926,6 +958,10 @@
   (meow-normal-define-key
    '("o" . meow-tree-sitter-node))
   (meow-tree-sitter-register-defaults))
+
+(use-package monet
+  :defer
+  :vc (:url "https://github.com/stevemolitor/monet" :rev :newest))
 
 (use-package ob-http
   :disabled ;; Better to use curl in org-source blocks.
@@ -1191,6 +1227,7 @@
   (visual-replace-global-mode))
 
 (use-package vterm
+  :disabled ;; prefer ghostel
   ;; Dependencies (linux):
   ;; sudo apt update
   ;; sudo apt install libtool libtool-bin

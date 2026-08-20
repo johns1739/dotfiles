@@ -38,3 +38,5 @@ if test "$INSIDE_EMACS" = vterm
         vterm_cmd message "%s" "$argv"
     end
 end
+
+string match -qr '^ghostel(,|$)' -- "$INSIDE_EMACS"; and source "$EMACS_GHOSTEL_PATH/etc/shell/ghostel.fish"
