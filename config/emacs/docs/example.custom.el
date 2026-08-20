@@ -55,6 +55,38 @@
 ;;                       :references t
 ;;                       :folding t))))))
 
+;; (with-eval-after-load 'eglot
+;;   (setq eglot-stay-out-of '(flymake))
+;;   (add-to-list 'eglot-server-programs
+;;                '((ruby-mode ruby-ts-mode)
+;;                  . ("bundle" "exec" "ruby-lsp" :initializationOptions
+;;                     ( :enabledFeatures
+;;                       ( :codeActions t
+;;                         :codeLens t
+;;                         :completion t
+;;                         :definition t
+;;                         :diagnostics t
+;;                         :documentHighlights t
+;;                         :documentLink t
+;;                         :documentSymbols t
+;;                         :foldingRanges t
+;;                         :formatting t
+;;                         :hover t
+;;                         :inlayHint t
+;;                         :onTypeFormatting t
+;;                         :selectionRanges t
+;;                         :semanticHighlighting t
+;;                         :signatureHelp t
+;;                         :typeHierarchy t
+;;                         :workspaceSymbol t)
+;;                       :featuresConfiguration
+;;                       ( :inlayHint
+;;                         ( :implicitHashValue t
+;;                           :implicitRescue t))
+;;                       :formatter "auto"
+;;                       :linters ["rubocop"]
+;;                       :experimentalFeaturesEnabled :json-false))))
+
 ;; (with-eval-after-load 'elfeed
 ;;   (setopt elfeed-db-directory "~/Documents/elfeed"))
 

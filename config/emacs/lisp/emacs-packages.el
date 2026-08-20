@@ -169,6 +169,7 @@
                  ("f" . consult-fd))))
 
 (use-package consult-flycheck
+  :disabled ;; doesn't work well with (rails) bundle commands, e.g. bundle exec rubocop
   :after consult
   :bind
   ( :map global-leader-map
@@ -469,6 +470,7 @@
   :mode "\\.fish\\'")
 
 (use-package flycheck
+  :disabled ;; unable to call (rails) bundle exec rubocop
   :commands (global-flycheck-mode flycheck-mode)
   :custom
   (flycheck-indication-mode 'left-fringe)
@@ -487,6 +489,7 @@
     ("d y" . flycheck-copy-errors-as-kill)))
 
 (use-package flycheck-eglot
+  :disabled ;; flycheck does not work well with rails (eg bundle exec rubocop)
   :after eglot
   :init
   (require 'flycheck)
@@ -1100,6 +1103,7 @@
   :bind ( :map global-leader-map
           ("m P" . spacious-padding-mode)))
 
+;; TODO: Sometimes doesn't show up on modeline ... maybe branch name too big?
 (use-package tmr
   ;; Dependencies
   ;; brew install ffmpeg

@@ -38,7 +38,7 @@
   :mode "\\.el\\'"
   :hook
   (emacs-lisp-mode . outline-minor-mode)
-  (emacs-lisp-mode . electric-pair-mode)
+  (emacs-lisp-mode . electric-pair-local-mode)
   :bind
   ( :map emacs-lisp-mode-map
     ("C-c t" . ielm)))
@@ -125,7 +125,7 @@
 (use-package janet-ts-mode
   :mode "\\.janet\\'"
   :vc ( :url "https://github.com/sogaiu/janet-ts-mode" :rev :newest)
-  :hook (janet-ts-mode . electric-pair-mode)
+  :hook (janet-ts-mode . electric-pair-local-mode)
   :init
   (add-to-list 'major-mode-remap-alist '(janet-mode . janet-ts-mode))
   (with-eval-after-load 'treesit

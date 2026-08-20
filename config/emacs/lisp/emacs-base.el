@@ -58,6 +58,7 @@
     (", ," . open-custom-file)
     (", ." . open-packages-dired)
     (", =" . balance-windows-area)
+    (", c" . customize-group)
     (", F" . toggle-frame-fullscreen)
     (", R" . restart-emacs)
     (", f" . toggle-frame-maximized)
@@ -505,7 +506,7 @@
   :ensure nil
   :defer
   :config
-  (electric-pair-mode -1))
+  (electric-pair-local-mode -1))
 
 (use-package eshell
   :bind
@@ -535,11 +536,7 @@
           ("l a" . eglot-code-actions))
   :custom
   (eglot-autoshutdown t)
-  (eglot-code-action-indications '(eldoc-hint))
-  (eglot-events-buffer-config '(:size 0 :format full))
-  (eglot-events-buffer-size 0)
-  (eglot-mode-line-session nil)
-  (eglot-prefer-plaintext nil))
+  (eglot-code-action-indications '(eldoc-hint)))
 
 (use-package eldoc
   :ensure nil
@@ -591,9 +588,11 @@
   :bind
   ( :map global-leader-map
     ("D" . flymake-mode)
-    ("d d" . flymake-show-buffer-diagnostics)
-    ("d e" . flymake-reporting-backends)
-    ("d p" . flymake-show-project-diagnostics))
+    ("d d" . flymake-start)
+    ("d l" . flymake-show-buffer-diagnostics)
+    ("d v" . flymake-running-backends)
+    ("d V" . flymake-reporting-backends)
+    ("d L" . flymake-show-project-diagnostics))
   :custom
   (flymake-indicator-type 'margins)
   (flymake-fringe-indicator-position 'left-fringe)
