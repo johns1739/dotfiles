@@ -552,11 +552,18 @@
           ("k t" . ghostel-project)
           ("k T" . ghostel)
           :map project-prefix-map
-          ("t" . ghostel-project))
+          ("t" . ghostel-project)
+          :map ghostel-semi-char-mode-map
+          ("M-o" . ace-window))
   :hook
   (after-init . ghostel-compile-global-mode)
   (after-init . ghostel-comint-global-mode)
+  (ghostel-mode . ghostel-mode-setup)
+  :init
+  (defun ghostel-mode-setup ()
+    (meow-mode -1))
   :config
+  (add-to-list 'ghostel-keymap-exceptions "M-SPC")
   (with-eval-after-load 'project
     (project-add-switch-command #'ghostel-project "Ghostel" "t")))
 
@@ -1144,7 +1151,6 @@
   :bind ( :map global-leader-map
           ("m P" . spacious-padding-mode)))
 
-;; TODO: Sometimes doesn't show up on modeline ... maybe branch name too big?
 (use-package tmr
   ;; Dependencies
   ;; brew install ffmpeg
@@ -1262,8 +1268,7 @@
                '("\\*.*vterm\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package vundo
-  :bind
-  ( ("C-x u" . vundo)))
+  :bind ( ("C-x u" . vundo)))
 
 (use-package whisper ;; Audio recording
   :disabled ;; could be better
