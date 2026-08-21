@@ -563,7 +563,6 @@
   (defun ghostel-mode-setup ()
     (meow-mode -1))
   :config
-  (add-to-list 'ghostel-keymap-exceptions "M-SPC")
   (with-eval-after-load 'project
     (project-add-switch-command #'ghostel-project "Ghostel" "t")))
 

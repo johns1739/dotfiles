@@ -8,7 +8,7 @@
   :demand
   :init
   (defvar-keymap global-leader-map :doc "Global leader keymap.")
-  (keymap-set global-map "M-SPC" global-leader-map)
+  (keymap-set global-map "C-x SPC" global-leader-map)
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
   :bind
