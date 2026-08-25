@@ -274,6 +274,7 @@
   :demand
   :unless (display-graphic-p) ;; Better when used w/ emacs server.
   :custom
+  (initial-buffer-choice 'dashboard-open)
   (dashboard-center-content t)
   (dashboard-vertically-center-content t)
   :config
