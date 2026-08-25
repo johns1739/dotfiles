@@ -554,7 +554,9 @@
           :map project-prefix-map
           ("t" . ghostel-project)
           :map ghostel-semi-char-mode-map
-          ("M-o" . ace-window))
+          ("M-o" . ace-window)
+          ("M-'" . meow-last-buffer)
+          ("M-q" . meow-quit))
   :hook
   (after-init . ghostel-compile-global-mode)
   (after-init . ghostel-comint-global-mode)
