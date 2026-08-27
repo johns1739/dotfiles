@@ -952,7 +952,7 @@
   ( :map project-prefix-map
     ("d" . project-dired)
     ("K" . project-forget-project)
-    ("z" . project-forget-zombie-projects)
+    ("Z" . project-forget-zombie-projects)
     :map global-leader-map
     ("P" . project-remember-projects-under))
   :custom

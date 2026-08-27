@@ -18,6 +18,12 @@
     rv = remote -v
     se = log -S
     st = status -sb
+    bclean = !git branch --merged main |\
+             grep -Ev '^[*+]|^[[:space:]]*(master|main|dev)$' |\
+             xargs -r git branch -d
+    wtclean = !git worktree list |\
+              awk '{print $1}' | tail -n +2 |\
+              xargs -I {} git worktree remove {}
 
 [branch]
     sort = -committerdate
