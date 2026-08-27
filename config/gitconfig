@@ -3,7 +3,7 @@
 # Run on large repos that need to be maintained.
 # git maintenance start
 
-# To see which repos are resistered with maintenance.
+# To see which repos are registered with maintenance.
 # git config --global --get-all maintenance.repo
 
 [alias]
@@ -16,7 +16,7 @@
     l = log -1 HEAD --stat
     ll = log --oneline
     rv = remote -v
-    se = !git rev-list --all | xargs git grep -F
+    se = log -S
     st = status -sb
 
 [branch]
@@ -25,40 +25,57 @@
 [column]
     ui = auto
 
+[commit]
+    verbose = true
+
 [core]
     autocrlf = input
+    fsmonitor = true
+    untrackedCache = true
 
 [diff]
     algorithm = histogram
-    colorMoved = plain
+    colorMoved = zebra
+    colorMovedWS = allow-indentation-change
+    mnemonicPrefix = true
 
 [fetch]
     prune = true
 
+# Large File Storage
 [filter "lfs"]
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
     clean = git-lfs clean -- %f
 
+[help]
+    autocorrect = prompt
+
 [init]
     defaultBranch = main
 
 [merge]
     ff = only
+    autoStash = true
+    conflictStyle = zdiff3
 
 [pull]
     rebase = true
 
 [rebase]
     autoStash = true
+    updateRefs = true
+    missingCommitsCheck = error
 
 [push]
     default = current
     autoSetupRemote = true
+    followTags = true
 
 [rerere]
     enabled = true
+    autoUpdate = true
 
 [submodule]
     recurse = true

@@ -81,8 +81,8 @@
   ;; Cape provides Completion At Point Extensions
   :init
   ;; #'cape-dict ;; no need for dicts
-  ;; #'cape-elisp-symbol ;; elisp buffers already set its own cape func.
   ;; #'cape-line ;; Kinda buggy
+  (add-hook 'completion-at-point-functions #'cape-dict)
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
   (add-hook 'completion-at-point-functions #'cape-file)
   (add-hook 'completion-at-point-functions #'cape-keyword)
