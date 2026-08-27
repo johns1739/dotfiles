@@ -898,7 +898,7 @@
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%U\n%i" :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i" :time-prompt t)))
   :config
   (with-eval-after-load 'org-id
     (setopt org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))

@@ -303,7 +303,10 @@
     (add-to-list 'treesit-language-source-alist
                  '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))))
 
+(use-package vue-mode)
+
 (use-package vue-ts-mode
+  :disabled ;; embedded-langs are not rendered
   ;; Dependencies
   ;; npm install -g @vue/language-server typescript-language-server
   :vc (:url "https://github.com/8uff3r/vue-ts-mode")
