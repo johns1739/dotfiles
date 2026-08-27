@@ -227,13 +227,16 @@
     (add-to-list 'treesit-language-source-alist
                  '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
   (defun ruby-ts-mode-setup ()
-    (when (and (buffer-file-name)
-               (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name))))
-      (setq-local compile-command `(concat "bundle exec rspec "
-                                           (relative-file-name)
-                                           (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
-      (setq-local outline-search-function nil)
-      (setq-local outline-regexp " +\\(context \\|describe \\|test \\|it \\)")))
+    (cond ((and (buffer-file-name)
+                (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name))))
+           (progn
+             (setq-local compile-command `(concat "bundle exec rspec "
+                                                  (relative-file-name)
+                                                  (if (> (line-number-at-pos) 10) (format ":%d" (line-number-at-pos)))))
+             (setq-local outline-search-function nil)
+             (setq-local outline-regexp " +\\(context \\|describe \\|test \\|it \\)")))
+          ((buffer-file-name)
+           (setq-local compile-command `(concat "bundle exec rubocop -a --force-exclusion " (relative-file-name))))))
   :hook
   (ruby-ts-mode . ruby-ts-mode-setup)
   :config
