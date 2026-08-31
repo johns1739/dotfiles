@@ -20,7 +20,7 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window))
   :custom
-  (aw-dispatch-when-more-than 3))
+  (aw-dispatch-when-more-than 2))
 
 (use-package agent-shell
   :disabled ;; prefer gptel-agent
@@ -80,11 +80,10 @@
 (use-package cape
   ;; Cape provides Completion At Point Extensions
   :init
-  ;; #'cape-dict ;; no need for dicts
   ;; #'cape-line ;; Kinda buggy
-  (add-hook 'completion-at-point-functions #'cape-dict)
   (add-hook 'completion-at-point-functions #'cape-elisp-block)
   (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-dict)
   (add-hook 'completion-at-point-functions #'cape-keyword)
   (add-hook 'completion-at-point-functions #'cape-dabbrev))
 
@@ -185,15 +184,6 @@
       (bind-keys :map search-map
                  ("f" . consult-fd))))
 
-(use-package consult-flycheck
-  :disabled ;; doesn't work well with (rails) bundle commands, e.g. bundle exec rubocop
-  :after consult
-  :bind
-  ( :map global-leader-map
-    ("d SPC" . consult-flycheck))
-  :config
-  (require 'flycheck))
-
 (use-package consult-denote ;; Prot's note-taking with org
   :disabled ;; not using denote
   :bind (:map global-leader-map
@@ -208,6 +198,24 @@
   :after (eglot consult)
   :bind (:map global-leader-map
               ("l i" . consult-eglot-symbols)))
+
+(use-package consult-flycheck
+  :disabled ;; doesn't work well with (rails) bundle commands, e.g. bundle exec rubocop
+  :after consult
+  :bind
+  ( :map global-leader-map
+    ("d SPC" . consult-flycheck))
+  :config
+  (require 'flycheck))
+
+(use-package consult-ghostel
+  :vc ( :url "https://github.com/dakra/ghostel"
+        :lisp-dir "extensions/consult-ghostel"
+        :rev :newest)
+  :after (consult ghostel)
+  :bind
+  ( :map global-leader-map
+    ("k SPC" . consult-ghostel)))
 
 (use-package copilot
   ;; M-x copilot-install-server
@@ -241,7 +249,7 @@
 
 (use-package corfu
   :demand
-  :if (display-graphic-p)
+  :if (or (>= emacs-major-version 31) (display-graphic-p))
   :bind ( :map corfu-map
           ("TAB" . nil) ;; shadows copilot completion
           ("RET" . nil))
@@ -252,9 +260,9 @@
   (corfu-cycle t)
   (corfu-echo-delay 0.2)
   (corfu-min-width 20)
-  (corfu-popupinfo-delay '(1.0 . 0.5))
-  (corfu-preselect 'prompt)
-  (corfu-preview-current 'insert)
+  (corfu-popupinfo-delay '(0.6 . 0.3))
+  (corfu-preselect 'valid)
+  (corfu-preview-current 'prompt)
   (corfu-quit-at-boundary t)
   (corfu-quit-no-match t)
   (corfu-separator ?\s)
@@ -990,9 +998,9 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless basic))
   (completion-category-overrides '((file (styles partial-completion))))
-  (completion-category-defaults nil))
+  (completion-pcm-leading-wildcard t)
+  (completion-styles '(orderless basic)))
 
 (use-package org-modern ;; Better look for org
   :disabled ;; still in its early stages.

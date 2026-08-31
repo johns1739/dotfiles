@@ -471,6 +471,10 @@
   :custom
   (doc-view-resolution 200))
 
+(use-package easy-escape
+  :hook
+  ((emacs-lisp-mode lisp-mode) . easy-escape-minor-mode))
+
 (use-package edebug
   :ensure nil
   :bind
