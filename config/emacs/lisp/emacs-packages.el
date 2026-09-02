@@ -156,8 +156,6 @@
     ("L" . consult-focus-lines)
     ("s" . consult-ripgrep)
     ("M-s" . consult-ripgrep))
-  ( :map org-mode-map
-    ("C-c C-/" . consult-org-heading))
   ( :map goto-map
     ("o" . consult-outline))
   :init
@@ -295,18 +293,19 @@
           :map deadgrep-mode-map
           ("C-w" . deadgrep-edit-mode)))
 
-(use-package denote
-  :disabled ;; prefer org-mode note taking
+(use-package denote ;; used to create references to org notes
   :bind ( :map global-leader-map
           ("n d SPC" . denote-open-or-create)
           ("n d n" . denote)
-          ("n d j" . denote-journal-extras-new-or-existing-entry)
+          ("n d d" . denote-dired)
           ("n d l" . denote-link-or-create)
-          ("n d k" . denote-find-link)
-          ("n d K" . denote-find-backlink)
-          ("n d r" . denote-rename-file-using-front-matter))
+          ("n d /" . denote-find-link)
+          ("n d ?" . denote-find-backlink)
+          ("n d r" . denote-region)
+          ("n d R" . denote-rename-file)
+          ("n d s" . denote-grep))
   :custom
-  (denote-directory "~/workspaces/notes")
+  (denote-directory "~/Documents/notes/refs")
   (denote-date-prompt-use-org-read-date t)
   :config
   (denote-rename-buffer-mode))
@@ -1019,7 +1018,7 @@
   (global-org-modern-mode))
 
 (use-package org-roam
-  :disabled ;; never really used
+  :disabled ;; never really used, denote simpler and easier to understand
   :commands (org-roam-node-find)
   :init
   (defun org-roam-setup-directory ()

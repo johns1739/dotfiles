@@ -812,7 +812,6 @@
   (read-file-name-completion-ignore-case t))
 
 (use-package org
-  :demand ;; dependencies require org to be loaded.
   :ensure nil
   :init
   (defun org-mode-setup ()
