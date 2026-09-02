@@ -78,6 +78,7 @@
   (beacon-mode 1))
 
 (use-package cape
+  :defer
   ;; Cape provides Completion At Point Extensions
   :init
   ;; #'cape-line ;; Kinda buggy
@@ -178,6 +179,9 @@
   (with-eval-after-load 'project
     (project-add-switch-command 'consult-project-buffer "Buffer" "SPC")
     (project-add-switch-command 'consult-ripgrep "Search" "s"))
+  (with-eval-after-load 'org
+    (bind-keys :map org-mode-map
+               ("C-c C-/" . consult-org-heading)))
   (if (executable-find "fd")
       (bind-keys :map search-map
                  ("f" . consult-fd))))
@@ -975,9 +979,11 @@
 
 (use-package meow-tree-sitter
   :after meow
-  :config
+  :commands (meow-tree-sitter-node)
+  :init
   (meow-normal-define-key
    '("o" . meow-tree-sitter-node))
+  :config
   (meow-tree-sitter-register-defaults))
 
 (use-package monet

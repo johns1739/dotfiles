@@ -1033,6 +1033,7 @@
   (transient-values-file (expand-file-name "cache/transient/values.el" user-emacs-directory)))
 
 (use-package tab-bar
+  :defer
   :if (display-graphic-p) ;; conflicts with terminal's bindings
   :init
   (keymap-set goto-map "t" tab-bar-map)
