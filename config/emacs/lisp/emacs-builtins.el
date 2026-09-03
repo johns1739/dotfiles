@@ -246,11 +246,11 @@
       (and project (project-root project))))
   (defun relative-file-name ()
     "Relative from project or cwd directory."
-    (if-let* (file-name (buffer-file-name))
+    (if-let* ((file-name (buffer-file-name)))
         (file-relative-name file-name (or (project-directory) default-directory))))
   (defun copy-project-directory ()
     (interactive)
-    (if-let* (dir (project-directory))
+    (if-let* ((dir (project-directory)))
         (kill-new dir)))
   (defun copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
