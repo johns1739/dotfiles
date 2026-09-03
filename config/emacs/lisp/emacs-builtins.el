@@ -1,4 +1,4 @@
-;;; emacs-base.el --- Emacs Base Configuration  -*- lexical-binding: t; -*-
+;;; emacs-builtins.el --- Built-in Package Configuration  -*- lexical-binding: t; -*-
 
 ;; TODO: emacs-lisp-book by prot
 ;; https://protesilaos.com/emacs/emacs-lisp-elements
@@ -138,7 +138,6 @@
   (ielm-history-file-name (expand-file-name "cache/ielm-history.eld" user-emacs-directory)) ; EMACS-31
   (kill-region-dwim 'emacs-word)
   (imenu-max-item-length 80)
-  (native-comp-async-on-battery-power nil)  ; No compilations when on battery EMACS-31
   (multisession-directory (expand-file-name "cache/multisession/" user-emacs-directory))
   (inhibit-startup-message t)
   (initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
@@ -247,11 +246,11 @@
       (and project (project-root project))))
   (defun relative-file-name ()
     "Relative from project or cwd directory."
-    (if-let (file-name (buffer-file-name))
+    (if-let* (file-name (buffer-file-name))
         (file-relative-name file-name (or (project-directory) default-directory))))
   (defun copy-project-directory ()
     (interactive)
-    (if-let (dir (project-directory))
+    (if-let* (dir (project-directory))
         (kill-new dir)))
   (defun copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
@@ -292,7 +291,7 @@
   :ensure nil
   :defer
   :custom
-  (bookmark-file (expand-file-name "cache/bookmarks" user-emacs-directory)))
+  (bookmark-default-file (expand-file-name "cache/bookmarks" user-emacs-directory)))
 
 (use-package calc
   :ensure nil
@@ -340,6 +339,8 @@
     (if (project-current)
         (call-interactively #'project-compile)
       (call-interactively #'compile)))
+  (defvar send-region-to-process-target nil
+    "Buffer that `send-region-to-process' last sent a region to.")
   (defun send-region-to-process (arg beg end)
     " Send the current region to a process buffer.
     The first time it's called, will prompt for the buffer to
@@ -348,7 +349,7 @@
     active process. "
     (interactive "P\nr")
     (if (or arg ;; user asks for selection
-            (not (boundp 'send-region-to-process-target)) ;; target not set
+            (null send-region-to-process-target) ;; target not set
             ;; or target is not set to an active process:
             (not (process-live-p (get-buffer-process
                                   send-region-to-process-target))))
@@ -370,22 +371,6 @@
   (add-to-list 'compilation-error-regexp-alist-alist
                '(simple-spaced-target
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
-
-(use-package completion
-  :ensure nil
-  :custom
-  (completion-eager-update t)
-  (completion-show-help nil)
-  (completion-auto-help 'always)
-  (completion-auto-select 'second-tab)
-  (completion-category-defaults nil)
-  (completion-cycle-threshold 3)
-  (completion-ignore-case t)
-  (completions-format 'one-column)
-  (completions-max-height nil)
-  (completions-sort 'historical)
-  ;; (completion-preview-mode t) ;; mode-map conflicts with regular completion
-  :bind ("M-i" . completion-at-point))
 
 (use-package dabbrev
   :ensure nil
@@ -503,6 +488,7 @@
   (editorconfig-mode t))
 
 (use-package eshell
+  :ensure nil
   :bind
   ( :map global-leader-map
     ("k e" . eshell))
@@ -560,6 +546,8 @@
   :init
   (defvar buffer-backed-up-interval (* 60 60 24)
     "Interval seconds to backup files")
+  (defvar buffer-backed-up-timestamp nil
+    "Time of the last backup of this buffer.")
   (defun buffer-backed-up-maybe-reset ()
     "Set the buffer-backed-up variable to the current time every n seconds."
     (cond ((not buffer-backed-up)
@@ -774,9 +762,6 @@
   :init
   (defun make-mode-setup ()
     (setq-local outline-regexp "^[A-Za-z].+:"))
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-               '(make "https://github.com/alemuller/tree-sitter-make")))
   :hook
   (makefile-bsdmake-mode . make-mode-setup))
 
@@ -786,7 +771,19 @@
   :custom
   (enable-recursive-minibuffers t)
   (read-buffer-completion-ignore-case t)
-  (read-file-name-completion-ignore-case t))
+  (read-file-name-completion-ignore-case t)
+  (completion-eager-update t)
+  (completion-show-help nil)
+  (completion-auto-help 'always)
+  (completion-auto-select 'second-tab)
+  (completion-category-defaults nil)
+  (completion-cycle-threshold 3)
+  (completion-ignore-case t)
+  (completions-format 'one-column)
+  (completions-max-height nil)
+  (completions-sort 'historical)
+  ;; (completion-preview-mode t) ;; mode-map conflicts with regular completion
+  :bind ("M-i" . completion-at-point))
 
 (use-package org
   :ensure nil
@@ -807,7 +804,7 @@
       (setopt org-agenda-files (list org-directory))
       (message "Set org-agenda to: %s" org-directory))
     (when (featurep 'org-roam)
-      (org-roam-setup-directory org-directory)))
+      (org-roam-setup-directory)))
   (defun org-toggle-agenda-directories ()
     "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
     (interactive)
@@ -882,8 +879,6 @@
   :config
   (with-eval-after-load 'org-id
     (setopt org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))
-  (set-face-attribute 'org-todo nil :weight 'bold :foreground "light goldenrod")
-  (set-face-attribute 'org-done nil :weight 'bold :foreground "dim gray")
   (require 'org-capture)
   ;; (require 'org-crypt)
   (org-babel-do-load-languages
@@ -1001,6 +996,7 @@
   (transient-values-file (expand-file-name "cache/transient/values.el" user-emacs-directory)))
 
 (use-package tab-bar
+  :ensure nil
   :defer
   :if (display-graphic-p) ;; conflicts with terminal's bindings
   :init
@@ -1055,19 +1051,32 @@
 (use-package treesit
   :ensure nil
   :defer
-  :init
-  (defun treesit-install-available-language-grammars ()
-    "Install all grammars available for Tree-sitter."
-    (interactive)
-    (dolist (lang treesit-language-source-alist)
-      (let ((language (car lang)))
-        (unless (treesit-ready-p language)
-          (treesit-install-language-grammar language)))))
   :custom
-  ;; (treesit--install-language-grammar-out-dir-history (expand-file-name "cache/tree-sitter" user-emacs-directory))
-  ;; (treesit-auto-install-grammar 'always) ;; Maybe available in later emacs version?
-  ;; (treesit-enabled-modes t) ;; Maybe available in later emacs version?
-  (treesit-font-lock-level 4))
+  (treesit-font-lock-level 4)
+  (treesit-enabled-modes t)
+  (treesit-auto-install-grammar 'ask)
+  (treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash" "master" "src")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")
+     (elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
+     (heex "https://github.com/phoenixframework/tree-sitter-heex")
+     (janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src")
+     (markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")
+     (rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src")
+     (toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "master" "src"))))
 
 (use-package uniquify
   :ensure nil
@@ -1076,12 +1085,6 @@
   (uniquify-buffer-name-style 'forward)
   (uniquify-strip-common-suffix t)
   (uniquify-after-kill-buffer-p t))
-
-(use-package vc
-  :ensure nil
-  :defer
-  :custom
-  (vc-handled-backends '(Git)))
 
 (use-package window
   :ensure nil
@@ -1147,5 +1150,5 @@
   (when (executable-find "rg")
     (setopt xref-search-program 'ripgrep)))
 
-(provide 'emacs-base)
-;;; emacs-base.el ends here
+(provide 'emacs-builtins)
+;;; emacs-builtins.el ends here

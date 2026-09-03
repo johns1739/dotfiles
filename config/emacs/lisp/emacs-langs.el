@@ -1,13 +1,5 @@
 ;;; emacs-langs.el --- Language Modes  -*- lexical-binding: t; -*-
 
-(use-package bash-ts-mode
-  :ensure nil
-  :mode "\\.\\(sh\\|bash\\)\\'"
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(bash "https://github.com/tree-sitter/tree-sitter-bash" "master" "src"))))
-
 (use-package conf-mode
   :ensure nil
   :hook
@@ -15,27 +7,15 @@
   (conf-mode . outline-minor-mode)
   :mode ("\\.env\\..*\\'" "\\.env\\'"))
 
-(use-package css-ts-mode
+(use-package css-mode
   :ensure nil
-  :mode "\\.css\\'"
+  :mode ("\\.css\\'" . css-ts-mode)
   :custom
-  (css-indent-offset 2)
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(css "https://github.com/tree-sitter/tree-sitter-css"))))
+  (css-indent-offset 2))
 
-(use-package dockerfile-ts-mode
+(use-package elisp-mode
   :ensure nil
-  :mode "Dockerfile.*\\'"
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src"))))
-
-(use-package emacs-lisp-mode
-  :ensure nil
-  :mode "\\.el\\'"
+  :mode ("\\.el\\'" . emacs-lisp-mode)
   :hook
   (emacs-lisp-mode . outline-minor-mode)
   (emacs-lisp-mode . electric-pair-local-mode)
@@ -47,9 +27,6 @@
   :ensure nil
   :mode "\\.exs?\\'"
   :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src")))
   (defun elixir-ts-mode-setup ()
     (cond
      ((string-match-p "router.ex$" (buffer-name))
@@ -83,11 +60,6 @@
   ;; npm install -g elm-review
   :mode "\\.elm\\'")
 
-(use-package flycheck-janet
-  ;; prefer janet-lsp flychecker
-  :after janet-ts-mode
-  :vc ( :url "https://github.com/sogaiu/flycheck-janet" :rev :newest))
-
 (use-package gleam-ts-mode
   ;; https://github.com/gleam-lang/tree-sitter-gleam
   ;; NOTE: Resolve issue with:
@@ -106,21 +78,7 @@
   ;; go install golang.org/x/tools/gopls@latest
   :ensure nil
   :mode "\\.go\\'"
-  :mode ("go\\.mod\\'" . go-mod-ts-mode)
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(go "https://github.com/tree-sitter/tree-sitter-go"))
-    (add-to-list 'treesit-language-source-alist
-                 '(gomod "https://github.com/camdencheek/tree-sitter-go-mod"))))
-
-(use-package heex-ts-mode
-  :ensure nil
-  :mode "\\.heex\\'"
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(heex "https://github.com/phoenixframework/tree-sitter-heex"))))
+  :mode ("go\\.mod\\'" . go-mod-ts-mode))
 
 (use-package janet-ts-mode
   :mode "\\.janet\\'"
@@ -128,21 +86,13 @@
   :hook (janet-ts-mode . electric-pair-local-mode)
   :init
   (add-to-list 'major-mode-remap-alist '(janet-mode . janet-ts-mode))
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")))
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs `(janet-ts-mode "janet-lsp"))))
 
-(use-package js-ts-mode
+(use-package js
   :ensure nil
-  :mode "\\.jsx?\\'"
+  :mode ("\\.jsx?\\'" . js-ts-mode)
   :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src"))
-    (add-to-list 'treesit-language-source-alist
-                 '(jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc" "master" "src")))
   (defun js-ts-mode-setup ()
     (setq indent-tabs-mode nil))
   :hook
@@ -154,36 +104,18 @@
   :ensure nil
   :mode "\\.json\\'"
   :hook
-  (json-ts-mode . js-ts-mode-setup)
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(json "https://github.com/tree-sitter/tree-sitter-json"))))
+  (json-ts-mode . js-ts-mode-setup))
 
-(use-package markdown-ts-mode
-  ;; :ensure nil ;; only available in latest emacs 31
-  ;; :mode "\\.md\\'"
-  :mode ("\\.md\\'" . gfm-mode) ;; depends on builtin markdown-mode
-  :bind ( :map markdown-ts-mode-map
+(use-package markdown-mode
+  :mode ("\\.md\\'" . gfm-mode)
+  :bind ( :map markdown-mode-map
           ("M-;" . markdown-blockquote-region)
           ("M-H" . markdown-mark-block)
           ("M-n" . markdown-outline-next)
           ("M-p" . markdown-outline-previous)
           ("C-c C-." . markdown-do))
   :custom
-  (markdown-command "multimarkdown")
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src"))
-    (add-to-list 'treesit-language-source-alist
-                 '(markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src"))))
-
-;; Can remove if using emacs 31+
-(use-package md-ts-mode
-  :after markdown-ts-mode
-  :config
-  (md-ts-mode-enable-global))
+  (markdown-command "multimarkdown"))
 
 (use-package python
   ;; Example .dir-locals.el to configure compile command.
@@ -197,9 +129,6 @@
   (python-indent-guess-indent-offset-verbose nil)
   (python-indent-offset 4)
   :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(python "https://github.com/tree-sitter/tree-sitter-python")))
   (defun python-ts-mode-setup ()
     (when (and (buffer-file-name)
                (string-match-p "test_.*\\.py" (file-name-nondirectory (buffer-file-name))))
@@ -223,9 +152,6 @@
   (ruby-indent-level 2)
   (ruby-indent-tabs-mode nil)
   :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")))
   (defun ruby-ts-mode-setup ()
     (cond ((and (buffer-file-name)
                 (string-match-p ".+_spec.rb" (file-name-nondirectory (buffer-file-name))))
@@ -258,15 +184,11 @@
   :ensure nil
   :mode "\\.rs\\'"
   :custom
-  (rust-ts-mode-indent-offset 2)
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src"))))
+  (rust-ts-mode-indent-offset 2))
 
-(use-package sql-mode
+(use-package sql
   :ensure nil
-  :mode "\\.sql\\'"
+  :mode ("\\.sql\\'" . sql-mode)
   :init
   (defun sql-mode-setup ()
     ;; 2-spaces, no-grouping
@@ -276,35 +198,17 @@
 
 (use-package toml-ts-mode
   :ensure nil
-  :mode "\\.toml\\'"
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src"))))
+  :mode "\\.toml\\'")
 
 (use-package typescript-ts-mode
   :ensure nil
   :mode "\\.ts\\'"
+  :mode ("\\.tsx\\'" . tsx-ts-mode)
   :hook
   (typescript-ts-mode . js-ts-mode-setup)
-  :custom
-  (typescript-indent-level 2)
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src"))))
-
-(use-package tsx-ts-mode
-  :ensure nil
-  :mode "\\.tsx\\'"
-  :hook
   (tsx-ts-mode . js-ts-mode-setup)
   :custom
-  (typescript-indent-level 2)
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src"))))
+  (typescript-indent-level 2))
 
 (use-package vue-mode
   :mode "\\.vue\\'")
@@ -344,11 +248,7 @@
 
 (use-package yaml-ts-mode
   :ensure nil
-  :mode "\\.ya?ml\\'"
-  :init
-  (with-eval-after-load 'treesit
-    (add-to-list 'treesit-language-source-alist
-                 '(yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "master" "src"))))
+  :mode "\\.ya?ml\\'")
 
 (provide 'emacs-langs)
 ;;; emacs-langs.el ends here

@@ -48,8 +48,9 @@
           (lambda ()
             (setopt gc-cons-threshold (* 100 1024 1024))
             (setopt gc-cons-percentage 0.1)
-            ;; Restore file-name-handler-alist
-            (setq file-name-handler-alist jb/file-name-handler-alist)
+            ;; Restore file-name-handler-alist, keeping handlers added during init
+            (setq file-name-handler-alist
+                  (delete-dups (append file-name-handler-alist jb/file-name-handler-alist)))
             ;; Relax warning level after init
             (setopt warning-minimum-level :warning)
             (message

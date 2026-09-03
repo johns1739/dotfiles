@@ -251,7 +251,6 @@
 
 (use-package corfu
   :defer 1
-  :if (or (>= emacs-major-version 31) (display-graphic-p))
   :bind ( :map corfu-map
           ("TAB" . nil) ;; shadows copilot completion
           ("RET" . nil))
@@ -260,10 +259,10 @@
   (corfu-auto-delay 0.5)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
-  (corfu-echo-delay 0.2)
+  (corfu-echo-delay 0.3)
   (corfu-min-width 20)
   (corfu-popupinfo-delay '(0.6 . 0.3))
-  (corfu-preselect 'valid)
+  (corfu-preselect 'prompt)
   (corfu-preview-current 'prompt)
   (corfu-quit-at-boundary t)
   (corfu-quit-no-match t)
@@ -1137,7 +1136,7 @@
   (defun simple-modeline-segment-spaces ()
     (propertize "  "))
   (defun simple-modeline-segment-misc-info-shortened ()
-    (if-let ((info (simple-modeline-segment-misc-info)))
+    (if-let* ((info (simple-modeline-segment-misc-info)))
         (truncate-string-to-width info 20 nil nil "]")))
   :custom
   (simple-modeline-segments

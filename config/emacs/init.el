@@ -3,7 +3,7 @@
 ;;; Commentary:
 ;; Entry point for Emacs configuration.  Modules are loaded from the
 ;; `lisp/' subdirectory in the following order:
-;;   emacs-base         — built-in settings and sane defaults
+;;   emacs-builtins     — built-in settings and sane defaults
 ;;   emacs-manager      — package archive and use-package setup
 ;;   emacs-color-themes — theme and appearance configuration
 ;;   emacs-packages     — third-party package declarations
@@ -12,7 +12,7 @@
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 ;; Built-in defaults (no package dependencies)
-(require 'emacs-base)
+(require 'emacs-builtins)
 
 ;; Persist Customize settings in a separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
