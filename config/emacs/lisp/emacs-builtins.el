@@ -787,6 +787,7 @@
 
 (use-package org
   :ensure nil
+  :commands (org-setup-directory)
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))
@@ -808,7 +809,7 @@
   (defun org-toggle-agenda-directories ()
     "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
     (interactive)
-    (let* ((current-dir (car org-agenda-files))
+    (let* ((current-dir (or (car org-agenda-directories) org-directory))
            (next-dir (or (cadr (member current-dir org-agenda-directories))
                          (car org-agenda-directories)
                          org-directory)))

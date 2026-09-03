@@ -300,6 +300,7 @@
   :bind ( :map global-leader-map
           ("n d SPC" . denote-open-or-create)
           ("n d n" . denote)
+          ("n d N" . denote-type)
           ("n d d" . denote-dired)
           ("n d l" . denote-link-or-create)
           ("n d /" . denote-find-link)
@@ -856,6 +857,7 @@
 
 (use-package meow
   :demand
+  :bind ( "M-'" . meow-last-buffer)
   :custom
   (meow-use-clipboard t)
   (meow-keypad--self-insert-undefined nil)
@@ -1365,14 +1367,14 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
-  :hook
-  (prog-mode . yas-minor-mode)
   :bind ( :map goto-map
           ("&" . yas-visit-snippet-file)
           :map global-leader-map
           ("x &" . yas-new-snippet))
   :custom
-  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets"))))
+  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
+  :config
+  (yas-global-mode 1))
 
 (use-package yasnippet-snippets
   :disabled ;; Better to rely on custom built templates over externals.
