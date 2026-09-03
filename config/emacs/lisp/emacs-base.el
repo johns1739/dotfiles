@@ -133,7 +133,6 @@
   (frame-resize-pixelwise t)
   (browse-url-secondary-browser-function 'eww-browse-url) ; C-u C-c RET on URLs open in EWW
   (find-ls-option '("-exec ls -ldh {} +" . "-ldh"))  ; find-dired results with human readable sizes
-  (help-window-select t)
   (history-delete-duplicates t)
   (history-length 1000)
   (ielm-history-file-name (expand-file-name "cache/ielm-history.eld" user-emacs-directory)) ; EMACS-31
@@ -206,14 +205,14 @@
   (setq-default display-fill-column-indicator-column 100)
   (setq-default fill-column 80)
   (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
-  (auto-save-visited-mode -1) ;; auto-format constantly triggers, annoying
-  (desktop-save-mode -1) ;; CPU heavy when loading many buffers under LSP
+  ;; (auto-save-visited-mode t) ;; auto-format constantly triggers, annoying
+  ;; (desktop-save-mode t) ;; CPU heavy when loading many buffers under LSP
   (electric-indent-mode t)
   (column-number-mode -1)
   (global-so-long-mode t)
   (file-name-shadow-mode t)
   (line-number-mode t)
-  (repeat-mode -1) ;; Sometimes gets in the way.
+  ;; (repeat-mode t) ;; Sometimes gets in the way.
   (window-divider-mode (display-graphic-p))
   (defun open-init-file ()
     (interactive)
@@ -380,18 +379,12 @@
   (completion-auto-help 'always)
   (completion-auto-select 'second-tab)
   (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles basic partial-completion))))
   (completion-cycle-threshold 3)
   (completion-ignore-case t)
-  ;; (completion-styles '(basic substring partial-completion))
-  (completion-styles '(partial-completion flex initials))
-  (completions-detailed t)
   (completions-format 'one-column)
   (completions-max-height nil)
   (completions-sort 'historical)
-  ;; preview mode provides its own mode-map that conflicts with regular completion
-  (completion-preview-mode nil)
-  (completion-pcm-leading-wildcard t)
+  ;; (completion-preview-mode t) ;; mode-map conflicts with regular completion
   :bind ("M-i" . completion-at-point))
 
 (use-package dabbrev
@@ -404,11 +397,6 @@
   (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
   (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
-
-(use-package delsel
-  :ensure nil
-  :config
-  (delete-selection-mode -1))
 
 (use-package diff-mode
   :ensure nil
@@ -471,10 +459,6 @@
   :custom
   (doc-view-resolution 200))
 
-(use-package easy-escape
-  :hook
-  ((emacs-lisp-mode lisp-mode) . easy-escape-minor-mode))
-
 (use-package edebug
   :ensure nil
   :bind
@@ -485,7 +469,7 @@
     ("k I" . edebug-remove-instrumentation)
     ("k b" . edebug-set-breakpoint)
     ("k B" . edebug-set-conditional-breakpoint)
-  ( :map edebug-mode-map
+    :map edebug-mode-map
     ("SPC" . edebug-step-mode)
     ("." . edebug-goto-here)
     ("c" . edebug-go-mode)
@@ -496,7 +480,7 @@
     ("i" . edebug-pop-to-backtrace)
     ("u" . edebug-step-out)
     ("U" . edebug-view-outside)
-    ("'" . edebug-bounce-point))))
+    ("'" . edebug-bounce-point)))
 
 (use-package ediff
   :ensure nil
@@ -514,14 +498,9 @@
 
 (use-package editorconfig
   :ensure nil
+  :defer 1
   :config
   (editorconfig-mode t))
-
-(use-package elec-pair
-  :ensure nil
-  :defer
-  :config
-  (electric-pair-local-mode -1))
 
 (use-package eshell
   :bind
@@ -660,9 +639,7 @@
   :ensure nil
   :bind
   ( :map mode-specific-map
-    ("C-o" . goto-address-at-point))
-  :config
-  (global-goto-address-mode -1))
+    ("C-o" . goto-address-at-point)))
 
 (use-package grep
   :ensure nil
@@ -925,15 +902,6 @@
   :config
   (show-paren-mode))
 
-(use-package pixel-scroll
-  ;; don't turn on
-  :ensure nil
-  :defer
-  :custom
-  (pixel-scroll-mode nil)
-  (pixel-scroll-precision-mode nil)
-  (pixel-scroll-precision-use-momentum nil))
-
 (use-package proced
   :ensure nil
   :bind (:map global-leader-map ("o p" . proced))
@@ -979,7 +947,7 @@
 
 (use-package recentf
   :ensure nil
-  :demand
+  :defer 1
   :bind
   ( :map goto-map
     ("r" . recentf-open))
@@ -1140,7 +1108,7 @@
     ("m ." . which-function-mode)))
 
 (use-package which-key
-  :demand
+  :defer 1
   :ensure nil
   :bind ( :map help-map
           ("?" . which-key-show-major-mode))
@@ -1162,27 +1130,19 @@
   :hook (before-save . nuke-trailing-whitespace)
   :bind
   ( :map global-leader-map
-    ("TAB" . indent-format-buffer)
-    :map global-leader-map
     ("x w" . whitespace-cleanup))
   :init
   (defun nuke-trailing-whitespace ()
     ;; Running delete-trailing-whitespace on certain special modes can cause issues.
     ;; So only run in prog-mode.
     (when (derived-mode-p 'prog-mode)
-      (delete-trailing-whitespace)))
-  (defun indent-format-buffer ()
-    (interactive)
-    (save-excursion
-      (whitespace-cleanup)
-      (indent-region (point-min) (point-max) nil))))
+      (delete-trailing-whitespace))))
 
 (use-package xref
   :ensure nil
   :defer
   :custom
   (xref-after-return-hook '(recenter xref-pulse-momentarily))
-  (xref-show-definitions-function #'xref-show-definitions-completing-read)
   :config
   (when (executable-find "rg")
     (setopt xref-search-program 'ripgrep)))

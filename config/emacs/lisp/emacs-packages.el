@@ -2,7 +2,7 @@
 
 (use-package exec-path-from-shell
   :demand
-  :if (and (memq window-system '(mac ns x)) (display-graphic-p))
+  :if (or (daemonp) (and (memq window-system '(mac ns x)) (display-graphic-p)))
   :custom
   ;; (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
@@ -250,7 +250,7 @@
   :after (request org markdown-mode copilot))
 
 (use-package corfu
-  :demand
+  :defer 1
   :if (or (>= emacs-major-version 31) (display-graphic-p))
   :bind ( :map corfu-map
           ("TAB" . nil) ;; shadows copilot completion
@@ -380,6 +380,10 @@
   (dumb-jump-prefer-searcher 'rg)
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
+
+(use-package easy-escape
+  :hook
+  ((emacs-lisp-mode lisp-mode) . easy-escape-minor-mode))
 
 (use-package eat
   :disabled ;; prefer vterm
@@ -657,7 +661,8 @@
                ("K" . gptel-context-remove-all)))
   :config
   (add-to-list 'display-buffer-alist
-               '("\\*gptel-.*\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))
+               '("\\*gptel-.*\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window)))
+  (add-to-list 'display-buffer-alist
                '("\\*Copilot\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package gptel-agent
@@ -760,8 +765,9 @@
   :defer)
 
 (use-package keychain-environment
-  ;; Check when on macos
-  :if (eq system-type 'darwin))
+  :if (eq system-type 'darwin) ;; macos
+  :config
+  (keychain-refresh-environment))
 
 (use-package kirigami
   :bind
@@ -1099,14 +1105,11 @@
 
 ;; http request library
 (use-package request ;; Jira dependency
+  :disabled
   :after jira
   :defer
   :custom
   (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
-
-;; https://github.com/magnars/s.el#functions
-;; useful string functions
-(use-package s)
 
 (use-package show-font
   :if (display-graphic-p) ;; none exist in terminal
@@ -1182,8 +1185,6 @@
       (add-to-list 'tmr-timer-finished-functions 'tmr-notification-notify))
   (tmr-mode-line-mode t))
 
-(use-package transient)
-
 (use-package trashed
   :disabled ;; Never used.
   :bind (:map global-leader-map
@@ -1246,11 +1247,12 @@
   (vertico-posframe-min-width 80))
 
 (use-package visual-replace
-  :demand
-  :bind ( :map search-map
-          ("%" . visual-replace-selected))
-  :config
-  (visual-replace-global-mode))
+  :bind (([remap query-replace] . visual-replace)
+         ([remap replace-string] . visual-replace)
+         ([remap isearch-query-replace] . visual-replace-from-isearch)
+         ([remap isearch-query-replace-regexp] . visual-replace-from-isearch)
+         :map search-map
+         ("%" . visual-replace-selected)))
 
 (use-package vterm
   :disabled ;; prefer ghostel
@@ -1364,15 +1366,14 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
-  :demand
+  :hook
+  (prog-mode . yas-minor-mode)
   :bind ( :map goto-map
           ("&" . yas-visit-snippet-file)
           :map global-leader-map
           ("x &" . yas-new-snippet))
   :custom
-  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
-  :config
-  (yas-global-mode))
+  (yas-snippet-dirs `(,(locate-user-emacs-file "snippets"))))
 
 (use-package yasnippet-snippets
   :disabled ;; Better to rely on custom built templates over externals.
