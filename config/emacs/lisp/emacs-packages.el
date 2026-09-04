@@ -857,7 +857,10 @@
 
 (use-package meow
   :demand
-  :bind ( "M-'" . meow-last-buffer)
+  :bind
+  ( :map global-map
+    ("M-q" . meow-quit)
+    ("M-'" . meow-last-buffer))
   :custom
   (meow-use-clipboard t)
   (meow-keypad--self-insert-undefined nil)
@@ -1367,6 +1370,7 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
+  :defer 1
   :bind ( :map goto-map
           ("&" . yas-visit-snippet-file)
           :map global-leader-map

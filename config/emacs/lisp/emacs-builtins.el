@@ -12,24 +12,26 @@
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
   :bind
-  ("C-M-h" . mark-sexp)
-  ("C-M-d" . delete-pair)
-  ("C-z" . nil)
-  ("M-L" . duplicate-dwim)
-  ("M-S-SPC" . cycle-spacing)
-  ("M-j" . join-line)
-  ("M-n" . forward-paragraph)
-  ("M-o" . other-window)
-  ("M-p" . backward-paragraph)
-  ("RET" . newline-and-indent)
-  ("s-[" . previous-buffer)
-  ("s-]" . next-buffer)
-  ([remap backward-sentence] . backward-sexp)
-  ([remap downcase-word] . downcase-dwim)
-  ([remap forward-sentence] . forward-sexp)
-  ([remap split-window-below] . split-window-below-and-jump)
-  ([remap split-window-right] . split-window-right-and-jump)
-  ([remap upcase-word] . upcase-dwim)
+  ( :map global-map
+    ("<backtab>" . prog-fill-reindent-defun)
+    ("C-M-h" . mark-sexp)
+    ("C-M-d" . delete-pair)
+    ("C-z" . nil)
+    ("M-L" . duplicate-dwim)
+    ("M-S-SPC" . cycle-spacing)
+    ("M-j" . join-line)
+    ("M-n" . forward-paragraph)
+    ("M-o" . other-window)
+    ("M-p" . backward-paragraph)
+    ("RET" . newline-and-indent)
+    ("s-[" . previous-buffer)
+    ("s-]" . next-buffer)
+    ([remap backward-sentence] . backward-sexp)
+    ([remap downcase-word] . downcase-dwim)
+    ([remap forward-sentence] . forward-sexp)
+    ([remap split-window-below] . split-window-below-and-jump)
+    ([remap split-window-right] . split-window-right-and-jump)
+    ([remap upcase-word] . upcase-dwim))
   ( :map global-leader-map
     ("." . find-file)
     ("0" . delete-window)
@@ -64,8 +66,8 @@
     (", f" . toggle-frame-maximized)
     (", r" . reload-emacs)
     (", t" . load-theme)
-    (", x" . describe-font)
-    :map goto-map
+    (", x" . describe-font))
+  ( :map goto-map
     ("'" . mode-line-other-buffer)
     ("," . xref-go-back)
     ("." . xref-find-definitions)
@@ -102,12 +104,12 @@
     ("f f" . find-file-other-frame)
     ("f o" . other-frame)
     ("f p" . project-other-frame-command)
-    ("f u" . undelete-frame)
-    :map search-map
-    ("i" . imenu)
-    ("j" . list-registers)
-    ("m" . list-bookmarks)
-    ("o" . occur))
+    ("f u" . undelete-frame))
+  ( :map search-map
+      ("i" . imenu)
+      ("j" . list-registers)
+      ("m" . list-bookmarks)
+      ("o" . occur))
   :custom
   (undo-limit (* 13 160000))
   (undo-strong-limit (* 13 240000))
@@ -304,14 +306,15 @@
 (use-package compile
   ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   :ensure nil
-  :bind ( :map global-leader-map
-          ("k &" . async-shell-command-rerun)
-          ("k g" . recompile)
-          ("k k" . compile-dwim)
-          ("k K" . compile)
-          ("k n" . next-error)
-          ("k p" . previous-error)
-          ("k RET" . send-region-to-process))
+  :bind
+  ( :map global-leader-map
+    ("k &" . async-shell-command-rerun)
+    ("k g" . recompile)
+    ("k k" . compile-dwim)
+    ("k K" . compile)
+    ("k n" . next-error)
+    ("k p" . previous-error)
+    ("k RET" . send-region-to-process))
   :custom
   (ansi-color-for-compilation-mode t)
   (compilation-always-kill t)
@@ -374,8 +377,9 @@
 
 (use-package dabbrev
   :ensure nil
-  :bind (("M-/" . dabbrev-expand)
-         ("C-M-/" . dabbrev-completion))
+  :bind
+  ( :map global-map
+    ("M-/" . dabbrev-expand))
   :config
   (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
   (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)
@@ -475,9 +479,10 @@
   (ediff-keep-variants nil)
   (ediff-split-window-function #'split-window-horizontally)
   (ediff-window-setup-function #'ediff-setup-windows-plain)
-  :bind ( :map global-leader-map
-          ("o D" . ediff-files)
-          ("o E" . ediff-buffers))
+  :bind
+  ( :map global-leader-map
+    ("o D" . ediff-files)
+    ("o E" . ediff-buffers))
   :config
   (advice-add 'ediff-window-display-p :override #'ignore))
 
@@ -502,18 +507,19 @@
 
 (use-package eglot
   :ensure nil
-  :bind ( :map global-leader-map
-          ("L" . eglot)
-          ("l TAB" . eglot-format)
-          ("l e" . eglot-events-buffer)
-          ("l E" . eglot-stderr-buffer)
-          ("l l" . eglot-reconnect)
-          ("l q" . eglot-shutdown)
-          ("l Q" . eglot-shutdown-all)
-          ("l r" . eglot-rename)
-          ("l h" . eglot-inlay-hints-mode)
-          ("l d" . eglot-find-declaration)
-          ("l a" . eglot-code-actions))
+  :bind
+  ( :map global-leader-map
+    ("L" . eglot)
+    ("l TAB" . eglot-format)
+    ("l e" . eglot-events-buffer)
+    ("l E" . eglot-stderr-buffer)
+    ("l l" . eglot-reconnect)
+    ("l q" . eglot-shutdown)
+    ("l Q" . eglot-shutdown-all)
+    ("l r" . eglot-rename)
+    ("l h" . eglot-inlay-hints-mode)
+    ("l d" . eglot-find-declaration)
+    ("l a" . eglot-code-actions))
   :custom
   (eglot-autoshutdown t)
   (eglot-code-action-indications '(eldoc-hint)))
@@ -586,8 +592,9 @@
 
 (use-package flyspell
   :ensure nil
-  :bind ( :map global-leader-map
-          ("m $" . flyspell-mode))
+  :bind
+  ( :map global-leader-map
+    ("m $" . flyspell-mode))
   :custom
   (flyspell-delay 1))
 
@@ -631,9 +638,10 @@
 
 (use-package grep
   :ensure nil
-  :bind ( :map search-map
-          ("g" . grep)
-          ("G" . rgrep))
+  :bind
+  ( :map search-map
+    ("g" . grep)
+    ("G" . rgrep))
   :custom
   (grep-find-ignored-directories
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".jj" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "build" "dist"))
@@ -661,9 +669,9 @@
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
-   '(try-expand-dabbrev-visible
-     try-expand-list
+   '(try-expand-list
      try-expand-line
+     try-expand-dabbrev-visible
      try-expand-dabbrev
      ;; try-expand-list-all-buffers
      try-expand-line-all-buffers
@@ -688,8 +696,9 @@
 
 (use-package ibuffer
   :ensure nil
-  :bind ( :map global-map
-          ("C-x C-b" . ibuffer))
+  :bind
+  ( :map global-map
+    ("C-x C-b" . ibuffer))
   :custom
   (ibuffer-human-readable-size t)
   (ibuffer-expert t)
@@ -783,11 +792,13 @@
   (completions-max-height nil)
   (completions-sort 'historical)
   ;; (completion-preview-mode t) ;; mode-map conflicts with regular completion
-  :bind ("M-i" . completion-at-point))
+  :bind
+  ( :map global-map
+    ("M-i" . completion-at-point)))
 
 (use-package org
   :ensure nil
-  :commands (org-setup-directory)
+  :commands (org-cycle-agenda-directories)
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))
@@ -798,7 +809,7 @@
   (defvar org-agenda-directories '()
     "List of directories to toggle for org-agenda-files.")
   (defun org-setup-directory (&optional dir)
-    (let ((dir (or dir org-directory (car (last org-agenda-directories)))))
+    (let ((dir (or dir org-directory (car org-agenda-directories))))
       (setopt org-directory dir)
       (unless (file-exists-p org-directory)
         (make-directory org-directory))
@@ -816,28 +827,30 @@
   (org-mode . org-mode-setup)
   (org-mode . visual-line-mode)
   (org-agenda-mode . hl-line-mode)
-  :bind ( ("C-c L" . org-store-link)
-          :map global-leader-map
-          ("n '" . org-capture-goto-last-stored)
-          ("n SPC" . org-search-view)
-          ("n a" . org-agenda)
-          ("n k" . org-capture)
-          ("n K" . org-capture-goto-target)
-          ("n m" . org-mark-ring-goto)
-          ("n s" . consult-org-grep)
-          ("n t" . org-todo-list)
-          ("n T" . org-cycle-agenda-directories)
-          :map org-mode-map
-          ([remap goto-address-at-point] . org-open-at-point)
-          ([remap kill-sentence] . org-cut-subtree)
-          ([remap consult-outline] . consult-org-heading)
-          ("M-H" . org-babel-mark-block)
-          ("M-n" . org-next-visible-heading)
-          ("M-p" . org-previous-visible-heading)
-          ("C-M-a" . org-up-element)
-          ("C-M-e" . org-down-element)
-          ("M-N" . org-move-subtree-down)
-          ("M-P" . org-move-subtree-up))
+  :bind
+  ( :map global-map
+    ("C-c L" . org-store-link))
+  ( :map global-leader-map
+    ("n '" . org-capture-goto-last-stored)
+    ("n SPC" . org-search-view)
+    ("n a" . org-agenda)
+    ("n k" . org-capture)
+    ("n K" . org-capture-goto-target)
+    ("n m" . org-mark-ring-goto)
+    ("n s" . consult-org-grep)
+    ("n t" . org-todo-list)
+    ("n T" . org-cycle-agenda-directories))
+  ( :map org-mode-map
+    ([remap goto-address-at-point] . org-open-at-point)
+    ([remap kill-sentence] . org-cut-subtree)
+    ([remap consult-outline] . consult-org-heading)
+    ("M-H" . org-babel-mark-block)
+    ("M-n" . org-next-visible-heading)
+    ("M-p" . org-previous-visible-heading)
+    ("C-M-a" . org-up-element)
+    ("C-M-e" . org-down-element)
+    ("M-N" . org-move-subtree-down)
+    ("M-P" . org-move-subtree-up))
   :custom
   (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
@@ -846,6 +859,7 @@
   (org-agenda-window-setup 'current-window) ;; display buffer setting
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
+  (org-directory nil)
   (org-edit-src-content-indentation 0)
   (org-fold-catch-invisible-edits 'show-and-error)
   (org-hide-block-startup t)
@@ -898,7 +912,9 @@
 
 (use-package proced
   :ensure nil
-  :bind (:map global-leader-map ("o p" . proced))
+  :bind
+  ( :map global-leader-map
+    ("o p" . proced))
   :custom
   (proced-tree-flag t)
   (proced-descend t)
@@ -1088,10 +1104,12 @@
 (use-package window
   :ensure nil
   :defer
-  :bind (("C-x w t"  . window-layout-transpose)
-         ("C-x w r"  . window-layout-rotate-clockwise)
-         ("C-x w f h"  . window-layout-flip-leftright)
-         ("C-x w f v"  . window-layout-flip-topdown)))
+  :bind
+  ( :map global-map
+    ("C-x w t"  . window-layout-transpose)
+    ("C-x w r"  . window-layout-rotate-clockwise)
+    ("C-x w f h"  . window-layout-flip-leftright)
+    ("C-x w f v"  . window-layout-flip-topdown)))
 
 (use-package wdired
   :ensure nil
@@ -1112,8 +1130,9 @@
 (use-package which-key
   :defer 1
   :ensure nil
-  :bind ( :map help-map
-          ("?" . which-key-show-major-mode))
+  :bind
+  ( :map help-map
+    ("?" . which-key-show-major-mode))
   :custom
   (which-key-side-window-location 'right)
   (which-key-separator " ")
