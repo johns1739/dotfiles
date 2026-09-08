@@ -253,11 +253,12 @@
 (use-package corfu
   :defer 1
   :bind ( :map corfu-map
-          ("TAB" . nil) ;; shadows copilot completion
-          ("RET" . nil))
+          ("TAB" . corfu-complete)
+          ("M-TAB" . corfu-expand)
+          ("RET" . corfu-insert))
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0.5)
+  (corfu-auto-delay 0.3)
   (corfu-auto-prefix 3)
   (corfu-cycle t)
   (corfu-echo-delay 0.3)
@@ -314,6 +315,16 @@
   (denote-date-prompt-use-org-read-date t)
   :config
   (denote-rename-buffer-mode))
+
+(use-package denote-journal
+  :after denote
+  :bind ( :map global-leader-map
+          ("n j" . denote-journal-new-or-existing-entry))
+  :hook (calendar-mode . denote-journal-calendar-mode)
+  :config
+  (setq denote-journal-directory denote-directory)
+  (setq denote-journal-keyword "journal")
+  (setq denote-journal-title-format 'day-date-month-year))
 
 (use-package devdocs
   :disabled ;; clunky and difficult to keep updated.

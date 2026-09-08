@@ -375,18 +375,6 @@
                '(simple-spaced-target
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
 
-(use-package dabbrev
-  :ensure nil
-  :bind
-  ( :map global-map
-    ("M-/" . dabbrev-expand))
-  :config
-  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` ")
-  (add-to-list 'dabbrev-ignored-buffer-modes 'authinfo-mode)
-  (add-to-list 'dabbrev-ignored-buffer-modes 'doc-view-mode)
-  (add-to-list 'dabbrev-ignored-buffer-modes 'pdf-view-mode)
-  (add-to-list 'dabbrev-ignored-buffer-modes 'tags-table-mode))
-
 (use-package diff-mode
   :ensure nil
   :defer
@@ -665,13 +653,14 @@
   :ensure nil
   :bind
   ( :map global-map
-    ("M-I" . hippie-expand))
+    ("M-i" . hippie-expand)
+    ("M-/" . hippie-expand))
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
-   '(try-expand-list
+   '(try-expand-dabbrev-visible
+     try-expand-list
      try-expand-line
-     try-expand-dabbrev-visible
      try-expand-dabbrev
      ;; try-expand-list-all-buffers
      try-expand-line-all-buffers
@@ -794,7 +783,7 @@
   ;; (completion-preview-mode t) ;; mode-map conflicts with regular completion
   :bind
   ( :map global-map
-    ("M-i" . completion-at-point)))
+    ("M-I" . completion-at-point)))
 
 (use-package org
   :ensure nil
