@@ -58,7 +58,6 @@
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
          :map global-leader-map
-         ("n w" . avy-org-refile-as-child)
          ("y p" . avy-copy-line)
          ("y P" . avy-copy-region)
          ("y g" . avy-move-line) ;; g for grab
@@ -67,6 +66,8 @@
          ("y K" . avy-kill-region)
          ("y y" . avy-kill-ring-save-whole-line)
          ("y Y" . avy-kill-ring-save-region)
+         :map org-mode-map
+         ("C-c M-g" . avy-org-refile-as-child)
          :map isearch-mode-map
          ("M-g" . avy-isearch)
          :map goto-map
