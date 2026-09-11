@@ -300,16 +300,13 @@
 
 (use-package denote ;; used to create references to org notes
   :bind ( :map global-leader-map
-          ("n d SPC" . denote-open-or-create)
-          ("n d n" . denote)
-          ("n d N" . denote-type)
-          ("n d d" . denote-dired)
-          ("n d l" . denote-link-or-create)
-          ("n d /" . denote-find-link)
-          ("n d ?" . denote-find-backlink)
-          ("n d r" . denote-region)
-          ("n d R" . denote-rename-file)
-          ("n d s" . denote-grep))
+          ("n n" . denote-open-or-create)
+          ("n N" . denote-region)
+          :map org-mode-map
+          ("C-c n l" . denote-link-or-create)
+          ("C-c n /" . denote-find-link)
+          ("C-c n ?" . denote-find-backlink)
+          ("C-c n r" . denote-rename-file))
   :custom
   (denote-directory "~/Documents/notes/refs")
   (denote-date-prompt-use-org-read-date t)
@@ -317,7 +314,6 @@
   (denote-rename-buffer-mode))
 
 (use-package denote-journal
-  :after denote
   :bind ( :map global-leader-map
           ("n j" . denote-journal-new-or-existing-entry))
   :hook (calendar-mode . denote-journal-calendar-mode)

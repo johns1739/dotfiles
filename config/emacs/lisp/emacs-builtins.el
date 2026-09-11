@@ -787,7 +787,6 @@
 
 (use-package org
   :ensure nil
-  :commands (org-cycle-agenda-directories)
   :init
   (defun org-mode-setup ()
     (electric-indent-local-mode -1))
@@ -797,13 +796,6 @@
     (consult-ripgrep (expand-file-name org-directory user-emacs-directory)))
   (defvar org-agenda-directories '()
     "List of directories to toggle for org-agenda-files.")
-  (defun org-setup-directory (&optional dir)
-    (let ((dir (or dir org-directory (car org-agenda-directories))))
-      (setopt org-directory dir)
-      (unless (file-exists-p org-directory)
-        (make-directory org-directory))
-      (setopt org-agenda-files (list org-directory))
-      (message "Set org-agenda to: %s" org-directory)))
   (defun org-cycle-agenda-directories ()
     "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
     (interactive)
@@ -811,7 +803,8 @@
            (next-dir (or (cadr (member current-dir org-agenda-directories))
                          (car org-agenda-directories)
                          org-directory)))
-      (org-setup-directory next-dir)))
+      (message (format "Cycling org-directory to %s" next-dir))
+      (setopt org-directory next-dir)))
   :hook
   (org-mode . org-mode-setup)
   (org-mode . visual-line-mode)
@@ -841,6 +834,7 @@
     ("M-N" . org-move-subtree-down)
     ("M-P" . org-move-subtree-up))
   :custom
+  (org-agenda-files '("tasks.org" "journal.org" "notes.org"))
   (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
@@ -848,7 +842,7 @@
   (org-agenda-window-setup 'current-window) ;; display buffer setting
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
-  (org-directory nil)
+  (org-directory "~/Documents/notes")
   (org-edit-src-content-indentation 0)
   (org-fold-catch-invisible-edits 'show-and-error)
   (org-hide-block-startup t)
@@ -867,17 +861,16 @@
   (org-use-fast-todo-selection 'auto)
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up urgency-down category-keep)
-     (todo deadline-up habit-up urgency-down todo-state-down timestamp-up)
+     (todo deadline-up habit-up urgency-down)
      (search category-keep)))
   (org-todo-keyword-faces
    '(("WIP" . (:foreground "spring green"))
-     ("ACTIVE" . (:foreground "spring green"))
-     ("REVIEW" . (:foreground "spring green"))))
+     ("ACTIVE" . (:foreground "spring green"))))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %?\n%U\n%i" :empty-lines 1)
+   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? %^g\n%U\n%i" :prepend t :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i" :time-prompt t)))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i" t)))
   :config
   (with-eval-after-load 'org-id
     (setopt org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))
