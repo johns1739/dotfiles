@@ -870,7 +870,7 @@
      ("ACTIVE" . (:foreground "spring green"))))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? %^g\n%U\n%i" :prepend t :empty-lines 1)
+   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? %^g\n%U\n%i" :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i" t)))
   :config
