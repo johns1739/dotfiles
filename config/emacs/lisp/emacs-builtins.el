@@ -835,6 +835,7 @@
     ("M-P" . org-move-subtree-up))
   :custom
   (org-agenda-files '("tasks.org" "journal.org" "notes.org"))
+  (org-agenda-span 10)
   (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
@@ -842,6 +843,7 @@
   (org-agenda-window-setup 'current-window) ;; display buffer setting
   (org-archive-location ".archive::* From %s")
   (org-confirm-babel-evaluate nil)
+  (org-deadline-warning-days 14)
   (org-directory "~/Documents/notes")
   (org-edit-src-content-indentation 0)
   (org-fold-catch-invisible-edits 'show-and-error)

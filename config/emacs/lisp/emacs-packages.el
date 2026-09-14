@@ -1025,6 +1025,12 @@
   (completion-pcm-leading-wildcard t)
   (completion-styles '(orderless basic)))
 
+(use-package org-mcp
+  ;; Register with claude:
+  ;; claude mcp add -s user -t stdio org-mcp -- ~/.config/emacs/emacs-mcp-stdio.sh --server-id=org-mcp --init-function=org-mcp-enable --stop-function=org-mcp-disable
+  :custom
+  (org-mcp-allowed-files '("~/Documents/notes/tasks.org")))
+
 (use-package org-modern ;; Better look for org
   :disabled ;; still in its early stages.
   :after org

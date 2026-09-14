@@ -5,3 +5,4 @@ custom.el
 .custom.el
 /config/emacs/tree-sitter/
 /.claude/
+/config/emacs/emacs-mcp-stdio.sh
