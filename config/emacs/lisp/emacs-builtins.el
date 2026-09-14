@@ -203,8 +203,8 @@
   (make-directory (expand-file-name "cache/auto-saves/" user-emacs-directory) t)
   (modify-coding-system-alist 'file "" 'utf-8)
   (setq-default cursor-type 'bar)
-  (setq-default display-fill-column-indicator-column 100)
-  (setq-default fill-column 80)
+  (setq-default display-fill-column-indicator-column 120)
+  (setq-default fill-column 120)
   (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
   ;; (auto-save-visited-mode t) ;; auto-format constantly triggers, annoying
   ;; (desktop-save-mode t) ;; CPU heavy when loading many buffers under LSP

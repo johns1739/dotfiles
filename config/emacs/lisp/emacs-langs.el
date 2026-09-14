@@ -107,12 +107,17 @@
   (json-ts-mode . js-ts-mode-setup))
 
 (use-package markdown-mode
-  :mode ("\\.md\\'" . gfm-mode)
+  :mode ("\\.md\\'" . gfm-view-mode)
+  :hook
+  (gfm-view-mode . visual-line-mode)
+  (markdown-view-mode . visual-line-mode)
   :bind ( :map markdown-mode-map
+          ("C-c C-e" . gfm-mode)
+          ("C-c C-v" . gfm-view-mode)
           ("M-;" . markdown-blockquote-region)
           ("M-H" . markdown-mark-block)
-          ("M-n" . markdown-outline-next)
-          ("M-p" . markdown-outline-previous)
+          ("C-c C-n" . markdown-outline-next)
+          ("C-c C-p" . markdown-outline-previous)
           ("C-c C-." . markdown-do))
   :custom
   (markdown-command "multimarkdown"))

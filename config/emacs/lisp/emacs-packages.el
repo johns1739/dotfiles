@@ -1264,6 +1264,18 @@
   (vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
   (vertico-posframe-min-width 80))
 
+
+(use-package visual-fill-column
+  ;; https://codeberg.org/joostkremers/visual-fill-column
+  :custom
+  (visual-fill-column-center-text t)
+  :init
+  (defun visual-fill-column-setup ()
+    (display-line-numbers-mode -1))
+  :config
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-setup))
+
 (use-package visual-replace
   :bind (([remap query-replace] . visual-replace)
          ([remap replace-string] . visual-replace)
