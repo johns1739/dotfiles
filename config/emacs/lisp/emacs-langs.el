@@ -199,7 +199,7 @@
   :init
   (defun sql-mode-setup ()
     ;; 2-spaces, no-grouping
-    (setq format-all-formatters '(("SQL" (pgformatter "-s2" "-g")))))
+    (setq-local format-all-formatters '(("SQL" (pgformatter "-s2" "-g")))))
   :hook
   (sql-mode . sql-mode-setup))
 

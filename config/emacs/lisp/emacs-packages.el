@@ -105,10 +105,6 @@
   (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
   (claude-code-ide-terminal-initialization-delay 0.15) ; better render
   :config
-  (require 'monet)
-  (require 'inheritenv)
-  (add-hook 'claude-code-process-environment-functions #'monet-start-server-function)
-  (monet-mode 1)
   (claude-code-ide-emacs-tools-setup))
 
 (use-package command-log-mode
@@ -126,7 +122,7 @@
    ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
    ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
    ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-   ([remap yank-pop] . consult-yank-pop)
+   ([remap yank-pop] . consult-yank-pop))
   ( :map global-leader-map
     ("SPC" . consult-project-buffer)
     ("d SPC" . consult-flymake)
@@ -706,10 +702,9 @@
 (use-package gptel-magit ;; auto-generate commit messages
   :after magit
   :hook (magit-mode . gptel-magit-install)
-  :custom
-  (gptel-magit-commit-prompt gptel-magit-prompt-zed)
   :config
-  (require 'gptel))
+  (require 'gptel)
+  (setopt gptel-magit-commit-prompt gptel-magit-prompt-zed))
 
 (use-package gptel-prompts
   :disabled ;; Fails to install, package not available
@@ -717,7 +712,7 @@
   :after (gptel)
   :config
   (gptel-prompts-update)
-  (pgtel-prompts-add-update-watchers))
+  (gptel-prompts-add-update-watchers))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
@@ -869,7 +864,7 @@
     ("M-'" . meow-last-buffer))
   :custom
   (meow-use-clipboard t)
-  (meow-keypad--self-insert-undefined nil)
+  (meow-keypad-self-insert-undefined nil)
   (meow-expand-hint-remove-delay 2)
   (meow-cursor-type-motion '(hbar . 2))
   :init
@@ -884,8 +879,6 @@
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode))
       (add-to-list 'meow-expand-exclude-mode-list mode))
-    (add-to-list 'meow-mode-state-list '(vterm-mode . insert))
-    (add-to-list 'meow-mode-state-list '(ghostel-mode . insert))
     (meow-motion-overwrite-define-key ;; Deprecated: use meow-motion-define-key on new version 1.6
      (cons "SPC" global-leader-map)
      '("M-SPC" . "H-SPC") ;; Rebind original space command (e.g., magit-status)
@@ -968,8 +961,7 @@
      '("t" . meow-till)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)
-     ;; '("U" . meow-undo-in-selection)
-     '("U" . undo-tree-redo)
+     '("U" . meow-undo-in-selection)
      '("v" . meow-page-down)
      '("V" . meow-page-up)
      '("w" . meow-mark-word)
@@ -1002,20 +994,12 @@
   :config
   (meow-tree-sitter-register-defaults))
 
-(use-package monet
-  :defer
-  :vc (:url "https://github.com/stevemolitor/monet" :rev :newest))
-
 (use-package ob-http
   :disabled ;; Better to use curl in org-source blocks.
   :after org)
 
 (use-package ob-restclient
-  :after org
-  :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((restclient . t))))
+  :after org)
 
 (use-package orderless
   :custom
@@ -1044,6 +1028,10 @@
      ("BACKLOG" :inherit org-modern-done)))
   :config
   (global-org-modern-mode))
+
+(use-package org-remark
+  :disabled ;; does not work smoothly as expected
+  :after org)
 
 (use-package org-roam
   :disabled ;; never really used, denote simpler and easier to understand
@@ -1085,7 +1073,7 @@
   (scheme-mode . enable-paredit-mode))
 
 (use-package pdf-tools
-  :mode "\\.pdf\\'"
+  :mode ("\\.pdf\\'" . pdf-view-mode)
   :config
   (pdf-tools-install))
 

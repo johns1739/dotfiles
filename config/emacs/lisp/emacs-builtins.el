@@ -72,7 +72,6 @@
     ("SPC" . switch-to-buffer)
     ("d" . dired-jump)
     ("h" . eldoc)
-    ("u" . find-file-at-point)
     ("p" . previous-buffer)
     ("n" . next-buffer)
     ;; Window navigation
@@ -224,7 +223,7 @@
     "Copy absolute file path of current buffer."
     (interactive)
     (let ((afn (absolute-file-name)))
-      (kill-new (absolute-file-name))
+      (kill-new afn)
       (message "Copied %s" afn)))
   (defun project-directory ()
     "Current project directory."
@@ -386,9 +385,6 @@
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'always)
   (image-dired-dir (expand-file-name "cache/image-dired" user-emacs-directory))
-  :bind
-  ( :map search-map
-    ("f" . find-name-dired))
   :hook
   (dired-mode . hl-line-mode))
 
@@ -425,7 +421,6 @@
   :bind
   ( :map global-leader-map
     ("k u" . edebug-unset-breakpoint)
-    ("k U" . edebug-unset-breakpoint)
     ("k i" . edebug-instrument-callee)
     ("k I" . edebug-remove-instrumentation)
     ("k b" . edebug-set-breakpoint)
@@ -610,10 +605,7 @@
 
 (use-package grep
   :ensure nil
-  :bind
-  ( :map search-map
-    ("g" . grep)
-    ("G" . rgrep))
+  :defer
   :custom
   (grep-find-ignored-directories
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".jj" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "build" "dist"))
@@ -725,7 +717,7 @@
   :custom
   (text-mode-ispell-word-completion nil)
   (ispell-personal-dictionary (expand-file-name "cache/ispell-personal-dict.txt" user-emacs-directory))
-  (ispell-extra-args '("--ignore=3 --sug-mode=slow --run-together"))
+  (ispell-extra-args '("--ignore=3" "--sug-mode=slow" "--run-together"))
   :config
   (when (executable-find "aspell")
     (setopt ispell-program-name "aspell")))
@@ -798,7 +790,6 @@
     ("C-c L" . org-store-link))
   ( :map global-leader-map
     ("n '" . org-capture-goto-last-stored)
-    ("n SPC" . org-search-view)
     ("n a" . org-agenda)
     ("n k" . org-capture)
     ("n K" . org-capture-goto-target)
@@ -829,7 +820,7 @@
   (org-confirm-babel-evaluate nil)
   (org-deadline-warning-days 14)
   (org-directory "~/Documents/notes")
-  (org-edit-src-content-indentation 0)
+  (org-src-content-indentation 0)
   (org-fold-catch-invisible-edits 'show-and-error)
   (org-hide-block-startup t)
   (org-hide-drawer-startup t)
@@ -865,6 +856,7 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
+     (restclient . t)
      (ruby . t)
      (shell . t)
      (sql . t)))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
