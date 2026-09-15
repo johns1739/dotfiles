@@ -264,6 +264,7 @@
 
 (use-package autorevert
   :ensure nil
+  :defer 1
   :custom
   (auto-revert-remote-files nil)   ;; t makes tramp slow
   (auto-revert-verbose t)
@@ -801,6 +802,7 @@
     ([remap goto-address-at-point] . org-open-at-point)
     ([remap kill-sentence] . org-cut-subtree)
     ([remap consult-outline] . consult-org-heading)
+    ("C-c M-g" . avy-org-refile-as-child)
     ("M-H" . org-babel-mark-block)
     ("M-n" . org-next-visible-heading)
     ("M-p" . org-previous-visible-heading)

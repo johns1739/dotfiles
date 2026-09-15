@@ -66,8 +66,6 @@
          ("y K" . avy-kill-region)
          ("y y" . avy-kill-ring-save-whole-line)
          ("y Y" . avy-kill-ring-save-region)
-         :map org-mode-map
-         ("C-c M-g" . avy-org-refile-as-child)
          :map isearch-mode-map
          ("M-g" . avy-isearch)
          :map goto-map
@@ -1010,6 +1008,7 @@
 (use-package org-mcp
   ;; Register with claude:
   ;; claude mcp add -s user -t stdio org-mcp -- ~/.config/emacs/emacs-mcp-stdio.sh --server-id=org-mcp --init-function=org-mcp-enable --stop-function=org-mcp-disable
+  :defer
   :custom
   (org-mcp-allowed-files '("~/Documents/notes/tasks.org")))
 
@@ -1253,6 +1252,7 @@
 
 (use-package visual-fill-column
   ;; https://codeberg.org/joostkremers/visual-fill-column
+  :defer
   :custom
   (visual-fill-column-center-text t)
   :init
