@@ -111,11 +111,13 @@
   :hook
   (gfm-view-mode . visual-line-mode)
   (markdown-view-mode . visual-line-mode)
-  :bind ( :map markdown-mode-map
-          ("C-c C-e" . gfm-mode)
-          ("C-c C-v" . gfm-view-mode)
+  :bind ( :map markdown-mode-command-map
+          ("a" . markdown-table-align)
+          :map markdown-mode-map
           ("M-;" . markdown-blockquote-region)
           ("M-H" . markdown-mark-block)
+          ("C-c C-e" . gfm-mode)
+          ("C-c C-v" . gfm-view-mode)
           ("C-c C-n" . markdown-outline-next)
           ("C-c C-p" . markdown-outline-previous)
           ("C-c C-." . markdown-do))

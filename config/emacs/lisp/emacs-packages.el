@@ -121,45 +121,46 @@
 
 (use-package consult
   :bind
-  (([remap bookmark-jump] . consult-bookmark)
-   ;; ([remap goto-line] . consult-goto-line) ;; prefer avy-goto-line
-   ([remap imenu] . consult-imenu)
-   ([remap isearch-edit-string] . consult-isearch-history)
-   ([remap jump-to-register] . consult-register-load)
-   ([remap keep-lines] . consult-keep-lines)
-   ([remap list-registers] . consult-register)
-   ([remap load-theme] . consult-theme)
-   ([remap org-search-view] . consult-org-agenda)
-   ([remap point-to-register] . consult-register-store)
-   ([remap project-switch-to-buffer] . consult-project-buffer)
-   ([remap recentf-open] . consult-recent-file)
-   ([remap recentf] . consult-recent-file)
-   ([remap repeat-complex-command] . consult-complex-command)
+  (([remap isearch-edit-string] . consult-isearch-history)
    ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
    ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
    ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-   ([remap switch-to-buffer] . consult-buffer)
    ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
    ([remap yank-pop] . consult-yank-pop)
-   ([remap Info-search] . consult-info))
   ( :map global-leader-map
+    ("SPC" . consult-project-buffer)
     ("d SPC" . consult-flymake)
+    ("n SPC" . consult-org-agenda)
+    (", SPC" . consult-emacs-packages)
+    (", m" . consult-minor-mode-menu)
     (", s" . consult-emacs)
-    (", SPC" . consult-emacs-packages))
+    (", t" . consult-theme)
+    ("x k" . consult-keep-lines)
+    ("x f" . flush-lines)
+    ("x s" . sort-lines)
+    ("x u" . delete-duplicate-lines))
   ( :map minibuffer-mode-map
     ("C-r" . consult-history)
     ("C-M-i" . consult-history))
   ( :map search-map
+    (")" . consult-kmacro)
     ("f" . consult-find) ;; works even if not in a project
-    ("M-f" . consult-find) ;; works even if not in a project
     ("F" . find-name-dired)
+    ("j". consult-register)
+    ("i" . consult-imenu)
     ("I" . consult-imenu-multi)
     ("l" . consult-line)
-    ("L" . consult-focus-lines)
+    ("L" . consult-line-multi)
+    ("r" . consult-recent-file)
     ("s" . consult-ripgrep)
-    ("M-s" . consult-ripgrep))
+    ("k" . consult-focus-lines)
+    ("m" . consult-mark))
   ( :map goto-map
-    ("o" . consult-outline))
+    ("SPC" . consult-buffer)
+    ("o" . consult-outline)
+    ("j" . consult-register-load)
+    ("J" . consult-register-store)
+    ("m" . consult-bookmark))
   :init
   (defun consult-emacs ()
     "Search emacs configuration."
@@ -180,9 +181,6 @@
   (with-eval-after-load 'project
     (project-add-switch-command 'consult-project-buffer "Buffer" "SPC")
     (project-add-switch-command 'consult-ripgrep "Search" "s"))
-  (with-eval-after-load 'org
-    (bind-keys :map org-mode-map
-               ("C-c C-/" . consult-org-heading)))
   (if (executable-find "fd")
       (bind-keys :map search-map
                  ("f" . consult-fd))))

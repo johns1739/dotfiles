@@ -39,18 +39,12 @@
     ("2" . split-window-below-and-jump)
     ("3" . split-window-right-and-jump)
     ("=" . balance-windows-area)
-    ("SPC" . project-switch-to-buffer)
     ;; Modes
     ("m t" . toggle-truncate-lines)
     ("m v" . visual-line-mode)
     ;; Open Apps
     ("o d" . diff)
     ("o C" . calendar)
-    ;; Edits
-    ("x k" . delete-matching-lines)
-    ("x l" . keep-lines)
-    ("x s" . sort-lines)
-    ("x u" . delete-duplicate-lines)
     ;; Copy/Paste
     ("y d" . copy-project-directory)
     ("y F" . copy-absolute-file-name)
@@ -65,7 +59,6 @@
     (", R" . restart-emacs)
     (", f" . toggle-frame-maximized)
     (", r" . reload-emacs)
-    (", t" . load-theme)
     (", x" . describe-font))
   ( :map goto-map
     ("'" . mode-line-other-buffer)
@@ -75,14 +68,10 @@
     (":" . goto-line)
     (";" . scratch-buffer)
     ("?" . xref-find-references)
-    ("J" . point-to-register)
     ("M" . bookmark-set)
     ("SPC" . switch-to-buffer)
     ("d" . dired-jump)
     ("h" . eldoc)
-    ("j" . jump-to-register)
-    ("l" . goto-line)
-    ("m" . bookmark-jump)
     ("u" . find-file-at-point)
     ("p" . previous-buffer)
     ("n" . next-buffer)
@@ -105,11 +94,6 @@
     ("f o" . other-frame)
     ("f p" . project-other-frame-command)
     ("f u" . undelete-frame))
-  ( :map search-map
-      ("i" . imenu)
-      ("j" . list-registers)
-      ("m" . list-bookmarks)
-      ("o" . occur))
   :custom
   (undo-limit (* 13 160000))
   (undo-strong-limit (* 13 240000))
