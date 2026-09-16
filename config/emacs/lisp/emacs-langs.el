@@ -107,7 +107,7 @@
   (json-ts-mode . js-ts-mode-setup))
 
 (use-package markdown-mode
-  :mode ("\\.md\\'" . gfm-view-mode)
+  :mode ("\\.md\\'" . gfm-mode)
   :hook
   (gfm-view-mode . visual-line-mode)
   (markdown-view-mode . visual-line-mode)
