@@ -293,15 +293,17 @@
 (use-package denote ;; used to create references to org notes
   :bind ( :map global-leader-map
           ("n n" . denote-open-or-create)
-          ("n N" . denote-region)
-          :map org-mode-map
-          ("C-c n l" . denote-link-or-create)
-          ("C-c n /" . denote-find-link)
-          ("C-c n ?" . denote-find-backlink)
-          ("C-c n r" . denote-rename-file))
+          ("n N" . denote-region))
   :custom
   (denote-directory "~/Documents/notes/refs")
   (denote-date-prompt-use-org-read-date t)
+  :init
+  (with-eval-after-load 'org
+    (bind-keys :map org-mode-map
+               ("C-c n l" . denote-link-or-create)
+               ("C-c n /" . denote-find-link)
+               ("C-c n ?" . denote-find-backlink)
+               ("C-c n r" . denote-rename-file)))
   :config
   (denote-rename-buffer-mode))
 
@@ -1258,7 +1260,6 @@
   :init
   (defun visual-fill-column-setup ()
     (display-line-numbers-mode -1))
-  :config
   (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
   (add-hook 'visual-line-mode-hook #'visual-fill-column-setup))
 

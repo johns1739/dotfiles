@@ -812,7 +812,7 @@
     ("M-P" . org-move-subtree-up))
   :custom
   (org-agenda-files '("tasks.org" "journal.org" "notes.org"))
-  (org-agenda-span 10)
+  (org-agenda-span 'week)
   (org-agenda-tags-column -80)
   (org-agenda-tags-todo-honor-ignore-options t)
   (org-agenda-todo-ignore-deadlines 'far)
