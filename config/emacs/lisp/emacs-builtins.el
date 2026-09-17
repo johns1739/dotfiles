@@ -830,10 +830,8 @@
   :defer
   :custom
   (org-id-track-globally t)
-  (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-  (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory))
-  :config
-  (org-id-locations-load))
+  (org-id-link-to-org-use-id t)
+  (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))
 
 (use-package paren
   :ensure nil
