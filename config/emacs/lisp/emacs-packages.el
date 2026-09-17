@@ -115,7 +115,9 @@
 
 (use-package consult
   :bind
-  (([remap isearch-edit-string] . consult-isearch-history)
+  (([remap bookmark-jump] . consult-bookmark)
+   ([remap isearch-edit-string] . consult-isearch-history)
+   ([remap recentf-open] . consult-recent-file)
    ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
    ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
    ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
