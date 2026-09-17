@@ -1010,7 +1010,7 @@
 (use-package org-mcp
   ;; Register with claude:
   ;; claude mcp add -s user -t stdio org-mcp -- ~/.config/emacs/emacs-mcp-stdio.sh --server-id=org-mcp --init-function=org-mcp-enable --stop-function=org-mcp-disable
-  :commands (org-mcp-enable)
+  :defer t ;; NOTE: Must be required to call (org-mcp-enable)
   :custom
   (org-mcp-allowed-files '("~/Documents/notes/tasks.org")))
 

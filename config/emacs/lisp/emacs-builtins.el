@@ -851,8 +851,7 @@
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i" t)))
   :config
-  (with-eval-after-load 'org-id
-    (setopt org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))
+  (require 'org-id)
   (require 'org-capture)
   ;; (require 'org-crypt)
   (org-babel-do-load-languages
@@ -862,6 +861,16 @@
      (ruby . t)
      (shell . t)
      (sql . t)))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
+
+(use-package org-id
+  :ensure nil
+  :defer
+  :custom
+  (org-id-track-globally t)
+  (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+  (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory))
+  :config
+  (org-id-locations-load))
 
 (use-package paren
   :ensure nil
