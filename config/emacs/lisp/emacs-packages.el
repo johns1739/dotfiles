@@ -156,7 +156,8 @@
     ("o" . consult-outline)
     ("j" . consult-register-load)
     ("J" . consult-register-store)
-    ("m" . consult-bookmark))
+    ("m" . consult-bookmark)
+    ("M" . boomark-set))
   :init
   (defun consult-emacs ()
     "Search emacs configuration."

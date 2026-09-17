@@ -27,8 +27,8 @@
     ("M-o" . other-window)
     ("C-M-h" . mark-sexp)
     ("C-M-d" . delete-pair)
-    ("C-M-b" . backward-sexp)
-    ("C-M-f" . forward-sexp)
+    ([remap backward-sentence] . backward-sexp)
+    ([remap forward-sentence] . forward-sexp)
     ([remap split-window-below] . split-window-below-and-jump)
     ([remap split-window-right] . split-window-right-and-jump))
   ( :map global-leader-map
@@ -812,7 +812,7 @@
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? %^g\n%U\n%i" :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i" t)))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
   :config
   (require 'org-id)
   (require 'org-capture)
