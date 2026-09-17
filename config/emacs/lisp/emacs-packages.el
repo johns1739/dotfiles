@@ -218,8 +218,8 @@
   :if (executable-find "npm")
   :commands (copilot-mode)
   :bind ( :map global-leader-map
-          ("m c" . copilot-mode)
-          ("m C" . global-copilot-mode)
+          ("i o" . copilot-mode)
+          ("i O" . global-copilot-mode)
           :map copilot-completion-map
           ("M-f" . copilot-accept-completion-by-word)
           ("M-e" . copilot-accept-completion-by-line)

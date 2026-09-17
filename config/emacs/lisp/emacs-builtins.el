@@ -7,39 +7,38 @@
   :ensure nil
   :demand
   :init
-  (defvar-keymap global-leader-map :doc "Global leader keymap.")
+  (defvar-keymap global-leader-map
+    :doc "Global leader keymap.")
   (keymap-set global-map "C-x SPC" global-leader-map)
   (keymap-set global-leader-map "g" goto-map)
-  (keymap-set global-leader-map "s" search-map)
+  (keymap-set goto-map "s" search-map)
   :bind
   ( :map global-map
+    ("RET" . newline-and-indent)
     ("<backtab>" . prog-fill-reindent-defun)
-    ("C-M-h" . mark-sexp)
-    ("C-M-d" . delete-pair)
-    ("C-z" . nil)
+    ("C-z" . nil) ;; Prevent accidental minimize
+    ("M-SPC" . cycle-spacing)
     ("M-L" . duplicate-dwim)
-    ("M-S-SPC" . cycle-spacing)
+    ("M-l" . downcase-dwim)
+    ("M-u" . upcase-dwim)
     ("M-j" . join-line)
     ("M-n" . forward-paragraph)
-    ("M-o" . other-window)
     ("M-p" . backward-paragraph)
-    ("RET" . newline-and-indent)
-    ("s-[" . previous-buffer)
-    ("s-]" . next-buffer)
-    ([remap backward-sentence] . backward-sexp)
-    ([remap downcase-word] . downcase-dwim)
-    ([remap forward-sentence] . forward-sexp)
+    ("M-o" . other-window)
+    ("C-M-h" . mark-sexp)
+    ("C-M-d" . delete-pair)
+    ("C-M-b" . backward-sexp)
+    ("C-M-f" . forward-sexp)
     ([remap split-window-below] . split-window-below-and-jump)
-    ([remap split-window-right] . split-window-right-and-jump)
-    ([remap upcase-word] . upcase-dwim))
+    ([remap split-window-right] . split-window-right-and-jump))
   ( :map global-leader-map
-    ("." . find-file)
     ("0" . delete-window)
     ("1" . delete-other-windows)
     ("2" . split-window-below-and-jump)
     ("3" . split-window-right-and-jump)
     ("=" . balance-windows-area)
     ;; Modes
+    ("m s" . auto-save-visited-mode)
     ("m t" . toggle-truncate-lines)
     ("m v" . visual-line-mode)
     ;; Open Apps
@@ -61,17 +60,17 @@
     (", r" . reload-emacs)
     (", x" . describe-font))
   ( :map goto-map
+    ("SPC" . switch-to-buffer)
     ("'" . mode-line-other-buffer)
     ("," . xref-go-back)
     ("." . xref-find-definitions)
+    (">" . xref-find-references)
     ("/" . xref-find-apropos)
     (":" . goto-line)
     (";" . scratch-buffer)
-    ("?" . xref-find-references)
-    ("M" . bookmark-set)
-    ("SPC" . switch-to-buffer)
+    ("?" . eldoc)
+    ("f" . find-file)
     ("d" . dired-jump)
-    ("h" . eldoc)
     ("p" . previous-buffer)
     ("n" . next-buffer)
     ;; Window navigation
@@ -82,17 +81,7 @@
     ("w h" . windmove-left)
     ("w j" . windmove-down)
     ("w k" . windmove-up)
-    ("w l" . windmove-right)
-    ;; Frame navigation
-    ("f SPC" . select-frame-by-name)
-    ("f 0" . delete-frame)
-    ("f 1" . delete-other-frames)
-    ("f 2" . make-frame-command)
-    ("f R" . set-frame-name)
-    ("f f" . find-file-other-frame)
-    ("f o" . other-frame)
-    ("f p" . project-other-frame-command)
-    ("f u" . undelete-frame))
+    ("w l" . windmove-right))
   :custom
   (undo-limit (* 13 160000))
   (undo-strong-limit (* 13 240000))
@@ -149,35 +138,15 @@
   (read-extended-command-predicate #'command-completion-default-include-p)
   (auto-save-list-file-prefix (expand-file-name "cache/auto-saves/sessions/" user-emacs-directory))
   (auto-save-file-name-transforms `((".*" ,(expand-file-name "cache/auto-saves/" user-emacs-directory) t)))
-  (prettify-symbols-alist '(("!=" . ?≠)
-                            ;; ("&&" . ?∧)
-                            ("->" . ?→)
-                            ("->>" . ?↠)
-                            ("<-" . ?←)
-                            ("<<" . ?«)
-                            ("<=" . ?≤)
-                            ("<>" . ?◇)
-                            ("<|" . ?◁)
-                            ;; ("==" . ?≡)
-                            ("=>" . ?⇒)
-                            (">=" . ?≥)
-                            (">>" . ?»)
-                            ;; ("not" . ?¬)
-                            ("|>" . ?▷)
-                            ;; ("||" . ?∨)
-                            ))
   :hook
   (special-mode . hl-line-mode)
-  ;; (text-mode . visual-line-mode) ;; Do not use visual-line-mode for csv-mode
   :config
-  (put 'narrow-to-region 'disabled nil) ;; Enable command
-  (unless (display-graphic-p) ;; When in terminal ...
-    ;; (custom-set-faces
-    ;;  '(default ((((type tty))))))
+  (put 'narrow-to-region 'disabled nil) ;; Enable
+  (unless (display-graphic-p) ;; When in terminal
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
     (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-  (when (display-graphic-p) ;; When in GUI ...
+  (when (display-graphic-p) ;; When in GUI
     (add-to-list 'default-frame-alist '(height . 40))
     (add-to-list 'default-frame-alist '(width . 120))
     (set-display-table-slot standard-display-table 'vertical-border ?\u2502)
@@ -186,10 +155,9 @@
   (make-directory (expand-file-name "cache/auto-saves/" user-emacs-directory) t)
   (modify-coding-system-alist 'file "" 'utf-8)
   (setq-default cursor-type 'bar)
-  (setq-default display-fill-column-indicator-column 120)
-  (setq-default fill-column 120)
+  (setq-default display-fill-column-indicator-column 100)
+  (setq-default fill-column 100)
   (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
-  ;; (auto-save-visited-mode t) ;; auto-format constantly triggers, annoying
   ;; (desktop-save-mode t) ;; CPU heavy when loading many buffers under LSP
   (electric-indent-mode t)
   (column-number-mode -1)
@@ -198,9 +166,6 @@
   (line-number-mode t)
   ;; (repeat-mode t) ;; Sometimes gets in the way.
   (window-divider-mode (display-graphic-p))
-  (defun open-init-file ()
-    (interactive)
-    (find-file user-init-file))
   (defun open-packages-dired ()
     (interactive)
     (dired (locate-user-emacs-file "lisp/")))
@@ -288,12 +253,11 @@
     ("i" . nil)))
 
 (use-package compile
-  ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k &" . async-shell-command-rerun)
     ("k g" . recompile)
+    ("k G" . async-shell-command-rerun)
     ("k k" . compile-dwim)
     ("k K" . compile)
     ("k n" . next-error)
@@ -338,8 +302,7 @@
     (if (or arg ;; user asks for selection
             (null send-region-to-process-target) ;; target not set
             ;; or target is not set to an active process:
-            (not (process-live-p (get-buffer-process
-                                  send-region-to-process-target))))
+            (not (process-live-p (get-buffer-process send-region-to-process-target))))
         (setq send-region-to-process-target
               (completing-read
                "Process: "
@@ -407,7 +370,7 @@
   :defer
   :bind
   ( :map global-leader-map
-    ("m f" . display-fill-column-indicator-mode))
+    ("m c" . display-fill-column-indicator-mode))
   :custom
   (display-fill-column-indicator-warning nil))
 
@@ -484,7 +447,7 @@
     ("l l" . eglot-reconnect)
     ("l q" . eglot-shutdown)
     ("l Q" . eglot-shutdown-all)
-    ("l r" . eglot-rename)
+    ("l R" . eglot-rename)
     ("l h" . eglot-inlay-hints-mode)
     ("l d" . eglot-find-declaration)
     ("l a" . eglot-code-actions))
@@ -1096,7 +1059,7 @@
   (which-func-display 'mode-and-header)
   :bind
   ( :map global-leader-map
-    ("m ." . which-function-mode)))
+    ("m )" . which-function-mode)))
 
 (use-package which-key
   :defer 1
