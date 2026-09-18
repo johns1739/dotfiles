@@ -1016,7 +1016,9 @@
   ;; claude mcp add -s user -t stdio org-mcp -- ~/.config/emacs/emacs-mcp-stdio.sh --server-id=org-mcp --init-function=org-mcp-enable --stop-function=org-mcp-disable
   :defer t ;; NOTE: Must be required to call (org-mcp-enable)
   :custom
-  (org-mcp-allowed-files '("~/Documents/notes/tasks.org")))
+  (org-mcp-allowed-files '("~/Documents/notes/tasks.org"))
+  :config
+  (require 'org))
 
 (use-package org-modern ;; Better look for org
   :disabled ;; still in its early stages.
