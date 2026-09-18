@@ -129,7 +129,7 @@
   (read-answer-short t)
   (ring-bell-function 'ignore)
   (scroll-conservatively most-positive-fixnum)
-  (scroll-margin 2)
+  (scroll-margin 1)
   (scroll-preserve-screen-position t)
   (tab-always-indent t)
   (use-dialog-box nil)
@@ -531,20 +531,7 @@
 
 (use-package ffap
   :ensure nil
-  :commands (find-file-at-point)
-  :init
-  (defun ffap-deep-match-file (filename)
-    (let ((project-dir (project-directory)))
-      (or (and project-dir (ffap-deep-match-file-string filename project-dir))
-          (ffap-deep-match-file-string filename default-directory))))
-  (defun ffap-deep-match-file-string (filename dir)
-    (let* ((deep-1 (file-name-concat "**" filename))
-           (deep-2 (file-name-concat "**" "**" filename))
-           (files  (or (file-expand-wildcards (expand-file-name deep-1 dir) t)
-                       (file-expand-wildcards (expand-file-name deep-2 dir) t))))
-      (and files (car files))))
-  :config
-  (add-to-list 'ffap-alist '("" . ffap-deep-match-file)))
+  :defer t)
 
 (use-package frame
   :ensure nil

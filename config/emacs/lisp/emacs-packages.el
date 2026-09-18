@@ -157,7 +157,7 @@
     ("j" . consult-register-load)
     ("J" . consult-register-store)
     ("m" . consult-bookmark)
-    ("M" . boomark-set))
+    ("M" . boomark-set-no-overwrite))
   :init
   (defun consult-emacs ()
     "Search emacs configuration."
@@ -536,13 +536,14 @@
   (global-flycheck-eglot-mode t))
 
 (use-package find-file-in-project
+  ;; https://github.com/redguardtoo/find-file-in-project
   :bind
   ( :map goto-map
     ("u" . find-file-in-project-at-point)
-    ("U" . find-file-at-point))
-  ( :map project-prefix-map
-    ("u" . find-file-in-project-at-point)
-    ("U" . find-file-in-project-by-selected)))
+    ("U" . find-file-in-project-by-selected))
+  :config
+  (if (executable-find "fd")
+      (setopt ffip-use-rust-fd t)))
 
 (use-package forge
   ;; https://docs.magit.vc/forge/

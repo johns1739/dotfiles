@@ -12,6 +12,16 @@
 ;;   - tao-theme: box appearance around methods
 ;;   - timu-rouge-theme: intrusive underlines
 
+(use-package modus-themes
+  :defer
+  :hook (modus-themes-after-load-theme . terminal-reset-background)
+  :init
+  (defun terminal-reset-background ()
+    "Drops background face when terminal mode."
+    (interactive)
+    (unless (display-graphic-p)
+      (set-face-background 'default "unspecified-bg"))))
+
 (use-package creamsody-theme :defer)
 (use-package darktooth-theme :defer)
 (use-package doric-themes :defer)
@@ -19,7 +29,7 @@
 (use-package gruber-darker-theme :defer)
 (use-package gruvbox-theme :defer)
 (use-package miasma-theme :defer)
-(use-package modus-themes :defer)
+
 (use-package standard-themes :defer)
 (use-package zenburn-theme :defer)
 
