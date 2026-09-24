@@ -1,5 +1,8 @@
 # -*- mode: conf-unix -*-
 
+# Setup
+# export GIT_CONFIG_GLOBAL=~/<path>/dotfiles/config/git/config
+
 # Run on large repos that need to be maintained.
 # git maintenance start
 
@@ -92,3 +95,10 @@
 [user]
     name = Juan Banda
     email = jubajr17@gmail.com
+
+[github]
+    user = johns1739
+
+[include]
+    path = ./delta
+    path = ./custom

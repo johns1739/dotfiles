@@ -143,8 +143,6 @@
     ("f" . consult-find) ;; works even if not in a project
     ("F" . find-name-dired)
     ("j". consult-register)
-    ("i" . consult-imenu)
-    ("I" . consult-imenu-multi)
     ("l" . consult-line)
     ("L" . consult-line-multi)
     ("r" . consult-recent-file)
@@ -153,6 +151,8 @@
     ("m" . consult-mark))
   ( :map goto-map
     ("SPC" . consult-buffer)
+    ("i" . consult-imenu)
+    ("I" . consult-imenu-multi)
     ("o" . consult-outline)
     ("j" . consult-register-load)
     ("J" . consult-register-store)
@@ -205,6 +205,26 @@
     ("d SPC" . consult-flycheck))
   :config
   (require 'flycheck))
+
+(use-package consult-gh
+  :if (executable-find "gh")
+  :after (consult)
+  :defer
+  :custom
+  (consult-gh-default-clone-directory "~/projects")
+  (consult-gh-show-preview t)
+  (consult-gh-preview-key "C-o")
+  (consult-gh-repo-action #'consult-gh--repo-browse-files-action)
+  (consult-gh-large-file-warning-threshold 2500000)
+  (consult-gh-default-interactive-command #'consult-gh-search-repos)
+  (consult-gh-group-dashboard-by :type)
+  (consult-gh-preview-major-mode 'gfm-view-mode)
+  :config
+  (add-to-list 'savehist-additional-variables 'consult-gh--known-orgs-list)
+  (add-to-list 'savehist-additional-variables 'consult-gh--known-repos-list)
+  (require 'markdown-mode)
+  (require 'yaml)
+  (consult-gh-enable-default-keybindings))
 
 (use-package consult-ghostel
   :vc ( :url "https://github.com/dakra/ghostel"
@@ -337,7 +357,6 @@
   (with-eval-after-load 'magit
     (transient-append-suffix 'magit-file-dispatch "d" '("." "show-diff-hunk" diff-hl-show-hunk)))
   :hook
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh)
   :custom
   (diff-hl-draw-borders nil)

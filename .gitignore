@@ -1,8 +1,7 @@
 .DS_Store
 /config/emacs/cache/
 /config/emacs/eln-cache/
-custom.el
-.custom.el
+custom*
 /config/emacs/tree-sitter/
 /.claude/
 /config/emacs/emacs-mcp-stdio.sh

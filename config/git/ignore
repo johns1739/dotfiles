@@ -3,3 +3,5 @@
 /.agent-shell/
 Gemfile.local
 Gemfile.local.lock
+REVIEW*.md
+.DS_Store

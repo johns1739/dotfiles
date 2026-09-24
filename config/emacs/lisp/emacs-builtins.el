@@ -513,7 +513,7 @@
     ("d V" . flymake-reporting-backends)
     ("d L" . flymake-show-project-diagnostics))
   :custom
-  (flymake-indicator-type 'margins)
+  (flymake-indicator-type 'auto)
   (flymake-fringe-indicator-position 'left-fringe)
   (flymake-show-diagnostics-at-end-of-line 'short)
   (flymake-margin-indicators-string
@@ -726,6 +726,7 @@
   (defun org-cycle-agenda-directories ()
     "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
     (interactive)
+    (require 'org)
     (let* ((current-dir (or org-directory (car org-agenda-directories)))
            (next-dir (or (cadr (member current-dir org-agenda-directories))
                          (car org-agenda-directories)

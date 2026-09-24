@@ -81,6 +81,7 @@
   :mode ("go\\.mod\\'" . go-mod-ts-mode))
 
 (use-package janet-ts-mode
+  :interpreter "janet"
   :mode "\\.janet\\'"
   :vc ( :url "https://github.com/sogaiu/janet-ts-mode" :rev :newest)
   :hook (janet-ts-mode . electric-pair-local-mode)
