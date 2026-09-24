@@ -3,11 +3,12 @@ set fish_greeting # turn off welcome message
 bind --user alt-e true # unbind editor edit
 bind --user alt-v true # unbind editor edit
 
+# TODO: Add e & emacsnw scripts
 fish_add_path "$HOME/.local/bin"
 
-set -gx EDITOR em
+set -gx EDITOR e
 set -gx SUDO_EDITOR emacsnw
-set -gx VISUAL em
+set -gx VISUAL e
 set -gx GPG_TTY (tty)
 
 if status is-interactive
@@ -20,6 +21,9 @@ if status is-interactive
     alias ll="ls -lh --color"
     alias rgrep="grep --color -rnIi"
     alias top="btop"
+
+    fzf --fish | source
+    alias ff="fzf"
 
     zoxide init fish --cmd cd | source
 end

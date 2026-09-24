@@ -606,6 +606,8 @@
   (defun ghostel-mode-setup ()
     (meow-mode -1))
   :config
+  (add-to-list 'display-buffer-alist
+               '("\\*.*ghostel\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window)))
   (with-eval-after-load 'project
     (project-add-switch-command #'ghostel-project "Ghostel" "t")))
 
@@ -1109,6 +1111,16 @@
   :config
   (persistent-scratch-setup-default))
 
+(use-package pg
+  :disabled ;; dependency no longer required
+  :defer t)
+
+(use-package pgmacs
+  :disabled ;; lags on some actions
+  :vc (:url "https://github.com/emarsden/pgmacs" :rev :newest)
+  :defer t
+  :requires (pg))
+
 (use-package pinentry
   ;; allows for secure entry of passphrases requested by GnuPG
   :after magit
@@ -1421,6 +1433,12 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 (use-package yasnippet-snippets
   :disabled ;; Better to rely on custom built templates over externals.
   :after yasnippet)
+
+(use-package zoxide
+  :bind
+  ( :map search-map
+    ("d" . zoxide-travel)
+    ("D" . zoxide-find-file)))
 
 (provide 'emacs-packages)
 ;;; emacs-packages.el ends here
