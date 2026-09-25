@@ -269,20 +269,19 @@
   :defer 1
   :bind ( :map corfu-map
           ("TAB" . corfu-complete)
-          ("M-TAB" . corfu-expand)
-          ("RET" . corfu-insert))
+          ("RET" . nil))
   :custom
   (corfu-auto t)
-  (corfu-auto-delay 0.3)
-  (corfu-auto-prefix 3)
+  (corfu-auto-delay 0.2)
+  (corfu-auto-prefix 2)
   (corfu-cycle t)
-  (corfu-echo-delay 0.3)
+  (corfu-echo-delay 0.2)
   (corfu-min-width 20)
-  (corfu-popupinfo-delay '(0.6 . 0.3))
+  (corfu-popupinfo-delay '(0.6 . 0.2))
   (corfu-preselect 'prompt)
   (corfu-preview-current 'prompt)
-  (corfu-quit-at-boundary t)
-  (corfu-quit-no-match t)
+  (corfu-quit-at-boundary 'separator)
+  (corfu-quit-no-match 'separator)
   (corfu-separator ?\s)
   :config
   (global-corfu-mode 1)

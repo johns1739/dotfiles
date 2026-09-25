@@ -213,6 +213,7 @@
     (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing)))
 
 (use-package abbrev
+  :disabled ;; yasnippet much better better
   :ensure nil
   :custom
   (save-abbrevs nil))

@@ -1,0 +1,44 @@
+-- -*- sql -*-
+/*
+    mkdir -p ~/.config/psql
+    ln -s ~/path/dotfiles/config/psql/psqlrc ~/.psqlrc
+*/
+
+-- Don't log these commands at the beginning of the file
+\set QUIET 1
+
+--Automatically format expanded display for wide columns
+\x auto
+
+--Outline table borders and separators using Unicode characters
+\pset linestyle unicode
+
+-- Set Null char output to differentiate it from empty string
+\pset null '∅'
+
+\set HISTSIZE 2000
+
+-- Creates a history file for each database in your config directory CHECK IF THIS IS RIGHT
+\set HISTFILE ~/.config/psql/psql_history-:DBNAME
+
+-- Number of commands to save in history
+\set HISTSIZE 2000
+
+-- :long_running
+\set long_running 'SELECT pid, now() - pg_stat_activity.xact_start AS duration, query, state FROM pg_stat_activity WHERE (now() - pg_stat_activity.xact_start) > interval ''5 minutes'' ORDER by 2 DESC;'
+
+-- :cache_hit
+\set cache_hit 'SELECT ''index hit rate'' AS name, (sum(idx_blks_hit)) / nullif(sum(idx_blks_hit + idx_blks_read),0) AS ratio FROM pg_statio_user_indexes UNION ALL SELECT ''table hit rate'' AS name, sum(heap_blks_hit) / nullif(sum(heap_blks_hit) + sum(heap_blks_read),0) AS ratio FROM pg_statio_user_tables;'
+
+-- :unused_indexes
+\set unused_indexes 'SELECT schemaname || ''.'' || relname AS table, indexrelname AS index, pg_size_pretty(pg_relation_size(i.indexrelid)) AS index_size, idx_scan as index_scans FROM pg_stat_user_indexes ui JOIN pg_index i ON ui.indexrelid = i.indexrelid WHERE NOT indisunique AND idx_scan < 50 AND pg_relation_size(relid) > 5 * 8192 ORDER BY pg_relation_size(i.indexrelid) / nullif(idx_scan, 0) DESC NULLS FIRST, pg_relation_size(i.indexrelid) DESC;'
+
+-- :table_sizes
+\set table_sizes 'SELECT c.relname AS name, pg_size_pretty(pg_table_size(c.oid)) AS size FROM pg_class c LEFT JOIN pg_namespace n ON (n.oid = c.relnamespace) WHERE n.nspname NOT IN (''pg_catalog'', ''information_schema'') AND n.nspname !~ ''^pg_toast'' AND c.relkind=''r'' ORDER BY pg_table_size(c.oid) DESC;'
+
+-- :tabl
+-- Always show query time
+\timing
+
+-- Reset command logging at the end of the file
+\set QUIET 0
