@@ -861,6 +861,14 @@
   (magit-list-refs-sortby "-creatordate")
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
+(use-package magit-difftastic
+  ;; brew install difftastic
+  :if (and (display-graphic-p) (executable-find "difft"))
+  :vc (:url "https://github.com/rschmukler/magit-difftastic" :rev :newest)
+  :after magit
+  :config
+  (magit-difftastic-mode 1))
+
 (use-package magit-delta
   :disabled ;; diff colors are difficult to see, ugly
   ;; Dependencies
