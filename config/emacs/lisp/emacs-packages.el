@@ -354,11 +354,12 @@
         (meow-motion-mode 1)
       (meow-normal-mode 1)))
   (with-eval-after-load 'magit
-    (transient-append-suffix 'magit-file-dispatch "d" '("." "show-diff-hunk" diff-hl-show-hunk)))
+    (transient-append-suffix 'magit-file-dispatch "d"
+      '("." "show-diff-hunk" diff-hl-show-hunk)))
   :hook
   (magit-post-refresh . diff-hl-magit-post-refresh)
   :custom
-  (diff-hl-draw-borders nil)
+  (diff-hl-draw-borders t)
   :config
   (with-eval-after-load 'meow
     (add-hook 'diff-hl-show-hunk-mode-hook #'diff-hl-toggle-meow-state))
