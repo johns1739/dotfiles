@@ -11,7 +11,7 @@
     :doc "Global leader keymap.")
   (keymap-set global-map "C-x SPC" global-leader-map)
   (keymap-set global-leader-map "g" goto-map)
-  (keymap-set goto-map "s" search-map)
+  (keymap-set global-leader-map "s" search-map)
   :bind
   ( :map global-map
     ("RET" . newline-and-indent)
@@ -880,7 +880,7 @@
   :ensure nil
   :defer 1
   :bind
-  ( :map goto-map
+  ( :map search-map
     ("r" . recentf-open))
   :custom
   (recentf-auto-cleanup (if (daemonp) 300 'never))

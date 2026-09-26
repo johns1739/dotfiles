@@ -118,6 +118,7 @@
   (([remap bookmark-jump] . consult-bookmark)
    ([remap isearch-edit-string] . consult-isearch-history)
    ([remap recentf-open] . consult-recent-file)
+   ([remap recentf] . consult-recent-file)
    ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
    ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
    ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
@@ -145,7 +146,6 @@
     ("j". consult-register)
     ("l" . consult-line)
     ("L" . consult-line-multi)
-    ("r" . consult-recent-file)
     ("s" . consult-ripgrep)
     ("k" . consult-focus-lines)
     ("m" . consult-mark))
@@ -860,13 +860,12 @@
   (magit-list-refs-sortby "-creatordate")
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
-(use-package magit-difftastic
+(use-package magit-difftastic ;; better side-to-side diff view
+  :disabled ;; prefer traditional vs side-to-side
   ;; brew install difftastic
   :if (and (display-graphic-p) (executable-find "difft"))
   :vc (:url "https://github.com/rschmukler/magit-difftastic" :rev :newest)
-  :after magit
-  :config
-  (magit-difftastic-mode 1))
+  :after magit)
 
 (use-package magit-delta
   :disabled ;; diff colors are difficult to see, ugly
