@@ -38,8 +38,9 @@
     ("3" . split-window-right-and-jump)
     ("=" . balance-windows-area)
     ;; Modes
-    ("m s" . auto-save-visited-mode)
+    ("m S" . auto-save-visited-mode)
     ("m t" . toggle-truncate-lines)
+    ("m f" . auto-fill-mode)
     ("m v" . visual-line-mode)
     ;; Open Apps
     ("o d" . diff)
@@ -230,7 +231,7 @@
 
 (use-package autorevert
   :ensure nil
-  :defer 1
+  :defer 2
   :custom
   (auto-revert-remote-files nil)   ;; t makes tramp slow
   (auto-revert-verbose t)
@@ -420,7 +421,7 @@
 
 (use-package editorconfig
   :ensure nil
-  :defer 1
+  :defer 2
   :config
   (editorconfig-mode t))
 
@@ -532,7 +533,7 @@
 
 (use-package ffap
   :ensure nil
-  :defer t)
+  :defer)
 
 (use-package frame
   :ensure nil
@@ -849,7 +850,6 @@
 
 (use-package project
   :ensure nil
-  :defer
   :bind
   ( :map project-prefix-map
     ("d" . project-dired)
@@ -878,7 +878,7 @@
 
 (use-package recentf
   :ensure nil
-  :defer 1
+  :defer 2
   :bind
   ( :map search-map
     ("r" . recentf-open))
@@ -1049,7 +1049,7 @@
     ("m )" . which-function-mode)))
 
 (use-package which-key
-  :defer 1
+  :defer 2
   :ensure nil
   :bind
   ( :map help-map

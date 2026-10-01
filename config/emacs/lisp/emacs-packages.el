@@ -2,7 +2,8 @@
 
 (use-package exec-path-from-shell
   :demand
-  :if (or (daemonp) (and (memq window-system '(mac ns x)) (display-graphic-p)))
+  :if (or (daemonp)
+          (and (display-graphic-p) (memq window-system '(mac ns x pgtk))))
   :custom
   ;; (exec-path-from-shell-debug t)
   (exec-path-from-shell-warn-duration-millis 1000)
@@ -266,7 +267,7 @@
   :after (request org markdown-mode copilot))
 
 (use-package corfu
-  :defer 1
+  :defer 2
   :bind ( :map corfu-map
           ("TAB" . corfu-complete)
           ("RET" . nil))
@@ -325,7 +326,8 @@
                ("C-c n l" . denote-link-or-create)
                ("C-c n /" . denote-find-link)
                ("C-c n ?" . denote-find-backlink)
-               ("C-c n r" . denote-rename-file)))
+               ("C-c n r" . denote-rename-file)
+               ("C-c n R" . denote-change-file-type-and-front-matter)))
   :config
   (denote-rename-buffer-mode))
 
@@ -1042,7 +1044,7 @@
 (use-package org-mcp
   ;; Register with claude:
   ;; claude mcp add -s user -t stdio org-mcp -- ~/.config/emacs/emacs-mcp-stdio.sh --server-id=org-mcp --init-function=org-mcp-enable --stop-function=org-mcp-disable
-  :defer t ;; NOTE: Must be required to call (org-mcp-enable)
+  :commands (org-mcp-enable)
   :custom
   (org-mcp-allowed-files '("~/Documents/notes/tasks.org"))
   :config
@@ -1099,6 +1101,9 @@
   :config
   (org-roam-setup-directory))
 
+(use-package org-superstar
+  :hook (org-mode . org-superstar-mode))
+
 (use-package paredit
   :disabled ;; auto formats that conflicts with lang's formatting.
   :hook
@@ -1120,12 +1125,12 @@
 
 (use-package pg
   :disabled ;; dependency no longer required
-  :defer t)
+  :defer)
 
 (use-package pgmacs
   :disabled ;; lags on some actions
   :vc (:url "https://github.com/emarsden/pgmacs" :rev :newest)
-  :defer t
+  :defer
   :requires (pg))
 
 (use-package pinentry
@@ -1297,6 +1302,7 @@
 
 
 (use-package visual-fill-column
+  :disabled ;; Conflicts & hides diff-hl's margins
   ;; https://codeberg.org/joostkremers/visual-fill-column
   :defer
   :custom
@@ -1427,7 +1433,7 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
-  :defer 1
+  :defer 2
   :bind ( :map goto-map
           ("&" . yas-visit-snippet-file)
           :map global-leader-map

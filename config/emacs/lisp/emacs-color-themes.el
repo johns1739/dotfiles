@@ -20,7 +20,7 @@
     "Drops background face when terminal mode."
     (interactive)
     (unless (display-graphic-p)
-      (set-face-background 'default "unspecified-bg"))))
+      (set-face-background 'default "unspecified-bg" (selected-frame)))))
 
 (use-package creamsody-theme :defer)
 (use-package darktooth-theme :defer)
