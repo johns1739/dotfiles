@@ -16,7 +16,7 @@
   :defer
   :hook (modus-themes-after-load-theme . terminal-reset-background)
   :init
-  (defun terminal-reset-background ()
+  (defun terminal-disable-background ()
     "Drops background face when terminal mode."
     (interactive)
     (unless (display-graphic-p)

@@ -1,10 +1,11 @@
 ;;; early-init.el --- Early Init  -*- lexical-binding: t; -*-
 
-;; Disables unused UI Elements
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'tooltip-mode) (tooltip-mode -1))
+(defun disable-default-ui-elements ()
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'tooltip-mode) (tooltip-mode -1)))
+(add-hook 'before-make-frame-hook #'disable-default-ui-elements)
 
 ;; Prevent the frame from resizing when toggling UI elements above
 (setopt frame-inhibit-implied-resize t)
