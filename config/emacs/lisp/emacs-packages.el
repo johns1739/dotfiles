@@ -99,6 +99,7 @@
           ("i c" . claude-code-ide-menu))
   :custom
   (claude-code-ide-debug t)
+  (claude-code-ide-use-side-window nil)
   (claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-window-side 'left)
   (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
@@ -107,7 +108,7 @@
   (claude-code-ide-emacs-tools-setup))
 
 (use-package command-log-mode
-  :disabled ;; Use C-h l
+  :disabled ;; Use C-h l instead.
   :bind
   ( :map global-leader-map
     ("m l" . clm/toggle-command-log-buffer))
@@ -117,6 +118,7 @@
 (use-package consult
   :bind
   (([remap bookmark-jump] . consult-bookmark)
+   ([remap imenu] . consult-imenu)
    ([remap isearch-edit-string] . consult-isearch-history)
    ([remap recentf-open] . consult-recent-file)
    ([remap recentf] . consult-recent-file)
@@ -144,6 +146,7 @@
     (")" . consult-kmacro)
     ("f" . consult-find) ;; works even if not in a project
     ("F" . find-name-dired)
+    ("I" . consult-imenu-multi)
     ("j". consult-register)
     ("l" . consult-line)
     ("L" . consult-line-multi)
@@ -152,8 +155,6 @@
     ("m" . consult-mark))
   ( :map goto-map
     ("SPC" . consult-buffer)
-    ("i" . consult-imenu)
-    ("I" . consult-imenu-multi)
     ("o" . consult-outline)
     ("j" . consult-register-load)
     ("J" . consult-register-store)
@@ -208,6 +209,7 @@
   (require 'flycheck))
 
 (use-package consult-gh
+  :disabled ;; not very useful
   :if (executable-find "gh")
   :after (consult)
   :defer
@@ -237,6 +239,7 @@
     ("k SPC" . consult-ghostel)))
 
 (use-package copilot
+  :disabled ;; GPTEL / Claude tools are better.
   ;; M-x copilot-install-server
   ;; M-x copilot-login
   :if (executable-find "npm")
@@ -298,7 +301,7 @@
 
 (use-package dashboard
   :demand
-  :unless (display-graphic-p) ;; Better when used w/ emacs server.
+  :if (daemonp) ;; Better when used w/ emacs server.
   :custom
   (initial-buffer-choice 'dashboard-open)
   (dashboard-center-content t)
@@ -309,11 +312,11 @@
 (use-package deadgrep
   :bind ( :map search-map
           ("g" . deadgrep)
-          ("G" . rgrep)
           :map deadgrep-mode-map
           ("C-w" . deadgrep-edit-mode)))
 
 (use-package denote ;; used to create references to org notes
+  :disabled ;; rarely used.
   :bind ( :map global-leader-map
           ("n n" . denote-open-or-create)
           ("n N" . denote-region))
@@ -332,6 +335,7 @@
   (denote-rename-buffer-mode))
 
 (use-package denote-journal
+  :disabled ;; not using denote
   :bind ( :map global-leader-map
           ("n j" . denote-journal-new-or-existing-entry))
   :hook (calendar-mode . denote-journal-calendar-mode)
@@ -365,9 +369,6 @@
   :config
   (with-eval-after-load 'meow
     (add-hook 'diff-hl-show-hunk-mode-hook #'diff-hl-toggle-meow-state))
-  ;; Terminal does not have a fringe, so use margin instead.
-  (unless (display-graphic-p)
-    (diff-hl-margin-mode))
   (global-diff-hl-mode))
 
 (use-package dimmer
@@ -391,6 +392,7 @@
   (dired-subtree-use-backgrounds nil))
 
 (use-package docker
+  :disabled ;; prefer terminal
   :if (executable-find "docker")
   :bind (:map global-leader-map
               ("o k" . docker))
@@ -407,12 +409,12 @@
   :init
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-(use-package easy-escape
+(use-package easy-escape ;; better regexp visuals
   :hook
   ((emacs-lisp-mode lisp-mode) . easy-escape-minor-mode))
 
 (use-package eat
-  :disabled ;; prefer vterm
+  :disabled ;; prefer ghostel
   ;; When eat-terminal input is acting weird, try re-compiling with command:
   ;; (eat-compile-terminfo)
   :bind ( :map global-leader-map
@@ -525,9 +527,6 @@
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 
-(use-package fish-mode
-  :mode "\\.fish\\'")
-
 (use-package flycheck
   :disabled ;; unable to call (rails) bundle exec rubocop
   :commands (global-flycheck-mode flycheck-mode)
@@ -556,7 +555,7 @@
   :config
   (global-flycheck-eglot-mode t))
 
-(use-package find-file-in-project
+(use-package find-file-in-project ;; project-aware ffip
   ;; https://github.com/redguardtoo/find-file-in-project
   :bind
   ( :map goto-map
@@ -615,24 +614,22 @@
 
 (use-package git-link
   :commands (git-link git-link-dispatch)
-  :bind
-  ( :map global-leader-map
-    ("y j" . git-link)
-    ("y J" . git-link-dispatch))
   :init
   (with-eval-after-load 'magit
-    (transient-append-suffix 'magit-file-dispatch "e" '("y" "Copy Link" git-link))
-    (transient-append-suffix 'magit-file-dispatch "y" '("Y" "Copy Link Dispatch" git-link-dispatch))))
+    (transient-append-suffix 'magit-file-dispatch
+      "e" '("y" "Copy Link" git-link))
+    (transient-append-suffix 'magit-file-dispatch
+      "y" '("Y" "Copy Link Dispatch" git-link-dispatch))))
 
 (use-package git-modes
   :disabled) ;; Long load time.
 
 (use-package git-timemachine
+  :after magit
   :commands (git-timemachine git-timemachine-toggle)
-  :init
-  (with-eval-after-load 'magit
-    (transient-append-suffix 'magit-file-dispatch "d" '("T" "Timemachine" git-timemachine)))
   :config
+  (transient-append-suffix 'magit-file-dispatch
+    "d" '("T" "Timemachine" git-timemachine))
   (defun git-timemachine-refontify (&rest _)
     "Re-fontify buffer after timemachine revision change."
     (font-lock-ensure))
@@ -695,6 +692,7 @@
                '("\\*Copilot\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
 (use-package gptel-agent
+  :disabled ;; prerfer aibo
   :vc ( :url "https://github.com/karthink/gptel-agent" :rev :newest)
   :bind
   ( :map global-leader-map
@@ -709,7 +707,7 @@
   :bind
   ( :map global-leader-map
     ("i i" . gptel-aibo)
-    ("i I" . gptel-aibo-complete-at-point))
+    ("i M-i" . gptel-aibo-complete-at-point))
   ( :map gptel-aibo-mode-map
     ("C-c C-<return>" . gptel-aibo-send))
   :config
@@ -758,6 +756,7 @@
                  (mode . helpful-mode))))
 
 (use-package imenu-list
+  :disabled ;; rarely used
   :bind (:map global-leader-map
               ("o I" . imenu-list)
               ("o i" . imenu-list-smart-toggle))
@@ -798,6 +797,7 @@
   (keychain-refresh-environment))
 
 (use-package kirigami
+  :disabled ;; rarely used
   :bind
   ( :map global-leader-map
     ("z F" . kirigami-close-folds)
@@ -808,6 +808,7 @@
     ("z ." . kirigami-open-fold-rec)))
 
 (use-package kubernetes
+  :disabled ;; prefer command line
   :if (and (display-graphic-p) (executable-find "kubectl"))
   :commands (kubernetes-overview)
   :bind (:map global-leader-map
@@ -1033,6 +1034,7 @@
   :after org)
 
 (use-package ob-restclient
+  :disabled ;; Better to use curl
   :after org)
 
 (use-package orderless
@@ -1042,6 +1044,7 @@
   (completion-styles '(orderless basic)))
 
 (use-package org-mcp
+  :disabled ;; no longer required
   ;; Register with claude:
   ;; claude mcp add -s user -t stdio org-mcp -- ~/.config/emacs/emacs-mcp-stdio.sh --server-id=org-mcp --init-function=org-mcp-enable --stop-function=org-mcp-disable
   :commands (org-mcp-enable)
@@ -1112,11 +1115,6 @@
   (lisp-interaction-mode . enable-paredit-mode)
   (scheme-mode . enable-paredit-mode))
 
-(use-package pdf-tools
-  :mode ("\\.pdf\\'" . pdf-view-mode)
-  :config
-  (pdf-tools-install))
-
 (use-package persistent-scratch
   :disabled ;; not really used, slower start-up
   :if (display-graphic-p)
@@ -1166,9 +1164,7 @@
   (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
 
 (use-package show-font
-  :if (display-graphic-p) ;; none exist in terminal
-  :bind (:map global-leader-map
-              (", X" . show-font-tabulated)))
+  :commands (show-font-tabulated))
 
 (use-package simple-modeline
   :demand
@@ -1219,7 +1215,7 @@
   (simple-modeline-mode))
 
 (use-package spacious-padding
-  :if (display-graphic-p) ;; fails to add padd in terminal
+  :disabled
   :bind ( :map global-leader-map
           ("m P" . spacious-padding-mode)))
 
@@ -1292,6 +1288,7 @@
   (vertico-mode))
 
 (use-package vertico-posframe
+  :disabled ;; gets in the way
   :if (display-graphic-p) ;; does not work in terminal
   :after vertico
   :bind ( :map global-leader-map
@@ -1299,7 +1296,6 @@
   :custom
   (vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
   (vertico-posframe-min-width 80))
-
 
 (use-package visual-fill-column
   :disabled ;; Conflicts & hides diff-hl's margins
@@ -1417,6 +1413,7 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
         (setq whisper--ffmpeg-input-device (format ":%s" rk/default-audio-device))))))
 
 (use-package writeroom-mode
+  :disabled
   :if (display-graphic-p)
   :bind ( :map global-leader-map
           ("m w" . writeroom-mode)
@@ -1427,7 +1424,6 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
 
 (use-package xclip
   :demand
-  :unless (display-graphic-p)
   :config
   (xclip-mode))
 

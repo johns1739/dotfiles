@@ -27,6 +27,7 @@
     ("M-o" . other-window)
     ("C-M-h" . mark-sexp)
     ("C-M-d" . delete-pair)
+    ([remap kill-sentence] . kill-sexp)
     ([remap backward-sentence] . backward-sexp)
     ([remap forward-sentence] . forward-sexp)
     ([remap split-window-below] . split-window-below-and-jump)
@@ -60,6 +61,9 @@
     (", f" . toggle-frame-maximized)
     (", r" . reload-emacs)
     (", x" . describe-font))
+  ( :map search-map
+    ("i" . imenu)
+    ("g" . rgrep))
   ( :map goto-map
     ("SPC" . switch-to-buffer)
     ("'" . mode-line-other-buffer)
@@ -143,6 +147,7 @@
   (special-mode . hl-line-mode)
   :config
   (put 'narrow-to-region 'disabled nil) ;; Enable
+  ;; TODO: Place these configs in a frame hook.
   (unless (display-graphic-p) ;; When in terminal
     (xterm-mouse-mode 1)
     (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
@@ -166,7 +171,7 @@
   (file-name-shadow-mode t)
   (line-number-mode t)
   ;; (repeat-mode t) ;; Sometimes gets in the way.
-  (window-divider-mode (display-graphic-p))
+  (window-divider-mode t)
   (defun open-packages-dired ()
     (interactive)
     (dired (locate-user-emacs-file "lisp/")))
@@ -805,15 +810,7 @@
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
   :config
   (require 'org-id)
-  (require 'org-capture)
-  ;; (require 'org-crypt)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((emacs-lisp . t)
-     (restclient . t)
-     (ruby . t)
-     (shell . t)
-     (sql . t)))) ;; https://orgmode.org/worg/org-contrib/babel/languages/ob-doc-sql.html
+  (require 'org-capture))
 
 (use-package org-id
   :ensure nil

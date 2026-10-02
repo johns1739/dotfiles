@@ -60,6 +60,9 @@
   ;; npm install -g elm-review
   :mode "\\.elm\\'")
 
+(use-package fish-mode
+  :mode "\\.fish\\'")
+
 (use-package gleam-ts-mode
   ;; https://github.com/gleam-lang/tree-sitter-gleam
   ;; NOTE: Resolve issue with:
@@ -108,22 +111,36 @@
   (json-ts-mode . js-ts-mode-setup))
 
 (use-package markdown-mode
-  :mode ("\\.md\\'" . gfm-mode)
+  :mode
+  (("\\.md\\'" . markdown-mode)
+   ("README\\.md\\'" . gfm-mode))
   :hook
-  (gfm-view-mode . visual-line-mode)
-  (markdown-view-mode . visual-line-mode)
+  ((markdown-view-mode gfm-view-mode) . visual-line-mode)
+  ((markdown-mode gfm-mode) . auto-fill-mode)
   :bind ( :map markdown-mode-command-map
           ("a" . markdown-table-align)
           :map markdown-mode-map
           ("M-;" . markdown-blockquote-region)
           ("M-H" . markdown-mark-block)
-          ("C-c C-e" . gfm-mode)
-          ("C-c C-v" . gfm-view-mode)
+          ("C-c C-v" . markdown-toggle-view)
           ("C-c C-n" . markdown-outline-next)
           ("C-c C-p" . markdown-outline-previous)
           ("C-c C-." . markdown-do))
   :custom
-  (markdown-command "multimarkdown"))
+  (markdown-command "multimarkdown")
+  :init
+  (defun markdown-toggle-view ()
+    "Toggle between markdown (standard) & markdown-view modes."
+    (interactive)
+    (cond ((derived-mode-p 'gfm-view-mode)      (gfm-mode))
+          ((derived-mode-p 'markdown-view-mode) (markdown-mode))
+          ((derived-mode-p 'gfm-mode)           (gfm-view-mode))
+          ((derived-mode-p 'markdown-mode)      (markdown-view-mode)))))
+
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-tools-install))
 
 (use-package python
   ;; Example .dir-locals.el to configure compile command.
