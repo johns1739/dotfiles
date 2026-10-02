@@ -236,10 +236,11 @@
   (typescript-indent-level 2))
 
 (use-package vue-mode
+  :disabled ;; mmm dependency looks ugly af
   :mode "\\.vue\\'")
 
 (use-package vue-ts-mode
-  :disabled ;; embedded-langs are not rendered
+  ;; NOTE: embedded-langs are not rendered
   ;; Dependencies
   ;; npm install -g @vue/language-server typescript-language-server
   :vc (:url "https://github.com/8uff3r/vue-ts-mode")
