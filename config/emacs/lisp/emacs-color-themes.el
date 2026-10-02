@@ -14,7 +14,6 @@
 
 (use-package modus-themes
   :defer
-  :hook (modus-themes-after-load-theme . terminal-reset-background)
   :init
   (defun terminal-disable-background ()
     "Drops background face when terminal mode."
@@ -22,16 +21,16 @@
     (unless (display-graphic-p)
       (set-face-background 'default "unspecified-bg" (selected-frame)))))
 
-(use-package creamsody-theme :defer)
 (use-package darktooth-theme :defer)
-(use-package doric-themes :defer)
-(use-package ef-themes :defer)
-(use-package gruber-darker-theme :defer)
-(use-package gruvbox-theme :defer)
-(use-package miasma-theme :defer)
 
-(use-package standard-themes :defer)
-(use-package zenburn-theme :defer)
+;; (use-package creamsody-theme :defer)
+;; (use-package doric-themes :defer)
+;; (use-package ef-themes :defer)
+;; (use-package gruber-darker-theme :defer)
+;; (use-package gruvbox-theme :defer)
+;; (use-package miasma-theme :defer)
+;; (use-package standard-themes :defer)
+;; (use-package zenburn-theme :defer)
 
 (provide 'emacs-color-themes)
 ;;; emacs-color-themes.el ends here

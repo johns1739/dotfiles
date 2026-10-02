@@ -148,15 +148,13 @@
   :config
   (put 'narrow-to-region 'disabled nil) ;; Enable
   ;; TODO: Place these configs in a frame hook.
-  (unless (display-graphic-p) ;; When in terminal
-    (xterm-mouse-mode 1)
-    (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
-    (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
-  (when (display-graphic-p) ;; When in GUI
-    (add-to-list 'default-frame-alist '(height . 40))
-    (add-to-list 'default-frame-alist '(width . 120))
-    (set-display-table-slot standard-display-table 'vertical-border ?\u2502)
-    (set-display-table-slot standard-display-table 'truncation ?\u2192))
+  (xterm-mouse-mode 1)
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
+  (add-to-list 'default-frame-alist '(height . 40))
+  (add-to-list 'default-frame-alist '(width . 120))
+  (set-display-table-slot standard-display-table 'vertical-border ?\u2502)
+  (set-display-table-slot standard-display-table 'truncation ?\u2192)
   (blink-cursor-mode -1)
   (make-directory (expand-file-name "cache/auto-saves/" user-emacs-directory) t)
   (modify-coding-system-alist 'file "" 'utf-8)
@@ -931,7 +929,6 @@
 (use-package tab-bar
   :ensure nil
   :defer
-  :if (display-graphic-p) ;; conflicts with terminal's bindings
   :init
   (keymap-set goto-map "t" tab-bar-map)
   (defun tab-bar-tab-name-project ()
