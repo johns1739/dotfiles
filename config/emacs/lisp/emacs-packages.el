@@ -436,6 +436,9 @@
   (add-to-list 'display-buffer-alist
                '("\\*.*eat\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
 
+(use-package ef-themes
+  :defer)
+
 (use-package eglot-booster
   :disabled ;; eglot-booster not available melpa?
   ;; cargo install emacs-lsp-booster

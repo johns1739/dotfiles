@@ -119,6 +119,28 @@
 ;; (with-eval-after-load 'vterm
 ;;   (setopt vterm-shell "/opt/homebrew/bin/fish"))
 
+;; Color Themes
+;; Themes are installed but deferred — loaded on demand via `load-theme'.
+;; Previously tried and rejected:
+;;   - color-theme-modern: too many themes, hard to remember
+;;   - color-theme-sanityinc-tomorrow: cyclic face definition error
+;;   - gruber-darker-theme: -
+;;   - kaolin-themes: -
+;;   - kuronami-theme: nothing compelling
+;;   - nano-theme: never used
+;;   - solarized-theme: -
+;;   - tao-theme: box appearance around methods
+;;   - timu-rouge-theme: intrusive underlines
+;; (use-package darktooth-theme :defer)
+;; (use-package creamsody-theme :defer)
+;; (use-package doric-themes :defer)
+;; (use-package ef-themes :defer)
+;; (use-package gruber-darker-theme :defer)
+;; (use-package gruvbox-theme :defer)
+;; (use-package miasma-theme :defer)
+;; (use-package standard-themes :defer)
+;; (use-package zenburn-theme :defer)
+
 (defun after-init-setup ()
   (if (display-graphic-p)
       (load-theme 'darktooth :no-confirm)

@@ -717,6 +717,16 @@
   ( :map global-map
     ("M-I" . completion-at-point)))
 
+(use-package modus-themes
+  :ensure nil
+  :defer
+  :init
+  (defun terminal-disable-background ()
+    "Drops background face when terminal mode."
+    (interactive)
+    (unless (display-graphic-p)
+      (set-face-background 'default "unspecified-bg" (selected-frame)))))
+
 (use-package org
   :ensure nil
   :init
