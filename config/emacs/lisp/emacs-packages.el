@@ -1414,14 +1414,24 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
         (setq whisper--ffmpeg-input-device (format ":%s" rk/default-audio-device))))))
 
 (use-package writeroom-mode
-  :disabled
-  :if (display-graphic-p)
   :bind ( :map global-leader-map
           ("m w" . writeroom-mode)
           ("m W" . global-writeroom-mode))
   :custom
   (writeroom-fullscreen-effect 'maximized)
-  (writeroom-width 120))
+  (writeroom-width fill-column)
+  ;; Default reserves room for the line numbers we are about to hide.
+  (writeroom-added-width-left 0)
+  (writeroom-local-effects '(writeroom-toggle-line-numbers))
+  :init
+  (defvar-local writeroom-line-numbers-restore nil)
+  (defun writeroom-toggle-line-numbers (arg)
+    "Hide line numbers while `writeroom-mode' is active."
+    (cond ((> arg 0)
+           (setq writeroom-line-numbers-restore (bound-and-true-p display-line-numbers-mode))
+           (display-line-numbers-mode -1))
+          (writeroom-line-numbers-restore
+           (display-line-numbers-mode 1)))))
 
 (use-package xclip
   :demand
