@@ -354,20 +354,19 @@
   :after magit
   :commands (diff-hl-show-hunk)
   :init
-  (defun diff-hl-toggle-meow-state ()
-    (if diff-hl-show-hunk-mode
-        (meow-motion-mode 1)
-      (meow-normal-mode 1)))
   (with-eval-after-load 'magit
     (transient-append-suffix 'magit-file-dispatch "d"
-      '("." "show-diff-hunk" diff-hl-show-hunk)))
+      '("*" "show-diff-hunk" diff-hl-show-hunk)))
   :hook
   (magit-post-refresh . diff-hl-magit-post-refresh)
   :custom
   (diff-hl-draw-borders t)
   :config
+  ;; meow's own shim advises `diff-hl-show-hunk-inline-popup', an obsolete
+  ;; alias since diff-hl 0.11.0, so motion state is never entered. The
+  ;; switch back to normal on `diff-hl-show-hunk-hide' still works.
   (with-eval-after-load 'meow
-    (add-hook 'diff-hl-show-hunk-mode-hook #'diff-hl-toggle-meow-state))
+    (advice-add 'diff-hl-show-hunk-inline :before #'meow--switch-to-motion))
   (global-diff-hl-mode))
 
 (use-package dimmer
