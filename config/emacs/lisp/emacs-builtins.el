@@ -784,6 +784,7 @@
   (org-agenda-todo-ignore-scheduled 'future)
   (org-agenda-window-setup 'current-window) ;; display buffer setting
   (org-archive-location ".archive::* From %s")
+  (org-archive-mark-done t)
   (org-confirm-babel-evaluate nil)
   (org-deadline-warning-days 14)
   (org-directory "~/Documents/notes")
@@ -812,12 +813,9 @@
      ("ACTIVE" . (:foreground "spring green"))))
   ;; https://orgmode.org/manual/Capture-templates.html
   (org-capture-templates
-   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? %^g\n%U\n%i" :empty-lines 1)
-     ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n%i" :prepend t :empty-lines 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n%i")))
-  :config
-  (require 'org-id)
-  (require 'org-capture))
+   `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? \n%U\n" :empty-lines 1)
+     ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n" :empty-lines 1)
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n"))))
 
 (use-package org-id
   :ensure nil
