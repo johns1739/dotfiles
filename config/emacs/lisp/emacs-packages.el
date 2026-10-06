@@ -1423,6 +1423,7 @@ If `DEVICE-NAME' is provided, it will be used instead of prompting the user."
   ;; Default reserves room for the line numbers we are about to hide.
   (writeroom-added-width-left 0)
   (writeroom-local-effects '(writeroom-toggle-line-numbers))
+  (writeroom-mode-line t)
   :init
   (defvar-local writeroom-line-numbers-restore nil)
   (defun writeroom-toggle-line-numbers (arg)

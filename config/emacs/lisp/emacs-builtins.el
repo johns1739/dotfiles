@@ -53,7 +53,7 @@
     ;; Settings (Look & Feel)
     (", +" . global-text-scale-adjust)
     (", ," . open-custom-file)
-    (", ." . open-packages-dired)
+    (", d" . open-packages-dired)
     (", =" . balance-windows-area)
     (", c" . customize-group)
     (", F" . toggle-frame-fullscreen)
@@ -147,14 +147,11 @@
   (special-mode . hl-line-mode)
   :config
   (put 'narrow-to-region 'disabled nil) ;; Enable
-  ;; TODO: Place these configs in a frame hook.
   (xterm-mouse-mode 1)
   (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
   (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
   (add-to-list 'default-frame-alist '(height . 40))
   (add-to-list 'default-frame-alist '(width . 120))
-  (set-display-table-slot standard-display-table 'vertical-border ?\u2502)
-  (set-display-table-slot standard-display-table 'truncation ?\u2192)
   (blink-cursor-mode -1)
   (make-directory (expand-file-name "cache/auto-saves/" user-emacs-directory) t)
   (modify-coding-system-alist 'file "" 'utf-8)
@@ -720,6 +717,8 @@
 (use-package modus-themes
   :ensure nil
   :defer
+  :hook
+  (server-after-make-frame . terminal-disable-background)
   :init
   (defun terminal-disable-background ()
     "Drops background face when terminal mode."
@@ -825,7 +824,7 @@
   :defer
   :custom
   (org-id-track-globally t)
-  (org-id-link-to-org-use-id t)
+  (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))
 
 (use-package paren
