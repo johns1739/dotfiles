@@ -356,7 +356,9 @@
   :init
   (with-eval-after-load 'magit
     (transient-append-suffix 'magit-file-dispatch "d"
-      '("*" "show-diff-hunk" diff-hl-show-hunk)))
+      '("H" "Diff Hunks" diff-hl-show-hunk))
+    (transient-append-suffix 'magit-file-dispatch "d"
+      '("h" "Diff Markers" diff-hl-mode)))
   :hook
   (magit-post-refresh . diff-hl-magit-post-refresh)
   :custom
@@ -366,8 +368,7 @@
   ;; alias since diff-hl 0.11.0, so motion state is never entered. The
   ;; switch back to normal on `diff-hl-show-hunk-hide' still works.
   (with-eval-after-load 'meow
-    (advice-add 'diff-hl-show-hunk-inline :before #'meow--switch-to-motion))
-  (global-diff-hl-mode))
+    (advice-add 'diff-hl-show-hunk-inline :before #'meow--switch-to-motion)))
 
 (use-package dimmer
   :disabled ;; Fails to install with latest revision. Use auto-dim-other-buffers
