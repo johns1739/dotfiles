@@ -20,6 +20,7 @@
           ("w o" . ace-select-window)
           ("w O" . ace-swap-window))
   :custom
+  (aw-scope (if (daemonp) 'frame 'visible))
   (aw-dispatch-when-more-than 2))
 
 (use-package auto-dark
@@ -81,6 +82,7 @@
   :bind
   (([remap bookmark-jump] . consult-bookmark)
    ([remap imenu] . consult-imenu)
+   ([remap Info-search] . consult-info)
    ([remap isearch-edit-string] . consult-isearch-history)
    ([remap recentf-open] . consult-recent-file)
    ([remap recentf] . consult-recent-file)
@@ -122,6 +124,8 @@
     ("J" . consult-register-store)
     ("m" . consult-bookmark)
     ("M" . boomark-set-no-overwrite))
+  ( :map help-map
+    ("SPC" . consult-info))
   :init
   (defun consult-emacs ()
     "Search emacs configuration."
@@ -166,7 +170,7 @@
           ("TAB" . corfu-complete)
           ("RET" . nil))
   :custom
-  (corfu-auto t)
+  (corfu-auto nil)
   (corfu-auto-delay 0.2)
   (corfu-auto-prefix 2)
   (corfu-cycle t)
@@ -547,8 +551,8 @@
      '("D" . meow-kill)
      '("e" . meow-next-word)
      '("E" . meow-next-symbol)
-     '("f" . meow-find)
-     '("F" . nil)
+     '("f" . meow-till)
+     '("F" . meow-find)
      (cons "g" goto-map)
      '("G" . meow-grab)
      '("h" . meow-left)
@@ -575,7 +579,7 @@
      '("R" . meow-sync-grab)
      (cons "s" search-map)
      '("S" . save-buffer)
-     '("t" . meow-till)
+     '("t" . nil)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)
      '("U" . meow-undo-in-selection)

@@ -4,5 +4,6 @@
 Gemfile.local
 Gemfile.local.lock
 REVIEW-OUTPUT*.md
+REVIEW.md
 IMPLEMENT-OUTPUT*.md
 .DS_Store

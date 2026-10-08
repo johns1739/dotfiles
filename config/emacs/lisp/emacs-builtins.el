@@ -815,7 +815,11 @@
   (org-capture-templates
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? \n%U\n" :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n" :empty-lines 1)
-     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n"))))
+     ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n")))
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((shell . t))))
 
 (use-package org-id
   :ensure nil
