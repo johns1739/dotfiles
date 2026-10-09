@@ -1,0 +1,91 @@
+#!/usr/bin/env janet
+
+(use sh)
+
+(defn git-fetch [repo-path]
+  ($? git -C ,repo-path fetch -pPq))
+
+(defn git-staged-changes? [repo-path]
+  ($? git -C ,repo-path diff --cached --quiet))
+
+(defn git-branch-clean [repo-path]
+  ($? git -C ,repo-path bclean))
+
+(defn git-worktree-clean [repo-path]
+  ($? git -C ,repo-path wtclean))
+
+(defn git-remove-worktree [repo-path worktree]
+  ($? git -C ,repo-path worktree remove -f -- ,worktree))
+
+(defn git-committed-changes? [repo-path]
+  ($? git -C ,repo-path log @{u}..HEAD -1 --oneline))
+
+(defn git-status [repo-path]
+  ($< git -C ,repo-path status --porcelain --untracked-files=no))
+
+(defn git-stash [repo-path]
+  ($? git -C ,repo-path stash push -qm "Auto-sync repo"))
+
+(defn git-pop [repo-path]
+  ($? git -C ,repo-path stash pop -q))
+
+(defn git-branch [repo-path]
+  (string/trim ($< git -C ,repo-path branch --show-current)))
+
+(defn git-fast-forward [repo-path]
+  (let [branch (git-branch repo-path)]
+    ($? git -C ,repo-path pull -q --ff-only origin ,branch)))
+
+(defn git-main? [repo-path]
+  (let [branch (git-branch repo-path)]
+    (peg/match '(choice "main" "master") branch)))
+
+(defn git-pull-repo [repo-path]
+  (let [stashed? (git-stash repo-path)]
+    (when (git-fast-forward repo-path)
+      (print "PULL " repo-path)
+      (when stashed?
+        (git-pop repo-path)))))
+
+(defn git-worktrees [repo-path]
+  (let [output ($< git -C ,repo-path worktree list --porcelain)
+        lines (string/split "\n" output)]
+    (->> lines
+         (map |(peg/match '(* "worktree " (<- (some 1))) $))
+         (filter |(and (array? $) (not (empty? $))))
+         (map first)
+         (filter |(not (= $ repo-path))))))
+
+(defn clean-worktree [repo-path worktree]
+  (when (or (git-committed-changes? worktree) (git-staged-changes? worktree))
+    (print "SKIP (staged / committed changes) " worktree)
+    (break))
+  (if (git-remove-worktree repo-path worktree)
+    (print "REMOVED " worktree)
+    (when ($? rm -rf ,worktree)
+      (print "RM -rf " worktree))))
+
+(defn clean-worktrees [repo-path]
+  (each worktree (git-worktrees repo-path)
+    (clean-worktree repo-path worktree))
+  (git-worktree-clean repo-path))
+
+(defn sync-repo [repo-path]
+  (print "Syncing " repo-path " ...")
+
+  (unless (git-main? repo-path)
+    (print "SKIP Not a main branch: " (git-branch repo-path))
+    (break))
+
+  (git-fetch repo-path)
+  (git-pull-repo repo-path)
+  (clean-worktrees repo-path)
+  (git-branch-clean repo-path))
+
+(defn sync-repos [repo-paths]
+  (each repo-path repo-paths
+    (sync-repo repo-path)))
+
+(defn main
+  [_script & repo-paths]
+  (sync-repos repo-paths))

@@ -317,7 +317,9 @@
     (meow-mode -1))
   :config
   (add-to-list 'display-buffer-alist
-               '("\\*.*ghostel\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window)))
+               '("\\*.*ghostel\\*" (display-buffer-reuse-mode-window
+                                  display-buffer-pop-up-window
+                                  display-buffer-at-bottom)))
   (with-eval-after-load 'project
     (project-add-switch-command #'ghostel-project "Ghostel" "t")))
 
