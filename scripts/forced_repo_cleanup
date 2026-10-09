@@ -75,7 +75,7 @@
     (clean-worktree repo-path worktree))
   (git-worktree-clean repo-path))
 
-(defn sync-repo [repo-path]
+(defn sync-and-cleanup-repo [repo-path]
   (print "Syncing " repo-path " ...")
 
   (unless (git-main? repo-path)
@@ -87,10 +87,10 @@
   (clean-worktrees repo-path)
   (git-branch-clean repo-path))
 
-(defn sync-repos [repo-paths]
+(defn sync-and-cleanup-repos [repo-paths]
   (each repo-path repo-paths
-    (sync-repo repo-path)))
+    (sync-and-cleanup-repo repo-path)))
 
 (defn main
   [_script & repo-paths]
-  (sync-repos repo-paths))
+  (sync-and-cleanup-repos repo-paths))
