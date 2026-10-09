@@ -6,22 +6,26 @@
   ($? git -C ,repo-path fetch -pPq))
 
 (defn git-staged-changes? [repo-path]
-  ($? git -C ,repo-path diff --cached --quiet))
+  (not (empty? ($<_ git -C ,repo-path diff --cached --quiet))))
 
 (defn git-branch-clean [repo-path]
   ($? git -C ,repo-path bclean))
 
 (defn git-worktree-clean [repo-path]
-  ($? git -C ,repo-path wtclean))
+  ($? git -C ,repo-path wtclean > [stderr (file/open "/dev/null")]))
 
 (defn git-remove-worktree [repo-path worktree]
   ($? git -C ,repo-path worktree remove -f -- ,worktree))
 
+(defn git-upstream-set? [repo-path]
+  ($? git -C ,repo-path rev-parse --abbrev-ref "@{u}" > [stderr (file/open "/dev/null")]))
+
 (defn git-committed-changes? [repo-path]
-  ($? git -C ,repo-path log @{u}..HEAD -1 --oneline))
+  (and (git-upstream-set? repo-path)
+       (not (empty? ($<_ git -C ,repo-path log "@{u}..HEAD" -1 --oneline --quiet)))))
 
 (defn git-status [repo-path]
-  ($< git -C ,repo-path status --porcelain --untracked-files=no))
+  ($<_ git -C ,repo-path status --porcelain --untracked-files=no))
 
 (defn git-stash [repo-path]
   ($? git -C ,repo-path stash push -qm "Auto-sync repo"))
@@ -57,6 +61,7 @@
          (filter |(not (= $ repo-path))))))
 
 (defn clean-worktree [repo-path worktree]
+  (print "Cleaning worktree " worktree)
   (when (or (git-committed-changes? worktree) (git-staged-changes? worktree))
     (print "SKIP (staged / committed changes) " worktree)
     (break))
