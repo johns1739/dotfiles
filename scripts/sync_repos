@@ -1,0 +1,40 @@
+#!/usr/bin/env janet
+
+(import ./utils/git)
+
+# (defn clean-worktree [repo-path worktree]
+#   (print "Cleaning worktree " worktree)
+#   (when (or (git/committed-changes? worktree) (git/staged-changes? worktree))
+#     (print "SKIP (staged / committed changes) " worktree)
+#     (break))
+#   (if (git/remove-worktree repo-path worktree)
+#     (print "REMOVED " worktree)
+#     (when ($? rm -rf ,worktree)
+#       (print "RM -rf " worktree))))
+
+# (defn clean-worktrees [repo-path]
+#   (each worktree (git/worktrees repo-path)
+#     (clean-worktree repo-path worktree))
+#   (git/worktree-clean repo-path))
+
+(defn sync-repo [repo-path]
+  (print "Syncing " repo-path " ...")
+
+  (unless (git/is-git-dir? repo-path)
+    (print "SKIP not a git directory: " repo-path)
+    (break))
+
+  (when (git/on-feature-branch? repo-path)
+    (print "SKIP on feature branch: " (git/current-branch repo-path))
+    (break))
+
+  (git/fetch repo-path)
+  (git/fast-forward-with-stash repo-path))
+
+(defn sync-repos [repo-paths]
+  (each repo-path repo-paths
+    (sync-repo repo-path)))
+
+(defn main
+  [_script & repo-paths]
+  (sync-repos repo-paths))

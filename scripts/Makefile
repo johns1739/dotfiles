@@ -1,4 +1,4 @@
-.PHONY: deps
+.PHONY: deps install uninstall clean reinstall
 
 janet:
 	brew install janet
@@ -11,3 +11,11 @@ deps:
 
 clean:
 	rm -rf janet-lsp
+
+install:
+	jpm quickbin sync_repos ~/.local/bin/sync_repos
+
+uninstall:
+	rm -f 	~/.local/bin/sync_repos
+
+reinstall: uninstall install
