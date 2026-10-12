@@ -74,10 +74,11 @@
     (":" . goto-line)
     (";" . scratch-buffer)
     ("?" . eldoc)
-    ("f" . find-file)
     ("d" . dired-jump)
-    ("p" . previous-buffer)
+    ("f" . find-file)
+    ("h" . eldoc)
     ("n" . next-buffer)
+    ("p" . previous-buffer)
     ;; Window navigation
     ("w H" . windmove-swap-states-left)
     ("w J" . windmove-swap-states-down)
@@ -433,10 +434,7 @@
   :custom
   (eshell-history-size 100000)
   (eshell-hist-ignoredups t)
-  (eshell-directory-name (expand-file-name "cache/eshell" user-emacs-directory))
-  :config
-  (add-to-list 'display-buffer-alist
-               '("\\*.*eshell\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
+  (eshell-directory-name (expand-file-name "cache/eshell" user-emacs-directory)))
 
 (use-package eglot
   :ensure nil
@@ -1027,7 +1025,7 @@
   (uniquify-strip-common-suffix t)
   (uniquify-after-kill-buffer-p t))
 
-(use-package window
+(use-package window ;; display-buffer settings
   :ensure nil
   :defer
   :bind
@@ -1035,7 +1033,16 @@
     ("C-x w t"  . window-layout-transpose)
     ("C-x w r"  . window-layout-rotate-clockwise)
     ("C-x w f h"  . window-layout-flip-leftright)
-    ("C-x w f v"  . window-layout-flip-topdown)))
+    ("C-x w f v"  . window-layout-flip-topdown))
+  :config
+  ;; terminal-like display settings
+  (add-to-list 'display-buffer-alist
+               '((or (derived-mode . comint-mode)
+                     (derived-mode . ghostel-mode)
+                     (derived-mode . eshell-mode))
+                 (display-buffer-in-side-window)
+                 (side . bottom)
+                 (slot . 0))))
 
 (use-package wdired
   :ensure nil

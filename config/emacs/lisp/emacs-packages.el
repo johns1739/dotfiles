@@ -316,10 +316,6 @@
   (defun ghostel-mode-setup ()
     (meow-mode -1))
   :config
-  (add-to-list 'display-buffer-alist
-               '("\\*.*ghostel\\*" (display-buffer-reuse-mode-window
-                                  display-buffer-pop-up-window
-                                  display-buffer-at-bottom)))
   (with-eval-after-load 'project
     (project-add-switch-command #'ghostel-project "Ghostel" "t")))
 
@@ -392,12 +388,7 @@
   (with-eval-after-load 'dired
     (bind-keys :map dired-mode-map
                ("A" . gptel-add)
-               ("K" . gptel-context-remove-all)))
-  :config
-  (add-to-list 'display-buffer-alist
-               '("\\*gptel-.*\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window)))
-  (add-to-list 'display-buffer-alist
-               '("\\*Copilot\\*" (display-buffer-reuse-mode-window display-buffer-pop-up-window))))
+               ("K" . gptel-context-remove-all))))
 
 (use-package gptel-aibo
   :bind
@@ -428,9 +419,8 @@
          ("F" . helpful-function))
   :config
   (add-to-list 'display-buffer-alist
-               '("\\*helpful"
-                 (display-buffer-reuse-mode-window display-buffer-pop-up-window)
-                 (mode . helpful-mode))))
+               '((major-mode . helpful-mode)
+                 (display-buffer-reuse-mode-window))))
 
 (use-package indent-bars
   :bind

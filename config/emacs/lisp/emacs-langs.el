@@ -1,5 +1,10 @@
 ;;; emacs-langs.el --- Language Modes  -*- lexical-binding: t; -*-
 
+(use-package ajrepl
+  :after (janet-ts-mode)
+  :vc ( :url "https://github.com/sogaiu/ajrepl" :rev :newest)
+  :hook (janet-ts-mode . ajrepl-interaction-mode))
+
 (use-package conf-mode
   :ensure nil
   :hook
