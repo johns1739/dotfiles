@@ -100,9 +100,8 @@
          (map |(peg/match '(* "worktree " (<- (some 1)) -1) $))
          (keep |(and (truthy? $) (not (is-git-dir? (first $))) (first $))))))
 
-
 (defn dirty-worktrees
-  "List of worktree, excluding ones with staged changes or unpushed comitted changes."
+  "List of worktree, except worktrees with staged changes or unpushed-comitted changes."
   [repo-path]
   (->> (worktrees repo-path)
        (filter |(not (has-committed-changes? $)))

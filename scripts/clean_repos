@@ -10,8 +10,9 @@
 
 (defn clean-worktrees [repo-path]
   (each worktree (git/dirty-worktrees repo-path)
-    (git/stash-with-message worktree (string "Leftover changes from " worktree " @ " (current-date-timestamp)))
-    (git/remove-worktree repo-path worktree)))
+    (def stash-message (string "Leftover changes from " worktree " @ " (current-date-timestamp)))
+    (git/stash-with-message worktree stash-message)
+    (git/remove-worktree repo-path worktree "-f")))
 
 (defn clean-repo [repo-path]
   (print "\nCleaning " repo-path " ... ")
