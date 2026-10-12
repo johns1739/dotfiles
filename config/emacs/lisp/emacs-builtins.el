@@ -1040,9 +1040,9 @@
                '((or (derived-mode . comint-mode)
                      (derived-mode . ghostel-mode)
                      (derived-mode . eshell-mode))
-                 (display-buffer-in-side-window)
-                 (side . bottom)
-                 (slot . 0))))
+                 (display-buffer-reuse-mode-window display-buffer-at-bottom)
+                 (inhibit-same-window . t)
+                 (window-height . 0.25))))
 
 (use-package wdired
   :ensure nil
