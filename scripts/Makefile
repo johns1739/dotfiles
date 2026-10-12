@@ -1,4 +1,4 @@
-.PHONY: deps install uninstall clean reinstall
+.PHONY: janet janet-lsp deps install uninstall clean reinstall
 
 janet:
 	brew install janet

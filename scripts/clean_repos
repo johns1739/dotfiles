@@ -9,7 +9,8 @@
       (git/remove-branch repo-path branch))))
 
 (defn clean-worktrees [repo-path]
-  (each worktree (git/dirty-worktrees repo-path)
+  (git/prune-worktrees repo-path)
+  (each worktree (git/removable-worktrees repo-path)
     (def stash-message (string "Leftover changes from " worktree " @ " (current-date-timestamp)))
     (git/stash-with-message worktree stash-message)
     (git/remove-worktree repo-path worktree "-f")))
@@ -22,8 +23,8 @@
     (break))
 
   (git/fetch repo-path)
-  (clean-branches repo-path)
   (clean-worktrees repo-path)
+  (clean-branches repo-path)
   (print "DONE"))
 
 (defn clean-repos [repo-paths]
