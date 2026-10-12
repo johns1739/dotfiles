@@ -804,7 +804,7 @@
   (org-use-fast-todo-selection 'auto)
   (org-agenda-sorting-strategy
    '((agenda habit-down time-up urgency-down category-keep)
-     (todo deadline-up habit-up urgency-down)
+     (todo deadline-up habit-up urgency-down todo-state-down)
      (search category-keep)))
   (org-todo-keyword-faces
    '(("WIP" . (:foreground "spring green"))
