@@ -8,4 +8,4 @@
   [repo]
   (json/decode
     ($< gh issue list -R ,repo --assignee "@me" --limit 1000 --json ,issue-fields)
-    :nils))
+    true true))

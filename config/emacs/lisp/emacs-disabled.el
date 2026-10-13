@@ -591,20 +591,9 @@
   (vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
   (vertico-posframe-min-width 80))
 
-(use-package visual-fill-column
-  :disabled ;; Conflicts & hides diff-hl's margins
-  ;; https://codeberg.org/joostkremers/visual-fill-column
-  :defer
-  :custom
-  (visual-fill-column-center-text t)
-  :init
-  (defun visual-fill-column-setup ()
-    (display-line-numbers-mode -1))
-  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
-  (add-hook 'visual-line-mode-hook #'visual-fill-column-setup))
-
 (use-package vterm
-  :disabled ;; prefer ghostel
+  :disabled
+  ;; prefer ghostel
   ;; Dependencies (linux):
   ;; sudo apt update
   ;; sudo apt install libtool libtool-bin

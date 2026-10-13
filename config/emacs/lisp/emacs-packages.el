@@ -704,6 +704,18 @@
   :config
   (vertico-mode))
 
+(use-package visual-fill-column
+  ;; https://codeberg.org/joostkremers/visual-fill-column
+  :defer
+  ;; :custom
+  ;; (visual-fill-column-center-text t) ;; Conflicts & hides diff-hl's margins
+  :init
+  ;; (defun visual-fill-column-setup ()
+    ;; (display-line-numbers-mode -1)
+    ;; )
+  ;; (add-hook 'visual-line-mode-hook #'visual-fill-column-setup)
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline))
+
 (use-package visual-replace
   :bind (([remap query-replace] . visual-replace)
          ([remap replace-string] . visual-replace)
