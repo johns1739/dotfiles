@@ -724,7 +724,7 @@
     (unless (display-graphic-p)
       (set-face-background 'default "unspecified-bg" (selected-frame)))))
 
-(use-package org
+(use-package org ;; org-mode
   :ensure nil
   :init
   (defun org-mode-setup ()

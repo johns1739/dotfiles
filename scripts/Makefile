@@ -7,7 +7,7 @@ janet-lsp:
 	jpm install https://github.com/CFiggers/janet-lsp
 
 deps:
-	jpm install sh
+	jpm install sh spork
 
 clean:
 	rm -rf janet-lsp
@@ -16,9 +16,11 @@ clean:
 install:
 	jpm quickbin sync_repos ~/.local/bin/sync_repos
 	jpm quickbin clean_repos ~/.local/bin/clean_repos
+	jpm quickbin open_issues ~/.local/bin/open_issues
 
 uninstall:
 	rm -f 	~/.local/bin/sync_repos
 	rm -f 	~/.local/bin/clean_repos
+	rm -f 	~/.local/bin/open_issues
 
 reinstall: uninstall install clean
