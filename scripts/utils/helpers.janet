@@ -1,3 +1,8 @@
+(defmacro dbg [expr]
+  ~(let [res ,expr]
+     (print "DEBUG: " '(,expr) " => " (describe res))
+     res))
+
 (defn current-date-timestamp
   "Get current date & timestamp string."
   []
