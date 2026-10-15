@@ -468,7 +468,17 @@
   (magit-blame-echo-style 'headings)
   (magit-bury-buffer-function 'magit-restore-window-configuration)
   (magit-list-refs-sortby "-creatordate")
-  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
+  :config
+  (defun magit-diff-main-branch ()
+    (interactive)
+    (pcase-let ((`(,arguments ,files) (magit-diff-arguments))
+                (file (magit-file-relative-name)))
+      (magit-diff-range (concat "origin/" (magit-main-branch) "...HEAD")
+                        arguments
+                        (or files (and file (list file))))))
+  (transient-append-suffix 'magit-diff "r"
+    '("m" "Diff origin/main...HEAD" magit-diff-main-branch)))
 
 (use-package marginalia
   :demand
