@@ -386,13 +386,7 @@
 (use-package edebug
   :ensure nil
   :bind
-  ( :map global-leader-map
-    ("k u" . edebug-unset-breakpoint)
-    ("k i" . edebug-instrument-callee)
-    ("k I" . edebug-remove-instrumentation)
-    ("k b" . edebug-set-breakpoint)
-    ("k B" . edebug-set-conditional-breakpoint)
-    :map edebug-mode-map
+  ( :map edebug-mode-map
     ("SPC" . edebug-step-mode)
     ("." . edebug-goto-here)
     ("c" . edebug-go-mode)

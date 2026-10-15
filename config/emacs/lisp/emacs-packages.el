@@ -67,14 +67,21 @@
 (use-package claude-code-ide
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ( :map global-leader-map
-          ("i c" . claude-code-ide-menu))
+          ("o I" . claude-code-ide)
+          ("o i SPC" . claude-code-ide-list-sessions)
+          ("o i i" . claude-code-ide-toggle)
+          ("o i q" . claude-code-ide-stop)
+          ("o i Q" . claude-code-ide-stop-all)
+          ("o i R" . claude-code-ide-rename-session)
+          ("o i '" . claude-code-ide-toggle-recent)
+          ("o i :" . claude-code-ide-menu))
   :custom
-  (claude-code-ide-debug t)
+  (claude-code-ide-debug nil)
   (claude-code-ide-use-side-window nil)
   (claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-window-side 'left)
   (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
-  (claude-code-ide-terminal-initialization-delay 0.15) ; better render
+  (claude-code-ide-terminal-initialization-delay 0.2) ; better render
   :config
   (claude-code-ide-emacs-tools-setup))
 
@@ -372,8 +379,8 @@
   :bind
   ( :map global-leader-map
     ("i SPC" . gptel)
-    ("i ," . gptel-menu)
-    ("i A" . gptel-add)
+    ("i :" . gptel-menu)
+    ("i a" . gptel-add)
     ("i K" . gptel-context-remove-all)
     ("i R" . gptel-rewrite))
   ( :map gptel-mode-map
@@ -387,14 +394,15 @@
   :init
   (with-eval-after-load 'dired
     (bind-keys :map dired-mode-map
-               ("A" . gptel-add)
-               ("K" . gptel-context-remove-all))))
+               ("C-c i a" . gptel-add)
+               ("C-c i K" . gptel-context-remove-all))))
 
 (use-package gptel-aibo
   :bind
+  ( :map global-map
+    ("C-c I" . gptel-aibo-complete-at-point))
   ( :map global-leader-map
-    ("i i" . gptel-aibo)
-    ("i M-i" . gptel-aibo-complete-at-point))
+    ("i i" . gptel-aibo))
   ( :map gptel-aibo-mode-map
     ("C-c C-<return>" . gptel-aibo-send))
   :config
