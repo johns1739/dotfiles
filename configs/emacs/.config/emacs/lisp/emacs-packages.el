@@ -130,7 +130,7 @@
     ("j" . consult-register-load)
     ("J" . consult-register-store)
     ("m" . consult-bookmark)
-    ("M" . bookmark-set))
+    ("M" . bookmark-set-no-overwrite)) ;; eg bookmarking multiple files with same name
   ( :map help-map
     ("SPC" . consult-info))
   :init
