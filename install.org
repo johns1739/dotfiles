@@ -57,42 +57,21 @@ asdf install nodejs latest
 asdf set -u nodejs latest
 #+end_src
 ** Configs
+Each directory under =configs/= is a [[https://www.gnu.org/software/stow/][stow]] package.
+#+begin_src bash
+make install-configs
+#+end_src
+
+Local overrides go in an untracked =custom= file next to the config, e.g. =~/.config/git/custom=, =~/.config/ghostty/custom=.
+
 *** Emacs
 #+begin_src bash
-ln -s $(pwd)/config/emacs ~/.config/emacs
-cp $(pwd)/config/emacs/docs/example.custom.el ~/.config/emacs/custom.el
+cp ~/.config/emacs/docs/example.custom.el ~/.config/emacs/custom.el
 #+end_src
 
 *** Fish
-#+begin_src bash
-ln -s $(pwd)/config/defaults.fish ~/.config/fish/conf.d/defaults.fish
-#+end_src
-
 Set default shell to fish.
 #+begin_src text :results silent
 command -v fish | sudo tee -a /etc/shells
 chsh -s "$(command -v fish)"
-#+end_src
-*** Git
-#+begin_src bash
-mkdir -p ~/.config/git
-cp $(pwd)/config/gitconfig ~/.config/git/config
-cp $(pwd)/config/gitignore ~/.config/git/ignore
-#+end_src
-
-*** Ghostty
-#+begin_src bash
-mkdir -p ~/.config/ghostty
-cp $(pwd)/config/ghostty.config ~/.config/ghostty/config
-#+end_src
-
-*** Sqlite
-#+begin_src bash
-cp $(pwd)/config/sqliterc ~/.sqliterc
-#+end_src
-
-*** Tmux
-#+begin_src bash
-mkdir -p ~/.config/tmux
-cp $(pwd)/config/tmux.config ~/.config/tmux/config
 #+end_src

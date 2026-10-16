@@ -1,6 +1,17 @@
-.PHONY: install-brew install-scripts install-janet-deps uninstall-scripts reinstall-scripts test test-accept clean
+.PHONY: \
+	install-brew \
+	install-scripts \
+	install-janet-deps \
+	uninstall-scripts \
+	reinstall-scripts \
+	install-configs \
+	uninstall-configs \
+	test \
+	test-accept \
+	clean
 
 BIN_DIR := ~/.local/bin
+CONFIGS := claude emacs fish ghostty git psql
 
 install-brew:
 	brew install stow janet
@@ -21,6 +32,12 @@ uninstall-scripts:
 	rm -f $(BIN_DIR)/open_issues
 
 reinstall-scripts: uninstall-scripts install-scripts
+
+install-configs:
+	stow --dir configs --target ~ $(CONFIGS)
+
+uninstall-configs:
+	stow --dir configs --target ~ --delete $(CONFIGS)
 
 test:
 	judge scripts

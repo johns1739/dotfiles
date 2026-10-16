@@ -1,7 +1,7 @@
 -- -*- sql -*-
 /*
     mkdir -p ~/.config/psql
-    ln -s ~/path/dotfiles/config/psql/psqlrc ~/.psqlrc
+    stow --dir ~/path/dotfiles/configs --target ~ psql
 */
 
 -- Don't log these commands at the beginning of the file

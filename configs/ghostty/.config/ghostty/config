@@ -93,3 +93,6 @@ keybind = super+alt+period=move_tab:1
 
 ## Command Prompt
 keybind = super+shift+;=toggle_command_palette
+
+## Local overrides
+config-file = ?custom
