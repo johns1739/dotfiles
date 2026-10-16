@@ -1,8 +1,4 @@
 -- -*- sql -*-
-/*
-    mkdir -p ~/.config/psql
-    stow --dir ~/path/dotfiles/configs --target ~ psql
-*/
 
 -- Don't log these commands at the beginning of the file
 \set QUIET 1

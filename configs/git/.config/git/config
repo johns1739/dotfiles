@@ -1,7 +1,7 @@
 # -*- mode: conf-unix -*-
 
 # Setup
-# export GIT_CONFIG_GLOBAL=~/<path>/dotfiles/configs/git/.config/git/config
+# export GIT_CONFIG_GLOBAL=~/.config/git/config
 
 # Run on large repos that need to be maintained.
 # git maintenance start
