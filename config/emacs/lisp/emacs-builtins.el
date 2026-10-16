@@ -245,6 +245,8 @@
   :ensure nil
   :defer
   :custom
+  (bookmark-menu-length 80)
+  (bookmark-search-size 20)
   (bookmark-default-file (expand-file-name "cache/bookmarks" user-emacs-directory)))
 
 (use-package calc
@@ -819,7 +821,10 @@
   :custom
   (org-id-track-globally t)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-  (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory)))
+  (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory))
+  :config
+  (make-directory (expand-file-name "cache/org-id/" user-emacs-directory) :parent))
+
 
 (use-package paren
   :ensure nil

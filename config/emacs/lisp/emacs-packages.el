@@ -130,7 +130,7 @@
     ("j" . consult-register-load)
     ("J" . consult-register-store)
     ("m" . consult-bookmark)
-    ("M" . boomark-set-no-overwrite))
+    ("M" . bookmark-set))
   ( :map help-map
     ("SPC" . consult-info))
   :init
