@@ -2,7 +2,9 @@
 
 (import ./utils/git)
 
-(defn sync-repo [repo-path]
+(defn sync-repo
+  "Fetch and fast-forward a repo, unless on a feature branch."
+  [repo-path]
   (print "\nSyncing " repo-path " ... ")
 
   (unless (git/is-git-dir? repo-path)
@@ -18,10 +20,13 @@
     (print "DONE")
     (print "FAILED")))
 
-(defn sync-repos [repo-paths]
+(defn sync-repos
+  "Sync each repo."
+  [repo-paths]
   (each repo-path repo-paths
     (sync-repo repo-path)))
 
 (defn main
+  "Sync the repos given as arguments."
   [_script & repo-paths]
   (sync-repos repo-paths))

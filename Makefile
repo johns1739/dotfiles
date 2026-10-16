@@ -1,4 +1,4 @@
-.PHONY: install-brew install-scripts install-janet-deps uninstall-scripts reinstall-scripts clean
+.PHONY: install-brew install-scripts install-janet-deps uninstall-scripts reinstall-scripts test test-accept clean
 
 BIN_DIR := ~/.local/bin
 
@@ -21,6 +21,12 @@ uninstall-scripts:
 	rm -f $(BIN_DIR)/open_issues
 
 reinstall-scripts: uninstall-scripts install-scripts
+
+test:
+	judge scripts
+
+test-accept:
+	judge --accept scripts
 
 clean:
 	rm -f $(BIN_DIR)/*.c

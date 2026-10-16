@@ -69,7 +69,7 @@
   "True if repo has commits not pushed to upstream."
   [repo-path]
   (and (has-upstream-set? repo-path)
-       (any? ($<_ git -C ,repo-path rev-list -1 "@{u}..HEAD"))))
+       (not (empty? ($<_ git -C ,repo-path rev-list -1 "@{u}..HEAD")))))
 
 (defn stash
   "Stash changes, including untracked. Returns true if stashed."

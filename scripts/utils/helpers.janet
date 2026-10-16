@@ -1,6 +1,8 @@
-(defmacro dbg [expr]
+(defmacro dbg
+  "Print expr and its value, then return the value."
+  [expr]
   ~(let [res ,expr]
-     (print "DEBUG: " '(,expr) " => " (describe res))
+     (print "DEBUG: " (string/format "%q => %q" ',expr res))
      res))
 
 (defn current-date-timestamp
