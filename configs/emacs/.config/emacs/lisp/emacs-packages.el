@@ -267,6 +267,21 @@
      ;; ("https://hnrss.org/jobs" hn jobs)
      ("https://lobste.rs/rss" lobste news))))
 
+(use-package embark
+  :bind
+  ( :map global-map
+    ([remap describe-bindings] . embark-bindings)
+    (("C-c C-." . embark-act))
+    :map minibuffer-mode-map
+    (("C-c >" . embark-export)))
+  :custom
+  (prefix-help-command #'embark-prefix-help-command)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult)
+
 (use-package envrc
   ;; Must activate at the end
   :hook (after-init . envrc-global-mode))

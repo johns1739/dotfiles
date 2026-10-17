@@ -255,20 +255,6 @@
   :hook
   (elysium-apply-changes . smerge-mode))
 
-(use-package embark
-  :disabled ;; rarely used
-  :bind (([remap describe-bindings] . embark-bindings)
-         :map ctl-x-map
-         ("A" . embark-act)
-         ("C" . embark-collect)
-         ("E" . embark-export)))
-
-(use-package embark-consult
-  :disabled
-  :after (embark consult)
-  :hook
-  (embark-collect-mode . consult-preview-at-point-mode))
-
 (use-package flycheck
   :disabled ;; unable to call (rails) bundle exec rubocop
   :commands (global-flycheck-mode flycheck-mode)
