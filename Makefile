@@ -78,10 +78,10 @@ uninstall-scripts:
 reinstall-scripts: uninstall-scripts install-scripts
 
 install-configs:
-	stow --dir configs --target ~ $(CONFIGS)
+	stow --no-folding --dir configs --target ~ $(CONFIGS)
 
 uninstall-configs:
-	stow --dir configs --target ~ --delete $(CONFIGS)
+	stow --no-folding --dir configs --target ~ --delete $(CONFIGS)
 
 default-shell-fish:
 	grep -qxF "$$(command -v fish)" /etc/shells || command -v fish | sudo tee -a /etc/shells
