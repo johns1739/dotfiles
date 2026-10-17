@@ -1041,7 +1041,7 @@
                      (derived-mode . eshell-mode))
                  (display-buffer-reuse-mode-window display-buffer-at-bottom)
                  (inhibit-same-window . t)
-                 (window-height . 0.4)))
+                 (window-height . 0.4))))
 
 (use-package wdired
   :ensure nil
