@@ -17,7 +17,7 @@
 
 BIN_DIR := ~/.local/bin
 CONFIGS := claude emacs fish ghostty git psql
-FOLDED_CONFIGS := emacs-snippets
+FOLDED_CONFIGS := emacs-snippets # To fold means to symlink to folder.
 
 BREW_PACKAGES += autoconf     # Generates configure scripts for builds
 BREW_PACKAGES += btop         # Interactive resource monitor
