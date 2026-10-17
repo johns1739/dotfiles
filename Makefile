@@ -17,6 +17,7 @@
 
 BIN_DIR := ~/.local/bin
 CONFIGS := claude emacs fish ghostty git psql
+FOLDED_CONFIGS := emacs-snippets
 
 BREW_PACKAGES += autoconf     # Generates configure scripts for builds
 BREW_PACKAGES += btop         # Interactive resource monitor
@@ -79,8 +80,10 @@ reinstall-scripts: uninstall-scripts install-scripts
 
 install-configs:
 	stow --no-folding --dir configs --target ~ $(CONFIGS)
+	stow --dir configs --target ~ $(FOLDED_CONFIGS)
 
 uninstall-configs:
+	stow --dir configs --target ~ --delete $(FOLDED_CONFIGS)
 	stow --no-folding --dir configs --target ~ --delete $(CONFIGS)
 
 default-shell-fish:
