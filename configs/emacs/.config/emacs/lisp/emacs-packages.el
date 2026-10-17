@@ -163,7 +163,7 @@
 (use-package consult-eglot
   :after (eglot consult)
   :bind (:map global-leader-map
-              ("l i" . consult-eglot-symbols)))
+              ("l SPC" . consult-eglot-symbols)))
 
 (use-package consult-ghostel
   :vc ( :url "https://github.com/dakra/ghostel"
