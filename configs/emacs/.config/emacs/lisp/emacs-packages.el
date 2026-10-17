@@ -75,6 +75,9 @@
           ("o i R" . claude-code-ide-rename-session)
           ("o i '" . claude-code-ide-toggle-recent)
           ("o i :" . claude-code-ide-menu))
+  :init
+  (with-eval-after-load 'project
+    (project-add-switch-command #'claude-code-ide "Claude" "I"))
   :custom
   (claude-code-ide-debug nil)
   (claude-code-ide-use-side-window nil)
