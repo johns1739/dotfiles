@@ -255,6 +255,24 @@
   :hook
   (elysium-apply-changes . smerge-mode))
 
+(use-package embark
+  :disabled ;; rarely used
+  :bind
+  ( :map global-map
+    ([remap describe-bindings] . embark-bindings)
+    (("C-c C-." . embark-act))
+    :map minibuffer-mode-map
+    (("C-c >" . embark-export)))
+  :custom
+  (prefix-help-command #'embark-prefix-help-command)
+  :config
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*" nil (window-parameters (mode-line-format . none)))))
+
+(use-package embark-consult
+  :disabled) ;; embark rarely used
+
+
 (use-package flycheck
   :disabled ;; unable to call (rails) bundle exec rubocop
   :commands (global-flycheck-mode flycheck-mode)
