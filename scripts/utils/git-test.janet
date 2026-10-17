@@ -26,6 +26,19 @@
   (test (git/has-upstream-set? repo) false)
   (test (git/has-committed-changes? repo) false))
 
+(deftest "debug git commands"
+  (def repo (git-repo "debug"))
+  (os/setenv "DEBUG" "true")
+  (test-stdout (git/current-branch repo) `
+    DEBUG: git-command => ("git" "-C" "/private/tmp/judge-scripts/debug/clone" "branch" "--show-current")
+    DEBUG: output => "main"
+  ` "main")
+  (test-stdout (git/has-staged-changes? repo) `
+    DEBUG: git-command => ("git" "-C" "/private/tmp/judge-scripts/debug/clone" "diff" "--cached" "--quiet")
+    DEBUG: success? => true
+  `)
+  (os/setenv "DEBUG" nil))
+
 (deftest "fetch"
   (def repo (git-repo "fetch"))
   (test-stdout (git/fetch repo) `

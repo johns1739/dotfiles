@@ -5,6 +5,13 @@
      (print "DEBUG: " (string/format "%q => %q" ',expr res))
      res))
 
+(defmacro dbg-if-debug
+  "Apply `dbg` to expr when env var DEBUG=true, else return its value."
+  [expr]
+  ~(if (= (os/getenv "DEBUG") "true")
+     (dbg ,expr)
+     ,expr))
+
 (defn current-date-timestamp
   "Get current date & timestamp string."
   []
