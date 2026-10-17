@@ -17,7 +17,6 @@ if status is-interactive
     alias ..='cd ..'
     alias grep="grep --line-buffered --color"
     alias l="less"
-    alias lg="lazygit"
     alias ll="ls -lh --color"
     alias rgrep="grep --color -rnIi"
     alias top="btop"

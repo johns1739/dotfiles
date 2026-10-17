@@ -4,6 +4,8 @@
 # command = /opt/homebrew/bin/fish
 # working-directory = ~/Projects
 # font-size = 14
+# theme = dark:Arthur,light:Dawnfox
+# background-opacity = 1
 
 # Useful commands
 # ghostty +help
@@ -17,11 +19,6 @@
 # ghostty +validate-config
 # ghostty +show-face
 # ghostty +crash-report
-
-# Default settings
-theme = dark:Arthur,light:Dawnfox
-background-opacity = 1
-unfocused-split-opacity = 0.7
 
 # behavior settings
 clipboard-paste-protection = false
@@ -38,6 +35,7 @@ notify-on-command-finish-after = 5s
 quick-terminal-position = top
 quick-terminal-size = 60%,60%
 split-divider-color = #ECC94B
+unfocused-split-opacity = 0.7
 window-decoration = auto
 window-height = 40
 window-new-tab-position = end
