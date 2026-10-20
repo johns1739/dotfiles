@@ -141,6 +141,7 @@
   (use-dialog-box nil)
   (use-short-answers t)
   (tab-width 4)
+  (vc-follow-symlinks t)
   (read-extended-command-predicate #'command-completion-default-include-p)
   (auto-save-list-file-prefix (expand-file-name "cache/auto-saves/sessions/" user-emacs-directory))
   (auto-save-file-name-transforms `((".*" ,(expand-file-name "cache/auto-saves/" user-emacs-directory) t)))

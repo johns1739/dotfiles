@@ -137,14 +137,16 @@
   ( :map help-map
     ("SPC" . consult-info))
   :init
-  (defun consult-emacs ()
-    "Search emacs configuration."
+  (defun consult-emacs (&optional initial)
+    "Search emacs configurations."
     (interactive)
-    (consult-ripgrep user-emacs-directory))
+    (consult-ripgrep (list (file-name-directory (file-truename user-init-file))
+                           custom-file)
+                     initial))
   (defun consult-emacs-packages ()
-    "Search emacs configuration."
+    "Search emacs package configurations."
     (interactive)
-    (consult-ripgrep (expand-file-name "lisp" user-emacs-directory) "^(use-package\\ "))
+    (consult-emacs "^(use-package\\ "))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
