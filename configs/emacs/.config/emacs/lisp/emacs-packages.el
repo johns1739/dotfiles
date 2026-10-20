@@ -47,7 +47,7 @@
          ("M-g" . avy-isearch)
          :map goto-map
          ("G" . avy-resume)
-         ("g" . avy-goto-char-timer)))
+         ("g" . avy-goto-char-2)))
 
 (use-package beacon
   :config

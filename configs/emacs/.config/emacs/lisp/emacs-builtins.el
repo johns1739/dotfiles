@@ -69,14 +69,15 @@
     ("'" . mode-line-other-buffer)
     ("," . xref-go-back)
     ("." . xref-find-definitions)
-    (">" . xref-find-references)
     ("/" . xref-find-apropos)
     (":" . goto-line)
     (";" . scratch-buffer)
+    (">" . xref-find-references)
     ("?" . eldoc)
     ("d" . dired-jump)
     ("f" . find-file)
     ("h" . eldoc)
+    ("i" . nil) ;; moved imenu to search-map
     ("n" . next-buffer)
     ("p" . previous-buffer)
     ;; Window navigation
