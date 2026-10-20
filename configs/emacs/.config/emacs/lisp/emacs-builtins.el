@@ -53,7 +53,7 @@
     ;; Settings (Look & Feel)
     (", +" . global-text-scale-adjust)
     (", ," . open-custom-file)
-    (", d" . open-packages-dired)
+    (", <" . open-packages-dired)
     (", =" . balance-windows-area)
     (", c" . customize-group)
     (", F" . toggle-frame-fullscreen)
