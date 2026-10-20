@@ -243,9 +243,10 @@
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
   :custom
-  (dumb-jump-force-searcher 'rg)
   (dumb-jump-prefer-searcher 'rg)
+  (xref-show-definitions-function #'consult-xref)
   :init
+  ;; (setopt dumb-jump-debug t)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
 (use-package easy-escape ;; better regexp visuals
@@ -415,8 +416,7 @@
   :after magit
   :hook (magit-mode . gptel-magit-install)
   :config
-  (require 'gptel)
-  (setopt gptel-magit-commit-prompt gptel-magit-prompt-zed))
+  (require 'gptel))
 
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
