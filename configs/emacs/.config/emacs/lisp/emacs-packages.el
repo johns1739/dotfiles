@@ -333,11 +333,11 @@
   (gptel-crowdsourced-prompts-file (expand-cache-path "gptel/crowdsourced-prompts.csv"))
   :bind
   ( :map global-leader-map
-    ("i SPC" . gptel)
-    ("i :" . gptel-menu)
-    ("i a" . gptel-add)
-    ("i K" . gptel-context-remove-all)
-    ("i R" . gptel-rewrite))
+    ("i g SPC" . gptel)
+    ("i g :" . gptel-menu)
+    ("i g A" . gptel-add)
+    ("i g K" . gptel-context-remove-all)
+    ("i g R" . gptel-rewrite))
   ( :map gptel-mode-map
     ("C-c C-<return>" . gptel-send)
     ("C-c C-c" . gptel-abort)
@@ -345,20 +345,13 @@
     ("C-c C-p" . gptel-org-set-properties))
   :hook
   (gptel-mode . visual-line-mode)
-  (gptel-mode . gptel-highlight-mode)
-  :init
-  (with-eval-after-load 'dired
-    (bind-keys :map dired-mode-map
-               ("C-c i a" . gptel-add)
-               ("C-c i K" . gptel-context-remove-all))))
+  (gptel-mode . gptel-highlight-mode))
 
 (use-package gptel-aibo
   :bind
-  ( :map global-map
-    ("C-c I" . gptel-aibo-complete-at-point))
   ( :map global-leader-map
-    ("i i" . gptel-aibo)
-    ("i I" . gptel-aibo-complete-at-point))
+    ("i g i" . gptel-aibo)
+    ("i g I" . gptel-aibo-complete-at-point))
   ( :map gptel-aibo-mode-map
     ("C-c C-<return>" . gptel-aibo-send))
   :config
@@ -377,7 +370,7 @@
   (gptel-quick-use-context t)
   (gptel-quick-timeout 12)
   :bind ( :map global-map
-          ("C-c i" . gptel-quick))
+          ("C-c h" . gptel-quick))
   :config
   (require 'gptel))
 
