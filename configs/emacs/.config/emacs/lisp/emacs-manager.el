@@ -7,7 +7,7 @@
           ("melpa-stable" . "https://stable.melpa.org/packages/")))
 
 (setopt package-archive-priorities
-        '(("gnu" . 100) ("nongnu" . 80) ("melpa" . 50) ("melpa-stable" . 1)))
+        '(("melpa" . 100) ("gnu" . 80) ("nongnu" . 50) ("melpa-stable" . 1)))
 
 ;; Native-compile packages at install time (requires native-comp support).
 (setopt package-native-compile t)

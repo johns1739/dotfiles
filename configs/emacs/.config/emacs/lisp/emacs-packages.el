@@ -47,7 +47,6 @@
   (with-eval-after-load 'project
     (project-add-switch-command #'claude-code-ide "Claude" "I"))
   :custom
-  (claude-code-ide-debug nil)
   (claude-code-ide-use-side-window nil)
   (claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-window-side 'left)
@@ -358,7 +357,8 @@
   ( :map global-map
     ("C-c I" . gptel-aibo-complete-at-point))
   ( :map global-leader-map
-    ("i i" . gptel-aibo))
+    ("i i" . gptel-aibo)
+    ("i I" . gptel-aibo-complete-at-point))
   ( :map gptel-aibo-mode-map
     ("C-c C-<return>" . gptel-aibo-send))
   :config
