@@ -1,36 +1,10 @@
 ;;; emacs-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
-(use-package exec-path-from-shell
-  :demand
-  :if (or (daemonp)
-          (and (display-graphic-p) (memq window-system '(mac ns x pgtk))))
-  :custom
-  ;; (exec-path-from-shell-debug t)
-  (exec-path-from-shell-warn-duration-millis 1000)
-  :config
-  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO"))
-    (add-to-list 'exec-path-from-shell-variables var))
-  (exec-path-from-shell-initialize))
-
 (use-package ace-window
-  :bind  (([remap other-window] . ace-window)
-          :map goto-map
-          ("w 0" . ace-delete-window)
-          ("w 1" . ace-delete-other-windows)
-          ("w o" . ace-select-window)
-          ("w O" . ace-swap-window))
+  :bind (([remap other-window] . ace-window))
   :custom
   (aw-scope (if (daemonp) 'frame 'visible))
   (aw-dispatch-when-more-than 2))
-
-(use-package auto-dark
-  :commands (auto-dark-mode auto-dark-toggle-appearance)
-  :bind ( :map global-leader-map
-          (", T" . auto-dark-toggle-appearance)))
-
-(use-package auto-dim-other-buffers
-  :bind ( :map global-leader-map
-          ("m D" . auto-dim-other-buffers-mode)))
 
 (use-package avy
   :bind (([remap goto-line] . avy-goto-line)
@@ -65,6 +39,7 @@
   (add-hook 'completion-at-point-functions #'cape-dabbrev))
 
 (use-package claude-code-ide
+  :if (executable-find "claude")
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ( :map global-leader-map
           ("o I" . claude-code-ide)
@@ -140,9 +115,7 @@
   (defun consult-emacs (&optional initial)
     "Search emacs configurations."
     (interactive)
-    (consult-ripgrep (list (file-name-directory (file-truename user-init-file))
-                           custom-file)
-                     initial))
+    (consult-ripgrep (list (file-name-directory (file-truename user-init-file)) custom-file) initial))
   (defun consult-emacs-packages ()
     "Search emacs package configurations."
     (interactive)
@@ -161,11 +134,6 @@
   (if (executable-find "fd")
       (bind-keys :map search-map
                  ("f" . consult-fd))))
-
-(use-package consult-eglot
-  :after (eglot consult)
-  :bind (:map global-leader-map
-              ("l SPC" . consult-eglot-symbols)))
 
 (use-package consult-ghostel
   :vc ( :url "https://github.com/dakra/ghostel"
@@ -199,12 +167,6 @@
   (corfu-popupinfo-mode 1)
   (corfu-history-mode 1)
   (add-to-list 'savehist-additional-variables 'corfu-history))
-
-(use-package csv-mode
-  :mode "\\.csv\\'"
-  :hook
-  (csv-mode . csv-align-mode)
-  (csv-mode . read-only-mode))
 
 (use-package dashboard
   :demand
@@ -251,10 +213,6 @@
   ;; (setopt dumb-jump-debug t)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-(use-package easy-escape ;; better regexp visuals
-  :hook
-  ((emacs-lisp-mode lisp-mode) . easy-escape-minor-mode))
-
 (use-package ef-themes
   :defer)
 
@@ -263,7 +221,7 @@
   :bind ( :map global-leader-map
           ("o f" . elfeed))
   :custom
-  (elfeed-db-directory (expand-file-name "cache/elfeed" user-emacs-directory))
+  (elfeed-db-directory (expand-cache-path "elfeed"))
   (elfeed-feeds
    '(("http://nullprogram.com/feed/" null emacs)
      ("https://planet.emacslife.com/atom.xml" emacslife emacs)
@@ -299,7 +257,7 @@
   ;; Run M-x auth-source-forget-all-cached (auth-source-forget-all-cached)
   :commands (forge-dispatch)
   :custom
-  (forge-database-file (expand-file-name "cache/forge/forge-database.sqlite" user-emacs-directory)))
+  (forge-database-file (expand-cache-path "forge/forge-database.sqlite")))
 
 (use-package format-all
   ;; https://github.com/lassik/emacs-format-all-the-code#supported-languages
@@ -344,22 +302,22 @@
 (use-package git-timemachine
   :after magit
   :commands (git-timemachine git-timemachine-toggle)
-  :config
+  :hook (git-timemachine-mode . git-timemachine-toggle-meow-state)
+  :init
   (transient-append-suffix 'magit-file-dispatch
     "d" '("T" "Timemachine" git-timemachine))
   (defun git-timemachine-refontify (&rest _)
     "Re-fontify buffer after timemachine revision change."
     (font-lock-ensure))
-  (advice-add 'git-timemachine-show-revision :after #'git-timemachine-refontify)
-  (with-eval-after-load 'meow
-    (defun git-timemachine-toggle-meow-state ()
-      "Set meow to motion state when enterint timemachine."
-      (if git-timemachine-mode
-          (progn
-            (meow-motion-mode 1)
-            (git-timemachine-refontify))
-        (meow-normal-mode 1)))
-    (add-hook 'git-timemachine-mode-hook #'git-timemachine-toggle-meow-state)))
+  (defun git-timemachine-toggle-meow-state ()
+    "Set meow to motion state when enterint timemachine."
+    (if git-timemachine-mode
+        (progn
+          (meow-motion-mode 1)
+          (git-timemachine-refontify))
+      (meow-normal-mode 1)))
+  :config
+  (advice-add 'git-timemachine-show-revision :after #'git-timemachine-refontify))
 
 (use-package golden-ratio ;; auto-scales focused buffer
   :bind
@@ -375,13 +333,12 @@
 
 (use-package gptel ;; ai llm copilot chatgpt
   :custom
-  (gptel-log-level 'debug)
   (gptel-default-mode 'org-mode)
   (gptel-prompt-prefix-alist '((markdown-ts-mode . "### ") (org-mode . "* PROMPT ")))
   (gptel-response-prefix-alist '((org-mode . "** RESPONSE\n")))
-  (gptel-gh-token-file (expand-file-name "cache/gptel/copilot-chat/token" user-emacs-directory))
-  (gptel-gh-github-token-file (expand-file-name "cache/gptel/copilot-chat/github-token" user-emacs-directory))
-  (gptel-crowdsourced-prompts-file (expand-file-name "cache/gptel/crowdsourced-prompts.csv" user-emacs-directory))
+  (gptel-gh-token-file (expand-cache-path "gptel/copilot-chat/token"))
+  (gptel-gh-github-token-file (expand-cache-path "gptel/copilot-chat/github-token"))
+  (gptel-crowdsourced-prompts-file (expand-cache-path "gptel/crowdsourced-prompts.csv"))
   :bind
   ( :map global-leader-map
     ("i SPC" . gptel)
@@ -420,6 +377,17 @@
   :config
   (require 'gptel))
 
+(use-package gptel-quick ;; quick summary of things
+  :vc (:url "https://github.com/karthink/gptel-quick" :rev :newest)
+  :custom
+  (gptel-quick-display 'echo)
+  (gptel-quick-use-context t)
+  (gptel-quick-timeout 12)
+  :bind ( :map global-map
+          ("C-c i" . gptel-quick))
+  :config
+  (require 'gptel))
+
 (use-package helpful
   :bind (([remap describe-function] . helpful-callable)
          ([remap describe-command] . helpful-command)
@@ -440,7 +408,7 @@
   ( :map global-leader-map
     ("m g" . indent-bars-mode)))
 
-(use-package inheritenv
+(use-package inheritenv ;; Make Emacs temp buffers inherit buffer-local environment variables
   :defer
   :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
 
@@ -639,14 +607,10 @@
 (use-package org-superstar
   :hook (org-mode . org-superstar-mode))
 
-(use-package pinentry
-  ;; allows for secure entry of passphrases requested by GnuPG
+(use-package pinentry ;; allows for secure entry of passphrases requested by GnuPG
   :after magit
   :config
   (pinentry-start))
-
-(use-package show-font
-  :commands (show-font-tabulated))
 
 (use-package simple-modeline
   :demand
@@ -727,8 +691,7 @@
   :config
   (vertico-mode))
 
-(use-package visual-fill-column
-  ;; https://codeberg.org/joostkremers/visual-fill-column
+(use-package visual-fill-column ;; wrap at fill-column boundary.
   :defer
   ;; :custom
   ;; (visual-fill-column-center-text t) ;; Conflicts & hides diff-hl's margins

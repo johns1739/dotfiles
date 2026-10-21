@@ -15,5 +15,16 @@
 ;; Requires :ensure nil on all built-in packages.
 (setopt use-package-always-ensure t)
 
+(use-package exec-path-from-shell
+  :demand ;; Must be loaded first before other packages.
+  :if (or (daemonp)
+          (and (display-graphic-p) (memq window-system '(mac ns x pgtk))))
+  :custom
+  (exec-path-from-shell-warn-duration-millis 1000)
+  :config
+  (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID" "GPG_AGENT_INFO"))
+    (add-to-list 'exec-path-from-shell-variables var))
+  (exec-path-from-shell-initialize))
+
 (provide 'emacs-manager)
 ;;; emacs-manager.el ends here

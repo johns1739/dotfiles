@@ -7,8 +7,7 @@
   :ensure nil
   :demand
   :init
-  (defvar-keymap global-leader-map
-    :doc "Global leader keymap.")
+  (defvar-keymap global-leader-map :doc "Global leader keymap.")
   (keymap-set global-map "C-x SPC" global-leader-map)
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
@@ -98,7 +97,7 @@
   (visible-bell nil)
   (window-combination-resize t)
   (window-resize-pixelwise nil)
-  (url-configuration-directory (expand-file-name "cache/url/" user-emacs-directory))
+  (url-configuration-directory (expand-cache-path "url/"))
   (switch-to-buffer-obey-display-actions t)
   (shr-use-colors nil)
   (set-mark-command-repeat-pop t) ; So we can use C-u C-SPC C-SPC C-SPC... instead of C-u C-SPC C-u C-SPC...
@@ -117,10 +116,10 @@
   (find-ls-option '("-exec ls -ldh {} +" . "-ldh"))  ; find-dired results with human readable sizes
   (history-delete-duplicates t)
   (history-length 1000)
-  (ielm-history-file-name (expand-file-name "cache/ielm-history.eld" user-emacs-directory)) ; EMACS-31
+  (ielm-history-file-name (expand-cache-path "ielm-history.eld")) ; EMACS-31
   (kill-region-dwim 'emacs-word)
   (imenu-max-item-length 80)
-  (multisession-directory (expand-file-name "cache/multisession/" user-emacs-directory))
+  (multisession-directory (expand-cache-path "multisession/"))
   (inhibit-startup-message t)
   (initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
   (initial-scratch-message nil)
@@ -145,8 +144,8 @@
   (tab-width 4)
   (vc-follow-symlinks t)
   (read-extended-command-predicate #'command-completion-default-include-p)
-  (auto-save-list-file-prefix (expand-file-name "cache/auto-saves/sessions/" user-emacs-directory))
-  (auto-save-file-name-transforms `((".*" ,(expand-file-name "cache/auto-saves/" user-emacs-directory) t)))
+  (auto-save-list-file-prefix (expand-cache-path "auto-saves/sessions/"))
+  (auto-save-file-name-transforms `((".*" ,(expand-cache-path "auto-saves/") t)))
   :hook
   (special-mode . hl-line-mode)
   :config
@@ -157,7 +156,7 @@
   (add-to-list 'default-frame-alist '(height . 40))
   (add-to-list 'default-frame-alist '(width . 120))
   (blink-cursor-mode -1)
-  (make-directory (expand-file-name "cache/auto-saves/" user-emacs-directory) t)
+  (make-directory (expand-cache-path "auto-saves/") t)
   (modify-coding-system-alist 'file "" 'utf-8)
   (setq-default cursor-type 'bar)
   (setq-default display-fill-column-indicator-column 100)
@@ -250,7 +249,7 @@
   :custom
   (bookmark-menu-length 80)
   (bookmark-search-size 20)
-  (bookmark-default-file (expand-file-name "cache/bookmarks" user-emacs-directory)))
+  (bookmark-default-file (expand-cache-path "bookmarks")))
 
 (use-package calc
   :ensure nil
@@ -356,7 +355,7 @@
   (dired-listing-switches "-alh")
   (dired-recursive-copies 'always)
   (dired-recursive-deletes 'always)
-  (image-dired-dir (expand-file-name "cache/image-dired" user-emacs-directory))
+  (image-dired-dir (expand-cache-path "image-dired"))
   :hook
   (dired-mode . hl-line-mode))
 
@@ -433,7 +432,7 @@
   :custom
   (eshell-history-size 100000)
   (eshell-hist-ignoredups t)
-  (eshell-directory-name (expand-file-name "cache/eshell" user-emacs-directory)))
+  (eshell-directory-name (expand-cache-path "eshell")))
 
 (use-package eglot
   :ensure nil
@@ -469,7 +468,7 @@
   :custom
   (create-lockfiles nil)
   (backup-by-copying t)
-  (backup-directory-alist `(("." . ,(expand-file-name "cache/backup/" user-emacs-directory))))
+  (backup-directory-alist `(("." . ,(expand-cache-path "backup/"))))
   (delete-old-versions t)
   (kept-new-versions 6)
   (kept-old-versions 3)
@@ -666,7 +665,7 @@
     ("M-$" . ispell-word))
   :custom
   (text-mode-ispell-word-completion nil)
-  (ispell-personal-dictionary (expand-file-name "cache/ispell-personal-dict.txt" user-emacs-directory))
+  (ispell-personal-dictionary (expand-cache-path "ispell-personal-dict.txt"))
   (ispell-extra-args '("--ignore=3" "--sug-mode=slow" "--run-together"))
   :config
   (when (executable-find "aspell")
@@ -824,9 +823,9 @@
   :custom
   (org-id-track-globally t)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-  (org-id-locations-file (expand-file-name "cache/org-id/locations" user-emacs-directory))
+  (org-id-locations-file (expand-cache-path "org-id/locations"))
   :config
-  (make-directory (expand-file-name "cache/org-id/" user-emacs-directory) :parent))
+  (make-directory (expand-cache-path "org-id/") :parent))
 
 
 (use-package paren
@@ -864,7 +863,7 @@
     :map global-leader-map
     ("P" . project-remember-projects-under))
   :custom
-  (project-list-file (expand-file-name "cache/projects" user-emacs-directory))
+  (project-list-file (expand-cache-path "projects"))
   ;; Excellent for mono repos with multiple langs, makes Eglot happy
   ;; (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod"))
   :init
@@ -893,7 +892,7 @@
   (recentf-max-menu-items 15)
   (recentf-max-saved-items 300)
   (recentf-exclude (list "^/\\(?:ssh\\|su\\|sudo\\)?:"))
-  (recentf-save-file (expand-file-name "cache/recentf" user-emacs-directory))
+  (recentf-save-file (expand-cache-path "recentf"))
   :config
   (recentf-mode t))
 
@@ -906,14 +905,14 @@
      register-alist                       ; macros
      mark-ring global-mark-ring           ; marks
      search-ring regexp-search-ring))     ; searches
-  (savehist-file (expand-file-name "cache/history" user-emacs-directory))
+  (savehist-file (expand-cache-path "history"))
   :config
   (savehist-mode t))
 
 (use-package saveplace
   :ensure nil
   :custom
-  (save-place-file (expand-file-name "cache/saveplace" user-emacs-directory))
+  (save-place-file (expand-cache-path "saveplace"))
   (save-place-limit 600)
   :config
   (save-place-mode t))
@@ -927,15 +926,15 @@
   (tramp-verbose 2)
   :config
   ;; Variable not available until after tramp is loaded.
-  (setq tramp-persistency-file-name (expand-file-name "cache/tramp" user-emacs-directory)))
+  (setq tramp-persistency-file-name (expand-cache-path "tramp")))
 
 (use-package transient
   :ensure nil
   :defer
   :custom
-  (transient-history-file (expand-file-name "cache/transient/history.el" user-emacs-directory))
-  (transient-levels-file (expand-file-name "cache/transient/levels.el" user-emacs-directory))
-  (transient-values-file (expand-file-name "cache/transient/values.el" user-emacs-directory)))
+  (transient-history-file (expand-cache-path "transient/history.el"))
+  (transient-levels-file (expand-cache-path "transient/levels.el"))
+  (transient-values-file (expand-cache-path "transient/values.el")))
 
 (use-package tab-bar
   :ensure nil

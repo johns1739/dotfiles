@@ -18,6 +18,12 @@
   :custom
   (css-indent-offset 2))
 
+(use-package csv-mode
+  :mode "\\.csv\\'"
+  :hook
+  (csv-mode . csv-align-mode)
+  (csv-mode . read-only-mode))
+
 (use-package elisp-mode
   :ensure nil
   :mode ("\\.el\\'" . emacs-lisp-mode)

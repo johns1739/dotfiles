@@ -40,8 +40,11 @@
 (setopt warning-suppress-types '((lexical-binding) (comp) (bytecomp) (files)))
 (setopt native-comp-async-report-warnings-errors 'silent)
 
-(setopt package-user-dir (expand-file-name "cache/elpa/" user-emacs-directory))
-(setopt package-gnupghome-dir (expand-file-name "cache/elpa/gnupg/" user-emacs-directory))
+(defun expand-cache-path (path)
+  (expand-file-name (concat "cache/" path) user-emacs-directory))
+
+(setopt package-user-dir (expand-cache-path "elpa/"))
+(setopt package-gnupghome-dir (expand-cache-path "elpa/gnupg/"))
 
 ;; Schedule sensible defaults for after booting
 (add-hook 'emacs-startup-hook

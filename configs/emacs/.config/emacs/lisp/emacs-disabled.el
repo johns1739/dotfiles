@@ -24,6 +24,17 @@
   ;; (aidermacs-default-model "gemini-2.5-pro"))
   (aidermacs-default-chat-mode 'architect))
 
+(use-package auto-dark ;; switch between two themes
+  :disabled ;; not used
+  :commands (auto-dark-mode auto-dark-toggle-appearance)
+  :bind ( :map global-leader-map
+          (", T" . auto-dark-toggle-appearance)))
+
+(use-package auto-dim-other-buffers
+  :disabled ;; dimming doens't play nice with color theme.
+  :bind ( :map global-leader-map
+          ("m D" . auto-dim-other-buffers-mode)))
+
 (use-package casual ;; Better transient menu
   :disabled ;; Too much configuration for different modes.
   :bind ( :map org-agenda-mode-map
@@ -46,6 +57,12 @@
   (consult-denote-grep-command 'consult-ripgrep)
   :config
   (consult-denote-mode))
+
+(use-package consult-eglot
+  :disabled ;; imenu seems more useful, rarely used
+  :after (eglot consult)
+  :bind (:map global-leader-map
+              ("l i" . consult-eglot-symbols)))
 
 (use-package consult-flycheck
   :disabled ;; doesn't work well with (rails) bundle commands, e.g. bundle exec rubocop
@@ -95,7 +112,7 @@
   (copilot-idle-delay 0.5)
   (copilot-indent-offset-warning-disable t)
   (copilot-max-char-warning-disable t)
-  (copilot-install-dir (expand-file-name "cache/copilot/" user-emacs-directory))
+  (copilot-install-dir (expand-cache-path "copilot/"))
   :custom-face
   (copilot-overlay-face
    ((t ( :family "JetBrainsMonoNL Nerd Font Mono"
@@ -173,6 +190,11 @@
   (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
                           docker-container-columns)))
     (plist-put column :width 62)))
+
+(use-package easy-escape ;; better regexp visuals
+  :disabled ;; not very helpful.
+  :hook
+  ((emacs-lisp-mode lisp-mode) . easy-escape-minor-mode))
 
 (use-package eat
   :disabled ;; prefer ghostel
@@ -335,11 +357,18 @@
   (gptel-prompts-update)
   (gptel-prompts-add-update-watchers))
 
+(use-package gptel-vertex ;; Claude on Google Cloude Vertex AI
+  :disabled ;; broken api
+  :after gptel
+  :config
+  (setopt gptel-model 'claude-opus-5-5)
+  (setopt gptel-backend (gptel-make-vertex "VertexAI" :project-id "google-cloud-project" :location "global")))
+
 (use-package imenu-list
   :disabled ;; rarely used
-  :bind (:map global-leader-map
-              ("o I" . imenu-list)
-              ("o i" . imenu-list-smart-toggle))
+  :bind ( :map global-leader-map
+          ("o I" . imenu-list)
+          ("o i" . imenu-list-smart-toggle))
   :custom
   (imenu-list-focus-after-activation t)
   (imenu-list-auto-resize nil)
@@ -487,7 +516,7 @@
     ("C-c n :" . org-roam-tag-add)
     ("C-c n w" . org-roam-refile))
   :custom
-  (org-roam-db-location (expand-file-name "cache/org-roam/org-roam.db" user-emacs-directory))
+  (org-roam-db-location (expand-cache-path "org-roam/org-roam.db"))
   (org-roam-completion-everywhere t)
   (org-roam-node-display-template (concat "${title:*} " (propertize "${tags:12}" 'face 'org-tag)))
   :config
@@ -541,7 +570,10 @@
   :after jira
   :defer
   :custom
-  (request-storage-directory (expand-file-name "cache/request" user-emacs-directory)))
+  (request-storage-directory (expand-cache-path "request")))
+
+(use-package show-font
+  :commands (show-font-tabulated))
 
 (use-package spacious-padding
   :disabled
@@ -581,7 +613,7 @@
   :custom
   (undo-tree-visualizer-diff t)
   (undo-tree-visualizer-timestamps t)
-  (undo-tree-history-directory-alist `(("." . ,(expand-file-name "cache/undo-tree-history/" user-emacs-directory))))
+  (undo-tree-history-directory-alist `(("." . ,(expand-cache-path "undo-tree-history/"))))
   :config
   (global-undo-tree-mode 1))
 
