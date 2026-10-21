@@ -15,6 +15,7 @@
   :bind
   ( :map global-map
     ("RET" . newline-and-indent)
+    ("M-RET" . indent-new-comment-line)
     ("<backtab>" . prog-fill-reindent-defun)
     ("C-z" . nil) ;; Prevent accidental minimize
     ("M-SPC" . cycle-spacing)
