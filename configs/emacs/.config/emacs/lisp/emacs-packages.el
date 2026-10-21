@@ -42,14 +42,7 @@
   :if (executable-find "claude")
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ( :map global-leader-map
-          ("o I" . claude-code-ide)
-          ("o i SPC" . claude-code-ide-list-sessions)
-          ("o i i" . claude-code-ide-toggle)
-          ("o i q" . claude-code-ide-stop)
-          ("o i Q" . claude-code-ide-stop-all)
-          ("o i R" . claude-code-ide-rename-session)
-          ("o i '" . claude-code-ide-toggle-recent)
-          ("o i :" . claude-code-ide-menu))
+          ("i a" . claude-code-ide-menu))
   :init
   (with-eval-after-load 'project
     (project-add-switch-command #'claude-code-ide "Claude" "I"))
