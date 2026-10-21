@@ -31,7 +31,6 @@
 (defn fetch
   "Fetch and prune from remotes."
   [repo-path]
-  (print "git FETCH " repo-path)
   (shell-git? repo-path "fetch" "-pPq"))
 
 (defn has-staged-changes?
@@ -43,8 +42,7 @@
   "Force-delete a local branch. Returns success."
   [repo-path branch]
   (let [success? (shell-git? repo-path "branch" "-D" branch :> @"" :> [stderr stdout])]
-    (if success?
-      (print "git REMOVE branch " branch)
+    (unless success?
       (print "FAILED git REMOVE branch " branch))
     success?))
 
@@ -73,8 +71,7 @@
   [repo-path worktree & flags]
   (let [success? (shell-git? repo-path "worktree" "remove" ;flags "--" worktree
                              :> @"" :> [stderr stdout])]
-    (if success?
-      (print "git REMOVE worktree " worktree)
+    (unless success?
       (print "FAILED git REMOVE worktree " worktree))
     success?))
 
@@ -94,7 +91,6 @@
   [repo-path & flags]
   (let [output (shell-git repo-path "stash" "push" "--include-untracked" ;flags)
         stashed? (not= output "No local changes to save")]
-    (when stashed? (print "git STASHED"))
     stashed?))
 
 (defn stash-with-message
@@ -106,8 +102,7 @@
   "Pop latest stash. Returns success."
   [repo-path & flags]
   (let [success? (shell-git? repo-path "stash" "pop" "-q" ;flags)]
-    (if success?
-      (print "git STASH-POP")
+    (unless success?
       (print "FAILED git STASH-POP, changes kept in stash"))
     success?))
 
@@ -120,7 +115,6 @@
   "Fast-forward current branch from origin."
   [repo-path]
   (let [branch (current-branch repo-path)]
-    (print "git FAST-FORWARD " repo-path)
     (shell-git? repo-path "pull" "-q" "--ff-only" "origin" branch)))
 
 (defn is-git-dir?

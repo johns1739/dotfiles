@@ -3,7 +3,15 @@
 (use-package ajrepl
   :after (janet-ts-mode)
   :vc ( :url "https://github.com/sogaiu/ajrepl" :rev :newest)
-  :hook (janet-ts-mode . ajrepl-interaction-mode))
+  :hook (janet-ts-mode . ajrepl-interaction-mode)
+  :bind ( :map ajrepl-interaction-mode-map
+          ("C-c RET" . ajrepl-switch-to-repl-dwim))
+  :init
+  (defun ajrepl-switch-to-repl-dwim ()
+    (interactive)
+    (unless (comint-check-proc ajrepl-repl-buffer-name)
+      (ajrepl))
+    (ajrepl-switch-to-repl)))
 
 (use-package conf-mode
   :ensure nil

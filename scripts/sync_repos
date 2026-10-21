@@ -5,20 +5,20 @@
 (defn sync-repo
   "Fetch and fast-forward a repo, unless on a feature branch."
   [repo-path]
-  (print "\nSyncing " repo-path " ... ")
 
   (unless (git/is-git-dir? repo-path)
-    (print "SKIP not a git directory: " repo-path)
+    (print "SKIP (not-git-repo): " repo-path)
     (break))
 
   (when (git/on-feature-branch? repo-path)
-    (print "SKIP on feature branch: " (git/current-branch repo-path))
+    (printf "SKIP (on-feat-branch:%s): %s" (git/current-branch repo-path) repo-path)
     (break))
 
   (git/fetch repo-path)
+
   (if (git/fast-forward-with-stash repo-path)
-    (print "DONE")
-    (print "FAILED")))
+    (print "DONE: " repo-path)
+    (print "FAILED: " repo-path)))
 
 (defn sync-repos
   "Sync each repo."
