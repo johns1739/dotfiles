@@ -27,6 +27,14 @@
   :config
   (beacon-mode 1))
 
+(use-package buffer-name-relative ;; Add project's name next to buffer names.
+  :after project
+  :custom
+  (buffer-name-relative-abbrev-limit 40)
+  (buffer-name-relative-prefix '("<" . ">/"))
+  :config
+  (buffer-name-relative-mode))
+
 (use-package cape ;; Cape provides Completion At Point Extensions
   :init
   ;; note: Excluded buggy #'cape-line
