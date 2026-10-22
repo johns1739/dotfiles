@@ -394,8 +394,6 @@
   :vc (:url "https://github.com/purcell/inheritenv" :rev :newest))
 
 (use-package jinx
-  ;; Dependencies:
-  ;; brew install pkgconf enchant hunspell nuspell
   :if (executable-find "enchant-2")
   :bind ( ("C-M-$" . jinx-languages)
           ([remap flyspell-mode] . jinx-mode)
