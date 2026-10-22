@@ -35,6 +35,15 @@
   :bind ( :map global-leader-map
           ("m D" . auto-dim-other-buffers-mode)))
 
+(use-package buffer-name-relative ;; Add project's name next to buffer names.
+  :disabled ;; project already prefixes proj name on colliding buffer names.
+  :after project
+  :custom
+  (buffer-name-relative-abbrev-limit 40)
+  (buffer-name-relative-prefix '("<" . ">/"))
+  :config
+  (buffer-name-relative-mode))
+
 (use-package casual ;; Better transient menu
   :disabled ;; Too much configuration for different modes.
   :bind ( :map org-agenda-mode-map
