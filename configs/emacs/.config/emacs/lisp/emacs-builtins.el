@@ -1,8 +1,5 @@
 ;;; emacs-builtins.el --- Built-in Package Configuration  -*- lexical-binding: t; -*-
 
-;; TODO: emacs-lisp-book by prot
-;; https://protesilaos.com/emacs/emacs-lisp-elements
-
 (use-package emacs
   :ensure nil
   :demand

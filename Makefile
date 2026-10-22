@@ -23,6 +23,7 @@ BREW_PACKAGES += autoconf     # Generates configure scripts for builds
 BREW_PACKAGES += btop         # Interactive resource monitor
 BREW_PACKAGES += direnv       # Loads per-directory environment variables
 BREW_PACKAGES += fd           # Fast, user-friendly alternative to find
+BREW_PACKAGES += ffmpeg       # Emacs package dependency for tmr
 BREW_PACKAGES += fish         # Friendly interactive shell
 BREW_PACKAGES += fzf          # Command-line fuzzy finder
 BREW_PACKAGES += gcc          # GNU compiler collection

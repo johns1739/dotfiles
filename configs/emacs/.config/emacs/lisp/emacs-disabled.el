@@ -607,6 +607,17 @@
   (treemacs-filewatch-mode t)
   (treemacs-project-follow-mode t))
 
+(use-package treesit-fold
+  :disabled ;; rarely used
+  :vc (:url "https://github.com/emacs-tree-sitter/treesit-fold")
+  :init
+  (defun treesit-fold-auto-enable ()
+    "Function to run when a Tree-sitter major mode is activated."
+    (when (string-suffix-p "-ts-mode" (symbol-name major-mode))
+      (treesit-fold-mode t)))
+  :hook
+  (after-change-major-mode . treesit-fold-auto-enable))
+
 (use-package undo-tree
   :disabled ;; trying out vundo, works with native undo
   :demand

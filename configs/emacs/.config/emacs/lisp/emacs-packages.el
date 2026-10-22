@@ -27,16 +27,11 @@
   :config
   (beacon-mode 1))
 
-(use-package cape
-  :defer
-  ;; Cape provides Completion At Point Extensions
+(use-package cape ;; Cape provides Completion At Point Extensions
   :init
-  ;; #'cape-line ;; Kinda buggy
-  (add-hook 'completion-at-point-functions #'cape-elisp-block)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-dict)
-  (add-hook 'completion-at-point-functions #'cape-keyword)
-  (add-hook 'completion-at-point-functions #'cape-dabbrev))
+  ;; note: Excluded buggy #'cape-line
+  (dolist (fn '(cape-elisp-block cape-file cape-dict cape-keyword cape-dabbrev))
+    (add-hook 'completion-at-point-functions fn)))
 
 (use-package claude-code-ide
   :if (executable-find "claude")
@@ -350,7 +345,7 @@
 (use-package gptel-aibo
   :bind
   ( :map global-leader-map
-    ("i g i" . gptel-aibo)
+    ("i g g" . gptel-aibo)
     ("i g I" . gptel-aibo-complete-at-point))
   ( :map gptel-aibo-mode-map
     ("C-c C-<return>" . gptel-aibo-send))
@@ -369,8 +364,8 @@
   (gptel-quick-display 'echo)
   (gptel-quick-use-context t)
   (gptel-quick-timeout 12)
-  :bind ( :map global-map
-          ("C-c h" . gptel-quick))
+  :bind ( :map global-leader-map
+          ("i g ." . gptel-quick))
   :config
   (require 'gptel))
 
@@ -628,17 +623,10 @@
       simple-modeline-segment-modified
       simple-modeline-segment-spaces
       simple-modeline-segment-project-name
-      ;; simple-modeline-segment-buffer-name
       simple-modeline-segment-buffer-name-2
       simple-modeline-segment-position)
      ( ;; right indicators
-      ;; simple-modeline-segment-minor-modes
-      ;; simple-modeline-segment-input-method
-      ;; simple-modeline-segment-eol
-      ;; simple-modeline-segment-encoding
-      ;; simple-modeline-segment-vc
       simple-modeline-segment-branch
-      ;; simple-modeline-segment-misc-info
       simple-modeline-segment-misc-info-shortened
       simple-modeline-segment-process
       simple-modeline-segment-major-mode
@@ -647,8 +635,6 @@
   (simple-modeline-mode))
 
 (use-package tmr
-  ;; Dependencies
-  ;; brew install ffmpeg
   :bind ( :map global-leader-map
           ("o t" . tmr-tabulated-view))
   :custom
@@ -662,16 +648,6 @@
       (add-to-list 'tmr-timer-finished-functions 'tmr-notification-notify))
   (tmr-mode-line-mode t))
 
-(use-package treesit-fold
-  :vc (:url "https://github.com/emacs-tree-sitter/treesit-fold")
-  :init
-  (defun treesit-fold-auto-enable ()
-    "Function to run when a Tree-sitter major mode is activated."
-    (when (string-suffix-p "-ts-mode" (symbol-name major-mode))
-      (treesit-fold-mode t)))
-  :hook
-  (after-change-major-mode . treesit-fold-auto-enable))
-
 (use-package vertico
   :demand
   :config
@@ -679,7 +655,6 @@
 
 (use-package visual-fill-column ;; wrap at fill-column boundary.
   :defer
-  ;; :custom
   ;; (visual-fill-column-center-text t) ;; Conflicts & hides diff-hl's margins
   :init
   (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline))
