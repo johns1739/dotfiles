@@ -279,7 +279,10 @@
   :init
   (defun ghostel-mode-setup ()
     (meow-mode -1))
+  (defun ghostel-close-buffer (_buffer _event)
+    (meow-quit))
   :config
+  (add-hook 'ghostel-exit-functions #'ghostel-close-buffer)
   (with-eval-after-load 'project
     (project-add-switch-command #'ghostel-project "Ghostel" "t")))
 
