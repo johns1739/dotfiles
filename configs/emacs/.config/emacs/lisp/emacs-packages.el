@@ -170,7 +170,9 @@
   (dashboard-setup-startup-hook))
 
 (use-package deadgrep
-  :bind ( :map search-map
+  :bind ( :map global-map
+          ([remap project-find-regexp] . deadgrep)
+          :map search-map
           ("g" . deadgrep)
           :map deadgrep-mode-map
           ("C-w" . deadgrep-edit-mode)))

@@ -291,6 +291,8 @@
   (compilation-mode . hl-line-mode)
   (compilation-mode . visual-line-mode)
   :init
+  (with-eval-after-load 'project
+    (project-add-switch-command 'compile-dwim "Compile" "k"))
   (defun async-shell-command-rerun ()
     "Run last async shell command."
     (interactive)
@@ -852,7 +854,6 @@
     ("d" . project-dired)
     ("K" . project-forget-project)
     ("Z" . project-forget-zombie-projects)
-    :map global-leader-map
     ("P" . project-remember-projects-under))
   :custom
   (project-list-file (expand-cache-path "projects"))
@@ -868,10 +869,8 @@
   (require 'vc-git) ;; project-find-file requires vc-git--program-version
   (setopt project-switch-commands
           '((project-dired "Dir" ?d)
-            (project-eshell "Eshell" ?e)
             (project-find-file "File" ?f)
-            (project-find-regexp "Regexp" ?g)
-            (project-kill-buffers "Kill" ?k))))
+            (project-find-regexp "Regexp" ?g))))
 
 (use-package recentf
   :ensure nil
