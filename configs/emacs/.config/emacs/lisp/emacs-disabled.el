@@ -582,6 +582,7 @@
   (request-storage-directory (expand-cache-path "request")))
 
 (use-package show-font
+  :disabled
   :commands (show-font-tabulated))
 
 (use-package spacious-padding
