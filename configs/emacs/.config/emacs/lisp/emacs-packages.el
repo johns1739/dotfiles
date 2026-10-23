@@ -37,10 +37,10 @@
   :if (executable-find "claude")
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ( :map global-leader-map
-          ("i a" . claude-code-ide-menu))
+          ("i a" . claude-code-ide-menu)) ;; a for anthropic
   :init
   (with-eval-after-load 'project
-    (project-add-switch-command #'claude-code-ide "Claude" "I"))
+    (project-add-switch-command #'claude-code-ide "Claude" "a"))
   :custom
   (claude-code-ide-use-side-window nil)
   (claude-code-ide-terminal-backend 'ghostel)
@@ -210,6 +210,7 @@
 (use-package ef-themes :defer)
 (use-package modus-themes :defer)
 (use-package standard-themes :defer)
+(use-package doric-themes :defer)
 
 (use-package elfeed
   :commands (elfeed)
