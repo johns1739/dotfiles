@@ -8,6 +8,56 @@
   (keymap-set global-map "C-x SPC" global-leader-map)
   (keymap-set global-leader-map "g" goto-map)
   (keymap-set global-leader-map "s" search-map)
+  (defun terminal-disable-background ()
+    "Drops background face when terminal mode."
+    (interactive)
+    (unless (display-graphic-p)
+      (set-face-background 'default "unspecified-bg" (selected-frame))))
+  (defun open-packages-dired ()
+    (interactive)
+    (dired (locate-user-emacs-file "lisp/")))
+  (defun open-custom-file ()
+    (interactive)
+    (if (boundp 'custom-file)
+        (find-file custom-file)))
+  (defun split-window-below-and-jump ()
+    "Split window below and jump to it."
+    (interactive)
+    (select-window (split-window-below)))
+  (defun split-window-right-and-jump ()
+    "Split window right and jump to it."
+    (interactive)
+    (select-window (split-window-right)))
+  (defun absolute-file-name ()
+    "Absolute path to file."
+    (expand-file-name (buffer-file-name)))
+  (defun copy-absolute-file-name ()
+    "Copy absolute file path of current buffer."
+    (interactive)
+    (let ((afn (absolute-file-name)))
+      (kill-new afn)
+      (message "Copied %s" afn)))
+  (defun project-directory ()
+    "Current project directory."
+    (let ((project (project-current)))
+      (and project (project-root project))))
+  (defun relative-file-name ()
+    "Relative from project or cwd directory."
+    (if-let* ((file-name (buffer-file-name)))
+        (file-relative-name file-name (or (project-directory) default-directory))))
+  (defun copy-project-directory ()
+    (interactive)
+    (if-let* ((dir (project-directory)))
+        (kill-new dir)))
+  (defun copy-relative-file-name ()
+    "Copy file path of current buffer relative to project directory."
+    (interactive)
+    (let ((rfn (relative-file-name)))
+      (kill-new rfn)
+      (message "Copied %s" rfn)))
+  (defun reload-emacs ()
+    (interactive)
+    (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
   :bind
   ( :map global-map
     ("RET" . newline-and-indent)
@@ -145,6 +195,8 @@
   (auto-save-file-name-transforms `((".*" ,(expand-cache-path "auto-saves/") t)))
   :hook
   (special-mode . hl-line-mode)
+  (server-after-make-frame . terminal-disable-background)
+  (emacs-startup-hook . terminal-disable-background)
   :config
   (put 'narrow-to-region 'disabled nil) ;; Enable
   (xterm-mouse-mode 1)
@@ -166,52 +218,7 @@
   (file-name-shadow-mode t)
   (line-number-mode t)
   ;; (repeat-mode t) ;; Sometimes gets in the way.
-  (window-divider-mode t)
-  (defun open-packages-dired ()
-    (interactive)
-    (dired (locate-user-emacs-file "lisp/")))
-  (defun open-custom-file ()
-    (interactive)
-    (if (boundp 'custom-file)
-        (find-file custom-file)))
-  (defun split-window-below-and-jump ()
-    "Split window below and jump to it."
-    (interactive)
-    (select-window (split-window-below)))
-  (defun split-window-right-and-jump ()
-    "Split window right and jump to it."
-    (interactive)
-    (select-window (split-window-right)))
-  (defun absolute-file-name ()
-    "Absolute path to file."
-    (expand-file-name (buffer-file-name)))
-  (defun copy-absolute-file-name ()
-    "Copy absolute file path of current buffer."
-    (interactive)
-    (let ((afn (absolute-file-name)))
-      (kill-new afn)
-      (message "Copied %s" afn)))
-  (defun project-directory ()
-    "Current project directory."
-    (let ((project (project-current)))
-      (and project (project-root project))))
-  (defun relative-file-name ()
-    "Relative from project or cwd directory."
-    (if-let* ((file-name (buffer-file-name)))
-        (file-relative-name file-name (or (project-directory) default-directory))))
-  (defun copy-project-directory ()
-    (interactive)
-    (if-let* ((dir (project-directory)))
-        (kill-new dir)))
-  (defun copy-relative-file-name ()
-    "Copy file path of current buffer relative to project directory."
-    (interactive)
-    (let ((rfn (relative-file-name)))
-      (kill-new rfn)
-      (message "Copied %s" rfn)))
-  (defun reload-emacs ()
-    (interactive)
-    (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing)))
+  (window-divider-mode t))
 
 (use-package abbrev
   :disabled ;; yasnippet much better better
@@ -706,18 +713,6 @@
   :bind
   ( :map global-map
     ("M-I" . completion-at-point)))
-
-(use-package modus-themes
-  :ensure nil
-  :defer
-  :hook
-  (server-after-make-frame . terminal-disable-background)
-  :init
-  (defun terminal-disable-background ()
-    "Drops background face when terminal mode."
-    (interactive)
-    (unless (display-graphic-p)
-      (set-face-background 'default "unspecified-bg" (selected-frame)))))
 
 (use-package org ;; org-mode
   :ensure nil

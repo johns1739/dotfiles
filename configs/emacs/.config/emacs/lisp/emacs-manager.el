@@ -1,13 +1,16 @@
 ;;; emacs-manager.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
 (setopt package-archives
-        '(("gnu" . "https://elpa.gnu.org/packages/")
-          ("nongnu" . "https://elpa.nongnu.org/nongnu/")
-          ("melpa" . "https://melpa.org/packages/")
+        '(("gnu"          . "https://elpa.gnu.org/packages/")
+          ("nongnu"       . "https://elpa.nongnu.org/nongnu/")
+          ("melpa"        . "https://melpa.org/packages/")
           ("melpa-stable" . "https://stable.melpa.org/packages/")))
 
 (setopt package-archive-priorities
-        '(("melpa" . 100) ("gnu" . 80) ("nongnu" . 50) ("melpa-stable" . 1)))
+        '(("gnu"          . 100)
+          ("nongnu"       . 80)
+          ("melpa-stable" . 50)
+          ("melpa"        . 1)))
 
 ;; Native-compile packages at install time (requires native-comp support).
 (setopt package-native-compile t)

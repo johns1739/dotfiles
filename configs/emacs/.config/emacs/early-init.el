@@ -5,6 +5,8 @@
   (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
   (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
   (if (fboundp 'tooltip-mode) (tooltip-mode -1)))
+(disable-default-ui-elements)
+;; new frames tend to turn on certain ui modes.
 (add-hook 'before-make-frame-hook #'disable-default-ui-elements)
 
 ;; Prevent the frame from resizing when toggling UI elements above
@@ -42,9 +44,6 @@
 
 (defun expand-cache-path (path)
   (expand-file-name (concat "cache/" path) user-emacs-directory))
-
-(setopt package-user-dir (expand-cache-path "elpa/"))
-(setopt package-gnupghome-dir (expand-cache-path "elpa/gnupg/"))
 
 ;; Schedule sensible defaults for after booting
 (add-hook 'emacs-startup-hook

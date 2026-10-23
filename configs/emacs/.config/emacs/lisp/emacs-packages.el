@@ -67,10 +67,14 @@
     ("SPC" . consult-project-buffer)
     ("d SPC" . consult-flymake)
     ("n SPC" . consult-org-agenda)
+    ;; Emacs settings
     (", SPC" . consult-emacs-packages)
     (", m" . consult-minor-mode-menu)
     (", s" . consult-emacs)
     (", t" . consult-theme)
+    ;; Text Edits
+    ("x \\" . align)
+    ("x |" . align-current)
     ("x k" . consult-keep-lines)
     ("x f" . flush-lines)
     ("x s" . sort-lines)
@@ -200,8 +204,10 @@
   ;; (setopt dumb-jump-debug t)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 
-(use-package ef-themes
-  :defer)
+;; color-schemes
+(use-package ef-themes :defer)
+(use-package modus-themes :defer)
+(use-package standard-themes :defer)
 
 (use-package elfeed
   :commands (elfeed)
