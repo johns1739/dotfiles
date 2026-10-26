@@ -41,6 +41,12 @@
   :init
   (with-eval-after-load 'project
     (project-add-switch-command #'claude-code-ide "Claude" "a"))
+  (defun claude-code-ide-dwim ()
+    "Start or switch to a Claude Code IDE session."
+    (interactive)
+    (condition-case nil
+        (claude-code-ide-switch-to-buffer)
+      (user-error (claude-code-ide))))
   :custom
   (claude-code-ide-use-side-window nil)
   (claude-code-ide-terminal-backend 'ghostel)
@@ -48,6 +54,8 @@
   (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
   (claude-code-ide-terminal-initialization-delay 0.2) ; better render
   :config
+  (transient-insert-suffix 'claude-code-ide-menu "s"
+    '("a" "Start or switch to Claude Code instance" claude-code-ide-dwim))
   (claude-code-ide-emacs-tools-setup))
 
 (use-package consult
