@@ -1,4 +1,5 @@
 .PHONY: \
+	install-apt-packages \
 	install-brew-packages \
 	install-brew-cask \
 	install-brew-emacs \
@@ -16,33 +17,36 @@
 	clean
 
 BIN_DIR := ~/.local/bin
-CONFIGS := claude emacs fish ghostty git psql
-FOLDED_CONFIGS := emacs-snippets # To fold means to symlink to folder.
 
-BREW_PACKAGES += autoconf     # Generates configure scripts for builds
-BREW_PACKAGES += btop         # Interactive resource monitor
-BREW_PACKAGES += direnv       # Loads per-directory environment variables
-BREW_PACKAGES += fd           # Fast, user-friendly alternative to find
-BREW_PACKAGES += ffmpeg       # Emacs package dependency for tmr
-BREW_PACKAGES += fish         # Friendly interactive shell
-BREW_PACKAGES += fzf          # Command-line fuzzy finder
-BREW_PACKAGES += gcc          # GNU compiler collection
-BREW_PACKAGES += gh           # GitHub CLI
-BREW_PACKAGES += git          # Version control system
-BREW_PACKAGES += git-delta    # Syntax-highlighting pager for git diffs
-BREW_PACKAGES += gnupg        # GPG encryption and signing
-BREW_PACKAGES += janet        # Janet programming language
-BREW_PACKAGES += jq           # Command-line JSON processor
-BREW_PACKAGES += libgccjit    # GCC JIT library for Emacs native-comp
-BREW_PACKAGES += ripgrep      # Fast recursive grep
-BREW_PACKAGES += stow         # Symlink farm manager for dotfiles
-BREW_PACKAGES += tlrc         # tldr client for simplified man pages
-BREW_PACKAGES += tree-sitter  # Incremental parser for syntax highlighting
-BREW_PACKAGES += zoxide       # Smarter cd that learns frequent dirs
+PACKAGES += autoconf			 # Generates configure scripts for builds
+PACKAGES += btop				 # Interactive resource monitor
+PACKAGES += direnv				 # Loads per-directory environment variables
+BREW_PACKAGES += fd				 # Fast, user-friendly alternative to find
+APT_PACKAGES += fd-find          # Fast, user-friendly alternative to find
+PACKAGES += ffmpeg				 # Emacs package dependency for tmr
+PACKAGES += fish				 # Friendly interactive shell
+PACKAGES += fzf					 # Command-line fuzzy finder
+PACKAGES += gcc					 # GNU compiler collection
+PACKAGES += gh					 # GitHub CLI
+PACKAGES += git					 # Version control system
+PACKAGES += git-delta			 # Syntax-highlighting pager for git diffs
+PACKAGES += gnupg				 # GPG encryption and signing
+BREW_PACKAGES += janet			 # Janet programming language
+# APT_PACKAGES += janet			 # Janet programming language
+PACKAGES += jq					 # Command-line JSON processor
+BREW_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
+# APT_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
+PACKAGES += ripgrep				 # Fast recursive grep
+PACKAGES += stow				 # Symlink farm manager for dotfiles
+BREW_PACKAGES += tlrc			 # tldr client for simplified man pages
+# APT_PACKAGES += tlrc			 # tldr client for simplified man pages
+BREW_PACKAGES += tree-sitter	 # Incremental parser for syntax highlighting
+APT_PACKAGES += tree-sitter-cli  # Incremental parser for syntax highlighting
+PACKAGES += zoxide				 # Smarter cd that learns frequent dirs
 
 install-brew-packages:
 	brew update
-	brew install -v --quiet $(BREW_PACKAGES)
+	brew install -yv --quiet $(BREW_PACKAGES) $(PACKAGES)
 
 BREW_CASKS += font-jetbrains-mono-nerd-font  # JetBrains Mono patched with Nerd Font icons
 BREW_CASKS += ghostty                        # GPU-accelerated terminal emulator
@@ -54,17 +58,14 @@ install-brew-cask:
 install-brew-emacs:
 	brew tap d12frosted/emacs-plus
 	brew update
-	brew install emacs-plus
+	brew install -y emacs-plus
 
-install-scripts:
-	jpm quickbin scripts/sync_repos $(BIN_DIR)/sync_repos
-	jpm quickbin scripts/clean_repos $(BIN_DIR)/clean_repos
-	jpm quickbin scripts/open_issues $(BIN_DIR)/open_issues
-	rm -f $(BIN_DIR)/*.c
+install-apt-packages:
+	apt update
+	apt install -y $(APT_PACKAGES) $(PACKAGES)
 
-install-janet-deps:
-	jpm install sh spork judge
-	jpm install https://github.com/CFiggers/janet-lsp
+install-apt-ghostty:
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
 
 install-cargo:
 	curl https://sh.rustup.rs -sSf | sh
@@ -72,12 +73,8 @@ install-cargo:
 install-cargo-deps:
 	cargo install emacs-lsp-booster
 
-uninstall-scripts:
-	rm -f $(BIN_DIR)/sync_repos
-	rm -f $(BIN_DIR)/clean_repos
-	rm -f $(BIN_DIR)/open_issues
-
-reinstall-scripts: uninstall-scripts install-scripts
+CONFIGS := claude emacs fish ghostty git psql
+FOLDED_CONFIGS := emacs-snippets # To fold means to symlink to folder.
 
 install-configs:
 	stow --no-folding --dir configs --target ~ $(CONFIGS)
@@ -90,6 +87,23 @@ uninstall-configs:
 default-shell-fish:
 	grep -qxF "$$(command -v fish)" /etc/shells || command -v fish | sudo tee -a /etc/shells
 	chsh -s "$$(command -v fish)"
+
+install-janet-deps:
+	jpm install sh spork judge
+	jpm install https://github.com/CFiggers/janet-lsp
+
+install-scripts:
+	jpm quickbin scripts/sync_repos $(BIN_DIR)/sync_repos
+	jpm quickbin scripts/clean_repos $(BIN_DIR)/clean_repos
+	jpm quickbin scripts/open_issues $(BIN_DIR)/open_issues
+	rm -f $(BIN_DIR)/*.c
+
+uninstall-scripts:
+	rm -f $(BIN_DIR)/sync_repos
+	rm -f $(BIN_DIR)/clean_repos
+	rm -f $(BIN_DIR)/open_issues
+
+reinstall-scripts: uninstall-scripts install-scripts
 
 test:
 	judge scripts

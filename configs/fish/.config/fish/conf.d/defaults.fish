@@ -24,7 +24,10 @@ if status is-interactive
     fzf --fish | source
     alias ff="fzf"
 
-    zoxide init fish --cmd cd | source
+    # Only install on Mac, Debian is having compatability issues with fish & zoxide versions
+    if test (uname) = "Darwin"
+        zoxide init fish --cmd cd | source
+    end
 end
 
 if test "$INSIDE_EMACS" = vterm
