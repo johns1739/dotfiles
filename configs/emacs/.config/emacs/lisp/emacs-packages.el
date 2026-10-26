@@ -40,7 +40,7 @@
           ("i a" . claude-code-ide-menu)) ;; a for anthropic
   :init
   (with-eval-after-load 'project
-    (project-add-switch-command #'claude-code-ide "Claude" "a"))
+    (project-add-switch-command #'claude-code-ide-dwim "Claude" "a"))
   (defun claude-code-ide-dwim ()
     "Start or switch to a Claude Code IDE session."
     (interactive)
