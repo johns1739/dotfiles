@@ -611,6 +611,7 @@
   :config
   (pinentry-start))
 
+;; TODO: Write custom modeline and place it in builtin.el
 (use-package simple-modeline
   :demand
   :init
@@ -651,6 +652,10 @@
       simple-modeline-segment-spaces)))
   :config
   (simple-modeline-mode))
+
+(use-package spacious-padding
+  :bind ( :map global-leader-map
+          ("m P" . spacious-padding-mode)))
 
 (use-package tmr
   :bind ( :map global-leader-map

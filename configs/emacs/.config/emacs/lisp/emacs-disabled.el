@@ -585,11 +585,6 @@
   :disabled
   :commands (show-font-tabulated))
 
-(use-package spacious-padding
-  :disabled
-  :bind ( :map global-leader-map
-          ("m P" . spacious-padding-mode)))
-
 (use-package trashed
   :disabled ;; Never used.
   :bind (:map global-leader-map
