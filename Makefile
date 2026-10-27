@@ -19,6 +19,7 @@
 BIN_DIR := ~/.local/bin
 
 PACKAGES += autoconf			 # Generates configure scripts for builds
+PACKAGES += bat                  # TODO
 PACKAGES += btop				 # Interactive resource monitor
 PACKAGES += direnv				 # Loads per-directory environment variables
 BREW_PACKAGES += fd				 # Fast, user-friendly alternative to find

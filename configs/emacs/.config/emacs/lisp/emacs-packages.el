@@ -1,6 +1,7 @@
 ;;; emacs-packages.el --- Third Party Packages  -*- lexical-binding: t; -*-
 
 (use-package ace-window
+  ;; After calling ace-window, press ? for more actions
   :bind (([remap other-window] . ace-window))
   :custom
   (aw-scope (if (daemonp) 'frame 'visible))
@@ -36,6 +37,7 @@
 (use-package claude-code-ide
   :if (executable-find "claude")
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :commands (claude-code-ide-dwim)
   :bind ( :map global-leader-map
           ("i a" . claude-code-ide-menu)) ;; a for anthropic
   :init

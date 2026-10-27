@@ -21,6 +21,9 @@ if status is-interactive
     alias rgrep="grep --color -rnIi"
     alias top="btop"
 
+    set -x PAGER "bat --plain"
+    set -x MANPAGER "sh -c \"col -bx | bat -l man -p\""
+
     fzf --fish | source
     alias ff="fzf"
 
