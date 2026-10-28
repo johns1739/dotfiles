@@ -190,6 +190,7 @@
   (use-short-answers t)
   (tab-width 4)
   (vc-follow-symlinks t)
+  (vc-display-status 'no-backend)
   (read-extended-command-predicate #'command-completion-default-include-p)
   (auto-save-list-file-prefix (expand-cache-path "auto-saves/sessions/"))
   (auto-save-file-name-transforms `((".*" ,(expand-cache-path "auto-saves/") t)))

@@ -4,6 +4,7 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 
 (require 'emacs-builtins)
+(require 'emacs-modeline)
 (require 'emacs-manager)
 (require 'emacs-packages)
 (require 'emacs-langs)
