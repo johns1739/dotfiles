@@ -28,6 +28,13 @@
   :config
   (beacon-mode 1))
 
+(use-package beframe
+  :bind-keymap ("C-c b" . beframe-prefix-map)
+  :bind ( :map global-leader-map
+          ("SPC" . beframe-switch-buffer))
+  :config
+  (beframe-mode 1))
+
 (use-package cape ;; Cape provides Completion At Point Extensions
   :init
   ;; note: Excluded buggy #'cape-line
@@ -74,7 +81,6 @@
    ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
    ([remap yank-pop] . consult-yank-pop))
   ( :map global-leader-map
-    ("SPC" . consult-project-buffer)
     ("d SPC" . consult-flymake)
     ("n SPC" . consult-org-agenda)
     ;; Emacs settings
@@ -92,6 +98,8 @@
   ( :map minibuffer-mode-map
     ("C-r" . consult-history)
     ("C-M-i" . consult-history))
+  ( :map project-prefix-map
+    ("SPC" . consult-project-buffer))
   ( :map search-map
     (")" . consult-kmacro)
     ("f" . consult-find) ;; works even if not in a project
