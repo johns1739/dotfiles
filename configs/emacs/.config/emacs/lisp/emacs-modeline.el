@@ -22,8 +22,9 @@
 
 (defun emacs-modeline-project ()
   "Display project name in mode line."
-  (when-let* ((name (project-mode-line-format)))
-    (propertize (format " [%s] " (string-trim-left name)) 'face (emacs-modeline-emphasis-face))))
+  (when-let* ((name (project-mode-line-format))
+              (shortened-name (truncate-string-to-width (string-trim-left name) 24 nil nil t)))
+    (propertize (format " [%s] " shortened-name) 'face (emacs-modeline-emphasis-face))))
 
 (defun emacs-modeline-buffer-name ()
   "Display buffer's relative-name in mode line."
