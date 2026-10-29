@@ -44,12 +44,14 @@
 (use-package claude-code-ide
   :if (executable-find "claude")
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
-  :commands (claude-code-ide-dwim)
   :bind ( :map global-leader-map
           ("i a" . claude-code-ide-menu)) ;; a for anthropic
   :init
   (with-eval-after-load 'project
     (project-add-switch-command #'claude-code-ide-dwim "Claude" "a"))
+  (with-eval-after-load 'claude-code-ide-transient
+    (transient-insert-suffix 'claude-code-ide-menu "s"
+      '("RET" "Start or switch to Claude Code instance" claude-code-ide-dwim)))
   (defun claude-code-ide-dwim ()
     "Start or switch to a Claude Code IDE session."
     (interactive)
@@ -64,8 +66,6 @@
   (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
   (claude-code-ide-terminal-initialization-delay 0.2) ; better render
   :config
-  (transient-insert-suffix 'claude-code-ide-menu "s"
-    '("a" "Start or switch to Claude Code instance" claude-code-ide-dwim))
   (claude-code-ide-emacs-tools-setup))
 
 (use-package consult
@@ -614,6 +614,10 @@
   :config
   (meow-tree-sitter-register-defaults))
 
+(use-package mpv ;; media player https://mpv.io/
+  :vc (:url "https://github.com/kljohann/mpv.el" :branch "master")
+  :defer)
+
 (use-package orderless
   :custom
   (completion-category-overrides '((file (styles partial-completion))))
@@ -689,13 +693,16 @@
   (defvar whisper-recordings-dir (expand-cache-path "whisper/recordings/")
     "Whisper directory to store recordings.")
   (defun whisper-set-recording-filename ()
-    (setq whisper--temp-file (expand-file-name (format-time-string "%Y-%m-%d %H:%M:%S.wav") whisper-recordings-dir)))
+    (setq whisper--temp-file
+          (expand-file-name (format-time-string "%Y-%m-%d %H:%M:%S.wav")
+                            whisper-recordings-dir)))
   (defun whisper-replay (&optional file)
     "Replay the last temporary recoring."
     (interactive (list
                   (when current-prefix-arg
-                    (read-file-name)))
-
+                    (read-file-name "File: " whisper-recordings-dir))))
+    (setq whisper--temp-file (or file whisper--temp-file))
+    (mpv-play whisper--temp-file))
   (with-eval-after-load 'ghostel
     (bind-keys :map ghostel-semi-char-mode-map
                ("C-R" . whisper-run)))
