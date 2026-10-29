@@ -57,6 +57,7 @@
         (claude-code-ide-switch-to-buffer)
       (user-error (claude-code-ide))))
   :custom
+  (claude-code-ide-no-flicker t)
   (claude-code-ide-use-side-window nil)
   (claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-window-side 'left)
@@ -666,6 +667,40 @@
 
 (use-package vundo
   :bind ( ("C-x u" . vundo)))
+
+(use-package web-server ;; GNU ELPA build lacks `ws-process' needed by claude-code-ide
+  :vc (:url "https://github.com/eschulte/emacs-web-server" :branch "master")
+  :defer)
+
+(use-package whisper ;; Speech-To-Text; STT
+  :vc (:url "https://github.com/natrys/whisper.el" :branch "master")
+  :bind ( :map global-map
+          ("C-R" . whisper-run))
+  :custom
+  (whisper-install-directory (expand-cache-path "whisper/install/"))
+  (whisper-model "medium.en")
+  (whisper-language "en")
+  (whisper-return-cursor 'start)
+  (whisper-return-cursor-to-start nil) ;; allows me to keep typing
+  (whisper-use-threads (1- (num-processors)))
+  :hook
+  (whisper-before-transcription . whisper-set-recording-filename)
+  :init
+  (defvar whisper-recordings-dir (expand-cache-path "whisper/recordings/")
+    "Whisper directory to store recordings.")
+  (defun whisper-set-recording-filename ()
+    (setq whisper--temp-file (expand-file-name (format-time-string "%Y-%m-%d %H:%M:%S.wav") whisper-recordings-dir)))
+  (defun whisper-replay (&optional file)
+    "Replay the last temporary recoring."
+    (interactive (list
+                  (when current-prefix-arg
+                    (read-file-name)))
+
+  (with-eval-after-load 'ghostel
+    (bind-keys :map ghostel-semi-char-mode-map
+               ("C-R" . whisper-run)))
+  :config
+  (make-directory (expand-cache-path whisper-recordings-dir) t))
 
 (use-package writeroom-mode
   :bind ( :map global-leader-map
