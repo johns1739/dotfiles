@@ -595,7 +595,7 @@
      '("M-r" . meow-replace-pop)
      (cons "s" search-map)
      '("S" . save-buffer)
-     '("t" . nil)
+     '("t" . meow-pop-grab)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)
      '("U" . meow-undo-in-selection)
