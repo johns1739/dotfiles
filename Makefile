@@ -39,6 +39,7 @@ BREW_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
 # APT_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
 PACKAGES += mpv					 # Command-line media player
 PACKAGES += ripgrep				 # Fast recursive grep
+BREW_PACKAGES += sox			 # Emacs whisper recording (ffmpeg avfoundation drops audio)
 PACKAGES += stow				 # Symlink farm manager for dotfiles
 BREW_PACKAGES += tlrc			 # tldr client for simplified man pages
 # APT_PACKAGES += tlrc			 # tldr client for simplified man pages

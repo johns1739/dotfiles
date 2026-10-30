@@ -499,28 +499,36 @@
      (cons "SPC" global-leader-map)
      '("M-SPC" . "H-SPC") ;; Rebind original space command (e.g., magit-status)
      '("<escape>" . ignore))
-    ;; (setq meow-paren-keymap (make-keymap))
-    ;; (meow-define-state paren
-    ;;   "meow state for structural sexp editing"
-    ;;   :lighter " [P]"
-    ;;   :keymap meow-paren-keymap)
-    ;; meow-define-state creates the variable
-    ;; (setq meow-cursor-type-paren 'hollow)
-    ;; (meow-define-keys 'paren
-    ;;   '("<escape>" . meow-normal-mode)
-    ;;   '("l" . forward-sexp)
-    ;;   '("h" . backward-sexp)
-    ;;   '("j" . down-list)
-    ;;   '("k" . backward-up-list)
-    ;;   '("r" . raise-sexp)
-    ;;   '("s" . delete-pair)
-    ;;   '("t" . transpose-sexps)
-    ;;   '("w" . insert-parentheses)
-    ;;   '("u" . meow-undo))
+    (setq meow-paren-keymap (make-keymap))
+    (meow-define-state paren
+      "meow state for structural sexp editing"
+      :lighter " [P]"
+      :keymap meow-paren-keymap)
+    (setq meow-cursor-type-paren 'hollow)
+    (meow-define-keys 'paren
+      '("<escape>" . meow-normal-mode)
+      '("l" . forward-sexp)
+      '("h" . backward-sexp)
+      '("j" . down-list)
+      '("k" . backward-up-list)
+      '("r" . raise-sexp)
+      '("s" . delete-pair)
+      '("t" . transpose-sexps)
+      '("w" . insert-parentheses)
+      '("u" . meow-undo)
+      '(")" . meow-forward-slurp)
+      '("(" . meow-backward-slurp)
+      '(">" . meow-forward-barf)
+      '("<" . meow-backward-barf)
+      '("[" . meow-wrap-square)
+      '("{" . insert-pair)
+      '("\"" . meow-wrap-string)
+      '("S" . meow-split-sexp)
+      '("J" . meow-join-sexp))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
      '("M-DEL" . meow-backward-kill-word)
-     '("M-d" . meow-kill-word)
+     '("TAB" . meow-indent)
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)
      '("8" . meow-expand-8)
@@ -532,6 +540,7 @@
      '("2" . meow-expand-2)
      '("1" . meow-expand-1)
      '("%" . meow-query-replace)
+     '("M-%" . meow-query-replace-regexp)
      '("-" . negative-argument)
      '("_" . meow-reverse)
      '("(" . meow-start-kmacro)
@@ -541,9 +550,10 @@
      '("b" . meow-back-word)
      '("B" . meow-back-symbol)
      '("c" . meow-change)
-     '("C" . nil)
+     '("C" . meow-change-save)
      '("d" . meow-delete)
      '("D" . meow-kill)
+     '("M-d" . meow-kill-word)
      '("e" . meow-next-word)
      '("E" . meow-next-symbol)
      '("f" . meow-till)
@@ -558,6 +568,8 @@
      '("J" . meow-join)
      '("k" . meow-prev)
      '("K" . meow-kmacro-lines)
+     '("M-k" . meow-kill-symbol)
+     '("M-K" . meow-kill-append)
      '("l" . meow-right)
      '("L" . move-end-of-line)
      '("m" . meow-pop-to-mark)
@@ -571,7 +583,8 @@
      '("q" . nil) ;; Keep q unbound for other apps to bind.
      '("Q" . meow-quit)
      '("r" . meow-replace)
-     '("R" . meow-sync-grab)
+     '("R" . meow-replace-save)
+     '("M-r" . meow-replace-pop)
      (cons "s" search-map)
      '("S" . save-buffer)
      '("t" . nil)
@@ -599,7 +612,7 @@
      '("." . meow-bounds-of-thing)
      '(">" . meow-end-of-thing)
      '("<escape>" . meow-cancel-selection)
-     '("<backspace>" . meow-backward-delete)))
+     '("<backspace>" . meow-backspace)))
   :config
   (meow-setup)
   (meow-setup-indicator)
@@ -616,7 +629,9 @@
 
 (use-package mpv ;; media player https://mpv.io/
   :vc (:url "https://github.com/kljohann/mpv.el" :branch "master")
-  :defer)
+  :defer
+  :custom
+  (mpv-default-options '("--audio-channels=stereo")))
 
 (use-package orderless
   :custom
@@ -679,7 +694,7 @@
 (use-package whisper ;; Speech-To-Text; STT
   :vc (:url "https://github.com/natrys/whisper.el" :branch "master")
   :bind ( :map global-map
-          ("C-R" . whisper-run))
+          ("<f9>" . whisper-run))
   :custom
   (whisper-install-directory (expand-cache-path "whisper/install/"))
   (whisper-model "medium.en")
@@ -703,9 +718,17 @@
                     (read-file-name "File: " whisper-recordings-dir))))
     (setq whisper--temp-file (or file whisper--temp-file))
     (mpv-play whisper--temp-file))
+  (defun whisper-sox-record-command (record-command output-file)
+    "Record with sox; FFmpeg's avfoundation input drops audio buffers."
+    (if whisper--ffmpeg-input-file
+        (funcall record-command output-file)
+      `("rec" "-q" "-V1" "-c" "1" "-r" "16000" "-b" "16" ,output-file
+        "trim" "0" ,(number-to-string whisper-recording-timeout))))
+  (when (executable-find "rec")
+    (advice-add 'whisper--record-command :around #'whisper-sox-record-command))
   (with-eval-after-load 'ghostel
     (bind-keys :map ghostel-semi-char-mode-map
-               ("C-R" . whisper-run)))
+               ("<f9>" . whisper-run)))
   :config
   (make-directory (expand-cache-path whisper-recordings-dir) t))
 
