@@ -695,6 +695,15 @@
   :hook
   (makefile-bsdmake-mode . make-mode-setup))
 
+(use-package man
+  :ensure nil
+  :if (executable-find "man")
+  :bind ( :map help-map
+          ("w" . man))
+  :custom
+  (Man-notify-method 'aggressive) ; show and select the Man window
+  (Man-width-max nil))
+
 (use-package minibuffer
   :ensure nil
   :defer
@@ -1034,8 +1043,7 @@
                      (derived-mode . ghostel-mode)
                      (derived-mode . eshell-mode))
                  (display-buffer-reuse-mode-window display-buffer-at-bottom)
-                 (inhibit-same-window . t)
-                 (window-height . 0.4))))
+                 (inhibit-same-window . t))))
 
 (use-package wdired
   :ensure nil

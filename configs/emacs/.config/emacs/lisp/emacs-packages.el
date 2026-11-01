@@ -41,11 +41,13 @@
   (dolist (fn '(cape-elisp-block cape-file cape-dict cape-keyword cape-dabbrev))
     (add-hook 'completion-at-point-functions fn)))
 
+;; TODO: Create a claude-dwim that is not project-specific.
 (use-package claude-code-ide
   :if (executable-find "claude")
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ( :map global-leader-map
           ("i a" . claude-code-ide-menu)) ;; a for anthropic
+  :commands (claude-code-ide-dwim)
   :init
   (with-eval-after-load 'project
     (project-add-switch-command #'claude-code-ide-dwim "Claude" "a"))
@@ -470,6 +472,7 @@
   :config
   (marginalia-mode))
 
+;; TODO: Missing binding meow-find-ref ("g ." ...)
 (use-package meow
   :demand
   :bind
@@ -536,7 +539,7 @@
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
      '("M-DEL" . meow-backward-kill-word)
-     '("TAB" . meow-indent)
+     '("=" . meow-indent)
      '("0" . meow-expand-0)
      '("9" . meow-expand-9)
      '("8" . meow-expand-8)
@@ -686,6 +689,7 @@
 
 (use-package visual-replace
   :bind (([remap query-replace] . visual-replace)
+         ([remap query-replace-regexp] . visual-replace-regexp)
          ([remap replace-string] . visual-replace)
          ([remap isearch-query-replace] . visual-replace-from-isearch)
          ([remap isearch-query-replace-regexp] . visual-replace-from-isearch)

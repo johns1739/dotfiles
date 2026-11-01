@@ -43,7 +43,9 @@
 (setopt native-comp-async-report-warnings-errors 'silent)
 
 (defun expand-cache-path (path)
-  (expand-file-name (concat "cache/" path) user-emacs-directory))
+  (let ((cache-path (expand-file-name (concat "cache/" path) user-emacs-directory)))
+    (make-directory (file-name-directory cache-path) :parents)
+    cache-path))
 
 ;; Schedule sensible defaults for after booting
 (add-hook 'emacs-startup-hook
