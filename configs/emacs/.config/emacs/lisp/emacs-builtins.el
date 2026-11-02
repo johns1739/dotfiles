@@ -119,11 +119,9 @@
     (":" . goto-line)
     (";" . scratch-buffer)
     (">" . xref-find-references)
-    ("?" . eldoc)
     ("d" . dired-jump)
     ("f" . find-file)
     ("h" . eldoc)
-    ("i" . nil) ;; moved imenu to search-map
     ("n" . next-buffer)
     ("p" . previous-buffer)
     ;; Window navigation
@@ -912,7 +910,7 @@
 (use-package register
   :ensure nil
   :bind ( :map goto-map
-          ("j" . jump-to-register))
+          ("j" . jump-to-register)
           ("J" . point-to-register))
   :custom
   (register-use-preview 'traditional)

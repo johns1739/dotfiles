@@ -770,10 +770,6 @@
 (use-package yasnippet
   ;; https://joaotavora.github.io/yasnippet/index.html
   :defer 2
-  :bind ( :map goto-map
-          ("&" . yas-visit-snippet-file)
-          :map global-leader-map
-          ("x &" . yas-new-snippet))
   :custom
   (yas-snippet-dirs `(,(locate-user-emacs-file "snippets")))
   :config
