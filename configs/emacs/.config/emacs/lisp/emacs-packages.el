@@ -78,6 +78,7 @@
    ([remap jump-to-register]              . consult-register-load)
    ([remap load-theme]                    . consult-theme)
    ([remap point-to-register]             . consult-register-store)
+   ([remap project-switch-to-buffer]      . consult-project-buffer)
    ([remap recentf-open]                  . consult-recent-file)
    ([remap recentf]                       . consult-recent-file)
    ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
@@ -87,43 +88,44 @@
    ([remap yank-from-kill-ring]           . consult-yank-from-kill-ring)
    ([remap yank-pop]                      . consult-yank-pop))
   ( :map global-leader-map
-    ("d SPC" . consult-flymake)
-    ("n SPC" . consult-org-agenda)
+    ("d SPC"                              . consult-flymake)
+    ("n SPC"                              . consult-org-agenda)
     ;; Emacs settings
-    (", SPC" . consult-emacs-packages)
-    (", m" . consult-minor-mode-menu)
-    (", s" . consult-emacs-search)
+    (", SPC"                              . consult-emacs-packages)
+    (", m"                                . consult-minor-mode-menu)
+    (", s"                                . consult-emacs-search)
     ;; Text Edits
-    ("x \\" . align)
-    ("x |" . align-current)
-    ("x k" . consult-keep-lines)
-    ("x f" . flush-lines)
-    ("x s" . sort-lines)
-    ("x u" . delete-duplicate-lines))
+    ("x \\"                               . align)
+    ("x |"                                . align-current)
+    ("x )"                                . consult-kmacro)
+    ("x k"                                . consult-keep-lines)
+    ("x f"                                . flush-lines)
+    ("x s"                                . sort-lines)
+    ("x u"                                . delete-duplicate-lines))
   ( :map minibuffer-mode-map
-    ("C-r" . consult-history)
-    ("C-M-i" . consult-history))
-  ( :map project-prefix-map
-    ("SPC" . consult-project-buffer))
+    ("C-r"                                . consult-history))
   ( :map search-map
-    (")" . consult-kmacro)
-    ("f" . consult-find) ;; works even if not in a project
-    ("F" . find-name-dired)
-    ("s" . consult-ripgrep)
-    ("k" . consult-focus-lines)
+    ("f"                                  . consult-find)
+    ("s"                                  . consult-ripgrep)
+    ("g"                                  . consult-grep)
+    ("G"                                  . consult-git-grep)
+    ("k"                                  . consult-focus-lines))
   ( :map goto-map
-    ("I" . consult-imenu-multi)
-    ("l" . consult-line)
-    ("L" . consult-line-multi)
-    ("o" . consult-outline)
-    ("M-m" . consult-mark))
+    ("r" . consult-grep-match)
+    ("e" . consult-compile-error)
+    ("I"                                  . consult-imenu-multi)
+    ("l"                                  . consult-line)
+    ("L"                                  . consult-line-multi)
+    ("o"                                  . consult-outline)
+    ("M-m"                                . consult-mark)
+    ("M-M"                                . consult-global-mark))
   ( :map help-map
-    ("SPC" . consult-info))
+    ("SPC"                                . consult-info))
   :init
   (defun consult-emacs-search (&optional initial)
     "Search emacs configurations."
     (interactive)
-    (consult-ripgrep (list (file-name-directory (file-truename user-init-file)) custom-file) initial))
+    (consult-grep (list (file-name-directory (file-truename user-init-file)) custom-file) initial))
   (defun consult-emacs-packages ()
     "Search emacs package configurations."
     (interactive)
@@ -139,7 +141,7 @@
   (with-eval-after-load 'project
     (project-add-switch-command 'consult-project-buffer "Buffer" "SPC")
     (project-add-switch-command 'consult-ripgrep "Search" "s"))
-  (if (executable-find "fd")
+  (if (executable-find "fd") ;; faster version
       (bind-keys :map search-map
                  ("f" . consult-fd))))
 

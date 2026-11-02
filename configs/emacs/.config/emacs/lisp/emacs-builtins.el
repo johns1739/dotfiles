@@ -511,6 +511,12 @@
                `("d" ,(lambda (buffer) (diff-buffer-with-file (buffer-file-name buffer)))
                  "show diff between the buffer and its file")))
 
+(use-package find-dired
+  :ensure nil
+  :bind ( :map search-map
+          ("g" . rgrep)
+          ("f" . find-name-dired)))
+
 (use-package flymake
   :ensure nil
   :bind
@@ -865,7 +871,9 @@
   :ensure nil
   :bind
   ( :map project-prefix-map
-    ("d" . project-dired)
+    ("SPC" . project-switch-to-buffer)
+    ("d" . project-find-dir)
+    ("D" . project-dired)
     ("K" . project-forget-project)
     ("Z" . project-forget-zombie-projects)
     ("P" . project-remember-projects-under))
@@ -902,6 +910,7 @@
   (recentf-mode t))
 
 (use-package register
+  :ensure nil
   :bind ( :map goto-map
           ("j" . jump-to-register))
           ("J" . point-to-register))
