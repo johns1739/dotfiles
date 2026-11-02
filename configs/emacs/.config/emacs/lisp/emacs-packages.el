@@ -72,25 +72,27 @@
 
 (use-package consult
   :bind
-  (([remap bookmark-jump] . consult-bookmark)
-   ([remap imenu] . consult-imenu)
-   ([remap Info-search] . consult-info)
-   ([remap isearch-edit-string] . consult-isearch-history)
-   ([remap recentf-open] . consult-recent-file)
-   ([remap recentf] . consult-recent-file)
-   ([remap switch-to-buffer-other-frame] . consult-buffer-other-frame)
-   ([remap switch-to-buffer-other-tab] . consult-buffer-other-tab)
+  (([remap bookmark-jump]                 . consult-bookmark)
+   ([remap imenu]                         . consult-imenu)
+   ([remap isearch-edit-string]           . consult-isearch-history)
+   ([remap jump-to-register]              . consult-register-load)
+   ([remap load-theme]                    . consult-theme)
+   ([remap point-to-register]             . consult-register-store)
+   ([remap recentf-open]                  . consult-recent-file)
+   ([remap recentf]                       . consult-recent-file)
+   ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
+   ([remap switch-to-buffer-other-tab]    . consult-buffer-other-tab)
    ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
-   ([remap yank-from-kill-ring] . consult-yank-from-kill-ring)
-   ([remap yank-pop] . consult-yank-pop))
+   ([remap switch-to-buffer]              . consult-buffer)
+   ([remap yank-from-kill-ring]           . consult-yank-from-kill-ring)
+   ([remap yank-pop]                      . consult-yank-pop))
   ( :map global-leader-map
     ("d SPC" . consult-flymake)
     ("n SPC" . consult-org-agenda)
     ;; Emacs settings
     (", SPC" . consult-emacs-packages)
     (", m" . consult-minor-mode-menu)
-    (", s" . consult-emacs)
-    (", t" . consult-theme)
+    (", s" . consult-emacs-search)
     ;; Text Edits
     ("x \\" . align)
     ("x |" . align-current)
@@ -107,31 +109,25 @@
     (")" . consult-kmacro)
     ("f" . consult-find) ;; works even if not in a project
     ("F" . find-name-dired)
-    ("I" . consult-imenu-multi)
-    ("j". consult-register)
-    ("l" . consult-line)
-    ("L" . consult-line-multi)
     ("s" . consult-ripgrep)
     ("k" . consult-focus-lines)
-    ("m" . consult-mark))
   ( :map goto-map
-    ("SPC" . consult-buffer)
+    ("I" . consult-imenu-multi)
+    ("l" . consult-line)
+    ("L" . consult-line-multi)
     ("o" . consult-outline)
-    ("j" . consult-register-load)
-    ("J" . consult-register-store)
-    ("m" . consult-bookmark)
-    ("M" . bookmark-set-no-overwrite)) ;; eg bookmarking multiple files with same name
+    ("M-m" . consult-mark))
   ( :map help-map
     ("SPC" . consult-info))
   :init
-  (defun consult-emacs (&optional initial)
+  (defun consult-emacs-search (&optional initial)
     "Search emacs configurations."
     (interactive)
     (consult-ripgrep (list (file-name-directory (file-truename user-init-file)) custom-file) initial))
   (defun consult-emacs-packages ()
     "Search emacs package configurations."
     (interactive)
-    (consult-emacs "^(use-package\\ "))
+    (consult-emacs-search "^(use-package\\ "))
   :hook
   (completion-list-mode . consult-preview-at-point-mode)
   :custom
@@ -472,7 +468,6 @@
   :config
   (marginalia-mode))
 
-;; TODO: Missing binding meow-find-ref ("g ." ...)
 (use-package meow
   :demand
   :bind
@@ -597,7 +592,7 @@
      '("R" . meow-replace-save)
      '("M-r" . meow-replace-pop)
      (cons "s" search-map)
-     '("S" . save-buffer)
+     '("S" . meow-sync-grab)
      '("t" . meow-pop-grab)
      '("T" . meow-swap-grab)
      '("u" . meow-undo)

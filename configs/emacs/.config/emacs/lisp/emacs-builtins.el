@@ -109,7 +109,6 @@
     (", r" . reload-emacs)
     (", x" . describe-font))
   ( :map search-map
-    ("i" . imenu)
     ("g" . rgrep))
   ( :map goto-map
     ("SPC" . switch-to-buffer)
@@ -177,8 +176,6 @@
   (next-error-highlight-no-select 1.0)
   (next-error-message-highlight t)
   (next-error-recenter '(4))
-  (register-use-preview 'traditional)
-  (register-preview-delay 0.5)
   (require-final-newline t)
   (read-answer-short t)
   (ring-bell-function 'ignore)
@@ -251,6 +248,9 @@
 (use-package bookmark
   :ensure nil
   :defer
+  :bind ( :map goto-map
+          ("m" . bookmark-jump)
+          ("M" . bookmark-set-no-overwrite))
   :custom
   (bookmark-menu-length 80)
   (bookmark-search-size 20)
@@ -335,6 +335,10 @@
   (add-to-list 'compilation-error-regexp-alist-alist
                '(simple-spaced-target
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
+
+(use-package custom
+  :bind ( :map global-leader-map
+          (", t" . load-theme)))
 
 (use-package diff-mode
   :ensure nil
@@ -574,7 +578,7 @@
   :defer
   :bind
   ( :map help-map
-    ("M" . describe-keymap)
+    ("K" . describe-keymap)
     ("C-h" . nil) ;; accidentally pressed too often
     ("h" . nil)) ;; accidentally pressed too often
   :custom
@@ -896,6 +900,14 @@
   (recentf-save-file (expand-cache-path "recentf"))
   :config
   (recentf-mode t))
+
+(use-package register
+  :bind ( :map goto-map
+          ("j" . jump-to-register))
+          ("J" . point-to-register))
+  :custom
+  (register-use-preview 'traditional)
+  (register-preview-delay 0.5))
 
 (use-package savehist
   :ensure nil
