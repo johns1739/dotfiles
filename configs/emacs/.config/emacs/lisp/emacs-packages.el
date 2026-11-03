@@ -53,7 +53,7 @@
     (project-add-switch-command #'claude-code-ide-dwim "Claude" "a"))
   (with-eval-after-load 'claude-code-ide-transient
     (transient-insert-suffix 'claude-code-ide-menu "s"
-      '("RET" "Start or switch to Claude Code instance" claude-code-ide-dwim)))
+      '("RET" "Start/switch to Claude Code" claude-code-ide-dwim)))
   (defun claude-code-ide-dwim ()
     "Start or switch to a Claude Code IDE session."
     (interactive)
@@ -113,14 +113,14 @@
   ( :map goto-map
     ("r" . consult-grep-match)
     ("e" . consult-compile-error)
-    ("I"                                  . consult-imenu-multi)
-    ("l"                                  . consult-line)
-    ("L"                                  . consult-line-multi)
-    ("o"                                  . consult-outline)
-    ("M-m"                                . consult-mark)
-    ("M-M"                                . consult-global-mark))
+    ("I" . consult-imenu-multi)
+    ("l" . consult-line)
+    ("L" . consult-line-multi)
+    ("o" . consult-outline)
+    ("M-m" . consult-mark)
+    ("M-M" . consult-global-mark))
   ( :map help-map
-    ("SPC"                                . consult-info))
+    ("SPC" . consult-info))
   :init
   (defun consult-emacs-search (&optional initial)
     "Search emacs configurations."
@@ -285,9 +285,7 @@
 
 (use-package ghostel
   :vc (:url "https://github.com/dakra/ghostel" :lisp-dir "lisp" :rev :newest)
-  :bind ( :map global-leader-map
-          ("k t" . ghostel-project)
-          ("k T" . ghostel)
+  :bind ( ([remap eshell] . ghostel)
           :map project-prefix-map
           ("t" . ghostel-project)
           :map ghostel-semi-char-mode-map
@@ -484,6 +482,11 @@
   (meow-cursor-type-motion '(hbar . 2))
   (meow-goto-line-function #'avy-goto-line)
   :init
+  (defun meow-save-buffer ()
+    "Save buffer and switch to normal mode."
+    (interactive)
+    (save-buffer)
+    (meow-insert-exit))
   (defun meow-search-reverse ()
     (interactive)
     (unless (meow--direction-backward-p)
@@ -533,6 +536,7 @@
       '("\"" . meow-wrap-string)
       '("S" . meow-split-sexp)
       '("J" . meow-join-sexp))
+    (bind-keys :map global-map ([remap save-buffer] . meow-save-buffer))
     (meow-normal-define-key
      (cons "SPC" global-leader-map)
      '("M-DEL" . meow-backward-kill-word)

@@ -20,41 +20,24 @@
     (interactive)
     (if (boundp 'custom-file)
         (find-file custom-file)))
-  (defun split-window-below-and-jump ()
-    "Split window below and jump to it."
-    (interactive)
-    (select-window (split-window-below)))
-  (defun split-window-right-and-jump ()
-    "Split window right and jump to it."
-    (interactive)
-    (select-window (split-window-right)))
   (defun absolute-file-name ()
     "Absolute path to file."
     (expand-file-name (buffer-file-name)))
+  (defun copy-value (value)
+    (kill-new value)
+    (message "Copied %s" value))
   (defun copy-absolute-file-name ()
     "Copy absolute file path of current buffer."
     (interactive)
-    (let ((afn (absolute-file-name)))
-      (kill-new afn)
-      (message "Copied %s" afn)))
-  (defun project-directory ()
-    "Current project directory."
-    (let ((project (project-current)))
-      (and project (project-root project))))
+    (copy-value (absolute-file-name)))
   (defun relative-file-name ()
     "Relative from project or cwd directory."
     (if-let* ((file-name (buffer-file-name)))
         (file-relative-name file-name (or (project-directory) default-directory))))
-  (defun copy-project-directory ()
-    (interactive)
-    (if-let* ((dir (project-directory)))
-        (kill-new dir)))
   (defun copy-relative-file-name ()
     "Copy file path of current buffer relative to project directory."
     (interactive)
-    (let ((rfn (relative-file-name)))
-      (kill-new rfn)
-      (message "Copied %s" rfn)))
+    (copy-value (relative-file-name)))
   (defun reload-emacs ()
     (interactive)
     (load (locate-user-emacs-file "init.el") :no-error-if-file-is-missing))
@@ -65,34 +48,28 @@
     ("<backtab>" . prog-fill-reindent-defun)
     ("C-z" . nil) ;; Prevent accidental minimize
     ("M-SPC" . cycle-spacing)
-    ("M-L" . duplicate-dwim)
     ("M-l" . downcase-dwim)
     ("M-u" . upcase-dwim)
+    ("M-c" . capitalize-dwim)
     ("M-j" . join-line)
+    ("M-J" . duplicate-dwim)
     ("M-n" . forward-paragraph)
     ("M-p" . backward-paragraph)
     ("M-o" . other-window)
     ("C-M-h" . mark-sexp)
     ("C-M-d" . delete-pair)
-    ([remap kill-sentence] . kill-sexp)
-    ([remap backward-sentence] . backward-sexp)
-    ([remap forward-sentence] . forward-sexp)
-    ([remap split-window-below] . split-window-below-and-jump)
-    ([remap split-window-right] . split-window-right-and-jump))
+    ([remap kill-sentence]      . kill-sexp)
+    ([remap backward-sentence]  . backward-sexp)
+    ([remap forward-sentence]   . forward-sexp))
   ( :map global-leader-map
-    ("0" . delete-window)
-    ("1" . delete-other-windows)
-    ("2" . split-window-below-and-jump)
-    ("3" . split-window-right-and-jump)
-    ("=" . balance-windows-area)
     ;; Modes
     ("m S" . auto-save-visited-mode)
     ("m t" . toggle-truncate-lines)
-    ("m f" . auto-fill-mode)
+    ("m F" . auto-fill-mode)
     ("m v" . visual-line-mode)
     ;; Open Apps
     ("o d" . diff)
-    ("o C" . calendar)
+    ("o c" . calendar)
     ;; Copy/Paste
     ("y d" . copy-project-directory)
     ("y F" . copy-absolute-file-name)
@@ -106,33 +83,20 @@
     (", F" . toggle-frame-fullscreen)
     (", R" . restart-emacs)
     (", f" . toggle-frame-maximized)
-    (", r" . reload-emacs)
-    (", x" . describe-font))
-  ( :map search-map
-    ("g" . rgrep))
+    (", r" . reload-emacs))
   ( :map goto-map
     ("SPC" . switch-to-buffer)
     ("'" . mode-line-other-buffer)
     ("," . xref-go-back)
     ("." . xref-find-definitions)
-    ("/" . xref-find-apropos)
+    ("/" . xref-find-references)
     (":" . goto-line)
     (";" . scratch-buffer)
-    (">" . xref-find-references)
     ("d" . dired-jump)
     ("f" . find-file)
     ("h" . eldoc)
     ("n" . next-buffer)
-    ("p" . previous-buffer)
-    ;; Window navigation
-    ("w H" . windmove-swap-states-left)
-    ("w J" . windmove-swap-states-down)
-    ("w K" . windmove-swap-states-up)
-    ("w L" . windmove-swap-states-right)
-    ("w h" . windmove-left)
-    ("w j" . windmove-down)
-    ("w k" . windmove-up)
-    ("w l" . windmove-right))
+    ("p" . previous-buffer))
   :custom
   (undo-limit (* 13 160000))
   (undo-strong-limit (* 13 240000))
@@ -194,7 +158,6 @@
   (server-after-make-frame . terminal-disable-background)
   (emacs-startup-hook . terminal-disable-background)
   :config
-  (put 'narrow-to-region 'disabled nil) ;; Enable
   (xterm-mouse-mode 1)
   (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
   (global-set-key (kbd "<mouse-5>") 'scroll-up-line)
@@ -258,7 +221,7 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("o c" . calc)
+    ("o *" . calc)
     :map calc-mode-map
     ("i" . nil)))
 
@@ -337,6 +300,14 @@
 (use-package custom
   :bind ( :map global-leader-map
           (", t" . load-theme)))
+
+(use-package dictionary
+  :ensure nil
+  :bind
+  ( :map global-map
+    ("M-#" . dictionary-search))
+  :custom
+  (dictionary-server "dict.org"))
 
 (use-package diff-mode
   :ensure nil
@@ -437,7 +408,7 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k e" . eshell))
+    ("k t" . eshell))
   :custom
   (eshell-history-size 100000)
   (eshell-hist-ignoredups t)
@@ -512,14 +483,13 @@
 (use-package find-dired
   :ensure nil
   :bind ( :map search-map
-          ("g" . rgrep)
           ("f" . find-name-dired)))
 
 (use-package flymake
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("D" . flymake-mode)
+    ("d D" . flymake-mode)
     ("d d" . flymake-start)
     ("d l" . flymake-show-buffer-diagnostics)
     ("d v" . flymake-running-backends)
@@ -549,9 +519,9 @@
 (use-package frame
   :ensure nil
   :defer
-  :bind
-  ("C-x 5 SPC" . select-frame-by-name)
-  ("C-x 5 R" . set-frame-name)
+  :bind ( :map ctl-x-5-map
+          ("C-x 5 SPC" . select-frame-by-name)
+          ("C-x 5 R" . set-frame-name))
   :config
   ;; Make C-x 5 o repeatable
   (defvar-keymap frame-repeat-map
@@ -570,6 +540,8 @@
 (use-package grep
   :ensure nil
   :defer
+  :bind ( :map search-map
+          ("g" . rgrep))
   :custom
   (grep-find-ignored-directories
    '("SCCS" "RCS" "CVS" "MCVS" ".src" ".svn" ".jj" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "node_modules" "build" "dist"))
@@ -582,6 +554,7 @@
   :defer
   :bind
   ( :map help-map
+    ("X" . describe-font)
     ("K" . describe-keymap)
     ("C-h" . nil) ;; accidentally pressed too often
     ("h" . nil)) ;; accidentally pressed too often
@@ -593,8 +566,7 @@
   :ensure nil
   :bind
   ( :map global-map
-    ("M-i" . hippie-expand)
-    ("M-/" . hippie-expand))
+    ("M-i" . hippie-expand))
   :custom
   (hippie-expand-verbose t)
   (hippie-expand-try-functions-list
@@ -626,8 +598,8 @@
 (use-package ibuffer
   :ensure nil
   :bind
-  ( :map global-map
-    ("C-x C-b" . ibuffer))
+  ( :map global-leader-map
+    ("o b" . ibuffer))
   :custom
   (ibuffer-human-readable-size t)
   (ibuffer-expert t)
@@ -662,14 +634,6 @@
   (search-whitespace-regexp ".*?")
   :hook
   (isearch-mode-end . recenter-top-bottom))
-
-(use-package dictionary
-  :ensure nil
-  :bind
-  ( :map global-map
-    ("M-#" . dictionary-search))
-  :custom
-  (dictionary-server "dict.org"))
 
 (use-package ispell
   ;; brew install aspell
@@ -760,8 +724,8 @@
   (org-mode . visual-line-mode)
   (org-agenda-mode . hl-line-mode)
   :bind
-  ( :map global-map
-    ("C-c L" . org-store-link))
+  ( :map mode-specific-map
+    ("L" . org-store-link))
   ( :map global-leader-map
     ("n '" . org-capture-goto-last-stored)
     ("n a" . org-agenda)
@@ -839,7 +803,6 @@
   :config
   (make-directory (expand-cache-path "org-id/") :parent))
 
-
 (use-package paren
   :ensure nil
   :custom
@@ -868,10 +831,13 @@
 (use-package project
   :ensure nil
   :bind
+  ( :map global-leader-map
+    ("SPC" . project-switch-to-buffer))
   ( :map project-prefix-map
     ("SPC" . project-switch-to-buffer)
-    ("d" . project-find-dir)
-    ("D" . project-dired)
+    ("d" . project-dired)
+    ("y" . project-copy-directory)
+    ("D" . project-find-dir)
     ("K" . project-forget-project)
     ("Z" . project-forget-zombie-projects)
     ("P" . project-remember-projects-under))
@@ -885,6 +851,13 @@
     "Add COMMAND with NAME and KEY to `project-switch-commands' and keep sorted."
     (add-to-list 'project-switch-commands (if key (list command name key) (list command name)))
     (sort project-switch-commands (lambda (a b) (string< (cadr a) (cadr b)))))
+  (defun project-directory ()
+    "Current project directory."
+    (let ((project (project-current)))
+      (and project (project-root project))))
+  (defun project-copy-directory ()
+    (interactive)
+    (copy-value (project-directory)))
   :config
   (require 'vc-git) ;; project-find-file requires vc-git--program-version
   (setopt project-switch-commands
@@ -971,15 +944,14 @@
     ("s-w" . tab-bar-close-tab)
     ("s-{" . tab-bar-switch-to-prev-tab)
     ("s-}" . tab-bar-switch-to-next-tab)
-    :map goto-map
-    ("T" . tab-bar-mode)
     :map tab-bar-map
     ("SPC" . tab-bar-switch-to-tab)
+    ("T" . tab-bar-mode)
     ("t" . tab-bar-new-tab)
     ("0" . tab-bar-close-tab)
     ("1" . tab-bar-close-other-tabs)
     ("2" . tab-bar-new-tab)
-    ("T" . tab-bar-undo-close-tab)
+    ("U" . tab-bar-undo-close-tab)
     ("n" . tab-bar-switch-to-next-tab)
     ("p" . tab-bar-switch-to-prev-tab)
     ("N" . tab-bar-move-tab)
@@ -1049,12 +1021,34 @@
 (use-package window ;; display-buffer settings
   :ensure nil
   :defer
-  :bind
-  ( :map global-map
-    ("C-x w t"  . window-layout-transpose)
-    ("C-x w r"  . window-layout-rotate-clockwise)
-    ("C-x w f h"  . window-layout-flip-leftright)
-    ("C-x w f v"  . window-layout-flip-topdown))
+  :bind ( :map global-map
+          ([remap split-window-below] . split-window-below-and-jump)
+          ([remap split-window-right] . split-window-right-and-jump)
+          :map global-leader-map
+          ("0" . delete-window)
+          ("1" . delete-other-windows)
+          ("2" . split-window-below-and-jump)
+          ("3" . split-window-right-and-jump)
+          ("=" . balance-windows-area)
+          :map window-prefix-map
+          ("H" . windmove-swap-states-left)
+          ("J" . windmove-swap-states-down)
+          ("K" . windmove-swap-states-up)
+          ("L" . windmove-swap-states-right)
+          ("h" . windmove-left)
+          ("j" . windmove-down)
+          ("k" . windmove-up)
+          ("l" . windmove-right))
+  :init
+  (keymap-set goto-map "w" window-prefix-map)
+  (defun split-window-below-and-jump ()
+    "Split window below and jump to it."
+    (interactive)
+    (select-window (split-window-below)))
+  (defun split-window-right-and-jump ()
+    "Split window right and jump to it."
+    (interactive)
+    (select-window (split-window-right)))
   :config
   ;; terminal-like display settings
   (add-to-list 'display-buffer-alist
@@ -1074,11 +1068,11 @@
 (use-package which-func
   :ensure nil
   :custom
-  (which-func-update-delay 0.2)
+  (which-func-update-delay 1.0)
   (which-func-display 'mode-and-header)
   :bind
   ( :map global-leader-map
-    ("m )" . which-function-mode)))
+    ("m f" . which-function-mode)))
 
 (use-package which-key
   :defer 2
