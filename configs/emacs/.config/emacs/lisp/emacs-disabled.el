@@ -190,16 +190,6 @@
   :custom
   (dired-subtree-use-backgrounds nil))
 
-(use-package docker
-  :disabled ;; prefer terminal
-  :if (executable-find "docker")
-  :bind (:map global-leader-map
-              ("o k" . docker))
-  :config
-  (let ((column (seq-find (lambda (col) (equal (plist-get col :name) "Image"))
-                          docker-container-columns)))
-    (plist-put column :width 62)))
-
 (use-package easy-escape ;; better regexp visuals
   :disabled ;; not very helpful.
   :hook
@@ -400,16 +390,6 @@
     ("z o" . kirigami-open-fold)
     ("z z" . kirigami-toggle-fold)
     ("z ." . kirigami-open-fold-rec)))
-
-(use-package kubernetes
-  :disabled ;; prefer command line
-  :if (and (display-graphic-p) (executable-find "kubectl"))
-  :commands (kubernetes-overview)
-  :bind (:map global-leader-map
-              ("o K" . kubernetes-overview))
-  :custom
-  (kubernetes-poll-frequency 3600)
-  (kubernetes-redraw-frequency 3600))
 
 (use-package ligature
   :disabled ;; not easy to setup

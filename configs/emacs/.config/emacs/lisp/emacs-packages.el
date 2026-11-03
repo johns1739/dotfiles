@@ -216,6 +216,11 @@
   (with-eval-after-load 'meow
     (advice-add 'diff-hl-show-hunk-inline :before #'meow--switch-to-motion)))
 
+(use-package docker
+  :if (executable-find "docker")
+  :bind ( :map global-leader-map
+          ("o k" . docker)))
+
 (use-package dumb-jump
   :commands (dumb-jump-xref-activate)
   :custom
@@ -434,6 +439,14 @@
   :if (eq system-type 'darwin) ;; macos
   :config
   (keychain-refresh-environment))
+
+(use-package kubernetes
+  :if (executable-find "kubectl")
+  :bind ( :map global-leader-map
+          ("o K" . kubernetes-overview))
+  :custom
+  (kubernetes-poll-frequency 3600)
+  (kubernetes-redraw-frequency 3600))
 
 (use-package magit
   :commands (magit-project-status)
