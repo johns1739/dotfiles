@@ -71,7 +71,6 @@
     ("o d" . diff)
     ("o c" . calendar)
     ;; Copy/Paste
-    ("y d" . copy-project-directory)
     ("y F" . copy-absolute-file-name)
     ("y f" . copy-relative-file-name)
     ;; Settings (Look & Feel)
@@ -164,7 +163,6 @@
   (add-to-list 'default-frame-alist '(height . 40))
   (add-to-list 'default-frame-alist '(width . 120))
   (blink-cursor-mode -1)
-  (make-directory (expand-cache-path "auto-saves/") t)
   (modify-coding-system-alist 'file "" 'utf-8)
   (setq-default cursor-type 'bar)
   (setq-default display-fill-column-indicator-column 100)
@@ -180,7 +178,7 @@
   (window-divider-mode t))
 
 (use-package abbrev
-  :disabled ;; yasnippet much better better
+  :disabled ;; yasnippet much better
   :ensure nil
   :custom
   (save-abbrevs nil))
@@ -521,16 +519,15 @@
   :ensure nil
   :defer
   :bind ( :map ctl-x-5-map
-          ("C-x 5 SPC" . select-frame-by-name)
-          ("C-x 5 R" . set-frame-name))
+          ("SPC" . select-frame-by-name)
+          ("R" . set-frame-name))
   :config
   ;; Make C-x 5 o repeatable
   (defvar-keymap frame-repeat-map
     :repeat t
     "o" #'other-frame
     "n" #'make-frame
-    "d" #'delete-frame)
-  (put 'other-frame 'repeat-map 'frame-repeat-map))
+    "d" #'delete-frame))
 
 (use-package goto-addr
   :ensure nil
@@ -800,9 +797,7 @@
   :custom
   (org-id-track-globally t)
   (org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-  (org-id-locations-file (expand-cache-path "org-id/locations"))
-  :config
-  (make-directory (expand-cache-path "org-id/") :parent))
+  (org-id-locations-file (expand-cache-path "org-id/locations")))
 
 (use-package paren
   :ensure nil
@@ -844,6 +839,10 @@
     ("P" . project-remember-projects-under))
   :custom
   (project-list-file (expand-cache-path "projects"))
+  (project-switch-commands
+   '((project-dired "Dir" ?d)
+     (project-find-file "File" ?f)
+     (project-find-regexp "Regexp" ?g)))
   ;; Excellent for mono repos with multiple langs, makes Eglot happy
   ;; (project-vc-extra-root-markers '("Cargo.toml" "package.json" "go.mod"))
   :init
@@ -860,11 +859,7 @@
     (interactive)
     (copy-value (project-directory)))
   :config
-  (require 'vc-git) ;; project-find-file requires vc-git--program-version
-  (setopt project-switch-commands
-          '((project-dired "Dir" ?d)
-            (project-find-file "File" ?f)
-            (project-find-regexp "Regexp" ?g))))
+  (require 'vc-git)) ;; project-find-file requires vc-git--program-version
 
 (use-package recentf
   :ensure nil
@@ -989,27 +984,8 @@
   (treesit-enabled-modes t)
   (treesit-auto-install-grammar 'ask)
   (treesit-language-source-alist
-   '((bash "https://github.com/tree-sitter/tree-sitter-bash" "master" "src")
-     (css "https://github.com/tree-sitter/tree-sitter-css")
-     (dockerfile "https://github.com/camdencheek/tree-sitter-dockerfile" "main" "src")
-     (elixir "https://github.com/elixir-lang/tree-sitter-elixir" "main" "src")
-     (go "https://github.com/tree-sitter/tree-sitter-go")
-     (gomod "https://github.com/camdencheek/tree-sitter-go-mod")
-     (heex "https://github.com/phoenixframework/tree-sitter-heex")
-     (janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")
-     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-     (jsdoc "https://github.com/tree-sitter/tree-sitter-jsdoc" "master" "src")
-     (json "https://github.com/tree-sitter/tree-sitter-json")
-     (make "https://github.com/alemuller/tree-sitter-make")
-     (markdown "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown/src")
-     (markdown-inline "https://github.com/tree-sitter-grammars/tree-sitter-markdown" "split_parser" "tree-sitter-markdown-inline/src")
-     (python "https://github.com/tree-sitter/tree-sitter-python")
-     (ruby "https://github.com/tree-sitter/tree-sitter-ruby" "master" "src")
-     (rust "https://github.com/tree-sitter/tree-sitter-rust" "master" "src")
-     (toml "https://github.com/ikatyang/tree-sitter-toml" "master" "src")
-     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-     (yaml "https://github.com/tree-sitter-grammars/tree-sitter-yaml" "master" "src"))))
+   '((janet-simple "https://github.com/sogaiu/tree-sitter-janet-simple")
+     (make "https://github.com/alemuller/tree-sitter-make"))))
 
 (use-package uniquify
   :ensure nil

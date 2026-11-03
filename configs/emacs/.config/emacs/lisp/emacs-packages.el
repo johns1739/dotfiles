@@ -225,7 +225,6 @@
   :commands (dumb-jump-xref-activate)
   :custom
   (dumb-jump-prefer-searcher 'rg)
-  (xref-show-definitions-function #'consult-xref)
   :init
   ;; (setopt dumb-jump-debug t)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
@@ -331,7 +330,7 @@
     "Re-fontify buffer after timemachine revision change."
     (font-lock-ensure))
   (defun git-timemachine-toggle-meow-state ()
-    "Set meow to motion state when enterint timemachine."
+    "Set meow to motion state when entering timemachine."
     (if git-timemachine-mode
         (progn
           (meow-motion-mode 1)
@@ -511,7 +510,7 @@
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
     (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode))
       (add-to-list 'meow-expand-exclude-mode-list mode))
-    (meow-motion-overwrite-define-key ;; Deprecated: use meow-motion-define-key on new version 1.6
+    (meow-motion-define-key
      (cons "SPC" global-leader-map)
      '("M-SPC" . "H-SPC") ;; Rebind original space command (e.g., magit-status)
      '("<escape>" . ignore))
@@ -738,7 +737,7 @@
           (expand-file-name (format-time-string "%Y-%m-%d %H:%M:%S.wav")
                             whisper-recordings-dir)))
   (defun whisper-replay (&optional file)
-    "Replay the last temporary recoring."
+    "Replay the last temporary recording."
     (interactive (list
                   (when current-prefix-arg
                     (read-file-name "File: " whisper-recordings-dir))))
@@ -754,9 +753,7 @@
     (advice-add 'whisper--record-command :around #'whisper-sox-record-command))
   (with-eval-after-load 'ghostel
     (bind-keys :map ghostel-semi-char-mode-map
-               ("<f9>" . whisper-run)))
-  :config
-  (make-directory (expand-cache-path whisper-recordings-dir) t))
+               ("<f9>" . whisper-run))))
 
 (use-package writeroom-mode
   :bind ( :map global-leader-map

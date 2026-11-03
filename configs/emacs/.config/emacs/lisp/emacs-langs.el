@@ -62,15 +62,15 @@
     ;; options: file-group-num, line-group-num, col-group-num, type, hyperlink
     (add-to-list 'compilation-error-regexp-alist 'elixir-unit-test-target)
     (add-to-list 'compilation-error-regexp-alist-alist
-                 '(elixir-unit-test-target "     \\([^ ]+\\.exs\\):\\([0-9]+\\)" 1 2 nil 1 1))
+                 '(elixir-unit-test-target "     \\([^ ]+\\.exs\\):\\([0-9]+\\)" 1 2 nil 2 1))
     (add-to-list 'compilation-error-regexp-alist 'elixir-error-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-error-target "    error:.+
-[ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1))
+[ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 2 1))
     (add-to-list 'compilation-error-regexp-alist 'elixir-warning-target)
     (add-to-list 'compilation-error-regexp-alist-alist
                  '(elixir-warning-target "    warning:.+
-[ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 2 1))))
+[ ]+│[^└]+└─ \\([^:() ]+\\):\\([0-9]+\\):?\\([0-9]+\\)" 1 2 3 1 1))))
 
 (use-package elm-mode
   ;; Dependencies
@@ -115,19 +115,12 @@
 (use-package js
   :ensure nil
   :mode ("\\.jsx?\\'" . js-ts-mode)
-  :init
-  (defun js-ts-mode-setup ()
-    (setq indent-tabs-mode nil))
-  :hook
-  (js-ts-mode . js-ts-mode-setup)
   :custom
   (js-indent-level 2))
 
 (use-package json-ts-mode
   :ensure nil
-  :mode "\\.json\\'"
-  :hook
-  (json-ts-mode . js-ts-mode-setup))
+  :mode "\\.json\\'")
 
 (use-package markdown-mode
   :mode
@@ -247,12 +240,7 @@
 (use-package typescript-ts-mode
   :ensure nil
   :mode "\\.ts\\'"
-  :mode ("\\.tsx\\'" . tsx-ts-mode)
-  :hook
-  (typescript-ts-mode . js-ts-mode-setup)
-  (tsx-ts-mode . js-ts-mode-setup)
-  :custom
-  (typescript-indent-level 2))
+  :mode ("\\.tsx\\'" . tsx-ts-mode))
 
 (use-package vue-mode
   :disabled ;; mmm dependency looks ugly af

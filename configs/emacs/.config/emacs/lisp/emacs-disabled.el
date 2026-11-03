@@ -31,7 +31,7 @@
           (", T" . auto-dark-toggle-appearance)))
 
 (use-package auto-dim-other-buffers
-  :disabled ;; dimming doens't play nice with color theme.
+  :disabled ;; dimming doesn't play nice with color theme.
   :bind ( :map global-leader-map
           ("m D" . auto-dim-other-buffers-mode)))
 
@@ -326,7 +326,7 @@
   :disabled) ;; Long load time.
 
 (use-package gptel-agent
-  :disabled ;; prerfer aibo
+  :disabled ;; prefer aibo
   :vc ( :url "https://github.com/karthink/gptel-agent" :rev :newest)
   :bind
   ( :map global-leader-map
@@ -356,7 +356,7 @@
   (gptel-prompts-update)
   (gptel-prompts-add-update-watchers))
 
-(use-package gptel-vertex ;; Claude on Google Cloude Vertex AI
+(use-package gptel-vertex ;; Claude on Google Cloud Vertex AI
   :disabled ;; broken api
   :after gptel
   :config
