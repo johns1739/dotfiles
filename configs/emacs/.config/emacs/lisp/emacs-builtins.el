@@ -929,7 +929,7 @@
   :ensure nil
   :defer
   :init
-  (keymap-set goto-map "t" tab-bar-map)
+  (keymap-set global-leader-map "t" tab-bar-map)
   (defun tab-bar-tab-name-project ()
     (if (project-current)
         (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)
@@ -952,7 +952,7 @@
     ("p" . tab-bar-switch-to-prev-tab)
     ("N" . tab-bar-move-tab)
     ("P" . tab-bar-move-tab-backward)
-    ("r" . tab-bar-rename-tab)
+    ("R" . tab-bar-rename-tab)
     ("'" . tab-bar-switch-to-recent-tab)
     ("<touchscreen-begin>" . nil))
   :custom
@@ -1017,7 +1017,7 @@
           ("k" . windmove-up)
           ("l" . windmove-right))
   :init
-  (keymap-set goto-map "w" window-prefix-map)
+  (keymap-set global-leader-map "w" window-prefix-map)
   (defun split-window-below-and-jump ()
     "Split window below and jump to it."
     (interactive)
