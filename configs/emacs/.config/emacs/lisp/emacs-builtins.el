@@ -298,6 +298,7 @@
                  "^ +\\([A-Za-z0-9/][^ (]*\\):\\([1-9][0-9]*\\)" 1 2 nil nil 1)))
 
 (use-package custom
+  :ensure nil
   :bind ( :map global-leader-map
           (", t" . load-theme)))
 
