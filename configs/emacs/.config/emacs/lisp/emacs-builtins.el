@@ -125,7 +125,6 @@
   (history-length 1000)
   (ielm-history-file-name (expand-cache-path "ielm-history.eld")) ; EMACS-31
   (kill-region-dwim 'emacs-word)
-  (imenu-max-item-length 80)
   (multisession-directory (expand-cache-path "multisession/"))
   (inhibit-startup-message t)
   (initial-major-mode 'fundamental-mode)  ; default mode for the *scratch* buffer
@@ -621,6 +620,13 @@
   (icomplete-scroll t)
   :config
   (icomplete-vertical-mode))
+
+(use-package imenu
+  :ensure nil
+  :bind ( :map goto-map
+          ("i" . imenu))
+  :custom
+  (imenu-max-item-length 100))
 
 (use-package isearch
   :ensure nil

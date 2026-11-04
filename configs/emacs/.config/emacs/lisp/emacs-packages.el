@@ -689,7 +689,7 @@
       (add-to-list 'tmr-timer-finished-functions 'tmr-notification-notify))
   (tmr-mode-line-mode t))
 
-(use-package tts
+(use-package tts ;; text-to-speech
   ;; docker run -d --name kokoro-tts -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest
   :vc (:url "https://github.com/DiogoDoreto/emacs-tts")
   :bind ( :map global-leader-map

@@ -135,8 +135,8 @@
           ("M-;" . markdown-blockquote-region)
           ("M-H" . markdown-mark-block)
           ("C-c C-v" . markdown-toggle-view)
-          ("C-c C-n" . markdown-outline-next)
-          ("C-c C-p" . markdown-outline-previous)
+          ("M-n" . markdown-outline-next)
+          ("M-p" . markdown-outline-previous)
           ("C-c C-." . markdown-do))
   :custom
   (markdown-command "multimarkdown")
