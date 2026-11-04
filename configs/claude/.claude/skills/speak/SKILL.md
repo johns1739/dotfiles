@@ -13,8 +13,8 @@ allowed-tools: Bash(fish -c say-kokoro:*)
    - Remove fenced code blocks entirely.
    - Remove markdown symbols: headings, bold, italics, backticks, bullets, table syntax.
    - Replace links with their link text.
-   - Keep the wording otherwise unchanged.
    - Reduce file paths to just the basename.
+   - Keep the wording otherwise unchanged.
 
 3. Pipe the text to `say-kokoro` in the background with a quoted heredoc:
    ```
