@@ -297,6 +297,8 @@
 
 (use-package custom
   :ensure nil
+  :hook
+  (custom-mode . hl-line-mode)
   :bind ( :map global-leader-map
           (", t" . load-theme)))
 
@@ -827,8 +829,6 @@
 (use-package project
   :ensure nil
   :bind
-  ( :map global-leader-map
-    ("SPC" . project-switch-to-buffer))
   ( :map project-prefix-map
     ("SPC" . project-switch-to-buffer)
     ("d" . project-dired)
