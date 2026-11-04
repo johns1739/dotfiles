@@ -1,6 +1,7 @@
 function say-kokoro --description "Speak text via local Kokoro"
     set -l model kokoro
     set -l voice bf_isabella
+    # set -l voice af_heart # Graded the best.
     set -l format mp3
     set -l port 8880
     set -l text "$argv"

@@ -770,6 +770,7 @@
     (when whisper-send-to-claude
       (setq whisper-send-to-claude nil)
       (claude-code-ide-send-prompt (string-trim (buffer-string)))
+      (claude-code-ide-send-prompt "/speak")
       (erase-buffer)))
   (defvar whisper-recordings-dir (expand-cache-path "whisper/recordings/")
     "Whisper directory to store recordings.")
