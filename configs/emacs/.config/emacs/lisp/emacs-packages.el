@@ -744,6 +744,7 @@
 (use-package whisper ;; Speech-To-Text; STT
   :vc (:url "https://github.com/natrys/whisper.el" :branch "master")
   :bind ( :map global-map
+          ("<f8>" . whisper-claude)
           ("<f9>" . whisper-run))
   :custom
   (whisper-install-directory (expand-cache-path "whisper/install/"))
@@ -754,7 +755,22 @@
   (whisper-use-threads (1- (num-processors)))
   :hook
   (whisper-before-transcription . whisper-set-recording-filename)
+  (whisper-before-transcription . whisper-set-send-to-claude)
+  (whisper-after-transcription . whisper-send-transcription-to-claude)
   :init
+  (defvar whisper-send-to-claude nil
+    "Whether the current transcription is sent to Claude Code.")
+  (defun whisper-claude ()
+    "Record speech and send the transcription to Claude Code."
+    (interactive)
+    (whisper-run))
+  (defun whisper-set-send-to-claude ()
+    (setq whisper-send-to-claude (eq this-command 'whisper-claude)))
+  (defun whisper-send-transcription-to-claude ()
+    (when whisper-send-to-claude
+      (setq whisper-send-to-claude nil)
+      (claude-code-ide-send-prompt (string-trim (buffer-string)))
+      (erase-buffer)))
   (defvar whisper-recordings-dir (expand-cache-path "whisper/recordings/")
     "Whisper directory to store recordings.")
   (defun whisper-set-recording-filename ()
