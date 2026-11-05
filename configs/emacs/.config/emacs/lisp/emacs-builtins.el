@@ -840,8 +840,8 @@
     ("d" . project-dired)
     ("y" . project-copy-directory)
     ("D" . project-find-dir)
-    ("K" . project-forget-project)
-    ("Z" . project-forget-zombie-projects)
+    ("Z" . project-forget-project)
+    ("z" . project-forget-zombie-projects)
     ("P" . project-remember-projects-under))
   :custom
   (project-list-file (expand-cache-path "projects"))

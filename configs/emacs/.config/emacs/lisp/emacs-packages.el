@@ -30,10 +30,36 @@
 
 (use-package bufferlo
   :demand
-  :bind ( :map global-leader-map
-          ("SPC" . bufferlo-switch-to-buffer))
+  :bind ( :map global-map
+          ([remap tab-bar-close-tab] . bufferlo-tab-close-kill-buffers)
+          :map global-leader-map
+          ("SPC" . bufferlo-switch-to-buffer)
+          :prefix-map bufferlo-prefix-map
+          :prefix "C-c b"
+          ("SPC" . bufferlo-switch-to-buffer)
+          ("b" . bufferlo-ibuffer)
+          ("o" . bufferlo-ibuffer-orphans)
+          ("k" . bufferlo-remove)
+          ("c" . bufferlo-clear)
+          ("K" . bufferlo-kill-buffers)
+          ("O)" . bufferlo-kill-orphan-buffers)
+          ("f" . bufferlo-find-buffer-switch)
+          ("s" . bufferlo-bookmark-tab-save)
+          ("S" . bufferlo-bookmark-tab-save-current)
+          ("l" . bufferlo-bookmark-tab-load)
+          ("L" . bufferlo-bookmark-tab-load-current)
+          ("B" . bufferlo-bookmarks-save-interactive)
+          ("O" . bufferlo-bookmarks-load-interactive))
+  :custom
+  (bufferlo-mode-line nil)
+  (bufferlo-kill-modified-buffers-policy 'retain-modified-kill-without-file-name)
+  (bufferlo-bookmark-tab-save-on-close 'if-current)
+  (bufferlo-bookmarks-save-at-emacs-exit 'all)
+  (bufferlo-bookmarks-auto-save-interval 120)
   :config
-  (bufferlo-mode))
+  (with-eval-after-load 'consult
+    (setq consult-buffer-list-function #'bufferlo-local-buffers))Z
+  (bufferlo-mode 1))
 
 (use-package cape ;; Cape provides Completion At Point Extensions
   :init
