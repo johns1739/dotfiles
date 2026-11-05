@@ -655,16 +655,6 @@
   :config
   (global-undo-tree-mode 1))
 
-(use-package vertico-posframe
-  :disabled ;; gets in the way
-  :if (display-graphic-p) ;; does not work in terminal
-  :after vertico
-  :bind ( :map global-leader-map
-          ("m V" . vertico-posframe-mode))
-  :custom
-  (vertico-posframe-poshandler #'posframe-poshandler-frame-bottom-center)
-  (vertico-posframe-min-width 80))
-
 (use-package vterm
   :disabled
   ;; prefer ghostel

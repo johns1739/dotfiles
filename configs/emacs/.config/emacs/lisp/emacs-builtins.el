@@ -164,8 +164,6 @@
   (blink-cursor-mode -1)
   (modify-coding-system-alist 'file "" 'utf-8)
   (setq-default cursor-type 'bar)
-  (setq-default display-fill-column-indicator-column 100)
-  (setq-default fill-column 100)
   (setq-default indent-tabs-mode nil) ;; use spaces instead of tabs
   ;; (desktop-save-mode t) ;; CPU heavy when loading many buffers under LSP
   (electric-indent-mode t)
@@ -359,6 +357,8 @@
   ( :map global-leader-map
     ("m c" . display-fill-column-indicator-mode))
   :custom
+  (fill-column 100)
+  (display-fill-column-indicator-column fill-column)
   (display-fill-column-indicator-warning nil))
 
 (use-package doc-view

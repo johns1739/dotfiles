@@ -654,6 +654,9 @@
 (use-package mpv ;; media player https://mpv.io/
   :vc (:url "https://github.com/kljohann/mpv.el" :branch "master")
   :defer
+  :init
+  (with-eval-after-load 'org
+    (add-to-list 'org-file-apps '("\\.wav\\'" . (lambda (file _link) (mpv-play file)))))
   :custom
   (mpv-default-options '("--audio-channels=stereo")))
 
@@ -719,6 +722,14 @@
   :config
   (vertico-mode))
 
+(use-package vertico-posframe
+  :after vertico
+  :bind ( :map global-leader-map
+          ("m V" . vertico-posframe-mode))
+  :custom
+  (vertico-posframe-poshandler #'posframe-poshandler-frame-center)
+  (vertico-posframe-min-width fill-column))
+
 (use-package visual-fill-column ;; wrap at fill-column boundary.
   :defer
   ;; (visual-fill-column-center-text t) ;; Conflicts & hides diff-hl's margins
@@ -750,6 +761,7 @@
   (whisper-install-directory (expand-cache-path "whisper/install/"))
   (whisper-model "medium.en")
   (whisper-language "en")
+  (whisper-recording-timeout 60)
   (whisper-return-cursor 'start)
   (whisper-return-cursor-to-start nil) ;; allows me to keep typing
   (whisper-use-threads (1- (num-processors)))
@@ -757,6 +769,7 @@
   (whisper-before-transcription . whisper-set-recording-filename)
   (whisper-before-transcription . whisper-set-send-to-claude)
   (whisper-after-transcription . whisper-send-transcription-to-claude)
+  (whisper-after-transcription . whisper-append-org-recording-link)
   :init
   (defvar whisper-send-to-claude nil
     "Whether the current transcription is sent to Claude Code.")
@@ -778,6 +791,15 @@
     (setq whisper--temp-file
           (expand-file-name (format-time-string "%Y-%m-%d %H:%M:%S.wav")
                             whisper-recordings-dir)))
+  (defun whisper-append-org-recording-link ()
+    "Append an org link to the recording when inserting into an org buffer."
+    (when (and (not whisper-send-to-claude) ; do not add audio link when sending to claude from an org buffer.
+               (with-current-buffer (marker-buffer whisper--marker)
+                 (derived-mode-p 'org-mode)))
+      (goto-char (point-max))
+      (insert (format " [[file:%s][%s]]"
+                      (abbreviate-file-name whisper--temp-file)
+                      (file-name-nondirectory whisper--temp-file)))))
   (defun whisper-replay (&optional file)
     "Replay the last temporary recording."
     (interactive (list
