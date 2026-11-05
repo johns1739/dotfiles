@@ -28,12 +28,12 @@
   :config
   (beacon-mode 1))
 
-(use-package beframe
-  :bind-keymap ("C-c b" . beframe-prefix-map)
+(use-package bufferlo
+  :demand
   :bind ( :map global-leader-map
-          ("SPC" . beframe-switch-buffer))
+          ("SPC" . bufferlo-switch-to-buffer))
   :config
-  (beframe-mode 1))
+  (bufferlo-mode))
 
 (use-package cape ;; Cape provides Completion At Point Extensions
   :init

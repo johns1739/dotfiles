@@ -35,6 +35,15 @@
   :bind ( :map global-leader-map
           ("m D" . auto-dim-other-buffers-mode)))
 
+(use-package beframe
+  :demand
+  :disabled ;; Use bufferlo for tab-context spaces instead of frame.
+  :bind-keymap ("C-c b" . beframe-prefix-map)
+  :bind ( :map global-leader-map
+          ("SPC" . beframe-switch-buffer))
+  :config
+  (beframe-mode 1))
+
 (use-package buffer-name-relative ;; Add project's name next to buffer names.
   :disabled ;; project already prefixes proj name on colliding buffer names.
   :after project
