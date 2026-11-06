@@ -827,6 +827,22 @@
         "trim" "0" ,(number-to-string whisper-recording-timeout))))
   (when (executable-find "rec")
     (advice-add 'whisper--record-command :around #'whisper-sox-record-command))
+  (defvar whisper-recording-overlay nil
+    "Overlay marking the transcription insertion point while recording.")
+  (defun whisper-recording-indicator ()
+    (if (char-displayable-p ?🎤)
+        "🎤"
+      (propertize "⦿" 'face 'error)))
+  (defun whisper-toggle-recording-overlay (command phase)
+    (when (eq phase 'recording)
+      (when (overlayp whisper-recording-overlay)
+        (delete-overlay whisper-recording-overlay)
+        (setq whisper-recording-overlay nil))
+      (when (and (eq command :show) (marker-buffer whisper--marker))
+        (setq whisper-recording-overlay
+              (make-overlay whisper--marker whisper--marker (marker-buffer whisper--marker)))
+        (overlay-put whisper-recording-overlay 'before-string (whisper-recording-indicator)))))
+  (advice-add 'whisper--setup-mode-line :after #'whisper-toggle-recording-overlay)
   (with-eval-after-load 'ghostel
     (bind-keys :map ghostel-semi-char-mode-map
                ("<f9>" . whisper-run))))
