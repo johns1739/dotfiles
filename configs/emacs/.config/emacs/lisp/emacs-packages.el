@@ -29,27 +29,13 @@
   (beacon-mode 1))
 
 (use-package bufferlo
+  ;; Notes: ibuffer, "/ p" removes "local buffers filter", "/ L" turns on the orphan filter.
   :demand
   :bind ( :map global-map
           ([remap tab-bar-close-tab] . bufferlo-tab-close-kill-buffers)
           :map global-leader-map
           ("SPC" . bufferlo-switch-to-buffer)
-          :prefix-map bufferlo-prefix-map
-          :prefix "C-c b"
-          ("SPC" . bufferlo-switch-to-buffer)
-          ("b" . bufferlo-ibuffer)
-          ("o" . bufferlo-ibuffer-orphans)
-          ("k" . bufferlo-remove)
-          ("c" . bufferlo-clear)
-          ("K" . bufferlo-kill-buffers)
-          ("O)" . bufferlo-kill-orphan-buffers)
-          ("f" . bufferlo-find-buffer-switch)
-          ("s" . bufferlo-bookmark-tab-save)
-          ("S" . bufferlo-bookmark-tab-save-current)
-          ("l" . bufferlo-bookmark-tab-load)
-          ("L" . bufferlo-bookmark-tab-load-current)
-          ("B" . bufferlo-bookmarks-save-interactive)
-          ("O" . bufferlo-bookmarks-load-interactive))
+          ("C-SPC" . bufferlo-find-buffer-switch))
   :custom
   (bufferlo-mode-line nil)
   (bufferlo-kill-modified-buffers-policy 'retain-modified-kill-without-file-name)
@@ -58,7 +44,7 @@
   (bufferlo-bookmarks-auto-save-interval 120)
   :config
   (with-eval-after-load 'consult
-    (setq consult-buffer-list-function #'bufferlo-local-buffers))Z
+    (setq consult-buffer-list-function #'bufferlo-local-buffers))
   (bufferlo-mode 1))
 
 (use-package cape ;; Cape provides Completion At Point Extensions
