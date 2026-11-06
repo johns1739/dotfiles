@@ -40,7 +40,9 @@
   (emacs-lisp-mode . electric-pair-local-mode)
   :bind
   ( :map emacs-lisp-mode-map
-    ("C-c t" . ielm)))
+    ("C-c t" . ielm)
+    ("C-c d" . edebug-defun)
+    ("C-c D" . edebug-remove-instrumentation)))
 
 (use-package elixir-ts-mode
   :ensure nil

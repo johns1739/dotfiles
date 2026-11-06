@@ -116,6 +116,8 @@
   (delete-pair-push-mark t)                   ; EMACS-31 for easy subsequent C-x C-x
   (display-time-default-load-average nil)
   (duplicate-line-final-position 1)
+  (debugger-stack-frame-as-list t)
+  (eval-expression-print-length nil)
   (fast-but-imprecise-scrolling t)
   (resize-mini-windows 'grow-only)
   (frame-resize-pixelwise t)
@@ -369,18 +371,25 @@
 
 (use-package edebug
   :ensure nil
+  :custom
+  (edebug-print-length nil)
+  (edebug-print-level nil)
+  (edebug-unwrap-results t)
+  (edebug-save-displayed-buffer-points t)
+  (edebug-sit-on-break nil)
+  (edebug-initial-mode 'step)
   :bind
   ( :map edebug-mode-map
-    ("SPC" . edebug-step-mode)
-    ("." . edebug-goto-here)
     ("c" . edebug-go-mode)
+    ("C" . edebug-Go-nonstop-mode)
     ("n" . edebug-step-mode)
     ("N" . edebug-next-mode)
     ("s" . edebug-step-in)
-    ("l" . edebug-where)
-    ("i" . edebug-pop-to-backtrace)
     ("u" . edebug-step-out)
-    ("U" . edebug-view-outside)
+    ("b" . edebug-set-breakpoint)
+    ("." . edebug-goto-here)
+    ("w" . edebug-where)
+    ("d" . edebug-pop-to-backtrace)
     ("'" . edebug-bounce-point)))
 
 (use-package ediff
