@@ -1,7 +1,6 @@
 function __kokoro_play --description 'Synthesize and play text via local Kokoro'
     set -l model kokoro
-    set -l voice bf_isabella
-    # set -l voice af_heart # Graded the best.
+    set -l voice bf_isabella # af_heart is graded A
     set -l format mp3
     set -l port 8880
     set -l output (mktemp -t kokoro)
@@ -16,21 +15,21 @@ function __kokoro_play --description 'Synthesize and play text via local Kokoro'
     return $result
 end
 
-function __kokoro_acquire_lock --argument-names lock
-    if mkdir $lock 2>/dev/null
-        echo $fish_pid >$lock/pid
-        return 0
-    end
+function __kokoro_attempt_lock --argument-names lock
+    mkdir $lock 2>/dev/null; and echo $fish_pid >$lock/pid
+end
+
+function __kokoro_remove_stale_lock --argument-names lock
     set -l owner (cat $lock/pid 2>/dev/null)
-    if test -n "$owner"; and kill -0 $owner 2>/dev/null
+    if test -z "$owner"; or kill -0 $owner 2>/dev/null
         return 1
     end
     rm -rf $lock
-    if mkdir $lock 2>/dev/null
-        echo $fish_pid >$lock/pid
-        return 0
-    end
-    return 1
+end
+
+function __kokoro_acquire_lock --argument-names lock
+    __kokoro_remove_stale_lock $lock
+    __kokoro_attempt_lock $lock
 end
 
 function say-kokoro --description 'Speak text via local Kokoro, queueing while playback is busy'
@@ -45,18 +44,18 @@ function say-kokoro --description 'Speak text via local Kokoro, queueing while p
     set -l lock $state_directory/lock
     mkdir -p $queue
 
-    printf '%s' $text >(mktemp $queue/item.XXXXXX)
+    printf '%s' $text >(mktemp $queue/item.XXXXXX) # No newline, unlike echo
 
     while __kokoro_acquire_lock $lock
         while true
             set -l items (ls -1tr $queue 2>/dev/null)
             test (count $items) -eq 0; and break
-            set -l batch
+            set -l saying
             for item in $items
-                set -a batch (cat $queue/$item | string collect)
+                set -a saying (cat $queue/$item | string collect)
                 rm -f $queue/$item
             end
-            __kokoro_play (string join \n\n -- $batch | string collect)
+            __kokoro_play (string join \n\n -- $saying | string collect)
         end
         rm -rf $lock
         test (count (ls -1 $queue 2>/dev/null)) -eq 0; and break
