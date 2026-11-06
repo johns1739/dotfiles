@@ -1055,7 +1055,7 @@
                '((or (derived-mode . comint-mode)
                      (derived-mode . ghostel-mode)
                      (derived-mode . eshell-mode))
-                 (display-buffer-reuse-mode-window display-buffer-at-bottom)
+                 (display-buffer-reuse-mode-window)
                  (inhibit-same-window . t))))
 
 (use-package wdired
