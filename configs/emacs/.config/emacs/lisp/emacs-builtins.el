@@ -949,6 +949,11 @@
     (if (project-current)
         (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)
       (tab-bar-tab-name-current)))
+  (defun tab-bar-tab-name-format-hints-current-star (name tab index)
+    (cond
+     ((not tab-bar-tab-hints) name)
+     ((eq (car tab) 'current-tab) (concat "* " name))
+     (t (concat (format "%d " index) name))))
   :bind
   ( :map global-map
     ("s-t" . tab-bar-new-tab)
@@ -982,6 +987,10 @@
   (tab-bar-new-button-show nil)
   (tab-bar-new-button nil)
   (tab-bar-tab-name-function 'tab-bar-tab-name-project)
+  (tab-bar-tab-name-format-functions '(tab-bar-tab-name-format-hints-current-star
+                                       tab-bar-tab-name-format-close-button
+                                       tab-bar-tab-name-format-face
+                                       tab-bar-tab-name-format-mouse-face))
   (tab-bar-format '(tab-bar-format-tabs-groups
                     tab-bar-separator
                     tab-bar-format-align-right
