@@ -360,7 +360,6 @@
     ("m c" . display-fill-column-indicator-mode))
   :custom
   (fill-column 100)
-  (display-fill-column-indicator-column fill-column)
   (display-fill-column-indicator-warning nil))
 
 (use-package doc-view
