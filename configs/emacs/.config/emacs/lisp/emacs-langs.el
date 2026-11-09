@@ -152,10 +152,9 @@
           ((derived-mode-p 'markdown-mode)      (markdown-view-mode)))))
 
 (use-package pdf-tools
-  :defer
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :config
-  (pdf-tools-install))
+  (pdf-tools-install :no-ask nil :no-error))
 
 (use-package python
   ;; Example .dir-locals.el to configure compile command.
