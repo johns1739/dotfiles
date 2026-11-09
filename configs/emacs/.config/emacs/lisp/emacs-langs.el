@@ -152,15 +152,12 @@
           ((derived-mode-p 'markdown-mode)      (markdown-view-mode)))))
 
 (use-package pdf-tools
+  :defer
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :config
   (pdf-tools-install :no-ask nil :no-error))
 
 (use-package python
-  ;; Example .dir-locals.el to configure compile command.
-  ;; ((python-mode . ((eval . (if (and (buffer-file-name)
-  ;;                                   (string-match-p "test_.*\\.py" (file-name-nondirectory (buffer-file-name))))
-  ;;                              (setq-local compile-command (concat "pytest " (relative-file-name))))))))
   :ensure nil
   :mode ("\\.py\\'" . python-ts-mode)
   :interpreter ("python" . python-ts-mode)
