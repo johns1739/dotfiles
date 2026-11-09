@@ -80,12 +80,12 @@ CONFIGS := claude emacs fish ghostty git psql
 FOLDED_CONFIGS := emacs-snippets # To fold means to symlink to folder.
 
 install-configs:
-	stow --no-folding --dir configs --target ~ $(CONFIGS)
-	stow --dir configs --target ~ $(FOLDED_CONFIGS)
+	stow --no-folding $(CONFIGS)
+	stow $(FOLDED_CONFIGS)
 
 uninstall-configs:
-	stow --dir configs --target ~ --delete $(FOLDED_CONFIGS)
-	stow --no-folding --dir configs --target ~ --delete $(CONFIGS)
+	stow --delete $(FOLDED_CONFIGS)
+	stow --no-folding --delete $(CONFIGS)
 
 default-shell-fish:
 	grep -qxF "$$(command -v fish)" /etc/shells || command -v fish | sudo tee -a /etc/shells
