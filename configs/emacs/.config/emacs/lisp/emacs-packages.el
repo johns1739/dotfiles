@@ -250,7 +250,7 @@
 (use-package elfeed
   :commands (elfeed)
   :bind ( :map global-leader-map
-          ("o f" . elfeed))
+          ("o n" . elfeed)) ;; news
   :custom
   (elfeed-db-directory (expand-cache-path "elfeed"))
   (elfeed-feeds
