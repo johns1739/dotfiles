@@ -523,8 +523,6 @@
     (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode))
       (add-to-list 'meow-expand-exclude-mode-list mode))
     (meow-motion-define-key
-     (cons "SPC" global-leader-map)
-     '("M-SPC" . "H-SPC") ;; Rebind original space command (e.g., magit-status)
      '("<escape>" . ignore))
     (setq meow-paren-keymap (make-keymap))
     (meow-define-state paren
@@ -746,7 +744,9 @@
   :defer
   ;; (visual-fill-column-center-text t) ;; Conflicts & hides diff-hl's margins
   :init
-  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline))
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-for-vline)
+  :custom
+  (split-window-preferred-function #'visual-fill-column-split-window-sensibly))
 
 (use-package visual-replace
   :bind (([remap query-replace] . visual-replace)

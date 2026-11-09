@@ -1026,7 +1026,7 @@
           ("k" . windmove-up)
           ("l" . windmove-right))
   :init
-  (keymap-set global-leader-map "w" window-prefix-map)
+  (keymap-set goto-map "w" window-prefix-map) ;; best ergonomic binding g-w.
   (defun split-window-below-and-jump ()
     "Split window below and jump to it."
     (interactive)
