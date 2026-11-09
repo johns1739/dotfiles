@@ -356,12 +356,10 @@
   ( :map global-leader-map
     ("m G" . golden-ratio-mode))
   :custom
-  (golden-ratio-auto-scale nil) ;; yields wider buffers, better
+  (golden-ratio-max-width (* fill-column 1.5))
   :config
-  (with-eval-after-load 'gptel-aibo
-    (add-to-list 'golden-ratio-extra-commands 'gptel-aibo))
-  (with-eval-after-load 'ace-window
-    (add-to-list 'golden-ratio-extra-commands 'ace-window)))
+  (dolist (command '(gptel-aibo ace-window))
+    (add-to-list 'golden-ratio-extra-commands command)))
 
 (use-package gptel ;; ai llm copilot chatgpt
   :custom
@@ -691,15 +689,17 @@
 (use-package tmr
   :bind ( :map global-leader-map
           ("o t" . tmr-tabulated-view))
+  :init
+  (defun tmr-speak-finished-timer (timer)
+    "Speak the description of finished TIMER, or a default message, via Kokoro."
+    (let ((description (tmr--timer-description timer)))
+      (tts-read (concat "Time is up!  " description))))
   :custom
   (tmr-timer-finished-functions
    '(tmr-print-message-for-finished-timer
+     tmr-speak-finished-timer
      tmr-acknowledge-minibuffer))
   :config
-  (if (executable-find "ffplay")
-      (add-to-list 'tmr-timer-finished-functions 'tmr-sound-play))
-  (if (featurep 'dbusbind)
-      (add-to-list 'tmr-timer-finished-functions 'tmr-notification-notify))
   (tmr-mode-line-mode t))
 
 (use-package tts ;; text-to-speech
