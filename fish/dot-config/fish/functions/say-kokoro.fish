@@ -3,10 +3,11 @@ function __kokoro_play --description 'Synthesize and play text via local Kokoro'
     set -l voice bf_isabella # af_heart is graded A
     set -l format mp3
     set -l port 8880
+    set -l speed 1.1
     set -l output (mktemp -t kokoro)
 
-    jq -n --arg model $model --arg voice $voice --arg format $format --arg input "$argv" \
-        '{model:$model, voice:$voice, response_format:$format, input:$input}' \
+    jq -n --arg model $model --arg voice $voice --arg format $format --argjson speed $speed --arg input "$argv" \
+        '{model:$model, voice:$voice, response_format:$format, speed:$speed, input:$input}' \
         | curl -sf http://localhost:$port/v1/audio/speech -H "Content-Type: application/json" -d @- -o $output
     and afplay $output
     set -l result $status
