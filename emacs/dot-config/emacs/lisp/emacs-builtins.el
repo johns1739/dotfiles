@@ -93,9 +93,7 @@
     (";" . scratch-buffer)
     ("d" . dired-jump)
     ("f" . find-file)
-    ("h" . eldoc)
-    ("n" . next-buffer)
-    ("p" . previous-buffer))
+    ("h" . eldoc))
   :custom
   (undo-limit (* 13 160000))
   (undo-strong-limit (* 13 240000))
@@ -226,12 +224,7 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k g" . recompile)
-    ("k G" . async-shell-command-rerun)
-    ("k k" . compile-dwim)
-    ("k K" . compile)
-    ("k n" . next-error)
-    ("k p" . previous-error)
+    ("k c" . compile)
     ("k RET" . send-region-to-process))
   :custom
   (ansi-color-for-compilation-mode t)
@@ -250,18 +243,6 @@
   (compilation-mode . hl-line-mode)
   (compilation-mode . visual-line-mode)
   :init
-  (with-eval-after-load 'project
-    (project-add-switch-command 'compile-dwim "Compile" "k"))
-  (defun async-shell-command-rerun ()
-    "Run last async shell command."
-    (interactive)
-    (let ((async-shell-command-buffer 'confirm-kill-process))
-      (async-shell-command (car shell-command-history))))
-  (defun compile-dwim ()
-    (interactive)
-    (if (project-current)
-        (call-interactively #'project-compile)
-      (call-interactively #'compile)))
   (defvar send-region-to-process-target nil
     "Buffer that `send-region-to-process' last sent a region to.")
   (defun send-region-to-process (arg beg end)
@@ -845,10 +826,15 @@
   :bind
   ( :map project-prefix-map
     ("SPC" . project-switch-to-buffer)
+    ("R" . project-remember-project)
+    ("r" . project-remember-projects-under)
+    ("%" . project-query-replace-regexp)
     ("d" . project-dired)
     ("y" . project-copy-directory)
     ("D" . project-find-dir)
-    ("Z" . project-forget-project)
+    ("K" . project-kill-buffers)
+    ("U" . project-forget-project)
+    ("u" . project-forget-projects-under)
     ("z" . project-forget-zombie-projects)
     ("P" . project-remember-projects-under))
   :custom
