@@ -152,6 +152,7 @@
           ((derived-mode-p 'markdown-mode)      (markdown-view-mode)))))
 
 (use-package pdf-tools
+  :defer
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :config
   (pdf-tools-install))
