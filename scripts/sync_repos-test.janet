@@ -1,6 +1,5 @@
 (use judge)
 (use sh)
-(array/push module/paths [":cur:/:all:" :source |(string/has-prefix? "." $)])
 (import ./sync_repos)
 (use ./utils/fixtures)
 
@@ -16,8 +15,8 @@
   (def repo (git-repo "sync-repo"))
   (push-upstream-commit repo "upstream")
   (test-stdout (sync_repos/sync-repo repo) `
-    
-    Syncing /private/tmp/judge-scripts/sync-repo/clone ... 
+
+    Syncing /private/tmp/judge-scripts/sync-repo/clone ...
     git FETCH /private/tmp/judge-scripts/sync-repo/clone
     git FAST-FORWARD /private/tmp/judge-scripts/sync-repo/clone
     DONE
@@ -29,8 +28,8 @@
   (push-upstream-commit repo "upstream")
   (commit repo "local")
   (test-stdout (sync_repos/sync-repo repo) `
-    
-    Syncing /private/tmp/judge-scripts/sync-repo-diverged/clone ... 
+
+    Syncing /private/tmp/judge-scripts/sync-repo-diverged/clone ...
     git FETCH /private/tmp/judge-scripts/sync-repo-diverged/clone
     git FAST-FORWARD /private/tmp/judge-scripts/sync-repo-diverged/clone
     FAILED
@@ -40,22 +39,22 @@
   (def repo (git-repo "sync-repo-skips"))
   (git* repo "switch" "-q" "-c" "1-feature")
   (test-stdout (sync_repos/sync-repo repo) `
-    
-    Syncing /private/tmp/judge-scripts/sync-repo-skips/clone ... 
+
+    Syncing /private/tmp/judge-scripts/sync-repo-skips/clone ...
     SKIP on feature branch: 1-feature
   `)
   (test-stdout (sync_repos/sync-repo root) `
-    
-    Syncing /private/tmp/judge-scripts ... 
+
+    Syncing /private/tmp/judge-scripts ...
     SKIP not a git directory: /private/tmp/judge-scripts
   `))
 
 (deftest "main"
   (test-stdout (sync_repos/main "sync_repos" root root) `
-    
-    Syncing /private/tmp/judge-scripts ... 
+
+    Syncing /private/tmp/judge-scripts ...
     SKIP not a git directory: /private/tmp/judge-scripts
-    
-    Syncing /private/tmp/judge-scripts ... 
+
+    Syncing /private/tmp/judge-scripts ...
     SKIP not a git directory: /private/tmp/judge-scripts
   `))

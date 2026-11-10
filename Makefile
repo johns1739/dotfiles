@@ -96,10 +96,10 @@ install-janet-deps:
 	jpm install https://github.com/CFiggers/janet-lsp
 
 install-scripts:
-	jpm quickbin scripts/sync_repos $(BIN_DIR)/sync_repos
-	jpm quickbin scripts/clean_repos $(BIN_DIR)/clean_repos
-	jpm quickbin scripts/open_issues $(BIN_DIR)/open_issues
-	jpm quickbin scripts/open_issues $(BIN_DIR)/speak_parser
+	jpm quickbin scripts/sync_repos.janet $(BIN_DIR)/sync_repos
+	jpm quickbin scripts/clean_repos.janet $(BIN_DIR)/clean_repos
+	jpm quickbin scripts/open_issues.janet $(BIN_DIR)/open_issues
+	jpm quickbin scripts/speak_parser.janet $(BIN_DIR)/speak_parser
 	rm -f $(BIN_DIR)/*.c
 
 uninstall-scripts:

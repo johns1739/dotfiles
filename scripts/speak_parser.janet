@@ -59,6 +59,17 @@
       :segment (some (if-not (+ "/" :s) 1))
       :directory (* :segment "/")
       :url (if (to "://") (<- (any 1)))
+      :extension (* :a (any :w))
+      :line-number (* ":" (some :d))
+      :file-ending (* "." :extension (any :line-number) -1)
+      :filename (* (<- (some (if-not (+ "/" :s :file-ending) 1)))
+                   "."
+                   (<- :extension)
+                   (any :line-number)
+                   -1)
+      :file (/ (* (<- (any :opener)) (? "/") (any :directory) :filename)
+               ,(fn [opener basename extension]
+                  (string opener "file " basename " " (string/ascii-upper extension))))
       :rooted-path (* (<- (any :opener))
                       (? (+ "~" ".." "."))
                       "/"
@@ -68,6 +79,7 @@
       :nested-path (* (<- (any :opener)) (at-least 2 :directory) (<- :segment) -1)
       :file-path (* (<- (any :opener)) :directory (<- (if (to ".") :segment)) -1)
       :main (+ :url
+               :file
                (% (+ :rooted-path :nested-path :file-path))
                (<- (any 1)))}))
 

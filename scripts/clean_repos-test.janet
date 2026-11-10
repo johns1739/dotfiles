@@ -1,6 +1,5 @@
 (use judge)
 (use sh)
-(array/push module/paths [":cur:/:all:" :source |(string/has-prefix? "." $)])
 (import ./clean_repos)
 (use ./utils/fixtures)
 

@@ -1,5 +1,5 @@
 (use judge)
-(import ./parser)
+(import ./speak_parser :as parser)
 
 (test (parser/plain-text "# Heading\n## Sub heading\n") "Heading\nSub heading\n")
 
@@ -29,11 +29,17 @@
   "snake_case_name and 2 * 3 * 4 and a*b*c\n")
 
 (test (parser/plain-text "Edit ~/a/b.txt ./c/d /e/f g/h/i j/k.md and/or\n")
-  "Edit b.txt d f i k.md and/or\n")
+  "Edit file b TXT d f i file k MD and/or\n")
 
 (test (parser/plain-text "Open (~/a/b) or https://example.com/a/b.html\n")
   "Open (b) or https://example.com/a/b.html\n")
 
-(test (parser/plain-text "- See `scripts/parser.janet`\n") "See parser.janet\n")
+(test (parser/plain-text "- See `scripts/parser.janet`\n") "See file parser JANET\n")
 
 (test (parser/plain-text "two  spaces\n\nblank above\n") "two  spaces\n\nblank above\n")
+
+(test (parser/plain-text "abc.txt") "file abc TXT\n")
+(test (parser/plain-text "a/b/c/abc.txt") "file abc TXT\n")
+(test (parser/plain-text "`a/b/c/abc.txt`") "file abc TXT\n")
+(test (parser/plain-text "`a/b/c/abc.txt:123`") "file abc TXT\n")
+(test (parser/plain-text "`a/b/c/abc.txt:123:4`") "file abc TXT\n")

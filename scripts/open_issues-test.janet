@@ -1,5 +1,4 @@
 (use judge)
-(array/push module/paths [":cur:/:all:" :source |(string/has-prefix? "." $)])
 (import ./open_issues)
 
 (def issues
