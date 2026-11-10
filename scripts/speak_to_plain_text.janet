@@ -81,21 +81,83 @@
   [word]
   (first (peg/match path-grammar word)))
 
-(def reference-word-grammar
+(def identifier-grammar
+  (peg/compile
+    ~{:upper (range "AZ")
+      :lower (range "az")
+      :segment (<- (+ (* :upper (some :lower))
+                      (some (* :upper (not :lower)))
+                      (some :lower)
+                      (some :d)))
+      :main (* (any (+ :segment "_")) -1)}))
+
+(defn spoken-segment
+  [segment]
+  (if (= "id" (string/ascii-lower segment))
+    "ID"
+    segment))
+
+(defn spoken-identifier
+  [word]
+  (if-let [segments (peg/match identifier-grammar word)]
+    (string/join (map spoken-segment segments) " ")
+    word))
+
+(def symbol-word-grammar
   (peg/compile
     ~(+ (to (set "()[]{}:&=<>$#@;\\|^%*+!?"))
         (* (to :a) (to :d))
         (* (to :d) (to :a)))))
 
-(defn reference-word?
+(defn symbol-word?
   [word]
   (and (= word (path-basename word))
-       (peg/match reference-word-grammar word)))
+       (peg/match symbol-word-grammar word)))
 
-(defn inline-reference
+(def code-punctuation-grammar
+  (peg/compile
+    ~(% (any (+ (/ (+ "===" "==") " EQUALS ")
+                (/ (set "()[]{}:&;") " ")
+                (<- 1))))))
+
+(defn symbol-code-words
+  [word]
+  (if (string/find "@" word)
+    [word]
+    (string/split "." word)))
+
+(defn spoken-symbol-word
+  [word]
+  (if (peg/find :d word)
+    word
+    (spoken-identifier word)))
+
+(defn spoken-symbol-code
   [code]
-  (when (some reference-word? (string/split " " code))
-    "Inline Reference"))
+  (when (some symbol-word? (string/split " " code))
+    (as-> (first (peg/match code-punctuation-grammar code)) words
+          (string/split " " words)
+          (mapcat symbol-code-words words)
+          (filter |(not (empty? $)) words)
+          (map spoken-symbol-word words)
+          (string "`" (string/join words " ") "`"))))
+
+(defn folder-name
+  [word]
+  (when (and (string/find "/" word)
+             (not (string/find "://" word))
+             (not (string/has-prefix? "file " (path-basename word))))
+    (last (filter |(not (empty? $)) (string/split "/" word)))))
+
+(defn spoken-code-word
+  [word]
+  (if-let [folder (folder-name word)]
+    (string "FOLDER " folder)
+    (spoken-identifier word)))
+
+(defn spoken-code
+  [code]
+  (string/join (map spoken-code-word (string/split " " code)) " "))
 
 (def inline-grammar
   (peg/compile
@@ -104,8 +166,8 @@
                "(" (any (if-not ")" 1)) ")")
       :code-content (any (if-not "`" 1))
       :code (* "`"
-               (+ (cmt (<- :code-content) ,inline-reference)
-                  (sub :code-content :inline))
+               (+ (cmt (<- :code-content) ,spoken-symbol-code)
+                  (cmt (<- :code-content) ,spoken-code))
                "`")
       :bold-star (* "**" (sub (some (if-not "**" 1)) :inline) "**")
       :bold-underscore (* "__" (sub (some (if-not "__" 1)) :inline) "__")
@@ -153,7 +215,13 @@
     ~{:trailing-newlines (<- (* (some "\n") -1))
       :paragraph-break (/ (<- (at-least 2 "\n")) ,|(string " [pause:1s]" $))
       :line-break (/ (<- "\n") " [pause:0.5s]\n")
-      :main (% (any (+ :trailing-newlines :paragraph-break :line-break (<- 1))))}))
+      :colon-break (/ (* ":" (<- (some (set " \t"))) (not "\n") (not -1))
+                      ,|(string ": [pause:0.2s]" $))
+      :main (% (any (+ :trailing-newlines
+                       :paragraph-break
+                       :line-break
+                       :colon-break
+                       (<- 1))))}))
 
 (defn plain-text
   [text]
