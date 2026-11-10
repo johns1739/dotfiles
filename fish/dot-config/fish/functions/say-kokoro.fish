@@ -90,7 +90,17 @@ function say-kokoro --description 'Speak text via local Kokoro, queueing while p
     if test -z "$text"
         read -z text
     end
+
+    set -l history_directory ~/.kokoro-histories
+    set -l history_prefix $history_directory/(date +%Y%m%d-%H%M%S)
+    if test -e $history_prefix-input.md
+        set history_prefix $history_prefix-$fish_pid
+    end
+    mkdir -p $history_directory
+    printf '%s' $text >$history_prefix-input.md
+
     set text (printf '%s\n' $text | __kokoro_plain_text | string collect)
+    printf '%s' $text >$history_prefix-plain.txt
     test -z "$text"; and return 0
 
     set -l state_directory (string replace -r '/$' '' -- $TMPDIR)/kokoro-say
