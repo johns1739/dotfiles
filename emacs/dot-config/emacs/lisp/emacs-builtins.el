@@ -95,6 +95,7 @@
     ("f" . find-file)
     ("h" . eldoc))
   :custom
+  (fill-column 100)
   (undo-limit (* 13 160000))
   (undo-strong-limit (* 13 240000))
   (undo-outer-limit (* 13 24000000))
@@ -340,7 +341,6 @@
   ( :map global-leader-map
     ("m c" . display-fill-column-indicator-mode))
   :custom
-  (fill-column 100)
   (display-fill-column-indicator-warning nil))
 
 (use-package doc-view
@@ -1025,6 +1025,8 @@
           ("j" . windmove-down)
           ("k" . windmove-up)
           ("l" . windmove-right))
+  :custom
+  (split-width-threshold (* fill-column 2))
   :init
   (keymap-set goto-map "w" window-prefix-map) ;; best ergonomic binding g-w.
   (defun split-window-below-and-jump ()

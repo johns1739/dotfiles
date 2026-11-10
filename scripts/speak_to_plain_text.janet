@@ -43,8 +43,19 @@
     ~{:opener (set "(\"'[")
       :segment (some (if-not (+ "/" :s) 1))
       :directory (* :segment "/")
-      :url (if (to "://") (<- (any 1)))
       :closer (set "\"'.,;:!?)]")
+      :label (some (+ :w "-"))
+      :host (* :label (any (* "." :label)))
+      :url (/ (* (<- (any :opener))
+                 (some (+ :w (set "+.-")))
+                 "://"
+                 (? "www.")
+                 (<- :host)
+                 (any (if-not (* (any :closer) -1) 1))
+                 (<- (any :closer))
+                 -1)
+              ,(fn [opener host closers] (string opener "URL " host closers)))
+      :unparsed-url (if (to "://") (<- (any 1)))
       :line-number (* ":" (some :d))
       :short-extension (* (<- :a) (any :line-number) (constant "") -1)
       :long-extension (* (<- (* :a (some :w))) (any :line-number) (<- (any :closer)) -1)
@@ -61,6 +72,7 @@
       :nested-path (* (<- (any :opener)) (at-least 2 :directory) (<- :segment) -1)
       :file-path (* (<- (any :opener)) :directory (<- (if (to ".") :segment)) -1)
       :main (+ :url
+               :unparsed-url
                :file
                (% (+ :rooted-path :nested-path :file-path))
                (<- (any 1)))}))
@@ -78,7 +90,6 @@
 (defn reference-word?
   [word]
   (and (= word (path-basename word))
-       (not (string/find "://" word))
        (peg/match reference-word-grammar word)))
 
 (defn inline-reference

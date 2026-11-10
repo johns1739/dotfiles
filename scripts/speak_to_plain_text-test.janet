@@ -32,7 +32,7 @@
   "Edit file b TXT d f i file k MD and/or\n")
 
 (test (parser/plain-text "Open (~/a/b) or https://example.com/a/b.html\n")
-  "Open or https://example.com/a/b.html\n")
+  "Open or URL example.com\n")
 
 (test (parser/plain-text "- See `scripts/parser.janet`\n") "See file parser JANET\n")
 
@@ -49,7 +49,7 @@
 (test (parser/plain-text "before\n```\nunclosed fence\n") "before\nCode Block\n")
 (test (parser/plain-text "Read [the guide](docs/guide.md)\n") "Read the guide\n")
 (test (parser/plain-text "e.g. i.e. 2.5 v1.2 and/or\n") "e.g. i.e. 2.5 v1.2 and/or\n")
-(test (parser/plain-text "https://example.com/a/b.txt\n") "https://example.com/a/b.txt\n")
+(test (parser/plain-text "https://example.com/a/b.txt\n") "URL example.com\n")
 (test (parser/plain-text "~/.config/fish/config.fish\n") "file config FISH\n")
 (test (parser/plain-text "a.b.txt abc.tar.gz\n") "file a.b TXT file abc.tar GZ\n")
 (test (parser/plain-text "README.MD snake_case.rb:10\n") "file README MD file snake_case RB\n")
@@ -84,5 +84,10 @@
 (test (parser/plain-text "use `foo()` or `a == b` here\n") "use Inline Reference or Inline Reference here\n")
 (test (parser/plain-text "password `Xk9mP2q` and `git@github.com`\n") "password Inline Reference and Inline Reference\n")
 (test (parser/plain-text "run `ls -la` in `~/a/b`\n") "run ls -la in b\n")
-(test (parser/plain-text "open `https://example.com/a?b=1`\n") "open https://example.com/a?b=1\n")
 (test (parser/plain-text "plain Xk9mP2q and a==b\n") "plain Xk9mP2q and a==b\n")
+
+(test (parser/plain-text "open `https://example.com/a?b=1`\n") "open URL example.com\n")
+(test (parser/plain-text "open `https://www.example.com/a?b=1`\n") "open URL example.com\n")
+(test (parser/plain-text "see http://sub.example.org:8080/x, \"https://a.io\".\n") "see URL sub.example.org, \"URL a.io\".\n")
+(test (parser/plain-text "open https://example.com/a?b=1\n") "open URL example.com\n")
+(test (parser/plain-text "open https://www.example.com/a?b=1\n") "open URL example.com\n")
