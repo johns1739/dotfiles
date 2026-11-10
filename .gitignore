@@ -6,3 +6,4 @@ custom*
 /.claude/
 /configs/emacs/.config/emacs/emacs-mcp-stdio.sh
 build/
+*.tested
