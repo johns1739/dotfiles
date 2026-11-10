@@ -244,6 +244,7 @@
   (compilation-mode . hl-line-mode)
   (compilation-mode . visual-line-mode)
   :init
+  ;; TODO: Send region to process target not working with a ghostel terminal
   (defvar send-region-to-process-target nil
     "Buffer that `send-region-to-process' last sent a region to.")
   (defun send-region-to-process (arg beg end)
@@ -583,6 +584,7 @@
   ( :map global-leader-map
     ("m h" . hl-line-mode)))
 
+;; TODO: Human readable-size not registering.
 (use-package ibuffer
   :ensure nil
   :bind

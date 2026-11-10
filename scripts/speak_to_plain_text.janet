@@ -32,11 +32,21 @@
   {"ai" true "app" true "biz" true "co" true "com" true "dev" true "edu" true
    "gov" true "info" true "io" true "me" true "net" true "org" true})
 
+(def basename-word-grammar
+  (peg/compile
+    ~(any (+ (* (at-least 4 :d) (not (if-not (set "_-") 1)))
+             (<- (some (if-not (set "_-") 1)))
+             (set "_-")))))
+
+(defn spoken-basename
+  [basename]
+  (string/join (peg/match basename-word-grammar basename) " "))
+
 (defn spoken-filename
   [opener directories basename extension closers]
   (unless (and (empty? directories)
                (top-level-domains (string/ascii-lower extension)))
-    (string opener "file " basename " " (string/ascii-upper extension) closers)))
+    (string opener "file " (spoken-basename basename) " " (string/ascii-upper extension) closers)))
 
 (def path-grammar
   (peg/compile
@@ -215,12 +225,9 @@
     ~{:trailing-newlines (<- (* (some "\n") -1))
       :paragraph-break (/ (<- (at-least 2 "\n")) ,|(string " [pause:1s]" $))
       :line-break (/ (<- "\n") " [pause:0.5s]\n")
-      :colon-break (/ (* ":" (<- (some (set " \t"))) (not "\n") (not -1))
-                      ,|(string ": [pause:0.2s]" $))
       :main (% (any (+ :trailing-newlines
                        :paragraph-break
                        :line-break
-                       :colon-break
                        (<- 1))))}))
 
 (defn plain-text
