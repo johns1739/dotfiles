@@ -19,7 +19,7 @@
 BIN_DIR := ~/.local/bin
 
 PACKAGES += autoconf			 # Generates configure scripts for builds
-PACKAGES += bat                  # TODO
+PACKAGES += bat                  # cat clone with syntax highlighting
 PACKAGES += btop				 # Interactive resource monitor
 PACKAGES += direnv				 # Loads per-directory environment variables
 BREW_PACKAGES += fd				 # Fast, user-friendly alternative to find
@@ -99,12 +99,14 @@ install-scripts:
 	jpm quickbin scripts/sync_repos $(BIN_DIR)/sync_repos
 	jpm quickbin scripts/clean_repos $(BIN_DIR)/clean_repos
 	jpm quickbin scripts/open_issues $(BIN_DIR)/open_issues
+	jpm quickbin scripts/open_issues $(BIN_DIR)/speak_parser
 	rm -f $(BIN_DIR)/*.c
 
 uninstall-scripts:
 	rm -f $(BIN_DIR)/sync_repos
 	rm -f $(BIN_DIR)/clean_repos
 	rm -f $(BIN_DIR)/open_issues
+	rm -f $(BIN_DIR)/speak_parser
 
 reinstall-scripts: uninstall-scripts install-scripts
 
