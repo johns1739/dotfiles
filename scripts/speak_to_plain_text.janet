@@ -148,6 +148,13 @@
     (array/slice lines-without-carriage-returns 0 -2)
     lines-without-carriage-returns))
 
+(def pause-grammar
+  (peg/compile
+    ~{:trailing-newlines (<- (* (some "\n") -1))
+      :paragraph-break (/ (<- (at-least 2 "\n")) ,|(string " [pause:1s]" $))
+      :line-break (/ (<- "\n") " [pause:0.5s]\n")
+      :main (% (any (+ :trailing-newlines :paragraph-break :line-break (<- 1))))}))
+
 (defn plain-text
   [text]
   (var in-fence false)
@@ -167,7 +174,7 @@
       in-fence nil
       (peg/match skipped-line-grammar line) nil
       (array/push output (string (plain-line line) "\n"))))
-  (string/join output))
+  (first (peg/match pause-grammar (string/join output))))
 
 (defn main
   [&]

@@ -1,17 +1,17 @@
 (use judge)
 (import ./speak_to_plain_text :as parser)
 
-(test (parser/plain-text "# Heading\n## Sub heading\n") "Heading\nSub heading\n")
+(test (parser/plain-text "# Heading\n## Sub heading\n") "Heading [pause:0.5s]\nSub heading\n")
 
-(test (parser/plain-text "- first\n* second\n+ third\n") "first\nsecond\nthird\n")
+(test (parser/plain-text "- first\n* second\n+ third\n") "first [pause:0.5s]\nsecond [pause:0.5s]\nthird\n")
 
 (test (parser/plain-text "before\n```fish\necho hi\n```\n~~~\nskipped\n~~~\nafter\n")
-  "before\nCode Block\nCode Block\nafter\n")
+  "before [pause:0.5s]\nCode Block [pause:0.5s]\nCode Block [pause:0.5s]\nafter\n")
 
 (test (parser/plain-text "| Name | Age |\n|:-----|----:|\n| Ann  | 30  |\n")
   "Table Block\n")
 
-(test (parser/plain-text "above\n---\n* * *\n___\nbelow\n") "above\nbelow\n")
+(test (parser/plain-text "above\n---\n* * *\n___\nbelow\n") "above [pause:0.5s]\nbelow\n")
 
 (test (parser/plain-text "See [docs](https://example.com) and ![logo](logo.png)\n")
   "See docs and logo\n")
@@ -36,7 +36,7 @@
 
 (test (parser/plain-text "- See `scripts/parser.janet`\n") "See file parser JANET\n")
 
-(test (parser/plain-text "two  spaces\n\nblank above\n") "two  spaces\n\nblank above\n")
+(test (parser/plain-text "two  spaces\n\nblank above\n") "two  spaces [pause:1s]\n\nblank above\n")
 
 (test (parser/plain-text "abc.txt") "file abc TXT\n")
 (test (parser/plain-text "a/b/c/abc.txt") "file abc TXT\n")
@@ -46,7 +46,7 @@
 
 (test (parser/plain-text "") "")
 (test (parser/plain-text "  - nested bullet\n") "nested bullet\n")
-(test (parser/plain-text "before\n```\nunclosed fence\n") "before\nCode Block\n")
+(test (parser/plain-text "before\n```\nunclosed fence\n") "before [pause:0.5s]\nCode Block\n")
 (test (parser/plain-text "Read [the guide](docs/guide.md)\n") "Read the guide\n")
 (test (parser/plain-text "e.g. i.e. 2.5 v1.2 and/or\n") "e.g. i.e. 2.5 v1.2 and/or\n")
 (test (parser/plain-text "https://example.com/a/b.txt\n") "URL example.com\n")
@@ -73,10 +73,10 @@
 (test (parser/plain-text "example.com, google.ai and www.example.org.\n") "example.com, google.ai and www.example.org.\n")
 (test (parser/plain-text "a/b.io\n") "file b IO\n")
 (test (parser/plain-text "> > - nested quote\n") "nested quote\n")
-(test (parser/plain-text "abc\r\ndef.txt\r\n") "abc\nfile def TXT\n")
+(test (parser/plain-text "abc\r\ndef.txt\r\n") "abc [pause:0.5s]\nfile def TXT\n")
 (test (parser/plain-text "|A|B|C|\n") "Table Block\n")
-(test (parser/plain-text "before\n| A | B |\n|---|---|\n| 1 | 2 |\n| 3 | 4 |\nafter\n") "before\nTable Block\nafter\n")
-(test (parser/plain-text "| A |\n\n| B |\n") "Table Block\n\nTable Block\n")
+(test (parser/plain-text "before\n| A | B |\n|---|---|\n| 1 | 2 |\n| 3 | 4 |\nafter\n") "before [pause:0.5s]\nTable Block [pause:0.5s]\nafter\n")
+(test (parser/plain-text "| A |\n\n| B |\n") "Table Block [pause:1s]\n\nTable Block\n")
 (test (parser/plain-text "  | indented | table |  \n") "Table Block\n")
 (test (parser/plain-text "a | b and |pipe\n") "a | b and |pipe\n")
 
@@ -91,3 +91,6 @@
 (test (parser/plain-text "see http://sub.example.org:8080/x, \"https://a.io\".\n") "see URL sub.example.org, \"URL a.io\".\n")
 (test (parser/plain-text "open https://example.com/a?b=1\n") "open URL example.com\n")
 (test (parser/plain-text "open https://www.example.com/a?b=1\n") "open URL example.com\n")
+(test (parser/plain-text "a\nb\n\nc\n") "a [pause:0.5s]\nb [pause:1s]\n\nc\n")
+(test (parser/plain-text "a\n\n\n\nb") "a [pause:1s]\n\n\n\nb\n")
+(test (parser/plain-text "single line\n\n\n") "single line\n\n\n")
