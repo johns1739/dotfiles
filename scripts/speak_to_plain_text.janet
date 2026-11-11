@@ -224,10 +224,8 @@
   (peg/compile
     ~{:trailing-newlines (<- (* (some "\n") -1))
       :paragraph-break (/ (<- (at-least 2 "\n")) ,|(string " [pause:1s]" $))
-      :line-break (/ (<- "\n") " [pause:0.5s]\n")
       :main (% (any (+ :trailing-newlines
                        :paragraph-break
-                       :line-break
                        (<- 1))))}))
 
 (defn plain-text
