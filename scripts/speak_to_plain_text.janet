@@ -1,76 +1,141 @@
 #!/usr/bin/env janet
 
-(def fence-grammar
-  (peg/compile
-    ~(* (any :s) (+ "```" "~~~"))))
-
-(def table-row-grammar
-  (peg/compile
-    ~(* (any :s) "|" (to (* "|" (any :s) -1)))))
-
-(def skipped-line-grammar
-  (peg/compile
-    ~{:table-separator (* (any :s)
-                          (? "|")
-                          (some (* (any :s) (? ":") (some "-") (? ":") (any :s) "|"))
-                          (any :s) (? ":") (any "-") (? ":") (any :s)
-                          -1)
-      :horizontal-rule (* (any :s) (at-least 3 (* (set "-*_") (any :s))) -1)
-      :main (+ :table-separator :horizontal-rule)}))
-
-(def block-grammar
-  (peg/compile
-    ~{:blockquote (some (* (any :s) ">" (any :s)))
-      :heading (* (any :s) (between 1 6 "#") (some :s))
-      :bullet (* (any :s) (set "-*+") (some :s))
-      :main (* (? :blockquote)
-               (? :heading)
-               (? :bullet)
-               (<- (any 1)))}))
-
 (def top-level-domains
-  {"ai" true "app" true "biz" true "co" true "com" true "dev" true "edu" true
-   "gov" true "info" true "io" true "me" true "net" true "org" true})
+  (tabseq [domain :in ["ai" "app" "biz" "co" "com" "dev" "edu"
+                       "gov" "info" "io" "me" "net" "org"]]
+    domain true))
 
-(def basename-word-grammar
-  (peg/compile
-    ~(any (+ (* (at-least 4 :d) (not (if-not (set "_-") 1)))
-             (<- (some (if-not (set "_-") 1)))
-             (set "_-")))))
+(defn join-words
+  [words]
+  (string/join words " "))
 
-(defn spoken-basename
-  [basename]
-  (string/join (peg/match basename-word-grammar basename) " "))
+(defn non-empty
+  [text]
+  (unless (empty? text)
+    text))
 
 (defn spoken-filename
   [opener directories basename extension closers]
   (unless (and (empty? directories)
                (top-level-domains (string/ascii-lower extension)))
-    (string opener "file " (spoken-basename basename) " " (string/ascii-upper extension) closers)))
+    (string opener
+            (join-words (filter non-empty ["file" basename (string/ascii-upper extension)]))
+            closers)))
 
-(def path-grammar
+(defn spoken-segment
+  [segment]
+  (if (= "id" (string/ascii-lower segment))
+    "ID"
+    segment))
+
+(defn backticked
+  [words]
+  (string "`" (join-words words) "`"))
+
+(def plain-text-grammar
   (peg/compile
-    ~{:opener (set "(\"'[")
+    ~{:line-content (any (if-not (* (any "\r") (+ "\n" -1)) 1))
+      :line-end (* (any "\r") (+ "\n" -1))
+      :line (* (not -1) :line-content :line-end)
+
+      :fence-line (sub :line-content (* (any :s) (+ "```" "~~~")))
+      :fence-block (* :fence-line :line-end
+                      (any (* (not :fence-line) :line))
+                      (? (* :fence-line :line-end))
+                      (constant "Code Block"))
+
+      :table-row (* (sub :line-content (* (any :s) "|" (to (* "|" (any :s) -1))))
+                    :line-end)
+      :table-block (* (some :table-row) (constant "Table Block"))
+
+      :table-separator (* (any :s)
+                          (? "|")
+                          (some (* (any :s) (? ":") (some "-") (? ":") (any :s) "|"))
+                          (any :s) (? ":") (any "-") (? ":") (any :s)
+                          -1)
+      :horizontal-rule (* (any :s) (at-least 3 (* (set "-*_") (any :s))) -1)
+      :skipped-line (* (not :table-row)
+                       (sub :line-content (+ :table-separator :horizontal-rule))
+                       :line-end)
+
+      :blockquote (some (* (any :s) ">" (any :s)))
+      :heading (* (any :s) (between 1 6 "#") (some :s))
+      :bullet (* (any :s) (set "-*+") (some :s))
+      :leading-aside (* :parens (any :s))
+      :rendered-line (% (sub :line-content
+                             (* (? :blockquote) (? :heading) (? :bullet) (? :leading-aside)
+                                :inline)))
+      :text-line (* (not -1) (not :table-row) (not :fence-line) (not :skipped-line)
+                    :rendered-line
+                    :line-end)
+      :spoken-line (cmt :text-line ,non-empty)
+      :silent-line (drop (cmt :text-line ,|(empty? $)))
+
+      :spoken-block (+ :table-block :fence-block :spoken-line)
+      :blank-run (* (any :skipped-line) :silent-line (any (+ :skipped-line :silent-line)))
+      :pause (? (* (if (drop (* :blank-run :spoken-block)) 0)
+                   (constant " [pause:1s]")))
+      :leading-pause (? (* (if (drop (* (any :skipped-line) :silent-line :blank-run :spoken-block)) 0)
+                           (constant " [pause:1s]")))
+      :output-line (+ :skipped-line
+                      (* :spoken-block :pause (constant "\n"))
+                      (* :silent-line (constant "\n")))
+
+      :word-character (+ :w "_")
+      :space-word (some (if-not " " 1))
+      :link (* (? "!") "[" (sub (any (if-not "]" 1)) :inline) "]"
+               "(" (any (if-not ")" 1)) ")")
+      :code (* "`" (sub (any (if-not "`" 1)) :spoken-code) "`")
+      :bold-star (* "**" (sub (some (if-not "**" 1)) :inline) "**")
+      :bold-underscore (* "__" (sub (some (if-not "__" 1)) :inline) "__")
+      :parens (* "(" (any (+ :parens (if-not ")" 1))) ")")
+      :aside (* (any :s) :parens)
+      :nested (+ :link :aside :code :bold-star :bold-underscore)
+      :italic-star-close (* (not (look -1 :s)) "*" (not (+ :word-character "*")))
+      :italic-star (* (not (look -1 (+ :word-character "*")))
+                      "*"
+                      (not :s)
+                      (sub (drop (some (if-not :italic-star-close (+ :nested 1)))) :inline)
+                      :italic-star-close)
+      :italic-underscore-close (* (not (look -1 :s)) "_" (not :word-character))
+      :italic-underscore (* (not (look -1 :word-character))
+                            "_"
+                            (not :s)
+                            (sub (drop (some (if-not :italic-underscore-close (+ :nested 1)))) :inline)
+                            :italic-underscore-close)
+      :path-word (* (not (look -1 (if-not (+ :s (set "*_`[]()\"'")) 1)))
+                    (sub :space-word
+                         (* (if (* (any :opener) (not (to (set "`[(")))) 0)
+                            :path-transform)))
+      :token (+ :nested :italic-star :italic-underscore :path-word (<- 1))
+      :inline (any :token)
+
+      :opener (set "(\"'[")
+      :closer (set "\"'.,;:!?)]")
       :segment (some (if-not (+ "/" :s) 1))
       :directory (* :segment "/")
-      :closer (set "\"'.,;:!?)]")
       :label (some (+ :w "-"))
       :host (* :label (any (* "." :label)))
-      :url (/ (* (<- (any :opener))
-                 (some (+ :w (set "+.-")))
-                 "://"
-                 (? "www.")
-                 (<- :host)
-                 (any (if-not (* (any :closer) -1) 1))
-                 (<- (any :closer))
-                 -1)
-              ,(fn [opener host closers] (string opener "URL " host closers)))
-      :unparsed-url (if (to "://") (<- (any 1)))
+      :url (* (<- (any :opener))
+              (some (+ :w (set "+.-")))
+              "://"
+              (? "www.")
+              (constant "URL ")
+              (<- :host)
+              (any (if-not (* (any :closer) -1) 1))
+              (<- (any :closer))
+              -1)
       :line-number (* ":" (some :d))
       :short-extension (* (<- :a) (any :line-number) (constant "") -1)
       :long-extension (* (<- (* :a (some :w))) (any :line-number) (<- (any :closer)) -1)
       :file-ending (* "." (+ :short-extension :long-extension))
-      :filename (* (<- (some (if-not (+ "/" :s :file-ending) 1))) :file-ending)
+      :basename-separator (set "_-")
+      :basename-word (some (if-not :basename-separator 1))
+      :large-number (* (any "0") (at-least 5 :d) (not :basename-word))
+      :spoken-basename (/ (group (any (+ :large-number (<- :basename-word) :basename-separator)))
+                          ,join-words)
+      :filename (* (sub (some (if-not (+ "/" :s :file-ending) 1)) :spoken-basename)
+                   :file-ending)
       :file (cmt (* (<- (any :opener)) (<- (* (? "/") (any :directory))) :filename)
                  ,spoken-filename)
       :rooted-path (* (<- (any :opener))
@@ -81,174 +146,60 @@
                       -1)
       :nested-path (* (<- (any :opener)) (at-least 2 :directory) (<- :segment) -1)
       :file-path (* (<- (any :opener)) :directory (<- (if (to ".") :segment)) -1)
-      :main (+ :url
-               :unparsed-url
-               :file
-               (% (+ :rooted-path :nested-path :file-path))
-               (<- (any 1)))}))
+      :path-transform (+ :url :file :rooted-path :nested-path :file-path)
 
-(defn path-basename
-  [word]
-  (first (peg/match path-grammar word)))
-
-(def identifier-grammar
-  (peg/compile
-    ~{:upper (range "AZ")
+      :upper (range "AZ")
       :lower (range "az")
-      :segment (<- (+ (* :upper (some :lower))
-                      (some (* :upper (not :lower)))
-                      (some :lower)
-                      (some :d)))
-      :main (* (any (+ :segment "_")) -1)}))
+      :identifier-segment (/ (<- (+ (* :upper (some :lower))
+                                    (some (* :upper (not :lower)))
+                                    (some :lower)
+                                    (some :d)))
+                             ,spoken-segment)
+      :identifier (/ (group (* (any (+ :identifier-segment "_")) -1)) ,join-words)
+      :folder (if (to "/")
+                (* (constant "FOLDER ")
+                   (thru (* (<- (some (if-not "/" 1))) (any "/") -1))))
+      :code-word (+ :url
+                    (if (to "://") (<- (any 1)))
+                    :file
+                    :folder
+                    :identifier
+                    (<- (any 1)))
+      :plain-code (any (+ (<- " ") (sub :space-word :code-word)))
 
-(defn spoken-segment
-  [segment]
-  (if (= "id" (string/ascii-lower segment))
-    "ID"
-    segment))
+      :symbol-character (set "()[]{}:&=<>$#@;\\|^%*+!?")
+      :symbol-word (* (not :path-transform)
+                      (+ (to :symbol-character)
+                         (* (to :a) (to :d))
+                         (* (to :d) (to :a))))
+      :has-symbol-word (* (any (* (any " ") (not (sub :space-word :symbol-word)) :space-word))
+                          (any " ")
+                          (sub :space-word :symbol-word))
+      :equals (+ "===" "==")
+      :symbol-delimiter (+ :equals (set "()[]{}:&; "))
+      :symbol-piece (+ (if (to :d) (<- (any 1)))
+                       :identifier
+                       (<- (any 1)))
+      :symbol-chunk (+ (if (to "@") (<- (any 1)))
+                       (any (+ (some ".") (sub (some (if-not "." 1)) :symbol-piece))))
+      :symbol-code (/ (group (any (+ (* :equals (constant "EQUALS"))
+                                     (set "()[]{}:&; ")
+                                     (sub (some (if-not :symbol-delimiter 1)) :symbol-chunk))))
+                      ,backticked)
+      :spoken-code (+ (if (drop :has-symbol-word) :symbol-code) :plain-code)
 
-(defn spoken-identifier
-  [word]
-  (if-let [segments (peg/match identifier-grammar word)]
-    (string/join (map spoken-segment segments) " ")
-    word))
-
-(def symbol-word-grammar
-  (peg/compile
-    ~(+ (to (set "()[]{}:&=<>$#@;\\|^%*+!?"))
-        (* (to :a) (to :d))
-        (* (to :d) (to :a)))))
-
-(defn symbol-word?
-  [word]
-  (and (= word (path-basename word))
-       (peg/match symbol-word-grammar word)))
-
-(def code-punctuation-grammar
-  (peg/compile
-    ~(% (any (+ (/ (+ "===" "==") " EQUALS ")
-                (/ (set "()[]{}:&;") " ")
-                (<- 1))))))
-
-(defn symbol-code-words
-  [word]
-  (if (string/find "@" word)
-    [word]
-    (string/split "." word)))
-
-(defn spoken-symbol-word
-  [word]
-  (if (peg/find :d word)
-    word
-    (spoken-identifier word)))
-
-(defn spoken-symbol-code
-  [code]
-  (when (some symbol-word? (string/split " " code))
-    (as-> (first (peg/match code-punctuation-grammar code)) words
-          (string/split " " words)
-          (mapcat symbol-code-words words)
-          (filter |(not (empty? $)) words)
-          (map spoken-symbol-word words)
-          (string "`" (string/join words " ") "`"))))
-
-(defn folder-name
-  [word]
-  (when (and (string/find "/" word)
-             (not (string/find "://" word))
-             (not (string/has-prefix? "file " (path-basename word))))
-    (last (filter |(not (empty? $)) (string/split "/" word)))))
-
-(defn spoken-code-word
-  [word]
-  (if-let [folder (folder-name word)]
-    (string "FOLDER " folder)
-    (spoken-identifier word)))
-
-(defn spoken-code
-  [code]
-  (string/join (map spoken-code-word (string/split " " code)) " "))
-
-(def inline-grammar
-  (peg/compile
-    ~{:word (+ :w "_")
-      :link (* (? "!") "[" (sub (any (if-not "]" 1)) :inline) "]"
-               "(" (any (if-not ")" 1)) ")")
-      :code-content (any (if-not "`" 1))
-      :code (* "`"
-               (+ (cmt (<- :code-content) ,spoken-symbol-code)
-                  (cmt (<- :code-content) ,spoken-code))
-               "`")
-      :bold-star (* "**" (sub (some (if-not "**" 1)) :inline) "**")
-      :bold-underscore (* "__" (sub (some (if-not "__" 1)) :inline) "__")
-      :parens (* "(" (any (+ :parens (if-not ")" 1))) ")")
-      :aside (+ (* (not (look -1 1)) :parens (any :s))
-                (* (any :s) :parens))
-      :nested (+ :link :aside :code :bold-star :bold-underscore)
-      :italic-star-close (* (not (look -1 :s)) "*" (not (+ :word "*")))
-      :italic-star (* (not (look -1 (+ :word "*")))
-                      "*"
-                      (not :s)
-                      (sub (drop (some (if-not :italic-star-close (+ :nested 1)))) :inline)
-                      :italic-star-close)
-      :italic-underscore-close (* (not (look -1 :s)) "_" (not :word))
-      :italic-underscore (* (not (look -1 :word))
-                            "_"
-                            (not :s)
-                            (sub (drop (some (if-not :italic-underscore-close (+ :nested 1)))) :inline)
-                            :italic-underscore-close)
-      :token (+ :nested :italic-star :italic-underscore (<- 1))
-      :inline (any :token)
-      :main (% :inline)}))
-
-(defn plain-line
-  [line]
-  (->> line
-       (peg/match block-grammar)
-       (first)
-       (peg/match inline-grammar)
-       (first)
-       (string/split " ")
-       (map path-basename)
-       (|(string/join $ " "))))
-
-(defn input-lines
-  [text]
-  (def lines (string/split "\n" text))
-  (def lines-without-carriage-returns (map |(string/trimr $ "\r") lines))
-  (if (= "" (last lines-without-carriage-returns))
-    (array/slice lines-without-carriage-returns 0 -2)
-    lines-without-carriage-returns))
-
-(def pause-grammar
-  (peg/compile
-    ~{:trailing-newlines (<- (* (some "\n") -1))
-      :paragraph-break (/ (<- (at-least 2 "\n")) ,|(string " [pause:1s]" $))
-      :main (% (any (+ :trailing-newlines
-                       :paragraph-break
-                       (<- 1))))}))
+      :main (% (* :leading-pause (any :output-line)))}))
 
 (defn plain-text
   [text]
-  (var in-fence false)
-  (var in-table false)
-  (def output @[])
-  (each line (input-lines text)
-    (def table-row (and (not in-fence) (peg/match table-row-grammar line)))
-    (when (and table-row (not in-table))
-      (array/push output "Table Block\n"))
-    (set in-table table-row)
-    (cond
-      table-row nil
-      (peg/match fence-grammar line) (do
-                                       (unless in-fence
-                                         (array/push output "Code Block\n"))
-                                       (set in-fence (not in-fence)))
-      in-fence nil
-      (peg/match skipped-line-grammar line) nil
-      (array/push output (string (plain-line line) "\n"))))
-  (first (peg/match pause-grammar (string/join output))))
+  (first (peg/match plain-text-grammar text)))
+
+(defn input-text
+  [arguments]
+  (if (empty? arguments)
+    (file/read stdin :all)
+    (string/join arguments " ")))
 
 (defn main
-  [&]
-  (prin (plain-text (file/read stdin :all))))
+  [_ & arguments]
+  (prin (plain-text (input-text arguments))))

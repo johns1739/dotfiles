@@ -106,4 +106,9 @@
 
 (test (parser/plain-text "db/migrate/20261104233032_grant_search_term_hit_report_row_writes.rb:41") "file grant search term hit report row writes RB\n")
 (test (parser/plain-text "db/migrate/032_grant_search_term_hit_report_row_writes.rb:41") "file 032 grant search term hit report row writes RB\n")
-(test (parser/plain-text "docs/my-cool_file-2024.md\n") "file my cool file MD\n")
+(test (parser/plain-text "docs/my-cool_file-2024.md\n") "file my cool file 2024 MD\n")
+(test (parser/plain-text "2024.md 20261104.md\n") "file 2024 MD file MD\n")
+(test (parser/plain-text "x_9999_10000.md 00009999-y.md\n") "file x 9999 MD file 00009999 y MD\n")
+
+(test (parser/input-text ["Note: see foo.txt"]) "Note: see foo.txt")
+(test (parser/input-text ["see" "foo.txt"]) "see foo.txt")
