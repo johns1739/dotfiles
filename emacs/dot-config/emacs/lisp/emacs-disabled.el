@@ -112,6 +112,16 @@
   (require 'yaml)
   (consult-gh-enable-default-keybindings))
 
+(use-package consult-ghostel
+  :disabled ;; rarely used
+  :vc ( :url "https://github.com/dakra/ghostel"
+        :lisp-dir "extensions/consult-ghostel"
+        :rev :newest)
+  :after (consult ghostel)
+  :bind
+  ( :map global-leader-map
+    ("k SPC" . consult-ghostel)))
+
 (use-package copilot
   :disabled ;; GPTEL / Claude tools are better.
   ;; M-x copilot-install-server

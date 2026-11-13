@@ -157,15 +157,6 @@
       (bind-keys :map search-map
                  ("f" . consult-fd))))
 
-(use-package consult-ghostel
-  :vc ( :url "https://github.com/dakra/ghostel"
-        :lisp-dir "extensions/consult-ghostel"
-        :rev :newest)
-  :after (consult ghostel)
-  :bind
-  ( :map global-leader-map
-    ("k SPC" . consult-ghostel)))
-
 (use-package corfu
   :defer 2
   :bind ( :map corfu-map
@@ -302,10 +293,9 @@
 (use-package ghostel
   :vc (:url "https://github.com/dakra/ghostel" :lisp-dir "lisp" :rev :newest)
   :bind ( ([remap eshell] . ghostel)
-          :map project-prefix-map
-          ("t" . ghostel-project)
+          ([remap project-eshell] . ghostel-project)
           :map ghostel-semi-char-mode-map
-          ("M-o" . ace-window)
+          ("M-o" . other-window)
           ("M-'" . meow-last-buffer)
           ("M-q" . meow-quit))
   :hook
@@ -317,10 +307,10 @@
     (meow-mode -1))
   (defun ghostel-close-buffer (_buffer _event)
     (meow-quit))
-  :config
-  (add-hook 'ghostel-exit-functions #'ghostel-close-buffer)
   (with-eval-after-load 'project
-    (project-add-switch-command #'ghostel-project "Ghostel" "t")))
+    (project-add-switch-command #'ghostel-project "Ghostel" "t"))
+  :config
+  (add-hook 'ghostel-exit-functions #'ghostel-close-buffer))
 
 (use-package git-link
   :commands (git-link git-link-dispatch)

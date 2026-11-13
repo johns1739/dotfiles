@@ -225,8 +225,7 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k c" . compile)
-    ("k RET" . send-region-to-process))
+    ("k c" . compile))
   :custom
   (ansi-color-for-compilation-mode t)
   (compilation-always-kill t)
@@ -238,32 +237,10 @@
   (compilation-search-path '(nil)) ;; directories to search for files
   (compilation-skip-threshold 2) ;; skip warnings and info with next-error
   (compilation-window-height nil)
-  (compile-command "make ")
   :hook
   (compilation-filter . ansi-color-compilation-filter)
   (compilation-mode . hl-line-mode)
   (compilation-mode . visual-line-mode)
-  :init
-  ;; TODO: Send region to process target not working with a ghostel terminal
-  (defvar send-region-to-process-target nil
-    "Buffer that `send-region-to-process' last sent a region to.")
-  (defun send-region-to-process (arg beg end)
-    " Send the current region to a process buffer.
-    The first time it's called, will prompt for the buffer to
-    send to. Subsequent calls send to the same buffer, unless a
-    prefix argument is used (C-u), or the buffer no longer has an
-    active process. "
-    (interactive "P\nr")
-    (if (or arg ;; user asks for selection
-            (null send-region-to-process-target) ;; target not set
-            ;; or target is not set to an active process:
-            (not (process-live-p (get-buffer-process send-region-to-process-target))))
-        (setq send-region-to-process-target
-              (completing-read
-               "Process: "
-               (seq-map (lambda (el) (buffer-name (process-buffer el)))
-                        (process-list)))))
-    (process-send-region send-region-to-process-target beg end))
   :config
   ;; Make dir local variables work in compilation buffers
   (add-hook 'compilation-mode-hook 'hack-dir-local-variables-non-file-buffer)
@@ -398,7 +375,7 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k t" . eshell))
+    ("k e" . eshell))
   :custom
   (eshell-history-size 100000)
   (eshell-hist-ignoredups t)
