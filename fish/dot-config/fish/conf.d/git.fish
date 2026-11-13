@@ -34,6 +34,7 @@ end
 
 function git_stash --argument-names repo_path --description "Stash changes, including untracked. True if stashed"
     set -l output (git_run $repo_path stash push --include-untracked $argv[2..])
+    or return 1
     test "$output" != "No local changes to save"
 end
 

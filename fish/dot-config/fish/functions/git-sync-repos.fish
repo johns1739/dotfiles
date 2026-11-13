@@ -12,7 +12,7 @@ function __git_sync_repo --argument-names repo_path --description "Fetch and fas
     git_fetch $repo_path
 
     if git_fast_forward_with_stash $repo_path
-        print_success "DONE: $repo_path"
+        print_success "SYNC: $repo_path"
     else
         print_error "FAILED: $repo_path"
     end
