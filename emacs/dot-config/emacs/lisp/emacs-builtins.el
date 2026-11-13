@@ -564,9 +564,8 @@
 ;; TODO: Human readable-size not registering.
 (use-package ibuffer
   :ensure nil
-  :bind
-  ( :map global-leader-map
-    ("o b" . ibuffer))
+  :bind ( :map global-map
+          ([remap list-buffers] . ibuffer))
   :custom
   (ibuffer-human-readable-size t)
   (ibuffer-expert t)
