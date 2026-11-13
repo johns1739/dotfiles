@@ -678,13 +678,12 @@
   (org-mode . visual-line-mode)
   (org-agenda-mode . hl-line-mode)
   :bind
-  ( :map mode-specific-map
-    ("L" . org-store-link))
   ( :map global-leader-map
     ("n '" . org-capture-goto-last-stored)
     ("n a" . org-agenda)
     ("n k" . org-capture)
     ("n K" . org-capture-goto-target)
+    ("n L" . org-store-link)
     ("n m" . org-mark-ring-goto)
     ("n s" . consult-org-grep)
     ("n t" . org-todo-list)

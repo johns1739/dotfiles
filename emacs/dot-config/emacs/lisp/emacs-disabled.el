@@ -511,12 +511,6 @@
   ( :map global-leader-map
     ("n n" . org-roam-node-find)
     ("n N" . org-roam-capture)
-    :map mode-specific-map
-    ("n a a" . org-roam-dailies-goto-today)
-    ("n a y" . org-roam-dailies-goto-yesterday)
-    ("n a t" . org-roam-dailies-goto-tomorrow)
-    ("n n" . org-roam-node-find)
-    ("n N" . org-roam-capture)
     :map org-mode-map
     ("C-c n i" . org-roam-node-insert)
     ("C-c n k" . org-roam-extract-subtree)
