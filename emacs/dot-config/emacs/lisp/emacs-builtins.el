@@ -697,25 +697,6 @@
 
 (use-package org ;; org-mode
   :ensure nil
-  :init
-  (defun org-mode-setup ()
-    (electric-indent-local-mode -1))
-  (defun consult-org-grep ()
-    "Search org directory."
-    (interactive)
-    (consult-ripgrep (expand-file-name org-directory user-emacs-directory)))
-  (defvar org-agenda-directories '()
-    "List of directories to toggle for org-agenda-files.")
-  (defun org-cycle-agenda-directories ()
-    "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
-    (interactive)
-    (require 'org)
-    (let* ((current-dir (or org-directory (car org-agenda-directories)))
-           (next-dir (or (cadr (member current-dir org-agenda-directories))
-                         (car org-agenda-directories)
-                         org-directory)))
-      (message (format "Cycling org-directory to %s" next-dir))
-      (setopt org-directory next-dir)))
   :hook
   (org-mode . org-mode-setup)
   (org-mode . visual-line-mode)
@@ -785,6 +766,25 @@
    `(("t" "Task" entry (file+headline "tasks.org" "Task") "* TODO %? \n%U\n" :empty-lines 1)
      ("n" "Note" entry (file+headline "notes.org" "Note") "* %?\n" :empty-lines 1)
      ("j" "Journal" entry (file+olp+datetree "journal.org") "* %?\n%T\n")))
+  :init
+  (defun org-mode-setup ()
+    (electric-indent-local-mode -1))
+  (defun consult-org-grep ()
+    "Search org directory."
+    (interactive)
+    (consult-ripgrep (expand-file-name org-directory user-emacs-directory)))
+  (defvar org-agenda-directories '()
+    "List of directories to toggle for org-agenda-files.")
+  (defun org-cycle-agenda-directories ()
+    "Toggle between directories in `org-agenda-directories` for `org-agenda-files`."
+    (interactive)
+    (require 'org)
+    (let* ((current-dir (or org-directory (car org-agenda-directories)))
+           (next-dir (or (cadr (member current-dir org-agenda-directories))
+                         (car org-agenda-directories)
+                         org-directory)))
+      (message (format "Cycling org-directory to %s" next-dir))
+      (setopt org-directory next-dir)))
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
