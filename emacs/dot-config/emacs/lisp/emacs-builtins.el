@@ -64,7 +64,7 @@
   ( :map global-leader-map
     ;; Modes
     ("m S" . auto-save-visited-mode)
-    ("m t" . toggle-truncate-lines)
+    ("m L" . toggle-truncate-lines)
     ("m F" . auto-fill-mode)
     ("m v" . visual-line-mode)
     ;; Open Apps
@@ -561,7 +561,6 @@
   ( :map global-leader-map
     ("m h" . hl-line-mode)))
 
-;; TODO: Human readable-size not registering.
 (use-package ibuffer
   :ensure nil
   :bind ( :map global-map

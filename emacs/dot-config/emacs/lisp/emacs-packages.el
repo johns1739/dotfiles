@@ -508,7 +508,7 @@
     (set-face-attribute 'meow-insert-indicator nil :inherit '(bold-italic warning))
     (set-face-attribute 'meow-beacon-indicator nil :inherit '(bold success))
     (set-face-attribute 'meow-motion-indicator nil :inherit 'italic)
-    (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode))
+    (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode sql-interactive-mode))
       (add-to-list 'meow-expand-exclude-mode-list mode))
     (meow-motion-define-key
      '("<escape>" . ignore))
