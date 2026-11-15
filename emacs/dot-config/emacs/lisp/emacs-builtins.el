@@ -699,6 +699,7 @@
     ("C-M-e" . org-down-element)
     ("M-N" . org-move-subtree-down)
     ("M-P" . org-move-subtree-up))
+  :commands (org-cycle-agenda-directories)
   :custom
   (org-agenda-files '("tasks.org" "journal.org" "notes.org"))
   (org-agenda-span 'week)

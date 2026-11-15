@@ -35,6 +35,7 @@ PACKAGES += gnupg				 # GPG encryption and signing
 BREW_PACKAGES += janet			 # Janet programming language
 # APT_PACKAGES += janet			 # Janet programming language
 PACKAGES += jq					 # Command-line JSON processor
+PACKAGES += ledger				 # Ledger
 BREW_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
 # APT_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
 PACKAGES += mpv					 # Command-line media player
