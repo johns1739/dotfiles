@@ -110,7 +110,6 @@
   (ad-redefinition-action 'accept)
   (auto-window-vscroll nil)
   (confirm-kill-emacs 'y-or-n-p)
-  (delete-by-moving-to-trash t)
   (delete-pair-blink-delay 0)
   (delete-pair-push-mark t)                   ; EMACS-31 for easy subsequent C-x C-x
   (display-time-default-load-average nil)
@@ -410,24 +409,25 @@
   :config
   (global-eldoc-mode t))
 
-;; TODO: Backups are not working!
 (use-package files ;; backups
   :ensure nil
   :custom
   (create-lockfiles nil)
   (backup-by-copying t)
   (backup-directory-alist `(("." . ,(expand-cache-path "backup/"))))
+  (delete-by-moving-to-trash t)
   (delete-old-versions t)
-  (kept-new-versions 6)
-  (kept-old-versions 3)
+  (kept-new-versions 25)
+  (kept-old-versions 0)
   (make-backup-files t)
   (version-control t)
+  (vc-make-backup-files t)
   (remote-file-name-inhibit-delete-by-moving-to-trash t)
   (remote-file-name-inhibit-auto-save t)
   (remote-file-name-inhibit-locks t)
   (remote-file-name-inhibit-auto-save-visited t)
   :init
-  (defvar buffer-backed-up-interval (* 60 60 24)
+  (defvar buffer-backed-up-interval (* 60 10) ;; every 10m
     "Interval seconds to backup files")
   (defvar buffer-backed-up-timestamp nil
     "Time of the last backup of this buffer.")
