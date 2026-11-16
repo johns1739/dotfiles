@@ -65,7 +65,9 @@
     (project-add-switch-command #'claude-code-ide-dwim "Claude" "a"))
   (with-eval-after-load 'claude-code-ide-transient
     (transient-insert-suffix 'claude-code-ide-menu "s"
-      '("RET" "Start/switch to Claude Code" claude-code-ide-dwim)))
+      '("SPC" "Switch to Session" claude-code-ide-list-sessions))
+    (transient-insert-suffix 'claude-code-ide-menu "s"
+      '("RET" "Start/switch to Session" claude-code-ide-dwim)))
   (defun claude-code-ide-dwim ()
     "Start or switch to a Claude Code IDE session."
     (interactive)
@@ -78,7 +80,7 @@
   (claude-code-ide-terminal-backend 'ghostel)
   (claude-code-ide-window-side 'left)
   (claude-code-ide-vterm-render-delay 0.01) ; increase for smoother but less responsive
-  (claude-code-ide-terminal-initialization-delay 0.2) ; better render
+  (claude-code-ide-terminal-initialization-delay 0.2) ; better rendering
   :config
   (claude-code-ide-emacs-tools-setup))
 
