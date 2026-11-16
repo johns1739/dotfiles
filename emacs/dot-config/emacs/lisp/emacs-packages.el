@@ -511,6 +511,7 @@
     (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode sql-interactive-mode))
       (add-to-list 'meow-expand-exclude-mode-list mode))
     (meow-motion-define-key
+     (cons "M-SPC" global-leader-map)
      '("<escape>" . ignore))
     (setq meow-paren-keymap (make-keymap))
     (meow-define-state paren
