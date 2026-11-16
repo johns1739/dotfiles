@@ -7,6 +7,11 @@
 # theme = dark:Arthur,light:Dawnfox
 # background-opacity = 1
 
+# notifications - MacOs Settings
+# notify-on-command-finish = unfocused
+# notify-on-command-finish-action = bell,no-notify
+# notify-on-command-finish-after = 5s
+
 # Useful commands
 # ghostty +help
 # ghostty +version
@@ -25,11 +30,6 @@ clipboard-paste-protection = false
 copy-on-select = clipboard
 quit-after-last-window-closed = true
 scrollback-limit = 1073741824
-
-# notifications
-notify-on-command-finish = unfocused
-notify-on-command-finish-action = bell,no-notify
-notify-on-command-finish-after = 5s
 
 # window look & feel
 quick-terminal-position = top
