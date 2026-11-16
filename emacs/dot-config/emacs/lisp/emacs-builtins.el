@@ -907,7 +907,6 @@
   :ensure nil
   :defer
   :init
-  (keymap-set global-leader-map "t" tab-bar-map)
   (defun tab-bar-tab-name-project ()
     (if (project-current)
         (propertize (format "[%s]" (project-name (project-current))) 'face 'bold)
@@ -919,25 +918,15 @@
      (t (concat (format "%d " index) name))))
   :bind
   ( :map global-map
-    ("s-t" . tab-bar-new-tab)
-    ("s-w" . tab-bar-close-tab)
-    ("s-{" . tab-bar-switch-to-prev-tab)
-    ("s-}" . tab-bar-switch-to-next-tab)
-    :map tab-bar-map
-    ("SPC" . tab-bar-switch-to-tab)
+    ("s-t" . tab-new)
+    ("s-w" . tab-close)
+    ("s-{" . tab-previous)
+    ("s-}" . tab-next)
+    :map tab-prefix-map
+    ("SPC" . tab-switch)
+    ("RET" . nil)
     ("T" . tab-bar-mode)
-    ("t" . tab-bar-new-tab)
-    ("0" . tab-bar-close-tab)
-    ("1" . tab-bar-close-other-tabs)
-    ("2" . tab-bar-new-tab)
-    ("U" . tab-bar-undo-close-tab)
-    ("n" . tab-bar-switch-to-next-tab)
-    ("p" . tab-bar-switch-to-prev-tab)
-    ("N" . tab-bar-move-tab)
-    ("P" . tab-bar-move-tab-backward)
-    ("R" . tab-bar-rename-tab)
-    ("'" . tab-bar-switch-to-recent-tab)
-    ("<touchscreen-begin>" . nil))
+    ("'" . tab-recent))
   :custom
   (tab-bar-new-tab-choice "*scratch*")
   (tab-bar-tab-hints t)
@@ -1052,8 +1041,8 @@
   (which-key-prefix-prefix "… ")
   (which-key-max-display-columns 3)
   (which-key-sort-uppercase-first nil)
-  (which-key-idle-delay 1)
-  (which-key-idle-secondary-delay 0.25)
+  (which-key-idle-delay 1.0)
+  (which-key-idle-secondary-delay 0.2)
   (which-key-add-column-padding 1)
   (which-key-max-description-length 40)
   :config
