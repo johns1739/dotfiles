@@ -22,6 +22,7 @@ PACKAGES += autoconf			 # Generates configure scripts for builds
 PACKAGES += bat                  # cat clone with syntax highlighting
 PACKAGES += btop				 # Interactive resource monitor
 PACKAGES += direnv				 # Loads per-directory environment variables
+APT_PACKAGES += emacs			# Emacs Editor
 BREW_PACKAGES += fd				 # Fast, user-friendly alternative to find
 APT_PACKAGES += fd-find          # Fast, user-friendly alternative to find
 PACKAGES += ffmpeg				 # Emacs package dependency for tmr, whisper, etc
@@ -65,8 +66,10 @@ install-brew-emacs:
 	brew install -y emacs-plus
 
 install-apt-packages:
-	apt update
-	apt install -y $(APT_PACKAGES) $(PACKAGES)
+	apt-get update
+	apt-get install -y --no-install-recommends $(APT_PACKAGES) $(PACKAGES)
+	apt-get autoremove -y --purge
+	apt-get clean
 
 install-apt-ghostty:
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/mkasberg/ghostty-ubuntu/HEAD/install.sh)"
