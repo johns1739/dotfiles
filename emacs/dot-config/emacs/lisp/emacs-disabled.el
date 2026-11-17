@@ -461,6 +461,16 @@
   :config
   (magit-todos-mode 1))
 
+(use-package mpv ;; media player https://mpv.io/
+  :disabled ;; mpv issues running from shell
+  :vc (:url "https://github.com/kljohann/mpv.el" :branch "master")
+  :defer
+  :init
+  (with-eval-after-load 'org
+    (add-to-list 'org-file-apps '("\\.wav\\'" . (lambda (file _link) (mpv-play file)))))
+  :custom
+  (mpv-default-options '("--audio-channels=stereo")))
+
 (use-package ob-http
   :disabled ;; Better to use curl in org-source blocks.
   :after org)
@@ -657,6 +667,32 @@
       (treesit-fold-mode t)))
   :hook
   (after-change-major-mode . treesit-fold-auto-enable))
+
+(use-package tts ;; text-to-speech
+  :disabled ;; rarely used.
+  ;; docker run -d --name kokoro-tts -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest
+  :vc (:url "https://github.com/DiogoDoreto/emacs-tts")
+  :bind ( :map global-leader-map
+          ("o s RET" . tts-read)
+          ("o s q" . tts-stop)
+          ("o s G" . tts-mode)
+          ("o s g" . tts-play)
+          ("o s <right>" . tts-next)
+          ("o s <left>" . tts-prev)
+          ("o s SPC" . tts-pause-or-play))
+  :init
+  (defun tts-pause-or-play ()
+    "Pause the current TTS session if playing, otherwise resume it."
+    (interactive)
+    (if (and (tts--current-session-active-p)
+             (eq (tts--session-status tts--current-session) 'playing))
+        (tts-pause)
+      (tts-play)))
+  :custom
+  (tts-kokoro-port 8880)
+  (tts-kokoro-voice "bf_isabella")
+  (tts-enable-automode nil)
+  (tts-enable-autoscroll nil))
 
 (use-package undo-tree
   :disabled ;; trying out vundo, works with native undo

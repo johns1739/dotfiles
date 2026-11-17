@@ -664,15 +664,6 @@
   :config
   (meow-tree-sitter-register-defaults))
 
-(use-package mpv ;; media player https://mpv.io/
-  :vc (:url "https://github.com/kljohann/mpv.el" :branch "master")
-  :defer
-  :init
-  (with-eval-after-load 'org
-    (add-to-list 'org-file-apps '("\\.wav\\'" . (lambda (file _link) (mpv-play file)))))
-  :custom
-  (mpv-default-options '("--audio-channels=stereo")))
-
 (use-package orderless
   :custom
   (completion-category-overrides '((file (styles partial-completion))))
