@@ -53,13 +53,12 @@
   (dolist (fn '(cape-elisp-block cape-file cape-dict cape-keyword cape-dabbrev))
     (add-hook 'completion-at-point-functions fn)))
 
-;; TODO: Create a claude-dwim that is not project-specific.
 (use-package claude-code-ide
   :if (executable-find "claude")
   :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
   :bind ( :map global-leader-map
           ("i a" . claude-code-ide-menu)) ;; a for anthropic
-  :commands (claude-code-ide-dwim)
+  :commands (claude-code-ide-dwim claude-code-ide-dwim-global)
   :init
   (with-eval-after-load 'project
     (project-add-switch-command #'claude-code-ide-dwim "Claude" "a"))
@@ -67,13 +66,26 @@
     (transient-insert-suffix 'claude-code-ide-menu "s"
       '("SPC" "Switch to Session" claude-code-ide-list-sessions))
     (transient-insert-suffix 'claude-code-ide-menu "s"
-      '("RET" "Start/switch to Session" claude-code-ide-dwim)))
+      '("RET" "Start/switch to Session" claude-code-ide-dwim))
+    (transient-insert-suffix 'claude-code-ide-menu "s"
+      '("g" "Start/switch to Global Session" claude-code-ide-dwim-global)))
   (defun claude-code-ide-dwim ()
     "Start or switch to a Claude Code IDE session."
     (interactive)
     (condition-case nil
         (claude-code-ide-switch-to-buffer)
       (user-error (claude-code-ide))))
+  (defcustom claude-code-ide-global-directory "~/"
+    "Directory used by `claude-code-ide-dwim-global' for its session."
+    :type 'directory
+    :group 'claude-code-ide)
+  (defun claude-code-ide-dwim-global ()
+    "Start or switch to a Claude Code IDE session not tied to a project."
+    (interactive)
+    (let ((default-directory (file-name-as-directory
+                              (expand-file-name claude-code-ide-global-directory)))
+          (project-find-functions nil))
+      (claude-code-ide-dwim)))
   :custom
   (claude-code-ide-no-flicker t)
   (claude-code-ide-use-side-window nil)
@@ -694,31 +706,6 @@
      tmr-acknowledge-minibuffer))
   :config
   (tmr-mode-line-mode t))
-
-(use-package tts ;; text-to-speech
-  ;; docker run -d --name kokoro-tts -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest
-  :vc (:url "https://github.com/DiogoDoreto/emacs-tts")
-  :bind ( :map global-leader-map
-          ("m s RET" . tts-read)
-          ("m s q" . tts-stop)
-          ("m s G" . tts-mode)
-          ("m s g" . tts-play)
-          ("m s <right>" . tts-next)
-          ("m s <left>" . tts-prev)
-          ("m s SPC" . tts-pause-or-play))
-  :init
-  (defun tts-pause-or-play ()
-    "Pause the current TTS session if playing, otherwise resume it."
-    (interactive)
-    (if (and (tts--current-session-active-p)
-             (eq (tts--session-status tts--current-session) 'playing))
-        (tts-pause)
-      (tts-play)))
-  :custom
-  (tts-kokoro-port 8880)
-  (tts-kokoro-voice "bf_isabella")
-  (tts-enable-automode nil)
-  (tts-enable-autoscroll nil))
 
 (use-package vertico
   :demand
