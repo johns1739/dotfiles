@@ -837,7 +837,8 @@
     (interactive)
     (copy-value (project-directory)))
   :config
-  (require 'vc-git)) ;; project-find-file requires vc-git--program-version
+  (require 'vc-git) ;; project-find-file requires vc-git--program-version
+  (project-forget-zombie-projects))
 
 (use-package recentf
   :ensure nil
@@ -994,6 +995,7 @@
           ("l" . windmove-right))
   :custom
   (split-width-threshold (* fill-column 2))
+  (split-height-threshold 60)
   :init
   (keymap-set goto-map "w" window-prefix-map) ;; best ergonomic binding g-w.
   (defun split-window-below-and-jump ()
