@@ -66,9 +66,9 @@
     (transient-insert-suffix 'claude-code-ide-menu "s"
       '("SPC" "Switch to Session" claude-code-ide-list-sessions))
     (transient-insert-suffix 'claude-code-ide-menu "s"
-      '("RET" "Start/switch to Session" claude-code-ide-dwim))
-    (transient-insert-suffix 'claude-code-ide-menu "s"
-      '("g" "Start/switch to Global Session" claude-code-ide-dwim-global)))
+      '("RET" "Start/switch to Session" claude-code-ide-dwim))) ::
+    ;; (transient-insert-suffix 'claude-code-ide-menu "s"
+    ;;   '("g" "Start/switch to Global Session" claude-code-ide-dwim-global)))
   (defun claude-code-ide-dwim ()
     "Start or switch to a Claude Code IDE session."
     (interactive)
@@ -315,16 +315,10 @@
   :hook
   (after-init . ghostel-compile-global-mode)
   (after-init . ghostel-comint-global-mode)
-  (ghostel-mode . ghostel-mode-setup)
+  (ghostel-mode . meow-mode-off)
   :init
-  (defun ghostel-mode-setup ()
-    (meow-mode -1))
-  (defun ghostel-close-buffer (_buffer _event)
-    (meow-quit))
   (with-eval-after-load 'project
-    (project-add-switch-command #'ghostel-project "Ghostel" "t"))
-  :config
-  (add-hook 'ghostel-exit-functions #'ghostel-close-buffer))
+    (project-add-switch-command #'ghostel-project "Ghostel" "t")))
 
 (use-package git-link
   :commands (git-link git-link-dispatch)
@@ -507,7 +501,13 @@
   (meow-expand-hint-remove-delay 2)
   (meow-cursor-type-motion '(hbar . 2))
   (meow-goto-line-function #'avy-goto-line)
+  :hook
+  (ghostel-exit-functions . meow-close-buffer)
   :init
+  (defun meow-close-buffer ()
+    (meow-quit))
+  (defun meow-mode-off ()
+    (meow-mode -1))
   (defun meow-save-buffer ()
     "Save buffer and switch to normal mode."
     (interactive)

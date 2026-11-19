@@ -124,6 +124,20 @@
   :ensure nil
   :mode "\\.json\\'")
 
+(use-package ledger-mode
+  ;; Define in custom.el
+  ;; (ledger-accounts-file "")
+  ;; (ledger-schedule-file "")
+  :hook
+  (ledger-mode . ledger-mode-clean-buffer)
+  (ledger-mode . ledger-flymake-enable)
+  (ledger-reconcile-mode . meow-mode-off)
+  :custom
+  (ledger-flymake-be-pedantic t)
+  (ledger-default-date-format ledger-iso-date-format)
+  (ledger-clear-whole-transactions t)
+  (ledger-post-amount-alignment-column 60))
+
 (use-package markdown-mode
   :mode
   (("\\.md\\'" . markdown-mode)

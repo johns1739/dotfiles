@@ -218,7 +218,13 @@
   ( :map global-leader-map
     ("o *" . calc)
     :map calc-mode-map
-    ("i" . nil)))
+    ("i" . nil))
+  :hook
+  (calc-mode . meow-mode-off)
+  :custom
+  (calc-group-digits t)
+  (calc-window-height 12)
+  (calc-display-trail nil))
 
 (use-package compile
   :ensure nil
