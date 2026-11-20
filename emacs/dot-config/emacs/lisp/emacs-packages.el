@@ -66,9 +66,9 @@
     (transient-insert-suffix 'claude-code-ide-menu "s"
       '("SPC" "Switch to Session" claude-code-ide-list-sessions))
     (transient-insert-suffix 'claude-code-ide-menu "s"
-      '("RET" "Start/switch to Session" claude-code-ide-dwim))) ::
-    ;; (transient-insert-suffix 'claude-code-ide-menu "s"
-    ;;   '("g" "Start/switch to Global Session" claude-code-ide-dwim-global)))
+      '("RET" "Start/switch to Session" claude-code-ide-dwim))
+    (transient-insert-suffix 'claude-code-ide-menu "s"
+      '("g" "Start/switch to Global Session" claude-code-ide-dwim-global)))
   (defun claude-code-ide-dwim ()
     "Start or switch to a Claude Code IDE session."
     (interactive)
