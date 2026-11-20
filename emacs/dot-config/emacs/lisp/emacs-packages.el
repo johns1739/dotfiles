@@ -499,7 +499,6 @@
   :custom
   (meow-use-clipboard t)
   (meow-select-on-append t)
-  (meow-keypad-self-insert-undefined nil)
   (meow-expand-hint-remove-delay 2)
   (meow-cursor-type-motion '(hbar . 2))
   (meow-goto-line-function #'avy-goto-line)
@@ -527,7 +526,7 @@
     (dolist (mode '(help-mode csv-mode vterm-mode ghostel-mode sql-interactive-mode))
       (add-to-list 'meow-expand-exclude-mode-list mode))
     (meow-motion-define-key
-     (cons "M-SPC" global-leader-map)
+     (cons "SPC" global-leader-map)
      '("<escape>" . ignore))
     (setq meow-paren-keymap (make-keymap))
     (meow-define-state paren
