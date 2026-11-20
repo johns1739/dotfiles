@@ -534,6 +534,10 @@
   :config
   (org-roam-setup-directory))
 
+(use-package org-superstar
+  :disabled ;; vanity
+  :hook (org-mode . org-superstar-mode))
+
 (use-package paredit
   :disabled ;; auto formats that conflicts with lang's formatting.
   :hook

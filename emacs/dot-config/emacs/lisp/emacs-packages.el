@@ -30,9 +30,11 @@
 
 (use-package bufferlo
   ;; Notes: ibuffer, "/ p" removes "local buffers filter", "/ L" turns on the orphan filter.
+  ;;        Global list with prefix
   :demand
   :bind ( :map global-map
           ([remap tab-bar-close-tab] . bufferlo-tab-close-kill-buffers)
+          ([remap ibuffer] . bufferlo-ibuffer)
           :map global-leader-map
           ("SPC" . bufferlo-switch-to-buffer)
           ("C-SPC" . bufferlo-find-buffer-switch))
@@ -669,9 +671,6 @@
   (completion-category-overrides '((file (styles partial-completion))))
   (completion-pcm-leading-wildcard t)
   (completion-styles '(orderless basic)))
-
-(use-package org-superstar
-  :hook (org-mode . org-superstar-mode))
 
 (use-package pinentry ;; allows for secure entry of passphrases requested by GnuPG
   :after magit
