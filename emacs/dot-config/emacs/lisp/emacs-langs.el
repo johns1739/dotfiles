@@ -130,7 +130,8 @@
   ;; (ledger-schedule-file "")
   :hook
   (ledger-mode . ledger-mode-clean-buffer)
-  (ledger-mode . ledger-flymake-enable)
+  (ledger-mode . whitespace-cleanup)
+  ;; (ledger-mode . ledger-flymake-enable)
   (ledger-reconcile-mode . meow-mode-off)
   :custom
   (ledger-flymake-be-pedantic t)
