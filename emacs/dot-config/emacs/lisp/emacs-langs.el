@@ -129,11 +129,12 @@
   ;; (ledger-accounts-file "")
   ;; (ledger-schedule-file "")
   :hook
-  (ledger-mode . ledger-mode-clean-buffer)
   (ledger-mode . whitespace-cleanup)
-  ;; (ledger-mode . ledger-flymake-enable)
+  (ledger-mode . ledger-flymake-enable)
+  (ledger-mode . ledger-mode-clean-buffer)
   (ledger-reconcile-mode . meow-mode-off)
   :custom
+  (ledger-schedule-look-forward 20)
   (ledger-flymake-be-pedantic t)
   (ledger-default-date-format ledger-iso-date-format)
   (ledger-clear-whole-transactions t)
