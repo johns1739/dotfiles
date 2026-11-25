@@ -1,7 +1,7 @@
 #!/usr/bin/env janet
 
-(import ./utils/gh)
-(use ./utils/helpers)
+(import ./lib/gh)
+(use ./lib/helpers)
 
 (def headers ["LABELS" "TITLE" "URL" "SUB-ISSUES" "BLOCKED COUNT"])
 

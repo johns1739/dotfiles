@@ -1,12 +1,17 @@
 ;;; emacs-langs.el --- Language Modes  -*- lexical-binding: t; -*-
 
-(use-package ajrepl
+(use-package ajrepl ;; janet-mode repl
   :after (janet-ts-mode)
   :vc ( :url "https://github.com/sogaiu/ajrepl" :rev :newest)
-  :hook (janet-ts-mode . ajrepl-interaction-mode)
+  :hook
+  (janet-ts-mode . ajrepl-interaction-mode)
+  (ajrepl-mode . ajrepl-mode-setup)
   :bind ( :map ajrepl-interaction-mode-map
+          ("C-c :" . ajrepl-send-code)
           ("C-c RET" . ajrepl-switch-to-repl-dwim))
   :init
+  (defun ajrepl-mode-setup ()
+    (setq-local tab-always-indent 'complete))
   (defun ajrepl-switch-to-repl-dwim ()
     (interactive)
     (unless (comint-check-proc ajrepl-repl-buffer-name)

@@ -463,6 +463,7 @@
           ("j" . magit-file-dispatch)
           ("J" . magit-dispatch)
           :map magit-status-mode-map
+          ("M-k" . magit-copy-diff-as-kill)
           ("C-o" . magit-diff-visit-file-other-window))
   :init
   (with-eval-after-load 'project
@@ -764,7 +765,7 @@
     (when whisper-send-to-claude
       (setq whisper-send-to-claude nil)
       (claude-code-ide-send-prompt (string-trim (buffer-string)))
-      (claude-code-ide-send-prompt "/speak")
+      ;; (claude-code-ide-send-prompt "/speak")
       (erase-buffer)))
   (defvar whisper-recordings-dir (expand-cache-path "whisper/recordings/")
     "Whisper directory to store recordings.")
@@ -814,6 +815,7 @@
   (advice-add 'whisper--setup-mode-line :after #'whisper-toggle-recording-overlay)
   (with-eval-after-load 'ghostel
     (bind-keys :map ghostel-semi-char-mode-map
+               ("<f8>" . whisper-claude)
                ("<f9>" . whisper-run))))
 
 (use-package writeroom-mode

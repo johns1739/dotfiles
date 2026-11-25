@@ -1,7 +1,7 @@
 #!/usr/bin/env janet
 
-(import ./utils/git)
-(use ./utils/helpers)
+(import ./lib/git)
+(use ./lib/helpers)
 
 (defn clean-branches
   "Remove local feature branches merged into the default branch."

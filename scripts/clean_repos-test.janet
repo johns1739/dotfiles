@@ -1,7 +1,7 @@
 (use judge)
 (use sh)
 (import ./clean_repos)
-(use ./utils/fixtures)
+(use ./lib/fixtures)
 
 (deftest "clean-branches"
   (def repo (git-repo "clean-branches"))
@@ -32,24 +32,24 @@
   (def repo (git-repo "clean-repo"))
   (git* repo "branch" "1-merged")
   (test-stdout (clean_repos/clean-repo repo) `
-    
-    Cleaning /private/tmp/judge-scripts/clean-repo/clone ... 
+
+    Cleaning /private/tmp/judge-scripts/clean-repo/clone ...
     git FETCH /private/tmp/judge-scripts/clean-repo/clone
     git REMOVE branch 1-merged
     DONE
   `)
   (test-stdout (clean_repos/clean-repo root) `
-    
-    Cleaning /private/tmp/judge-scripts ... 
+
+    Cleaning /private/tmp/judge-scripts ...
     SKIP not a git directory: /private/tmp/judge-scripts
   `))
 
 (deftest "main"
   (test-stdout (clean_repos/main "clean_repos" root root) `
-    
-    Cleaning /private/tmp/judge-scripts ... 
+
+    Cleaning /private/tmp/judge-scripts ...
     SKIP not a git directory: /private/tmp/judge-scripts
-    
-    Cleaning /private/tmp/judge-scripts ... 
+
+    Cleaning /private/tmp/judge-scripts ...
     SKIP not a git directory: /private/tmp/judge-scripts
   `))

@@ -1,6 +1,6 @@
 #!/usr/bin/env janet
 
-(import ./utils/git)
+(import ./lib/git)
 
 (defn sync-repo
   "Fetch and fast-forward a repo, unless on a feature branch."

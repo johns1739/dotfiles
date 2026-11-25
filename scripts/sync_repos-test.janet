@@ -1,7 +1,7 @@
 (use judge)
 (use sh)
 (import ./sync_repos)
-(use ./utils/fixtures)
+(use ./lib/fixtures)
 
 (defn push-upstream-commit
   "Push a commit to origin of repo from another clone."
