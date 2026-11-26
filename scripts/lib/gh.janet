@@ -2,17 +2,20 @@
 (use ./helpers)
 (import spork/json)
 
-(var search-entry-by-id @{})
+(var cache @{})
 
-(defn cache-into-search
-  [entries]
+(defn into-cache
+  "Saves and returns ENTRIES into a global cache scoped under CONTEXT using entry id"
+  [context entries]
+  (update cache context |(or $ @{}))
+  (def context-cache (cache context))
   (each entry entries
-    (put search-entry-by-id (entry :id) entry))
+    (put context-cache (entry :id) entry))
   entries)
 
-(defn get-in-search-entry
-  [entry keys]
-  (get-in (search-entry-by-id (entry :id)) keys))
+(defn get-in-cache
+  [context id keys]
+  (get-in cache [context id ;keys]))
 
 (def pr-list-fields
   [:id
@@ -59,14 +62,14 @@
 (defn search-prs
   "Print pull-request metadata for my open prs"
   []
-  (-> ($< gh search prs
+  (def entries (-> ($< gh search prs
           --author "@me"
           --state open
           --limit 100
           --sort created
           --json ,(string/join search-fields ","))
-      (json/decode :use-keywords :use-nils)
-      (cache-into-search)))
+                   (json/decode :use-keywords :use-nils)))
+  (into-cache :search entries))
 
 
 (defn extract-owner-repos

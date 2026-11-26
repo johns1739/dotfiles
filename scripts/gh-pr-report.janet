@@ -9,7 +9,7 @@
   (printf format (string/repeat "-" 12) (string/repeat "-" 50) (string/repeat "-" 20) "-----" "-----")
   (each pr prs
     (printf format
-            (gh/get-in-search-entry pr [:repository :name])
+            (gh/get-in-cache :search (pr :id) [:repository :name])
             (pr :headRefName)
             (pr :reviewDecision)
             (string (pr :changedFiles))

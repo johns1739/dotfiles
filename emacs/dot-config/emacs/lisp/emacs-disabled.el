@@ -456,7 +456,7 @@
   :hook (magit-mode . magit-delta-mode))
 
 (use-package magit-gh
-  :disabled ;; listing no populating
+  :disabled ;; listing not working / populating
   :after magit)
 
 (use-package magit-todos
