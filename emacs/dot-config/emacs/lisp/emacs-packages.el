@@ -491,6 +491,14 @@
   :config
   (marginalia-mode))
 
+(use-package mcp-server
+  ;; claude mcp add emacs --scope user -- socat - UNIX-CONNECT:$HOME/.config/emacs/cache/mcp-server/sockets/emacs-mcp-server.sock
+  :if (and (daemonp) (executable-find "socat") (executable-find "claude"))
+  :vc (:url "https://github.com/rhblind/emacs-mcp-server" :branch "main")
+  :hook (emacs-startup . mcp-server-start-unix)
+  :custom
+  (mcp-server-socket-directory (expand-cache-path "mcp-server/sockets/")))
+
 (use-package meow
   :demand
   :bind

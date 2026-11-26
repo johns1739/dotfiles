@@ -41,6 +41,7 @@ BREW_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
 # APT_PACKAGES += libgccjit		 # GCC JIT library for Emacs native-comp
 PACKAGES += mpv					 # Command-line media player
 PACKAGES += ripgrep				 # Fast recursive grep
+PACKAGES += socat				 # Dependency for emacs-mcp-server
 BREW_PACKAGES += sox			 # Emacs whisper recording (ffmpeg avfoundation drops audio)
 PACKAGES += stow				 # Symlink farm manager for dotfiles
 BREW_PACKAGES += tlrc			 # tldr client for simplified man pages
@@ -101,6 +102,7 @@ install-janet-deps:
 
 install-scripts:
 	jpm quickbin scripts/speak_to_plain_text.janet $(BIN_DIR)/speak-to-plain-text
+	jpm quickbin scripts/gh-pr-report.janet $(BIN_DIR)/gh-pr-report
 	rm -f $(BIN_DIR)/*.c
 
 uninstall-scripts:
