@@ -455,6 +455,10 @@
   :if (and (display-graphic-p) (executable-find "delta"))
   :hook (magit-mode . magit-delta-mode))
 
+(use-package magit-gh
+  :disabled ;; listing no populating
+  :after magit)
+
 (use-package magit-todos
   :disabled ;; slow startup if project too big, sometimes list is missing
   :after magit

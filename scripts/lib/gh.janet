@@ -2,17 +2,17 @@
 (use ./helpers)
 (import spork/json)
 
-(var gh-search-entry-by-id @{})
+(var search-entry-by-id @{})
 
-(defn cache-into
-  [entries cache]
+(defn cache-into-search
+  [entries]
   (each entry entries
-    (put cache (entry :id) entry))
+    (put search-entry-by-id (entry :id) entry))
   entries)
 
-(defn get-in-cache
-  [entry cache keys]
-  (get-in (cache (entry :id)) keys))
+(defn get-in-search-entry
+  [entry keys]
+  (get-in (search-entry-by-id (entry :id)) keys))
 
 (def pr-list-fields
   [:id
@@ -34,7 +34,7 @@
 #   projectItems, reactionGroups, reviewDecision, reviewRequests, reviews, state,
 #   statusCheckRollup, title, updatedAt, url
 
-(defn gh-pr-list
+(defn pr-list
   "Print pull-request metadata for my open prs"
   [owner-repos]
   (mapcat
@@ -48,16 +48,15 @@
           (json/decode :use-keywords :use-nils)))
     owner-repos))
 
-
 # JSON FIELDS
 #   assignees, author, authorAssociation, body, closedAt, commentsCount, createdAt,
 #   id, isDraft, isLocked, isPullRequest, labels, number, repository, state, title,
 #   updatedAt, url
 
-(def gh-search-fields
+(def search-fields
   [:id :commentsCount :number :repository :title])
 
-(defn gh-search-prs
+(defn search-prs
   "Print pull-request metadata for my open prs"
   []
   (-> ($< gh search prs
@@ -65,9 +64,9 @@
           --state open
           --limit 100
           --sort created
-          --json ,(string/join gh-search-fields ","))
+          --json ,(string/join search-fields ","))
       (json/decode :use-keywords :use-nils)
-      (cache-into gh-search-entry-by-id)))
+      (cache-into-search)))
 
 
 (defn extract-owner-repos
