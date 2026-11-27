@@ -230,7 +230,8 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k c" . compile))
+    ("k c" . compile)
+    ("k g" . recompile))
   :custom
   (ansi-color-for-compilation-mode t)
   (compilation-always-kill t)
@@ -245,7 +246,6 @@
   :hook
   (compilation-filter . ansi-color-compilation-filter)
   (compilation-mode . hl-line-mode)
-  (compilation-mode . visual-line-mode)
   :config
   ;; Make dir local variables work in compilation buffers
   (add-hook 'compilation-mode-hook 'hack-dir-local-variables-non-file-buffer)
