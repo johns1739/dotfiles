@@ -727,13 +727,17 @@
   (split-window-preferred-function #'visual-fill-column-split-window-sensibly))
 
 (use-package visual-replace
-  :bind (([remap query-replace] . visual-replace)
-         ([remap query-replace-regexp] . visual-replace-regexp)
-         ([remap replace-string] . visual-replace)
-         ([remap isearch-query-replace] . visual-replace-from-isearch)
-         ([remap isearch-query-replace-regexp] . visual-replace-from-isearch)
-         :map search-map
-         ("%" . visual-replace-selected)))
+  :bind ( ([remap query-replace] . visual-replace)
+          ([remap query-replace-regexp] . visual-replace-regexp)
+          ([remap replace-string] . visual-replace)
+          ([remap isearch-query-replace] . visual-replace-from-isearch)
+          ([remap isearch-query-replace-regexp] . visual-replace-from-isearch)
+          :map search-map
+          ("%" . visual-replace-selected))
+  :custom
+  (visual-replace-display-total t)
+  (visual-replace-default-to-full-scope t)
+  (visual-replace-keep-initial-position t))
 
 (use-package vundo
   :bind ( ("C-x u" . vundo)))
