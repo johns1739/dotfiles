@@ -4,17 +4,12 @@
   (map |(get x $) keys))
 
 (defmacro dbg
-  "Print expr and its value, then return the value."
+  "Apply `dbg` to expr when env var DBG=true, else return its value."
   [expr]
-  ~(let [res ,expr]
-     (print "DEBUG: " (string/format "%q => %q" ',expr res))
-     res))
-
-(defmacro dbg-if-debug
-  "Apply `dbg` to expr when env var DEBUG=true, else return its value."
-  [expr]
-  ~(if (= (os/getenv "DEBUG") "true")
-     (dbg ,expr)
+  ~(if (= (os/getenv "DBG") "true")
+     (let [res ,expr]
+       (print "DBG: " (string/format "%q\n=> %q" ',expr res))
+       res)
      ,expr))
 
 (defn current-date-timestamp

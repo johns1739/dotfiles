@@ -230,7 +230,8 @@
   :ensure nil
   :bind
   ( :map global-leader-map
-    ("k c" . compile)
+    ("k K" . compile)
+    ("k k" . project-compile)
     ("k g" . recompile))
   :custom
   (ansi-color-for-compilation-mode t)
